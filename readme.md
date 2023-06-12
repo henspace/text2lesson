@@ -28,7 +28,8 @@ following scripts:
 ### String replacements
 
 String replacements take place in _postbuild.js_. The placeholders which are
-replaced are given names wrapped between $\_ and \_$ characters.
+replaced are given names wrapped between <span>$</span>\_ and \_<span>$</span>
+characters.
 
 String replacements are normally provided without quotes. These string
 replacements are given names ending with _TXT_ and should be quoted in the code.
@@ -44,12 +45,16 @@ var b = __NAME_STR__;
 
 At present, the following substitutions are available:
 
-- $\_APP\_VERSION\_TXT\_$ - application version
-- $\_BUILD\_DATE\_TXT\_$ - date of the build
-- $\_BUILD\_MODE\_TXT\_$ - build mode: production or developement.
-- $\_BUNDLE\_NAME\_TXT\_$ - name of the final code bundle
-- $\_BUILD\_YEAR\_$ - year of the build. Numeric replacement.
-- $\_PRODUCT\_NAME\_TXT\_$ - year of the build. Numeric replacement.
+- <span>$</span>\_APP\_VERSION\_TXT\_<span>$</span> - application version
+- <span>$</span>\_BUILD\_DATE\_TXT\_<span>$</span> - date of the build
+- <span>$</span>\_BUILD\_MODE\_TXT\_<span>$</span> - build mode: production or
+  developement.
+- <span>$</span>\_BUNDLE\_NAME\_TXT\_<span>$</span> - name of the final code
+  bundle
+- <span>$</span>\_BUILD\_YEAR\_<span>$</span> - year of the build. Numeric
+  replacement.
+- <span>$</span>\_PRODUCT\_NAME\_TXT\_<span>$</span> - year of the build.
+  Numeric replacement.
 
 Build information is provided via _constants.js_.
 
@@ -66,14 +71,16 @@ Translation files are json files containing key and value entries. The _key_
 contains the hash of the original translation. The _value_ contains the
 translated value.
 
-Replacement values are inserted in the template at ocations marked with ${n},
-where n is the index of the replacement provided in the values. If n is omitted
-or is not a number, the index used is derived from it's position in the
-template. So these are equivalent:
+Replacement values are inserted in the template at ocations marked with
+<span>$</span>{n}, where n is the index of the replacement provided in the
+values. If n is omitted or is not a number, the index used is derived from it's
+position in the template. So these are equivalent:
 
-- 'This is my ${0} replacement ${1} string'
-- 'This is my ${} replacement ${} string'
-- 'This is my ${BUILD-INFO.date()} replacement ${BUILD-INFO.mode()} string'
+- 'This is my <span>$</span>{0} replacement <span>$</span>{1} string'
+- 'This is my <span>$</span>{} replacement <span>$</span>{} string'
+- 'This is my
+  <span>$</span>{BUILD-INFO.date()} replacement <span>$</span>{BUILD-INFO.mode()}
+  string'
 
 This means it is only necessary to amend the original placeholders if it is
 necessary to rearrange the position of the strings.
