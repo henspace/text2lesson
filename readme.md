@@ -16,8 +16,8 @@ _postbuild_ scripts rather than via a plugin.
 Likewise, string replacements and compression, via _Terser_, take place in the
 _postbuild_ script.
 
-Packages used for actions such as compressing code and linting are run
-via their command line commands or from within prebuild and postbuild scripts.
+Packages used for actions such as compressing code and linting are run via their
+command line commands or from within prebuild and postbuild scripts.
 
 All other external packages used for the build process are managed by the
 following scripts:
@@ -28,28 +28,28 @@ following scripts:
 ### String replacements
 
 String replacements take place in _postbuild.js_. The placeholders which are
-replaced are given names wrapped between $_ and _$ characters.
+replaced are given names wrapped between $\_ and \_$ characters.
 
-String replacements are normally provided without quotes.
-These string replacements are given names ending with _TXT_ and should be
-quoted in the code. This allows code to be viewed before building.
-String replacements which are provided with quotes and which should be not
-enclosed in quotes in the code, are given names ending with _STR_.
-The following code snippets show how this convention is applied.
+String replacements are normally provided without quotes. These string
+replacements are given names ending with _TXT_ and should be quoted in the code.
+This allows code to be viewed before building. String replacements which are
+provided with quotes and which should be not enclosed in quotes in the code, are
+given names ending with _STR_. The following code snippets show how this
+convention is applied.
 
 ```
-var a = "\_\_NAME_TXT\_\_";
-var b = \_\_NAME_STR\_\_;
+var a = "__NAME_TXT__";
+var b = __NAME_STR__;
 ```
 
 At present, the following substitutions are available:
 
-- $_APP_VERSION_TXT_$ - application version
-- $_BUILD_DATE_TXT_$ - date of the build
-- $_BUILD_MODE_TXT_$ - build mode: production or developement.
-- $_BUNDLE_NAME_TXT_$ - name of the final code bundle
-- $_BUILD_YEAR_$ - year of the build. Numeric replacement.
-- $_PRODUCT_NAME_TXT_$ - year of the build. Numeric replacement.
+- $\_APP\_VERSION\_TXT\_$ - application version
+- $\_BUILD\_DATE\_TXT\_$ - date of the build
+- $\_BUILD\_MODE\_TXT\_$ - build mode: production or developement.
+- $\_BUNDLE\_NAME\_TXT\_$ - name of the final code bundle
+- $\_BUILD\_YEAR\_$ - year of the build. Numeric replacement.
+- $\_PRODUCT\_NAME\_TXT\_$ - year of the build. Numeric replacement.
 
 Build information is provided via _constants.js_.
 
@@ -78,8 +78,8 @@ template. So these are equivalent:
 This means it is only necessary to amend the original placeholders if it is
 necessary to rearrange the position of the strings.
 
-The location of files is controlled by following options in the _config_ property
-of _package.json_.
+The location of files is controlled by following options in the _config_
+property of _package.json_.
 
 - "i18nMasterLanguage": "en",
 - "i18nAssetsDirRelToSource": "assets/i18n",
@@ -94,8 +94,8 @@ identify and missing or unused translations contained in the translations.
 ### Build information
 
 Information for the build is encapsulated by the _build-utilities/project-info_
-module. Where possible, all information used by scripts should be picked up
-from the _ProjectInfo_ object. The _ProjectInfo_ object is populated as far as
+module. Where possible, all information used by scripts should be picked up from
+the _ProjectInfo_ object. The _ProjectInfo_ object is populated as far as
 possible from the _package.json_ file with addition information that is either
 not included as standard or not exposed in the _process.env_ object place in the
 _config_ property.
@@ -110,9 +110,9 @@ The _production_ and _development_ build modes present a particular problem.
 Because the environment variable _process.env.NODE_ENV_ is commonly used by
 plugins and third-party packages, this needs to be set to the appropriate mode.
 
-To facilitate this, the script _./build-utilities/run-in-env.js_ can be used.
-In general, if you think the output from a script may depend on the build mode,
-you should create the npm script as a child and the invoke that using the
+To facilitate this, the script _./build-utilities/run-in-env.js_ can be used. In
+general, if you think the output from a script may depend on the build mode, you
+should create the npm script as a child and then invoke that using the
 _run-in-env.js_ script. An example is shown below:
 
     "scripts": {
