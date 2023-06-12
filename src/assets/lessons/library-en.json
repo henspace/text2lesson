@@ -1,0 +1,53 @@
+[
+  {
+    "title": "Learning to code",
+    "location": "assets/lessons/",
+    "chapters": [
+      {
+        "title": "00-00.test",
+        "lessons": [
+          {
+            "title": "What does a computer understand?",
+            "file": "00-00-00.test.md"
+          },
+          {
+            "title": "HTML, CSS, and JavaScript?",
+            "file": "00-00-01.test.md"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Some other book",
+    "location": "assets/lessons/",
+    "chapters": [
+      {
+        "title": "01-00.test",
+        "lessons": [
+          {
+            "title": "01-00-00.test.md",
+            "file": "01-00-00.test.md"
+          },
+          {
+            "title": "01-00-01.test.md",
+            "file": "01-00-01.test.md"
+          }
+        ]
+      },
+      {
+        "title": "01-01.test",
+        "lessons": [
+          {
+            "title": "01-01-00.test.md",
+            "file": "01-01-00.test.md"
+          },
+          {
+            "title": "01-01-01.test.md",
+            "file": "01-01-01.test.md"
+          }
+        ]
+      }
+    ]
+  }
+]

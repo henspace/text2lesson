@@ -1,0 +1,3 @@
+{
+  "ffadf9e4ead5723abd08af032169d12a": "Version ${BUILD_INFO.version()} here ${BUILD_INFO.date()}"
+}

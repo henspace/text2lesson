@@ -1,0 +1,9 @@
+**/.git
+**/.svn
+**/.hg
+**/.vscode
+**/node_modules
+**/build
+**/jsdoc
+**/licences
+**/test_data

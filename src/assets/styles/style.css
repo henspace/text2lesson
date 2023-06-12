@@ -1,0 +1,84 @@
+@import '../libs/styles/utils.css';
+/*
+ * z-indexes
+ * 0: default
+ * 5: menu open icon
+ * 10 window mask for modal operation
+ * 20: menu close icon and content
+ * 40: dialog
+ * 50: utils-toast
+ */
+:root {
+  --primary-base: hsl(120, 50, 50);
+  --primary-contrast: hsl(0, 0, 0);
+  --primary-highlight: hsl(120, 50, 60);
+
+  --secondary-base: hsl(180, 50, 50);
+  --secondary-contrast: hsl(0, 0, 0);
+  --secondary-highlight: hsl(180, 50, 60);
+
+  --tertiary-base: hsl(240, 50, 50);
+  --tertiary-contrast: hsl(0, 0, 0);
+  --tertiary-highlight: hsl(240, 50, 60);
+
+  --background-base: hsl(60, 50, 50);
+  --background-contrast: hsl(0, 0, 0);
+  --background-highlight: hsl(60, 50, 60);
+
+  --error-base: hsl(0, 50, 50);
+  --error-contrast: hsl(0, 50, 100);
+  --error-highlight: hsl(0, 50, 60);
+
+  --window-base: hsl(0, 50, 50);
+  --window-contrast: hsl(0, 50, 100);
+  --window-highlight: hsl(0, 50, 60);
+
+  --panel-border: solid 4px;
+  --content-padding: 8px;
+  --font-base-size: 15px;
+}
+
+noscript {
+  z-index: 100;
+}
+
+html {
+  font-size: calc(var(--font-base-size) + 0.390625vw);
+}
+
+body {
+  background-color: var(--window-base);
+  color: var(--window-contrast);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
+body > div,
+body > H1 {
+  padding: var(--content-padding);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+H1.title {
+  margin: 0 3rem 0 3rem;
+  text-align: center;
+}
+
+#header {
+  background-color: var(--primary-base);
+  color: var(--primary-contrast);
+}
+
+#content {
+  background-color: var(--secondary-base);
+  color: var(--secondary-contrast);
+}
+
+#footer {
+  background-color: var(--tertiary-base);
+  color: var(--tertiary-contrast);
+}

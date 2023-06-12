@@ -1,3 +1,9 @@
+# rapid-qanda build and documentation
+build/
+jsdoc/
+jsdoc-tools/
+.vscode/
+
 # Logs
 logs
 *.log

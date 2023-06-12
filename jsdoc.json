@@ -1,0 +1,24 @@
+{
+  "plugins": ["plugins/markdown"],
+  "recurseDepth": 20,
+  "source": {
+    "include": ["src/scripts"],
+    "includePattern": "\\.m?js$",
+    "excludePattern": "(node_modules/|jsdoc|doc|\\.test\\.js)"
+  },
+  "sourceType": "module",
+  "templates": {
+    "cleverLinks": true
+  },
+  "opts": {
+    "destination": "./jsdoc",
+    "recurse": true,
+    "readme": "./readme.md",
+    "sort": true,
+    "tutorials": "./tutorials"
+  },
+  "markdown": {
+    "idInHeadings": true,
+    "tags": ["license"]
+  }
+}

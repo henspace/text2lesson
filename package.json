@@ -1,0 +1,55 @@
+{
+  "name": "rapid-qanda",
+  "version": "1.0.0",
+  "description": "Application for running lessons and quizzes",
+  "private": true,
+  "main": "main.js",
+  "type": "module",
+  "config": {
+    "appName": "rapid-qanda",
+    "assetsDirRelToSource": "assets",
+    "buildDistDir": "./build/dist",
+    "buildReportDir": "./build/reports",
+    "bundlePreamble": "./licenses/bundle-preamble-gpl3.txt",
+    "distributedLicencePath": "./licenses/license.md",
+    "entryScriptRelToSource": "scripts/main.js",
+    "i18nMasterLanguage": "en",
+    "i18nAssetsDirRelToSource": "assets/i18n",
+    "productName": "Lesson Runner",
+    "sourceDir": "./src"
+  },
+  "scripts": {
+    "buildDev": "npm run jsdoc && node ./tools/run-in-env.js -d buildChild",
+    "buildProd": "npm run test && npm run jsdoc && node ./tools/run-in-env.js -p buildChild",
+    "prebuildChild": "node ./tools/prebuild.js",
+    "buildChild": "rollup -c",
+    "postbuildChild": "node ./tools/postbuild.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "jsdoc": "jsdoc -c jsdoc.json && jsdoc -c jsdoc-build-utils.json",
+    "compress": "terser ./build/rapid-qanda.js --compress --comments false --output ./build/rapid-qanda.min.js",
+    "lint": "npx eslint ./src/**/*.js",
+    "scratchpad": "node ./tools/scratchpad.js && node ./tools/scratchpad.js"
+  },
+  "keywords": [
+    "lesson",
+    "quiz"
+  ],
+  "author": "Steve Butler",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "jsdoc": "^4.0.2",
+    "prettier": "2.8.7",
+    "rollup": "^3.20.2",
+    "terser": "^5.16.8"
+  },
+  "dependencies": {
+    "workbox-build": "^6.5.4"
+  }
+}
