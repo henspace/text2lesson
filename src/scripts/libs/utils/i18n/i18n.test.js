@@ -115,6 +115,26 @@ test('i18n should use fallback if provided.', () => {
   );
 });
 
+test('i18n should escape any HTML to prevent script injection', () => {
+  const translations = {
+    key1: 'var 0 ${0} <div> var 1 ${1}',
+    key2: '<script>var 0 ${} & var 1 ${}',
+    key3: 'var 1 ${1} var 0 ${0} </script>',
+  };
+  setActiveTranslations(translations);
+  const var0 = 'VARIABLE ZERO';
+  const var1 = 'VARIABLE ONE';
+  expect(i18n`key1::Untranslated ${var0} and ${var1}`).toBe(
+    'var 0 VARIABLE ZERO &lt;div> var 1 VARIABLE ONE'
+  );
+  expect(i18n`key2::Untranslated ${var0} and ${var1}`).toBe(
+    '&lt;script>var 0 VARIABLE ZERO &amp; var 1 VARIABLE ONE'
+  );
+  expect(i18n`key3::Untranslated ${var0} and ${var1}`).toBe(
+    'var 1 VARIABLE ONE var 0 VARIABLE ZERO &lt;/script>'
+  );
+});
+
 test('getPreferredLanguage should return values set by navigator.languages', () => {
   const languages = ['en-GB', 'en-US', 'en'];
   const languagesGetter = jest.spyOn(window.navigator, 'languages', 'get');

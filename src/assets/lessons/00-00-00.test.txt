@@ -1,0 +1,12 @@
+# EN test 00-00-00
+AUTHOR: John Doe
+
+(i) Welcome to this lesson written by meta:AUTHOR.
+This is just test file for the UI.
+It contains some *markdown* purely for testing purposes.
+
+
+(?) What is the capital of the UK?
+(=) London
+(x) New York
+(x) Paris

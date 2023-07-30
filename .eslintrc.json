@@ -15,8 +15,8 @@
       {
         "vars": "all",
         "args": "after-used",
-        "varsIgnorePattern": "[iI]Ignored?$",
-        "argsIgnorePattern": "[iI]gnored?$"
+        "varsIgnorePattern": "[iI]gnored$",
+        "argsIgnorePattern": "[iI]gnored$"
       }
     ]
   }

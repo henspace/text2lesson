@@ -15,29 +15,38 @@ button:hover {
   cursor: pointer;
 }
 
+.fade-in {
+  opacity: 1;
+  transition: opacity 1s;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s;
+}
+
 .utils-button-bar button {
   /* nothing */
 }
 
-#utils-dialog {
+.utils-dialog {
   background-color: var(--background-base);
   border: var(--panel-border) var(--primary-base);
   color: var(--background-contrast);
   left: 50%;
   min-height: 10vh;
   max-height: 90vh;
-  opacity: 0;
+  overflow: auto;
   padding: 0px;
   position: absolute;
   top: 50vh;
   transform: translate(-50%, -50%);
   width: 90%;
   transition: opacity 0.5s;
-  visibility: hidden;
   z-index: 40;
 }
 
-#utils-dialog label {
+.utils-dialog label {
   display: flex;
   flex-flow: row wrap;
 
@@ -47,21 +56,21 @@ button:hover {
 }
 
 @media screen and (max-width: 450px) {
-  #utils-dialog label {
+  .utils-dialog label {
     flex-flow: column;
   }
 }
 
-#utils-dialog label:hover {
+.utils-dialog label:hover {
   background-color: var(--background-highlight);
 }
 
-#utils-dialog label span:first-child {
+.utils-dialog label span:first-child {
   margin-top: 0.25em;
   flex: 1 0 auto;
 }
 
-#utils-dialog label::after {
+.utils-dialog label::after {
   content: '\f071';
   font-family: 'Font Awesome 6 Free';
   font-weight: 400;
@@ -84,7 +93,7 @@ button:hover {
   padding: var(--content-padding);
 }
 
-#utils-dialog .utils-button-bar {
+.utils-dialog .utils-button-bar {
   display: flex;
   gap: 1em;
   justify-content: center;
@@ -196,17 +205,15 @@ button:hover {
   top: 0px;
 }
 
-#utils-window-mask {
+.utils-window-mask {
   background-color: var(--window-base);
   height: 100%;
   left: 0px;
-  opacity: 0;
+  opacity: 0.5;
   padding: 0px;
   position: absolute;
   width: 100%;
   top: 0px;
-  transition: opacity 0.5s;
-  visibility: hidden;
   z-index: 10;
 }
 

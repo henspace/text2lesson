@@ -1,7 +1,10 @@
 /**
  * @file Abstract presenter.
+ * Presenters are states in a state machine. The state is entered by calling the
+ * present method. The present method allows 3 possible exits: back, new presenter,
+ * and escape. See {@link Presenter#present} for details.
  *
- * @module libs\utils\userIo\presenter
+ * @module libs/utils/userIo/presenter
  *
  * @license GPL-3.0-or-later
  * : create quizzes and lessons from plain text files.
@@ -23,35 +26,142 @@
  */
 
 import { ManagedElement } from '../../libs/utils/dom/managedElement.js';
+import {
+  ICON_HTML,
+  applyIconToElement,
+} from '../../libs/utils/userIo/icons.js';
+/**
+ * @typedef {Object} PresentationConfig
+ * @property {string[]} titles - titles that are displayed for each item.
+ * @property {string} itemClassName - class name for the items.
+ * @property {function(index:number):Promise} next - function that generates the next presenter. The Promise fulfils to the next presenter.
+ * @property {function(index:number):Promise} previous - function that generates the previous presenter. The Promise fulfils to the previous presenter.
+ * If this is not set, no back button is added.
+ */
 
 /**
- * Base presenter class. This creates a stage if it does not already exist.
+ * Identification used for the back button.
+ * @type{string}
  */
-export class Presenter {
-  static #STAGE_ID = 'presenter-stage';
+const PREVIOUS_ID = 'PREVIOUS';
+
+/**
+ * Base presenter class.
+ */
+export class Presenter extends ManagedElement {
   /**
-   * @type {ManagedElement}
+   * @type {function}
    */
-  static #stage;
+  #resolutionExecutor;
 
   /**
-   * Construct the presenter and create the stage element if necessary.
+   * @type {PresentationConfig}
    */
-  constructor() {
-    if (!document.getElementById(Presenter.#STAGE_ID)) {
-      Presenter.#stage = new ManagedElement('div', 'stage');
-      Presenter.#stage.id = Presenter.#STAGE_ID;
-      Presenter.#stage.appendTo(document.body);
+  #config;
+
+  /**
+   * Construct the presenter
+   * @param {string} className - class for the presenter.
+   * @param {PresentationConfig} - configuration for the presenter.
+   */
+  constructor(className, config) {
+    super('div', className);
+    this.#config = config;
+    this.#buildContent();
+  }
+
+  /**
+   * Build the presenter content.
+   * This calls `buildCustomContent` which can be overridden.
+   * If the config includes the `previous` function, a back button is automatically
+   * added at the end.
+   */
+  #buildContent() {
+    this.#config?.titles.forEach((title, index) => {
+      const itemElement = new ManagedElement('a', this.#config.itemClassName);
+      this.appendChild(itemElement);
+      itemElement.element.textContent = title;
+      this.listenToEventOn('click', itemElement, index);
+    });
+
+    if (!this.#config || this.#config.previous) {
+      this.#appendBackButton();
     }
   }
 
   /**
-   * Present the data.
-   * This merely writes the html to the stage. It is expected that this
-   * will be overridden.
-   * @param {string} html
+   * Append a backbutton
    */
-  present(html) {
-    Presenter.#stage.element.innerHTML = html;
+  #appendBackButton() {
+    const backElement = new ManagedElement('A', 'backNavigation');
+    this.appendChild(backElement);
+    applyIconToElement(ICON_HTML.BACK, backElement.element, 'link');
+    this.listenToEventOn('click', backElement, PREVIOUS_ID);
+  }
+
+  /**
+   * Present on stage. The element is appended to the stageElement.
+   * Note that it is not removed and any existing content is not removed..
+   *
+   * @param {ManagedElement} stageElement
+   * @returns {Promise} - fulfils to the next `Presenter` that should be shown.
+   */
+  presentOnStage(stageElement) {
+    return new Promise((resolve) => {
+      this.#resolutionExecutor = resolve;
+      stageElement.appendChild(this);
+    });
+  }
+
+  /**
+   * Handle the click event.
+   * The method will resolve the `Promise` made by `presentOnStage`.
+   * The resolution is determined by the eventId.
+   * + If the eventId is a positive integer, including zero, the Presenter resolves by
+   * calling the next method in the config.
+   * + If the eventId is 'PREVIOUS', case insensitive, the Presenter resolves by
+   * calling the previous method in the config.
+   * + Any other eventId, does not resolve the Presenter
+   *
+   * Override this method for handling other eventIds.
+   * @param {Event} event
+   * @param {string} eventId
+   */
+  handleClickEvent(event, eventId) {
+    const index = parseInt(eventId);
+    if (!isNaN(index)) {
+      this.#resolveNext(index);
+    } else if (eventId.toUpperCase() === PREVIOUS_ID) {
+      this.#resolvePrevious();
+    }
+  }
+
+  /**
+   * Resolve the Presenter's Promise by calling the next function.
+   * @param {number} index
+   * @throws {Error} thrown if next method does not exist
+   */
+  #resolveNext(index) {
+    if (typeof this.#config.next === 'function') {
+      this.#resolutionExecutor(this.#config.next(index));
+    } else {
+      throw new Error(
+        'Resolution direction set to next but no function to handle it.'
+      );
+    }
+  }
+
+  /**
+   * Resolve the Presenter's Promise by calling the previous function.
+   * @throws {Error} thrown if next method does not exist
+   */
+  #resolvePrevious() {
+    if (typeof this.#config.previous === 'function') {
+      this.#resolutionExecutor(this.#config.previous());
+    } else {
+      throw new Error(
+        'Resolution direction set to previous but no function to handle it.'
+      );
+    }
   }
 }

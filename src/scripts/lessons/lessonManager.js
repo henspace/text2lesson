@@ -1,10 +1,10 @@
 /**
  * @file Manager for fetching the lesson plan
  * Lessons are structured as follows:
- * + Libraries {@link module:lessons/lessonManager~Library}: object
- * containing all available libraries.
+ * + this.#libraries {@link module:lessons/lessonManager~Library}: object
+ * containing all available this.#libraries.
  * + Library {@link module:lessons/lessonManager~LibraryDetails}:
- * contains a number of different libraries. These libraries contain a
+ * contains a number of different this.#libraries. These this.#libraries contain a
  * Catalogue.
  * + Catalogue {@link module:lessons/lessonManager~CatalogueDetails}: contains
  * an array of Books.
@@ -37,24 +37,35 @@
  */
 
 import { fetchText, fetchJson } from '../libs/utils/jsonUtils/json.js';
-import { toast } from '../libs/utils/userIo/toast.js';
+import { CachedLesson } from './cachedLesson.js';
 
 /**
- * @typedef {Object<string, LibraryDetails>} Libraries - object containing
- * all available libraries accessible to the application. The keyword is used
+ * @typedef {Map<string, LibraryInfo>} this.#librariesInfo - object containing
+ * all available this.#libraries accessible to the application. The keyword is used
  * as a unique identifier for the library.
  */
 
 /**
- * @typedef {Object} LibraryDetails - Details of a library.
+ * @typedef {Object} LibraryInfo - Information about a library.
  * @property {string} title - title of the library
  * @property {string} file - file containing the books available in the library.
- * This file should contain a JSON representation of a {@link CatalogueDetails}
+ * This file should contain a JSON representation of a {@link Library}
  * object.
  */
+
 /**
- * @typedef {BookDetails[]} CatalogueDetails
- * A catalogue of books which are available.
+ * @typedef {Map<string, Library>} this.#libraries - object containing
+ * all available this.#libraries accessible to the application. The keyword is used
+ * as a unique identifier for the library.
+ */
+
+/**
+ * @typedef {Object} Library - the library as used by the application.
+ * @property {string} title - title of the library
+ * @property {string} file - file containing the books available in the library.
+ * This file should contain a JSON representation of a {@link LibraryContent}
+ * object.
+ * @property {BookDetails[]} books - the books in the library
  */
 
 /**
@@ -72,175 +83,293 @@ import { toast } from '../libs/utils/userIo/toast.js';
  */
 
 /**
- * @typedef {Object} LessonDetails
- * @property {string} title - title of the lesson
+ * @typedef {Object} LessonDetails - details of a lesson.
+ * @property {string} title - title of the lesson.
+ * @property {string} file - path to the actual lesson.
+ */
+
+/**
+ * @typedef {Object} LessonInfo
+ * @property {string} libraryKey - key for the library
  * @property {string} file - file without any path.
+ * @property {string} url - the url of the lesson. This is used as its unique key.
+ * @property {Object} indexes
+ * @property {number} indexes.book - index of the book
+ * @property {number} indexes.chapter - index of the chapter
+ * @property {number} indexes.lesson - index of the lesson
+ * @property {Object} titles
+ * @property {string} titles.library - title of the library
+ * @property {string} titles.book - title of the book
+ * @property {string} titles.chapter - title of the chapter
+ * @property {string} titles.lesson - title of the lesson
  */
 
-/**
- * Available libraries.
- * @type {Libraries}
- */
-let libraries = {};
+class LessonManager {
+  /**
+   * Available this.#libraries.
+   * @type {this.#libraries}
+   */
+  #libraries = new Map();
+  #currentLibraryKey;
+  #currentBookIndex = 0;
+  #currentChapterIndex = 0;
+  #currentLessonIndex = 0;
+  /**
+   * @type {CachedLesson}
+   */
+  #cachedLesson;
 
-/**
- * Catalogues available in the current library.
- * @type {Object<string, CatalogueDetails[]>}
- */
-let catalogues = {};
+  constructor() {}
 
-let currentLibrary;
-let currentBookIndex = 0;
-let currentChapterIndex = 0;
-let currentLessonIndex = 0;
+  /** Set the current library.
+   * The library's catalog should have already been loaded.
+   * If the key is invalid, the first entry in the this.#libraries is used.
+   * @param {string} key the library key.
+   */
+  set libraryKey(key) {
+    this.#currentLibraryKey = this.#libraries.has(key)
+      ? key
+      : this.#libraries.keys().next().value;
+  }
 
-/**
- * Form url to retrieve the lesson under book, chapter and section.
- * @param {number} bookIndex
- * @param {number} chapterIndex
- * @param {number} lessonIndex
- * @returns url
- */
-export function formUrlForLessonIndex(bookIndex, chapterIndex, lessonIndex) {
-  const catalogue = catalogues[currentLibrary];
-  const fileLocation = catalogue[bookIndex].location;
-  const fileName =
-    catalogue[bookIndex].chapters[chapterIndex].lessons[lessonIndex].file;
-  return `${fileLocation}${fileName}`;
-}
+  /**
+   * Set the index of the book we are working on.
+   * @param {number} index
+   */
+  set bookIndex(index) {
+    const library = this.#libraries.get(this.#currentLibraryKey);
+    if (!library) {
+      this.#currentBookIndex = 0;
+      return;
+    }
+    this.#currentBookIndex = this.#ensurePositiveInt(index);
+  }
 
-/**
- * Load the current lesson.
- * @returns {Promise} Fulfils to undefined.
- */
-export function loadCurrentLesson() {
-  const url = formUrlForLessonIndex(
-    currentBookIndex,
-    currentChapterIndex,
-    currentLessonIndex
-  );
-  return fetchText(url)
-    .then((text) => {
-      console.log('Loaded lesson: ', text);
-    })
-    .catch((error) => {
-      toast(error.message);
+  /**
+   * Set the index of the chapter we are working on.
+   * @param {number} index
+   */
+  set chapterIndex(index) {
+    this.#currentChapterIndex = this.#ensurePositiveInt(index);
+  }
+
+  /**
+   * Set the index of the lesson we are working on.
+   * @param {number} index
+   */
+  set lessonIndex(index) {
+    this.#currentLessonIndex = this.#ensurePositiveInt(index);
+  }
+
+  /**
+   * Get the library titles.
+   * @returns {Map<string, string>}
+   */
+  get libraryTitles() {
+    const options = new Map();
+    this.#libraries.forEach((value, key) => {
+      options.set(key, value.title);
     });
-}
-
-/**
- * Makes sure index is valid.
- * @param {string | number} index
- * @returns integer index or 0 if index is not valid
- */
-function makeIndexSafe(index) {
-  index = parseInt(index);
-  return isNaN(index) || index < 0 ? 0 : index;
-}
-
-/**
- * Set the available libraries. The `librariesFile` should contain a JSON
- * representation of a Libraries object.
- * @param {string} librariesFileLocation
- * @returns {Promise} resolves to true.
- */
-export function loadLibraries(librariesFileLocation) {
-  return fetchJson(librariesFileLocation).then((value) => {
-    libraries = value;
-    console.log('Libraries', value);
-  });
-}
-
-/** Set the current library.
- * The library's catalog is loaded if necessary.
- * @param {string} key the library key.
- * @returns {Promise} Fulfils to undefined.
- */
-export function setCurrentLibrary(key) {
-  currentLibrary = key;
-  if (catalogues[key]) {
-    return Promise.resolve();
+    return options;
   }
-  const fileLocation = libraries[key].file;
-  return fetchJson(fileLocation).then((value) => {
-    catalogues[key] = value;
-    return;
-  });
-}
 
-/**
- * Set the index of the book we are working on.
- * @param {number} index
- */
-export function setBookIndex(index) {
-  currentBookIndex = makeIndexSafe(index);
-  console.log(`Set book index ${index}`);
-}
-
-/**
- * Set the index of the chapter we are working on.
- * @param {number} index
- */
-export function setChapterIndex(index) {
-  currentChapterIndex = makeIndexSafe(index);
-  console.log(`Set chapter index ${index}`);
-}
-
-/**
- * Set the index of the lesson we are working on.
- * @param {number} index
- */
-export function setLessonIndex(index) {
-  currentLessonIndex = makeIndexSafe(index);
-  console.log(`Set lesson index ${index}`);
-}
-
-/**
- * Get the library options.
- * @returns {Object<key, value>}
- */
-export function getLibraryOptions() {
-  const options = {};
-  for (const key in libraries) {
-    options[key] = libraries[key].title;
+  /**
+   * Get list of all the book titles.
+   * @returns {string[]}
+   */
+  get bookTitles() {
+    const titles = [];
+    this.#libraries.get(this.#currentLibraryKey)?.books.forEach((value) => {
+      titles.push(value.title);
+    });
+    return titles;
   }
-  return options;
+
+  /**
+   * Get list of all the chapter titles.
+   * @returns {string[]}
+   */
+  get chapterTitles() {
+    const titles = [];
+    this.#getCurrentBook().chapters.forEach((value) => {
+      titles.push(value.title);
+    });
+    return titles;
+  }
+
+  /**
+   * Get list of all the lesson titles.
+   * @returns {string[]}
+   */
+  get lessonTitles() {
+    const titles = [];
+    this.#getCurrentBook().chapters[this.#currentChapterIndex].lessons.forEach(
+      (value) => {
+        titles.push(value.title);
+      }
+    );
+    return titles;
+  }
+
+  /**
+   * @typedef {Object} LessonDetails
+   * @property {string} libraryTitle
+   * @property {string} bookTitle
+   * @property {string} chapterTitle
+   * @property {string} lessonTitle
+   * @property {string} lessonFile
+   */
+
+  /**
+   * Get the current lesson information.
+   * @returns {LessonInfo}
+   */
+  get currentLessonInfo() {
+    return this.#buildCurrentLessonInfo();
+  }
+
+  /**
+   * Build the current lesson information.
+   * @param {string} url - the url for the lesson. This is used as its unique key.
+   * @returns {LessonInfo}
+   */
+  #buildCurrentLessonInfo(url) {
+    this.#ensureIndexesValid();
+    const book = this.#getCurrentBook();
+    return {
+      libraryKey: this.#currentLibraryKey,
+      file: book.chapters[this.#currentChapterIndex].lessons[
+        this.#currentLessonIndex
+      ].file,
+      url: url,
+      indexes: {
+        book: this.#currentBookIndex,
+        chapter: this.#currentChapterIndex,
+        lesson: this.#currentLessonIndex,
+      },
+      titles: {
+        library: this.#libraries.get(this.#currentLibraryKey).title,
+        book: book.title,
+        chapter: book.chapters[this.#currentChapterIndex].title,
+        lesson:
+          book.chapters[this.#currentChapterIndex].lessons[
+            this.#currentLessonIndex
+          ].title,
+      },
+    };
+  }
+
+  /**
+   * Form url to retrieve the lesson under book, chapter and sections.
+   * The current settings for the library key and indexes are used.
+   * @returns url
+   */
+  formUrlForLesson() {
+    this.#ensureIndexesValid();
+    const books = this.#libraries.get(this.#currentLibraryKey).books;
+    const fileLocation = books[this.#currentBookIndex].location;
+    const fileName =
+      books[this.#currentBookIndex].chapters[this.#currentChapterIndex].lessons[
+        this.#currentLessonIndex
+      ].file;
+    return `${fileLocation}${fileName}`;
+  }
+
+  /**
+   * Makes sure index is a positive integer.
+   * @param {string | number} index
+   * @returns integer index or 0 if index is not valid
+   */
+  #ensurePositiveInt(index) {
+    index = parseInt(index);
+    return isNaN(index) || index < 0 ? 0 : index;
+  }
+
+  /**
+   * Ensure all indexes are within the bounds of the library's contents.
+   * ANy invalid index is set to 0.
+   */
+  #ensureIndexesValid() {
+    const library = this.#libraries.get(this.#currentLibraryKey);
+    if (this.#currentBookIndex >= library.books.length) {
+      this.#currentBookIndex = 0;
+    }
+    const book = library.books[this.#currentBookIndex];
+    if (this.#currentChapterIndex >= book.chapters.length) {
+      this.#currentChapterIndex = 0;
+    }
+    const chapter = book.chapters[this.#currentChapterIndex];
+    if (this.#currentLessonIndex >= chapter.lessons.length) {
+      this.#currentLessonIndex = 0;
+    }
+  }
+
+  /**
+   * Utility function to simplify code.
+   * @returns {BookDetails}
+   */
+  #getCurrentBook() {
+    return this.#libraries.get(this.#currentLibraryKey).books[
+      this.#currentBookIndex
+    ];
+  }
+
+  /**
+   * Set the available libraries. The `librariesFileLocation` should be the path
+   * to a JSON representation of a `libraries` object.
+   * @param {string} librariesFileLocation
+   * @returns {Promise} fufils to number of libraries.
+   */
+  loadLibraries(librariesFileLocation) {
+    this.#libraries = new Map();
+    return fetchJson(librariesFileLocation).then((entries) => {
+      for (const key in entries) {
+        this.#libraries.set(key, entries[key]);
+        this.#libraries.get(key).books = [];
+      }
+      return this.#libraries.size;
+    });
+  }
+
+  /**
+   * Load the library associated with the `#currentLibraryKey`. If the key is invalid,
+   * it is altered to the first key of the #libraries.
+   * Indexes are set to zero if found to be invalid.
+   * @param {string} key - the library key
+   * @returns {Promise} fulfils to undefined.
+   */
+  loadCurrentLibrary() {
+    const library = this.#libraries.get(this.#currentLibraryKey);
+
+    if (library.books.length > 0) {
+      return Promise.resolve();
+    }
+    const fileLocation = library.file;
+    return fetchJson(fileLocation).then((value) => {
+      library.books = value;
+      this.#ensureIndexesValid();
+      return;
+    });
+  }
+
+  /**
+   * Load the current lesson.
+   * @returns {Promise} Fulfils to {@link module:lessons/cachedLesson~CachedLesson}
+   */
+  loadCurrentLesson() {
+    const url = this.formUrlForLesson();
+    if (this.#cachedLesson?.info.url === url) {
+      console.info(`Using cached version of lesson: ${url}`);
+      return Promise.resolve(CachedLesson.clone(this.#cachedLesson));
+    }
+    this.#cachedLesson = new CachedLesson(this.#buildCurrentLessonInfo(url));
+
+    return fetchText(url).then((text) => {
+      console.info(`Loaded lesson: ${url}`);
+      this.#cachedLesson.content = text;
+      return CachedLesson.clone(this.#cachedLesson);
+    });
+  }
 }
 
-/**
- * Get list of all the book titles.
- * @returns {string[]}
- */
-export function getBookTitles() {
-  const titles = [];
-  catalogues[currentLibrary].forEach((value) => {
-    titles.push(value.title);
-  });
-  return titles;
-}
-
-/**
- * Get list of all the chapter titles.
- * @returns {string[]}
- */
-export function getChapterTitles() {
-  const titles = [];
-  catalogues[currentLibrary][currentBookIndex].chapters.forEach((value) => {
-    titles.push(value.title);
-  });
-  return titles;
-}
-
-/**
- * Get list of all the lesson titles.
- * @returns {string[]}
- */
-export function getLessonTitles() {
-  const titles = [];
-  catalogues[currentLibrary][currentBookIndex].chapters[
-    currentChapterIndex
-  ].lessons.forEach((value) => {
-    titles.push(value.title);
-  });
-  return titles;
-}
+export const lessonManager = new LessonManager();

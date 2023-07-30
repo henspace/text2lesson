@@ -1,7 +1,7 @@
 /**
- * @file HTML to embed icons
+ * @file Array shuffling
  *
- * @module data/icons
+ * @module libs/utils/shuffle
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -19,30 +19,19 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
  */
 
-import { i18n } from '../libs/utils/i18n/i18n.js';
-
-export const ICON_HTML = {
-  OK: {
-    content: '<i class="fa-solid fa-check"></i>',
-    accessibleName: i18n`OK`,
-  },
-  CANCEL: {
-    content: '<i class="fa-solid fa-xmark"></i>',
-    accessibleName: i18n`Cancel`,
-  },
-  RESET_TO_FACTORY: {
-    content:
-      '<i class="fa-solid fa-caret-right"></i> <i class="fa-solid fa-industry"/></i>',
-    accessibleName: i18n`Factory reset`,
-  },
-  YES: {
-    content: '<i class="fa-solid fa-thumbs-up"></i>',
-    accessibleName: i18n`Yes`,
-  },
-  NO: {
-    content: '<i class="fa-solid fa-thumbs-down"></i>',
-    accessibleName: i18n`No`,
-  },
-};
+/**
+ * Shuffle the Array
+ * @param {*[]} data - the array to shuffle
+ */
+export function shuffle(data) {
+  var count = data.length;
+  // While there remain elements to shuffle…
+  while (count) {
+    const index = Math.floor(Math.random() * count--);
+    [data[count], data[index]] = [data[index], data[count]];
+  }
+  return data;
+}

@@ -24,7 +24,7 @@
 import { PRIVACY } from './privacy.js';
 import { i18n } from '../libs/utils/i18n/i18n.js';
 import { showAllSettings } from '../libs/utils/userIo/settings.js';
-import { showInfo } from '../libs/utils/userIo/modalDialog.js';
+import { ModalDialog } from '../libs/utils/userIo/modalDialog.js';
 
 /**
  * Get the main menu items.
@@ -32,8 +32,11 @@ import { showInfo } from '../libs/utils/userIo/modalDialog.js';
  */
 export function getMainMenuItems() {
   return [
-    { text: i18n`Settings`, action: () => showAllSettings() },
-    { text: '', action: null },
-    { text: i18n`Privacy`, action: () => showInfo(PRIVACY) },
+    { text: i18n`Settings`, command: { execute: () => showAllSettings() } },
+    { text: '', command: null },
+    {
+      text: i18n`Privacy`,
+      command: { execute: () => ModalDialog.showInfo(PRIVACY) },
+    },
   ];
 }

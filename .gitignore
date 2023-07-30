@@ -2,7 +2,6 @@
 build/
 jsdoc/
 jsdoc-tools/
-.vscode/
 
 # Logs
 logs

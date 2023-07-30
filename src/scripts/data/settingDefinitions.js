@@ -27,7 +27,7 @@ import {
   createPalette,
 } from '../libs/utils/color/colorPalettes.js';
 
-import * as lessonManager from '../lessons/lessonManager.js';
+import { lessonManager } from '../lessons/lessonManager.js';
 
 import { getFromStorage } from '../libs/utils/userIo/settings.js';
 import * as cssVariables from '../libs/utils/color/cssVariables.js';
@@ -75,7 +75,6 @@ export function getSettingDefinitions() {
       onupdate: (value) => {
         value = parseInt(value);
         setPalette({ hue: value });
-        return Promise.resolve(undefined);
       },
     },
     saturation: {
@@ -87,7 +86,6 @@ export function getSettingDefinitions() {
       onupdate: (value) => {
         value = parseInt(value);
         setPalette({ saturation: value });
-        return Promise.resolve(undefined);
       },
     },
     spread: {
@@ -99,7 +97,6 @@ export function getSettingDefinitions() {
       onupdate: (value) => {
         value = parseInt(value);
         setPalette({ spread: value });
-        return Promise.resolve(undefined);
       },
     },
     darkMode: {
@@ -108,7 +105,6 @@ export function getSettingDefinitions() {
       defaultValue: DEFAULT_DARK_MODE,
       onupdate: (value) => {
         setPalette({ dark: value });
-        return Promise.resolve(undefined);
       },
     },
     fontSize: {
@@ -119,7 +115,6 @@ export function getSettingDefinitions() {
       max: 22,
       onupdate: (value) => {
         cssVariables.setProperty('--font-base-size', `${value}px`);
-        return Promise.resolve(undefined);
       },
     },
     lessonInfo: {
@@ -130,44 +125,11 @@ export function getSettingDefinitions() {
       type: 'select',
       label: i18n`Library`,
       defaultValue: DEFAULT_LIBRARY_KEY,
-      onupdate: (value) => lessonManager.setCurrentLibrary(value),
-      options: () => lessonManager.getLibraryOptions(),
-      dependents: ['bookIndex'],
-    },
-    bookIndex: {
-      type: 'select',
-      label: i18n`Book`,
-      defaultValue: 0,
-      options: () => lessonManager.getBookTitles(),
       onupdate: (value) => {
-        value = parseInt(value);
-        lessonManager.setBookIndex(value);
-        return Promise.resolve(undefined);
+        lessonManager.libraryKey = value;
       },
-      dependents: ['chapterIndex'],
-    },
-    chapterIndex: {
-      type: 'select',
-      label: i18n`Chapter`,
-      defaultValue: 0,
-      options: () => lessonManager.getChapterTitles(),
-      onupdate: (value) => {
-        value = parseInt(value);
-        lessonManager.setChapterIndex(value);
-        return Promise.resolve(undefined);
-      },
-      dependents: ['lessonIndex'],
-    },
-    lessonIndex: {
-      type: 'select',
-      label: i18n`Lesson`,
-      defaultValue: 0,
-      options: () => lessonManager.getLessonTitles(),
-      onupdate: (value) => {
-        value = parseInt(value);
-        lessonManager.setLessonIndex(value);
-        return Promise.resolve(undefined);
-      },
+      options: () => lessonManager.libraryTitles,
+      reloadIfChanged: true,
     },
   };
 }

@@ -48,7 +48,8 @@ Here is an example of a valid lesson file.
 
 ```
 # this is just a comment and is ignored.
-AUTHOR: John Doe MyKey: some text to use later
+AUTHOR: John Doe
+MyKey: some text to use later
 AnotherKey&nbsp;&nbsp;&nbsp;:-&nbsp;&nbsp;more text but note the use of spaces.
 ```
 

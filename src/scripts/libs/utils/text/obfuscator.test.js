@@ -29,11 +29,11 @@ import { test, expect } from '@jest/globals';
  */
 
 test('Obfuscation is reversed form of base64', () => {
-  expect(obfuscator.obfuscate('abc123XYZ')).toBe('alFWzITMjJWY');
+  expect(obfuscator.obfuscate('abc123XYZ')).toBe('YWJjMTIzWFla');
 });
 
 test('Deobfuscation is reversed form of base64', () => {
-  expect(obfuscator.deobfuscate('alFWzITMjJWY')).toBe('abc123XYZ');
+  expect(obfuscator.deobfuscate('YWJjMTIzWFla')).toBe('abc123XYZ');
 });
 
 test('Deobfuscation of obfuscation agree', () => {

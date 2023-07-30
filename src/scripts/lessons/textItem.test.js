@@ -35,12 +35,42 @@ test("Function getItemReplacement's regex extracts simple item", () => {
   expect(result).toBe('test[ ][one][][ ][two][] string');
 });
 
-test("Function getItemReplacement's regex extracts all characters except <,> or space.", () => {
-  let item = 'az09AZ!"£$%^&*()_-+={}[]:;@\'~,.?/\\|`';
+test("Function getItemReplacement's regex extracts all characters except the set [<>,;:.?!] or space.", () => {
+  let item = 'az09AZ"£$%^&*()_-+={}[]@\'~/\\|`';
   let source = `test ...${item} string`;
   let replacement = textItemParser.getItemReplacement('[.]{3}', '');
   let result = source.replaceAll(replacement.re, '[$1][$2][$3]');
   expect(result).toBe(`test[ ][${item}][] string`);
+});
+
+test("Function getItemReplacement's regex handles entities.", () => {
+  let item = 'here&lt;&amp;&#36;&gt;now';
+  let source = `test ...${item} string`;
+  let replacement = textItemParser.getItemReplacement('[.]{3}', '');
+  let result = source.replaceAll(replacement.re, '[$1][$2][$3]');
+  expect(result).toBe(`test[ ][${item}][] string`);
+});
+
+test("Function getItemReplacement's regex terminates with punctuation.", () => {
+  const punctuation = ',;:.?!';
+  for (const end of punctuation) {
+    let item = 'KEYWORD';
+    let source = `test ...${item}${end}`;
+    let replacement = textItemParser.getItemReplacement('[.]{3}', '');
+    let result = source.replaceAll(replacement.re, '[$1][$2][$3]');
+    expect(result).toBe(`test[ ][${item}][]${end}`);
+  }
+});
+
+test("Function getItemReplacement's regex terminates with punctuation even with entity at end.", () => {
+  const punctuation = ',;:.?!';
+  for (const end of punctuation) {
+    let item = 'KEYWORD&amp;';
+    let source = `test ...${item}${end}`;
+    let replacement = textItemParser.getItemReplacement('[.]{3}', '');
+    let result = source.replaceAll(replacement.re, '[$1][$2][$3]');
+    expect(result).toBe(`test[ ][${item}][]${end}`);
+  }
 });
 
 test("Function getItemReplacement's regex extracts simple item at start of line", () => {
@@ -231,10 +261,10 @@ test('emoji changed to white question mark if not found', () => {
 });
 
 test('Metadata replaced ', () => {
-  const source = `Testing meta:KEY1 and meta:KEY2 string`;
+  const source = `Testing meta:KEY1 and meta:KEY2.`;
   const metadata = Metadata.createFromSource('KEY1: key one\nKEY2: key two');
   let textItem = textItemParser.TextItem.createFromSource(source, metadata);
-  expect(textItem.html).toMatch(`Testing key one and key two string`);
+  expect(textItem.html).toMatch(`Testing key one and key two.`);
 });
 
 test('Metadata replaced with escaped HTML', () => {

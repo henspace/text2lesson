@@ -23,32 +23,15 @@
 
 import { i18n } from '../i18n/i18n.js';
 import { ManagedElement } from '../dom/managedElement.js';
-import { showModalMask, hideModalMask } from './modalMask.js';
-import * as icons from '../../../data/icons.js';
-
-/**
- * Enum for different dialogs
- * @readonly
- * @enum {string}
- */
-export const DialogType = {
-  ERROR: 'error',
-  FATAL: 'fatal',
-  INFO: 'info',
-  QUESTION: 'question',
-  SETTINGS: 'settings',
-};
-
-/**
- * Store timer used for hiding dialog.
- */
-let dialogHideTimeout;
+import * as icons from './icons.js';
 
 /**
  * @typedef {Object} DialogDefinition
  * @property {string} title
- * @property {string} content
- * @property {DialogType} dialogType
+ * @property {string | Element} content - html to display. This is not escaped and as
+ * such is vulnerable to script injection. It is the caller's responsibility to
+ * santise the data.
+ * @property {ModalDialog.DialogType dialogType
  * @property {string[]} iconClasses - array of classes that are applied to the icon
  * @property {string[]} buttons - array of labels for buttons. These normally
  * only apply to questions.
@@ -56,20 +39,22 @@ let dialogHideTimeout;
 
 /**
  * Get the appropriate FontAwesome classes for dialogType
- * @param {DialogType} dialogType
+ * @param {ModalDialog.DialogType dialogType
  * @returns {string[]} array of FontAwesome class names.
  */
 function getFaClassForType(dialogType) {
   switch (dialogType) {
-    case DialogType.ERROR:
+    case ModalDialog.DialogType.WARNING:
+      return ['fa-solid', 'fa-circle-exclamation'];
+    case ModalDialog.DialogType.ERROR:
       return ['fa-solid', 'fa-triangle-exclamation'];
-    case DialogType.FATAL:
+    case ModalDialog.DialogType.FATAL:
       return ['fa-solid', 'fa-skull-crossbones'];
-    case DialogType.QUESTION:
+    case ModalDialog.DialogType.QUESTION:
       return ['fa-solid', 'fa-circle-question'];
-    case DialogType.SETTINGS:
+    case ModalDialog.DialogType.SETTINGS:
       return ['fa-solid', 'fa-gear'];
-    case DialogType.INFO:
+    case ModalDialog.DialogType.INFO:
     default:
       return ['fa-solid', 'fa-circle-info'];
   }
@@ -81,18 +66,17 @@ function getFaClassForType(dialogType) {
 class BarButton extends ManagedElement {
   /**
    * Button
-   * @param {string | {content: string, label: string}} detail - if just a string
+   * @param {string | {module:data/icons}} IconDetail - if just a string
    * it is assumed to hold a string that is suitable for accessibility.
-   * @param {string} detail.content the text to display
+   * @param {string} detail.content the text to display. This can contain HTML and soe
    * @param {string} detail.accessibleName text for accessibility
    */
   constructor(detail) {
     super('button');
-    this.element.innerHTML = detail.content ?? detail;
-    if (detail.accessibleName) {
-      this.element.innerHTML += ` ${detail.accessibleName}`;
-      this.element.setAttribute('aria-label', detail.accessibleName);
-      this.element.setAttribute('title', detail.accessibleName);
+    if (detail.content) {
+      icons.applyIconToElement(detail, this.element, 'button');
+    } else {
+      this.element.innerHTML = detail;
     }
   }
 }
@@ -103,8 +87,7 @@ class BarButton extends ManagedElement {
  */
 class ButtonBar extends ManagedElement {
   constructor() {
-    const buttonBar = document.querySelector('#utils-dialog .utils-button-bar');
-    super(buttonBar);
+    super('div', 'utils-button-bar');
   }
   /**
    * Add buttons to the button bar. If there are no buttons, an OK button is
@@ -132,205 +115,291 @@ class ButtonBar extends ManagedElement {
 
   /**
    * Handle the click event from the buttons.
-   * @param {Event} event
+   * @param {Event} eventIgnored
    * @param {string} eventId
    */
-  handleClickEvent(event, eventId) {
+  handleClickEvent(eventIgnored, eventId) {
     const index = parseInt(eventId);
-    this.remove();
-    hideDialog();
     this.resolutionFunction(index);
   }
 }
 
 /**
- * Show a dialog based on its DialogDefintion. Note that any existing classes
- * that may have been applied to the icon are **not** removed. It is the
- * responsiblity of the caller to ensure this is done before calling this
- * function.
- * @param {DialogDefinition} dialogDefinition
- * @returns {Promise} Fulfils to index of button pressed.
+ * ModalDialog
  */
-function showDialogDefinition(dialogDefinition) {
-  const dialogTitleBarText = document.querySelector(
-    '#utils-dialog .utils-title-bar span'
-  );
-  dialogTitleBarText.innerText = dialogDefinition.title;
-  const dialogContent = document.querySelector(
-    '#utils-dialog .utils-dialog-content'
-  );
-  if (dialogDefinition.content instanceof Element) {
-    dialogContent.innerHTML = '';
-    dialogContent.appendChild(dialogDefinition.content);
-  } else {
-    dialogContent.innerHTML = dialogDefinition.content;
+export class ModalDialog {
+  /**
+   * Enum for different dialogs
+   * @const
+   * @enum {string}
+   */
+  static DialogType = {
+    ERROR: 'error',
+    FATAL: 'fatal',
+    INFO: 'info',
+    QUESTION: 'question',
+    SETTINGS: 'settings',
+  };
+
+  /**
+   * Value of returns from dialogs. These are the indexes of the associated buttons.
+   * @const
+   * @enum{number}
+   */
+  static Indexes = {
+    SETTINGS_OK: 0,
+    SETTINGS_RESET: 1,
+    CONFIRM_YES: 0,
+    CONFIRM_NO: 1,
+  };
+
+  /** @type{boolean} */
+  static #isConstructing = false;
+
+  /**
+   * Mask behind the dialog
+   * @type{ManagedElement}
+   */
+  #mask;
+
+  /**
+   * Main dialog container
+   * @type{ManagedElement}
+   */
+  #dialog;
+
+  /**
+   * Element containing the dialog title.
+   * @type{ManagedElement}
+   */
+  #titleText;
+
+  /**
+   * Element containing the dialog icon.
+   * @type{ManagedElement}
+   */
+  #icon;
+
+  /**
+   * Element containing the dialog content.
+   * @type{ManagedElement}
+   */
+  #content;
+
+  /**
+   * Element containing the button bar.
+   * @type{ManagedElement}
+   */
+  #buttonBar;
+
+  /**
+   * Constructor. Do not call directly. A factory method should be used.
+   * @throws {Error} Constructor must be called via factory method.
+   */
+  constructor() {
+    if (!ModalDialog.#isConstructing) {
+      throw new Error('ModalDialog should be instantiated via factory method.');
+    }
+    this.#createHtml();
   }
 
-  clearTimeout(dialogHideTimeout);
-  dialog.style.visibility = 'visible';
-  dialog.style.opacity = 1;
-  const icon = document.querySelector(
-    '.utils-dialog-content-frame .utils-dialog-icon'
-  );
-  icon.classList.add(...dialogDefinition.iconClasses);
-  showModalMask();
-  const buttonBar = new ButtonBar();
-  return buttonBar.showButtons(dialogDefinition.buttons);
-}
-
-/** Appends a reload warning to the content.
- * @param {string} content
- * @returns {string | Element} Paragraph appended
- */
-function addReloadWarning(content) {
-  let reloadText = i18n`A serious error has occurred. Wait a few minutes and then close this dialog to try to reload the application.`;
-  if (reloadText === '') {
-    reloadText =
-      'A serious error has occurred and languages cannot be loaded. Wait a few minutes and then close this dialog to try to reload the application.';
+  /** Instantiate a new ModalDialog.
+   * @returns {ModalDialog}
+   */
+  static #constructDialog() {
+    ModalDialog.#isConstructing = true;
+    const dialog = new ModalDialog();
+    ModalDialog.#isConstructing = false;
+    return dialog;
   }
-  if (content instanceof Element) {
-    const para = document.createElement('p');
-    para.innerText = reloadText;
-    content.appendChild(para);
-    return content;
-  }
-  return `${content}<p>${reloadText}</p>`;
-}
 
-/**
- * Popup the dialog box. If called multiple times, each call will be stacked
- * on top of the previous calls.
- *
- * When the dialog is closed, by clicking on the close icon or on the background,
- * the previous dialog will be displayed. The one exception is for dialogs with
- * dialogType equal to DialogType.ERROR. This dialog type will reload the
- * application when closed. Automatic boiler plate text is added to the content
- * to explain this.
- * @param {string} title - any HTML <> characters will be escaped.
- * @param {*} content - content to display. This is treated as HTML
- * @param {Object} options - additional settings
- * @param {DialogType} options.dialogType - dialog type.
- * @param {string[]} options.buttons - buttons to display.
- * @returns {Promise} Fulfils to 0 for all types except DialogType.QUESTION.
- * For questions it Fulfils to the index of the button that was pressed. Rejects
- * if a dialog is already showing.
- */
-export default function showDialog(title, content, options) {
-  if (document.getElementById('utils-dialog').style.display === 'block') {
-    return Promise.reject(
-      new Error('Cannot call dialog when another is already visible.')
+  /**
+   * Create the html infrastructure for the dialog.
+   */
+  #createHtml() {
+    this.#mask = new ManagedElement('div', 'utils-window-mask');
+    this.#mask.appendTo(document.body);
+
+    this.#dialog = new ManagedElement('div', 'utils-dialog');
+    const titleBar = new ManagedElement('div', 'utils-title-bar');
+
+    this.#titleText = new ManagedElement('span');
+    titleBar.appendChild(this.#titleText);
+
+    const contentFrame = new ManagedElement(
+      'div',
+      'utils-dialog-content-frame'
     );
+    this.#icon = new ManagedElement('div', 'utils-dialog-icon');
+    contentFrame.appendChild(this.#icon);
+    this.#content = new ManagedElement('div', 'utils-dialog-content');
+    contentFrame.appendChild(this.#content);
+
+    this.#buttonBar = new ButtonBar();
+
+    this.#dialog.appendChild(titleBar);
+    this.#dialog.appendChild(contentFrame);
+    this.#dialog.appendChild(this.#buttonBar);
+
+    this.#dialog.appendTo(document.body);
   }
-  if (options?.dialogType === DialogType.FATAL) {
-    content = addReloadWarning(content);
+
+  /**
+   * Show the dialog based on its DialogDefinition.
+   * Note that the dialogDefinition can contain raw HTML so the caller should make
+   * sure the data are sanitised to prevent code injection.
+   * @param {DialogDefinition} dialogDefinition
+   * @returns {Promise} Fulfils to index of button pressed.
+   */
+  #showDialogDefinition(dialogDefinition) {
+    this.#titleText.textContent = dialogDefinition.title;
+    if (
+      dialogDefinition.content instanceof Element ||
+      dialogDefinition.content instanceof ManagedElement
+    ) {
+      this.#content.textContent = '';
+      this.#content.appendChild(dialogDefinition.content);
+    } else {
+      this.#content.innerHTML = dialogDefinition.content;
+    }
+
+    this.#icon.classList.add(...dialogDefinition.iconClasses);
+    return this.#buttonBar
+      .showButtons(dialogDefinition.buttons)
+      .then((index) => {
+        this.#hideDialog();
+        return index;
+      });
   }
 
-  const iconClasses = getFaClassForType(options?.dialogType);
-  const dialogDefinition = {
-    title: title && title.length > 0 ? title : ':',
-    buttons: options?.buttons,
-    content: content,
-    dialogType: options?.dialogType,
-    iconClasses: iconClasses,
-  };
-  return showDialogDefinition(dialogDefinition);
-}
+  /**
+   * Hide the dialog box.
+   */
+  #hideDialog() {
+    this.#mask.remove();
+    this.#dialog.remove();
+  }
 
-/**
- * Shorthand call for showDialog('Error', content, DialogType.ERROR)
- * @param {string} content
- * @returns {Promise} Fulfils to index of button pressed.
- */
-export function showError(content) {
-  return showDialog(i18n`Error`, content, { dialogType: DialogType.ERROR });
-}
+  /** Appends a reload warning to the content.
+   * @param {string} content
+   * @returns {string | Element} Content with paragraph appended
+   */
+  #addReloadWarning(content) {
+    let reloadText = i18n`A serious error has occurred. Wait a few minutes and then close this dialog to try to reload the application.`;
+    if (reloadText === '') {
+      reloadText =
+        'A serious error has occurred and languages cannot be loaded. Wait a few minutes and then close this dialog to try to reload the application.';
+    }
+    if (content instanceof Element) {
+      const para = document.createElement('p');
+      para.textContent = reloadText;
+      content.appendChild(para);
+      return content;
+    }
+    return `${content}<p>${reloadText}</p>`;
+  }
 
-/**
- * Shorthand call for showDialog('Information', content, DialogType.INFO)
- * @param {string} content
- * @returns {Promise} Fulfils to index of button pressed.
- */
-export function showInfo(content) {
-  return showDialog(i18n`Information`, content, {
-    dialogType: DialogType.INFO,
-  });
-}
+  /**
+   * Popup the dialog box. If called multiple times, each call will be stacked
+   * on top of the previous calls.
+   *
+   * When the dialog is closed, by clicking on the close icon or on the background,
+   * the previous dialog will be displayed. The one exception is for dialogs with
+   * dialogType equal to ModalDialog.DialogType.ERROR. This dialog type will reload the
+   * application when closed. Automatic boiler plate text is added to the content
+   * to explain this.
+   * @param {string} title - any HTML <> characters will be escaped.
+   * @param {*} content - content to display. This is treated as HTML
+   * @param {Object} options - additional settings
+   * @param {ModalDialog.DialogType} options.dialogType - dialog type.
+   * @param {string[]} options.buttons - buttons to display.
+   * @returns {Promise} Fulfils to 0 for all types except ModalDialog.DialogType.QUESTION.
+   * For questions it Fulfils to the index of the button that was pressed. Rejects
+   * if a dialog is already showing.
+   */
+  static showDialog(title, content, options) {
+    const dialog = ModalDialog.#constructDialog();
+    if (options?.dialogType === ModalDialog.DialogType.FATAL) {
+      content = this.#addReloadWarning(content);
+    }
 
-/**
- * Shorthand call for showDialog('Question', content, DialogType.QUESTION)
- * @param {string} content
- * @returns {Promise} Fulfils to index of button pressed.
- */
-export function showConfirm(content) {
-  return showDialog(i18n`Question`, content, {
-    dialogType: DialogType.QUESTION,
-    buttons: [icons.ICON_HTML.YES, icons.ICON_HTML.NO],
-  });
-}
+    const iconClasses = getFaClassForType(options?.dialogType);
+    const dialogDefinition = {
+      title: title && title.length > 0 ? title : ':',
+      buttons: options?.buttons,
+      content: content,
+      dialogType: options?.dialogType,
+      iconClasses: iconClasses,
+    };
+    return dialog.#showDialogDefinition(dialogDefinition);
+  }
 
-/**
- * Shorthand call for showDialog('Fatal error', content, DialogType.FATAL)
- * @param {string} content
- * @returns {Promise} Fulfils to index of button pressed.
- */
-export function showFatal(content) {
-  return showDialog(i18n`Fatal error`, content, {
-    dialogType: DialogType.FATAL,
-  });
-}
+  /**
+   * Shorthand method to call ModalDialog.showDialog('Settings', content, ModalDialog.DialogType.SETTINGS)
+   * @param {string} content
+   * @returns {Promise} Fulfils to index of button pressed.
+   */
+  static showSettingsDialog(content) {
+    const options = {
+      dialogType: ModalDialog.DialogType.SETTINGS,
+      buttons: [icons.ICON_HTML.OK, icons.ICON_HTML.RESET_TO_FACTORY],
+    };
+    return ModalDialog.showDialog(i18n`Settings`, content, options);
+  }
 
-/**
- * Shorthand call for showDialog('Settings', content, DialogType.SETTINGS)
- * @param {string} content
- * @returns {Promise} Fulfils to index of button pressed.
- */
-export function showSettingsDialog(content) {
-  const options = {
-    dialogType: DialogType.SETTINGS,
-    buttons: [icons.ICON_HTML.OK, icons.ICON_HTML.RESET_TO_FACTORY],
-  };
-  return showDialog(i18n`Settings`, content, options);
-}
+  /**
+   * Shorthand call for ModalDialog.showDialog('Error', content, ModalDialog.DialogType.WARNING)
+   * @param {string} content
+   * @returns {Promise} Fulfils to index of button pressed.
+   */
+  static showWarning(content) {
+    return ModalDialog.showDialog(i18n`Error`, content, {
+      dialogType: ModalDialog.DialogType.WARNING,
+    });
+  }
 
-/**
- * Hide the dialog box. If an existing dialog had been shown, this is restored.
- */
-function hideDialog() {
-  dialog.style.visibility = 'hidden';
-  dialog.style.opacity = 0;
-  dialogHideTimeout = setTimeout(
-    () => (dialog.style.visibility = 'hidden'),
-    500
-  );
-  hideModalMask();
-  const icon = document.querySelector(
-    '.utils-dialog-content-frame .utils-dialog-icon'
-  );
-  icon.className = 'utils-dialog-icon';
-}
+  /**
+   * Shorthand call for ModalDialog.showDialog('Error', content, ModalDialog.DialogType.ERROR)
+   * @param {string} content
+   * @returns {Promise} Fulfils to index of button pressed.
+   */
+  static showError(content) {
+    return ModalDialog.showDialog(i18n`Error`, content, {
+      dialogType: ModalDialog.DialogType.ERROR,
+    });
+  }
 
-/**
- * Create the dialog's inner HTML.
- * @returns {Element} the root dialog Element.
- */
-function createDialogHtml() {
-  const dialog = document.createElement('div');
-  dialog.setAttribute('id', 'utils-dialog');
-  document.body.appendChild(dialog);
-  dialog.innerHTML = `
-    <div class="utils-title-bar">
-      <span></span>
-    </div>
-    <div class="utils-dialog-content-frame">
-      <div class="utils-dialog-icon"></div>
-      <div class="utils-dialog-content"></div>
-    </div>
-    <div class="utils-button-bar"></div>
-  `;
-  return dialog;
+  /**
+   * Shorthand call for ModalDialog.showDialog('Information', content, ModalDialog.DialogType.INFO)
+   * @param {string} content
+   * @returns {Promise} Fulfils to index of button pressed.
+   */
+  static showInfo(content) {
+    return ModalDialog.showDialog(i18n`Information`, content, {
+      dialogType: ModalDialog.DialogType.INFO,
+    });
+  }
+
+  /**
+   * Shorthand call for ModalDialog.showDialog('Question', content, ModalDialog.DialogType.QUESTION)
+   * @param {string} content
+   * @returns {Promise} Fulfils to index of button pressed.
+   */
+  static showConfirm(content) {
+    return ModalDialog.showDialog(i18n`Question`, content, {
+      dialogType: ModalDialog.DialogType.QUESTION,
+      buttons: [icons.ICON_HTML.YES, icons.ICON_HTML.NO],
+    });
+  }
+
+  /**
+   * Shorthand call for ModalDialog.showDialog('Fatal error', content, ModalDialog.DialogType.FATAL)
+   * @param {string} content
+   * @returns {Promise} Fulfils to index of button pressed.
+   */
+  static showFatal(content) {
+    return ModalDialog.showDialog(i18n`Fatal error`, content, {
+      dialogType: ModalDialog.DialogType.FATAL,
+    });
+  }
 }
-/**
- * Element used for displaying popup modal dialogs.
- * @type {Element}
- */
-const dialog = createDialogHtml('utils-dialog');

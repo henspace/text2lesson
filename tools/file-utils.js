@@ -88,7 +88,7 @@ export class StringTransformer {
    */
   transform(buffer, filetype) {
     if (!this.replacements || this.replacements.length === 0) {
-      console.log('No replacements to apply.');
+      console.debug('Transformer has no replacements to apply.');
       return buffer;
     }
 
@@ -182,7 +182,7 @@ export class FileManager {
     return FileManager.removeDir(path)
       .then(() => fsPromises.mkdir(path))
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -236,7 +236,7 @@ export class FileManager {
         return targetFilePath;
       })
       .catch((err) => {
-        console.log(`[ERROR] ${err}`);
+        console.error(`[ERROR] ${err}`);
       });
   }
 

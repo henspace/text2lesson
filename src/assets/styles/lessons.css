@@ -1,0 +1,31 @@
+a.book,
+a.chapter,
+a.lesson,
+a.lessonTitle,
+a.problem {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+}
+
+.problem-answer.selected-answer {
+  border: solid 2px red;
+}
+
+.problem-answer.good-answer::before {
+  content: '\f14a';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 400;
+}
+
+.problem-answer.bad-answer::before {
+  content: '\f2d3';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 400;
+}
+
+.problem-answer.missed-answer::before {
+  content: '\f14a';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 400;
+}

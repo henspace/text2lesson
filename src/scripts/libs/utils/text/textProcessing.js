@@ -1,7 +1,7 @@
 /**
  * @file Parser for a light version of Markdown
  *
- * @module libs/utils/text/markdownLight
+ * @module libs/utils/text/textProcessing
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -249,7 +249,7 @@ function reAllLinesStartWith(reStart, options) {
 
 /**
  * Encode character to HTML entity
- * @param {string} chr - character to encode. Although accepting a string, onlly the first
+ * @param {string} chr - character to encode. Although accepting a string, only the first
  * character is encoded.
  * @returns{string} HTML entity for first character.
  */
@@ -310,7 +310,7 @@ export function decodeFromEntities(data) {
  * which are applied after the markdown replacements have been made.
  * @returns Resulting html.
  */
-export function parse(data, options) {
+export function parseMarkdown(data, options) {
   var result = data.replaceAll(/\r/g, ''); // normalise line endings
   result = processReplacements(result, securityReps);
   if (options?.pre) {

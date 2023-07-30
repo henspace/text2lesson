@@ -216,18 +216,23 @@ export class LessonSource {
     lesson.metadata = Metadata.createFromSource(this.metaSource);
     this.problemSources.forEach((problemSource) => {
       const problem = new Problem();
-      problem.intro = TextItem.createFromSource(problemSource.introSource);
+      problem.intro = TextItem.createFromSource(
+        problemSource.introSource,
+        lesson.metadata
+      );
       problem.question = TextItem.createFromSource(
-        problemSource.questionSource
+        problemSource.questionSource,
+        lesson.metadata
       );
       problem.explanation = TextItem.createFromSource(
-        problemSource.explanationSource
+        problemSource.explanationSource,
+        lesson.metadata
       );
       problem.rightAnswers = problemSource.rightAnswerSources.map((source) =>
-        TextItem.createFromSource(source)
+        TextItem.createFromSource(source, lesson.metadata)
       );
       problem.wrongAnswers = problemSource.wrongAnswerSources.map((source) =>
-        TextItem.createFromSource(source)
+        TextItem.createFromSource(source, lesson.metadata)
       );
       lesson.addProblem(problem);
     });

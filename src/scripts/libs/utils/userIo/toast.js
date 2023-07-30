@@ -28,11 +28,23 @@ import { ManagedElement } from '../dom/managedElement.js';
  */
 
 class Toast extends ManagedElement {
-  constructor(message) {
+  /**
+   *
+   * @param {string} message - message to display. This can contain HTML and as
+   * such is vulnerable to code injection.  As such the user should sanitise the
+   * data.
+   * @param {boolean} rawHtml - if true, raw HTML can be provided.
+   */
+  constructor(message, rawHtml) {
     super('div');
     this.element.className = 'utils-toast';
     this.element.style.top = '100vh';
-    this.element.innerHTML = message;
+    if (rawHtml) {
+      this.element.innerHTML = message;
+    } else {
+      this.element.textContent = message;
+    }
+
     this.listenToOwnEvent('click', '');
   }
 

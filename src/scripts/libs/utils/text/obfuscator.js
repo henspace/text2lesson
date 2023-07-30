@@ -23,7 +23,7 @@
 
 /**
  * Obfuscate the data.
- * The resulting obfucated string is safe for urls. Note that the objuscation
+ * The resulting obfucated string is safe for urls. Note that the obfuscation
  * is not in anyway secure; it is just intended to prevent casual browsing of the
  * source to reveal answers.
  *
@@ -31,20 +31,20 @@
 import * as base64 from './base64.js';
 
 /**
- * Obfuscate the data. This is merely a reversed base64
+ * Obfuscate the data. This is merely a base64 encoding.
  * @param {string} str
  * @returns {string}
  */
 export function obfuscate(str) {
-  return base64.stringToBase64(str).split('').reverse().join('');
+  return base64.stringToBase64(str);
 }
 
 /**
  * Deobfuscate the data. The obfuscation should have been performed by a previous
- * call to obfucate.
+ * call to obfuscate.
  * @param {string} str
  * @returns {string}
  */
 export function deobfuscate(str) {
-  return base64.base64ToString(str.split('').reverse().join(''));
+  return base64.base64ToString(str);
 }

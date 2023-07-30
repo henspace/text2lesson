@@ -75,7 +75,6 @@ export const PREDEFINED_EMOJIS = {
  */
 export function getEmojiHtml(originalDefinition) {
   if (!originalDefinition) {
-    console.log('blank emoji');
     return ' ';
   }
   const definition = originalDefinition.toUpperCase();

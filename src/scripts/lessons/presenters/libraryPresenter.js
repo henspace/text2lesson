@@ -21,18 +21,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-
+import { lessonManager } from '../lessonManager.js';
 import { Presenter } from './presenter.js';
+import { BookPresenter } from './bookPresenter.js';
 
+/**
+ * Class to present a library.
+ * Presentation of a library involves displaying all of the books available in
+ * the library.
+ */
 export class LibraryPresenter extends Presenter {
   /**
    * Construct.
    */
   constructor() {
-    super();
-  }
-
-  present(library) {
-    super.present(html);
+    super('libraryPresenter', {
+      titles: lessonManager.bookTitles,
+      itemClassName: 'book',
+      next: (index) => {
+        lessonManager.bookIndex = index;
+        return Promise.resolve(new BookPresenter(index));
+      },
+      hideBackButton: true,
+    });
   }
 }

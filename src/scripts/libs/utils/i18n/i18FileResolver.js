@@ -75,28 +75,20 @@ export function resolveLanguages(languagesListingUrl) {
 
   return fetchJson(languagesListingUrl)
     .then((languages) => {
-      console.log(languages);
       languagesListing = languages;
       languagesBaseUrl = new URL(languages.location, window.location.href);
-      console.log(`Base url = ${languagesBaseUrl.href}`);
       const url = new URL(languages.meta.master, languagesBaseUrl);
-      console.log(`master = ${languages.meta.master}`);
-      console.log(`url = ${url}`);
       fetchSummary.push({ url: url, read: false });
       return fetchJson(url.href);
     })
     .then((masterTranslations) => {
       fetchSummary[0].read = true;
-      console.log(masterTranslations);
       setActiveTranslations(masterTranslations);
       const bestFile = getBestLanguageFile(
         getPreferredLanguages(),
         languagesListing.files
       );
       if (bestFile === languagesListing.meta.master) {
-        console.log(
-          `Master language ${languagesListing.meta.master} is the best match.`
-        );
         return Promise.resolve(null);
       }
       const url = new URL(bestFile, languagesBaseUrl);

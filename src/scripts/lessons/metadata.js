@@ -21,7 +21,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { escapeHtml } from '../libs/utils/text/markdownLight.js';
+import { escapeHtml } from '../libs/utils/text/textProcessing.js';
 /**
  * Encapsulate the metadata
  */
@@ -32,7 +32,7 @@ export class Metadata {
    * Collection of meta data keys.
    * @type {Object<string, string>}
    */
-  #keys = [];
+  #map = new Map();
 
   constructor() {
     if (!Metadata.#isConstructing) {
@@ -47,7 +47,7 @@ export class Metadata {
    * @returns {string}
    */
   getValue(key, defaultValue) {
-    const value = this.#keys[key.toUpperCase()];
+    const value = this.#map.get(key.toUpperCase());
     return value ?? defaultValue;
   }
 
@@ -73,7 +73,7 @@ export class Metadata {
     lines.forEach((element) => {
       const match = element.match(/^\s*(\w+)\s*[:;.]-?\s*(.*?)\s*$/);
       if (match) {
-        metadata.#keys[match[1].toUpperCase()] = escapeHtml(match[2]);
+        metadata.#map.set(match[1].toUpperCase(), escapeHtml(match[2]));
       }
     });
     return metadata;

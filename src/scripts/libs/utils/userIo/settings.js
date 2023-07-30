@@ -1,7 +1,7 @@
 /**
  * @file Settings routines for use with the modal dialog.
  *
- * @module libs/utils/dialog/settings
+ * @module libs/utils/userio/settings
  *
  * @license GPL-3.0-or-later
  * Lesson RunnerCreate quizzes and lessons from plain text files.
@@ -21,10 +21,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import * as dialog from './modalDialog.js';
+import { ModalDialog } from './modalDialog.js';
 import { ManagedElement } from '../dom/managedElement.js';
-import { loadCurrentLesson } from '../../../lessons/lessonManager.js';
 import { i18n } from '../i18n/i18n.js';
+import { escapeHtml } from '../text/textProcessing.js';
+import { reloader } from './reloader.js';
+import { SettingsValueCache } from './settingsValueCache.js';
 
 /**
  * Array of all the controls on the current SettingsDialog.
@@ -42,13 +44,10 @@ let dialogControls = [];
 let localStorageKey = `app`;
 
 /**
- * Set the prefix for the storage key. This is primarily used to stop apps
- * from the the same domain sharing the same storage values.
- * @param {string} prefix
+ * Current settings.
+ * @type{SettingDefinitions}
  */
-export function setStorageKeyPrefix(prefix) {
-  localStorageKey = prefix;
-}
+let settingDefinitions = {};
 
 /**
  * @typedef {Object} ValidationResult
@@ -58,9 +57,9 @@ export function setStorageKeyPrefix(prefix) {
 
 /**
  * Definition of an object. This is either an array of strings each holding the
- * text to display, or a set of key/value entries where the value is the
+ * text to display, or a map of key/value entries where the value is the
  * text to display.
- * @typedef {string[] | Object<string, string>} OptionDetails
+ * @typedef {string[] | Map<string, string>} OptionDetails
  */
 
 /**
@@ -71,13 +70,14 @@ export function setStorageKeyPrefix(prefix) {
  * @property {string} label - text used to label the UI control
  * @property {number} max - maximum value
  * @property {number} min - minimum value
- * @property {function(*) :boolean} onupdate - function that is called when the setting
- * is changed. The argument holds the new value. If the method returns true,
- * all select controls have their options reloaded if they are options.
+ * @property {function(*)} onupdate - function that is called when the setting
+ * is changed. The argument holds the new value.
+ * @property {function()} initialise - function that is called to initialise the setting.
  * @property {OptionDetails | function(): OptionDetails} options - options for a select control.
  * @property {function(*): ValidationResult} validate - validator function.
  * Returns {@link ValidationResult} where pass is true if okay.
  * @property {string} type - input type. E.g. 'range'.
+ * @property {boolean} reloadIfChanged = application should be reloaded if this has changed.
  */
 
 /**
@@ -117,7 +117,7 @@ class RangeIndicator extends ManagedElement {
     const maxValue = parseFloat(controlEl.max ?? 100);
     const currentValue = parseFloat(controlEl.value);
     const proportion = (currentValue - minValue) / (maxValue - minValue);
-    this.element.innerHTML = event.target.value;
+    this.element.textContent = event.target.value;
     this.element.style.opacity = 100;
     const top = controlEl.offsetTop - this.element.offsetHeight;
     let left =
@@ -159,7 +159,7 @@ class SeparatorControl extends ManagedElement {
     super('div', 'utils-settings-separator');
     this.element.innerHTML =
       '<span class="utils-hr"><hr></span>' +
-      `<span> ${definition.label} </span>` +
+      `<span> ${escapeHtml(definition.label)} </span>` +
       '<span class="utils-hr"><hr></span>';
   }
 }
@@ -214,7 +214,7 @@ class SelectControl extends ManagedElement {
       this.element.removeAttribute('data-open');
       this.optionsContainer.element.removeAttribute('data-open');
       if (event.target !== this.selection) {
-        const key = event.target.getAttribute('data-value');
+        const key = ManagedElement.getSafeAttribute(event.target, 'data-value');
         this.setValue(key);
         this.element.dispatchEvent(new Event('input'));
       }
@@ -259,6 +259,7 @@ class SelectControl extends ManagedElement {
     this.optionsContainer.element.style.left = `${left}px`;
     this.optionsContainer.element.style.top = `${top}px`;
   }
+
   /**
    * Add options
    */
@@ -268,13 +269,13 @@ class SelectControl extends ManagedElement {
       this.options = this.options.call(this);
     }
 
-    for (const key in this.options) {
+    this.options?.forEach((value, key) => {
       const optionControl = new ManagedElement('button', 'utils-option');
-      optionControl.element.setAttribute('data-value', key);
-      optionControl.element.innerHTML = this.options[key];
+      optionControl.setSafeAttribute('data-value', key);
+      optionControl.element.textContent = value;
       this.listenToEventOn('click', optionControl);
       this.optionsContainer.appendChild(optionControl);
-    }
+    });
   }
 
   /**
@@ -286,16 +287,32 @@ class SelectControl extends ManagedElement {
   }
 
   /**
+   * Ensures the key is in the set of options. If it isn't the first key is
+   * returned.
+   * @param {string} key
+   * @returns {string}
+   */
+  makeKeySafe(key) {
+    if (this.options instanceof Map) {
+      return this.options.has(key) ? key : this.options.keys().next().value;
+    }
+    return this.options[key] ? key : this.options[0];
+  }
+
+  /**
    * Set the element's value.
    * @param {key} key - the option's key.
    */
   setValue(key) {
-    if (key == null || !this.options[key]) {
-      console.log(`Cannot find key ${key}. Falling back to first option`);
-      key = Object.keys(this.options)[0];
+    const safeKey = this.makeKeySafe(key);
+    if (safeKey !== key) {
+      console.error(`Cannot find key ${key}. Falling back to ${safeKey}`);
     }
-    this.selection.element.setAttribute('data-value', key);
-    this.selection.element.innerHTML = this.options[key];
+    this.selection.setSafeAttribute('data-value', safeKey);
+    this.selection.element.textContent =
+      this.options instanceof Map
+        ? this.options.get(safeKey)
+        : this.options[safeKey];
   }
 
   /**
@@ -303,7 +320,7 @@ class SelectControl extends ManagedElement {
    * @returns {string}
    */
   getValue() {
-    return this.selection.element.getAttribute('data-value');
+    return this.selection.getSafeAttribute('data-value');
   }
 
   /**
@@ -396,7 +413,9 @@ class LabeledControl extends ManagedElement {
     this.appendChild(this.label);
     this.key = key;
     this.definition = definition;
-    this.label.element.innerHTML = `<span>${definition.label}</span>`;
+    this.label.element.innerHTML = `<span>${escapeHtml(
+      definition.label
+    )}</span>`;
     if (definition.type === 'select') {
       this.control = new SelectControl(key, definition);
     } else {
@@ -428,18 +447,18 @@ class LabeledControl extends ManagedElement {
     if (this.definition.validate) {
       const validation = this.definition.validate(value);
       if (!validation.pass) {
-        this.error.element.innerHTML = validation.errorMessage;
+        this.error.element.textContent = validation.errorMessage;
         this.element.classList.add('utils-error');
         return;
       }
     }
     this.element.classList.remove('utils-error');
+
     saveToStorage(this.key, value);
 
     if (this.definition.onupdate) {
-      this.definition.onupdate(value).then(() => {
-        reloadDependents(this.definition.dependents);
-      });
+      this.definition.onupdate(value);
+      reloadDependents(this.definition.dependents);
     }
   }
 }
@@ -463,80 +482,13 @@ function reloadDependents(dependents) {
 }
 
 /**
- * Pop up a dialog allowing the current settings to be modified.
- * @returns {Promise} Fulfils to index of button pressed. This will be 0.
- */
-export function showAllSettings() {
-  if (dialogControls.length !== 0) {
-    return Promise.reject(
-      new Error('Attempt made to show settings on top of another.')
-    );
-  }
-  const dialogContent = document.createElement('div');
-  dialogContent.innerHTML = `
-    <div class='utils-palette'>
-    <span class='utils-primary'></span>
-    <span class='utils-secondary'></span>
-    <span class='utils-tertiary'></span>
-    </div>
-  `;
-
-  for (const key in settingDefinitions) {
-    const setting = settingDefinitions[key];
-    let control;
-    if (isSeparator(setting)) {
-      control = new SeparatorControl(key, setting);
-    } else {
-      control = new LabeledControl(key, setting, dialogControls);
-    }
-    dialogControls.push(control);
-    dialogContent.appendChild(control.element);
-  }
-
-  return dialog
-    .showSettingsDialog(dialogContent)
-    .then((value) => {
-      if (value === 0) {
-        return value;
-      }
-      return resetIfConfirmed();
-    })
-    .then((value) => {
-      dialogControls.forEach((control) => {
-        control.remove();
-      });
-      dialogControls = [];
-      return value;
-    })
-    .then((valueIgnored) => {
-      return loadCurrentLesson();
-    });
-}
-
-/**
- * Set the definitions used to configure the UI controls. When set, the onupdate
- * function for each setting will be called, using the currently stored value.
- * Note that any dependents are updated, so `definitions` should be valid
- * before calling.
- * @param {SettingDefinitions} definitions - key, definitions pairs
- * @returns {Promise} Fulfills to undefined
- */
-export function loadSettingDefinitions(definitions) {
-  return initialiseSettingDefinitions(definitions).then(() =>
-    setSettingDefinitions(definitions)
-  );
-}
-
-/**
  * Set the definitions used to configure the UI controls. When set, the onupdate
  * function for each setting will be called, using the currently stored value.
  * Note that any dependents are updated, so {@link definitions} should be valid
  * before calling.
  * @param {SettingDefinitions} definitions - key, definitions pairs
- * @returns {Promise} Fulfills to undefined
  */
 function setSettingDefinitions(definitions) {
-  const promises = [];
   settingDefinitions = definitions;
   for (const key in settingDefinitions) {
     if (!isSeparator(settingDefinitions[key])) {
@@ -544,16 +496,8 @@ function setSettingDefinitions(definitions) {
         key,
         settingDefinitions[key].defaultValue
       );
-      const promise = settingDefinitions[key].onupdate?.call(this, storedValue);
-      if (promise) {
-        promises.push(promise);
-      }
+      settingDefinitions[key].onupdate?.call(this, storedValue);
     }
-  }
-  if (promises.length > 0) {
-    return Promise.all(promises);
-  } else {
-    return Promise.resolve(undefined);
   }
 }
 
@@ -562,16 +506,13 @@ function setSettingDefinitions(definitions) {
  * @returns {Promise} Fulfils to undefined.
  */
 function resetIfConfirmed() {
-  return dialog
-    .showConfirm(
-      i18n`Are you sure you want to reset all settings to their factory defaults?`
-    )
-    .then((value) => {
-      if (value === 0) {
-        return resetAll();
-      }
-      return Promise.resolve();
-    });
+  return ModalDialog.showConfirm(
+    i18n`Are you sure you want to reset all settings to their factory defaults?`
+  ).then((value) => {
+    if (value === ModalDialog.Indexes.CONFIRM_YES) {
+      return resetAll();
+    }
+  });
 }
 
 /**
@@ -584,41 +525,28 @@ function isSeparator(definition) {
 }
 
 /**
- * Reset everything back to its defaults.
+ * Reset everything in the settingDefinitions back to their defaults.
  */
 function resetAll() {
-  const promises = [];
   for (const key in settingDefinitions) {
-    console.log(`Resetting ${key}`);
+    console.info(`Resetting ${key} to its default.`);
     const definition = settingDefinitions[key];
     if (!isSeparator(definition)) {
       const value = definition.defaultValue;
       saveToStorage(key, value);
-      if (definition.onupdate) {
-        promises.push(definition.onupdate(value));
-      }
+      definition.onupdate?.(value);
     }
   }
-  return promises.length > 0 ? Promise.all(promises) : Promise.resolve();
 }
 
 /**
  * Initialise the setting definitions. This calls the initialise method of each
  * setting
  * @param {SettingDefinitions} definitions - key, definitions pairs
- * @returns {Promise} Fulfills to undefined when all settings have been initialised
  */
 function initialiseSettingDefinitions(definitions) {
-  const promises = [];
   for (const key in definitions) {
-    if (definitions[key].initialise) {
-      promises.push(definitions[key].initialise());
-    }
-  }
-  if (promises.length > 0) {
-    return Promise.all(promises);
-  } else {
-    return Promise.resolve();
+    definitions[key].initialise?.();
   }
 }
 
@@ -633,6 +561,17 @@ function createStorageKey(key) {
 }
 
 /**
+ * Save setting to local storage
+ * @param {string} key
+ * @param {*} value
+ * @returns {undefined}
+ */
+function saveToStorage(key, value) {
+  key = createStorageKey(key);
+  return localStorage.setItem(key, JSON.stringify(value));
+}
+
+/**
  * Get setting from localStorage
  * @param {string} key - saved item key. NB. this is prefixed by
  * LOCAL_STORAGE_ID to prevent clashes with local debugging.
@@ -644,23 +583,17 @@ export function getFromStorage(key, defaultValue) {
   const value = localStorage.getItem(key);
   if (value) {
     try {
-      return JSON.parse(value);
+      const parsedValue = JSON.parse(value);
+      if (parsedValue === null || parsedValue === undefined) {
+        return defaultValue;
+      } else {
+        return parsedValue;
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   return defaultValue;
-}
-
-/**
- * Save setting to local storage
- * @param {string} key
- * @param {*} value
- * @returns {undefined}
- */
-function saveToStorage(key, value) {
-  key = createStorageKey(key);
-  return localStorage.setItem(key, JSON.stringify(value));
 }
 
 /**
@@ -679,4 +612,86 @@ export function convertToOptionDetails(dataArray) {
   return details;
 }
 
-let settingDefinitions = {};
+/**
+ * Set the definitions used to configure the UI controls. When set, the onupdate
+ * function for each setting will be called, using the currently stored value.
+ * Note that any dependents are updated, so `definitions` should be valid
+ * before calling.
+ * @param {SettingDefinitions} definitions - key, definitions pairs
+ * @returns {Promise} Fulfills to undefined
+ */
+export function loadSettingDefinitions(definitions) {
+  initialiseSettingDefinitions(definitions);
+  setSettingDefinitions(definitions);
+}
+
+/**
+ * Set the prefix for the storage key. This is primarily used to stop apps
+ * from the the same domain sharing the same storage values.
+ * @param {string} prefix
+ */
+export function setStorageKeyPrefix(prefix) {
+  localStorageKey = prefix;
+}
+
+/**
+ * Pop up a dialog allowing the current settings to be modified.
+ * @returns {Promise} Fulfils to index of button pressed. This will be 0.
+ * If -1 this indicates that a reload is required.
+ */
+export function showAllSettings() {
+  if (dialogControls.length !== 0) {
+    return Promise.reject(
+      new Error('Attempt made to show settings on top of another.')
+    );
+  }
+  const dialogContent = new ManagedElement('div');
+  dialogContent.innerHTML = `
+    <div class='utils-palette'>
+    <span class='utils-primary'></span>
+    <span class='utils-secondary'></span>
+    <span class='utils-tertiary'></span>
+    </div>
+  `;
+
+  for (const key in settingDefinitions) {
+    const setting = settingDefinitions[key];
+    let control;
+    if (isSeparator(setting)) {
+      control = new SeparatorControl(key, setting);
+    } else {
+      control = new LabeledControl(key, setting, dialogControls);
+    }
+    dialogControls.push(control);
+    dialogContent.appendChild(control);
+  }
+
+  const settingsValueCache = new SettingsValueCache(settingDefinitions);
+
+  return ModalDialog.showSettingsDialog(dialogContent)
+    .then((value) => {
+      if (value === ModalDialog.Indexes.SETTINGS_RESET) {
+        return resetIfConfirmed();
+      } else {
+        return value;
+      }
+    })
+    .then((value) => {
+      dialogControls.forEach((control) => {
+        control.remove();
+      });
+      dialogControls = [];
+      reloader.reloadIfRequired();
+      return value;
+    })
+    .then((value) => {
+      const changes = settingsValueCache.changes;
+      if (changes !== '') {
+        reloader.flagAsRequired(
+          `${i18n`The following settings have changed:`} ${changes}.`
+        );
+        reloader.reloadIfRequired();
+      }
+      return value;
+    });
+}

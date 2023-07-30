@@ -253,8 +253,6 @@ export class Problem {
    * @returns {boolean}
    */
   #isOrderQuestion() {
-    console.log(`testing ${this.#question.html}`);
-    console.log(this.#question.missingWords);
     const missingAtEnd = this.#question.html.match(
       /<span +class *= *"missing-word".*?><\/span>(?:\s*<\/p>\s*)*$/
     );

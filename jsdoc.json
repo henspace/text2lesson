@@ -10,6 +10,9 @@
   "templates": {
     "cleverLinks": true
   },
+  "tags": {
+    "dictionaries": ["jsdoc", "closure"]
+  },
   "opts": {
     "destination": "./jsdoc",
     "recurse": true,

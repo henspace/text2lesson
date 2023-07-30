@@ -22,7 +22,7 @@
  *
  */
 
-import * as markdown from '../libs/utils/text/markdownLight.js';
+import * as textProcessing from '../libs/utils/text/textProcessing.js';
 import * as obfuscator from '../libs/utils/text/obfuscator.js';
 import { getEmojiHtml } from './emojiParser.js';
 import { getErrorAttributeHtml } from '../libs/utils/errorHandling/errors.js';
@@ -67,7 +67,7 @@ class TrackedReplacements {
 
   /**
    * Replacements used for converting source.
-   * @type {module:libs/utils/text/markdownLight~Replacement[]}
+   * @type {module:libs/utils/text/textProcessing~Replacement[]}
    */
   #replacements;
 
@@ -80,7 +80,7 @@ class TrackedReplacements {
 
   /**
    * Get the replacements to use.
-   * @returns {module:libs/utils/text/markdownLight~Replacement[]}
+   * @returns {module:libs/utils/text/textProcessing~Replacement[]}
    */
   get replacements() {
     return this.#replacements;
@@ -191,7 +191,9 @@ export class TextItem {
     TextItem.#isConstructing = false;
     if (source) {
       const tracker = new TrackedReplacements(metadata);
-      textItem.#html = markdown.parse(source, { post: tracker.replacements });
+      textItem.#html = textProcessing.parseMarkdown(source, {
+        post: tracker.replacements,
+      });
       textItem.#missingWords = tracker.missingWords;
     }
     return textItem;
@@ -216,16 +218,21 @@ export class TextItem {
  * The item must be on a word boundary. As the text could be enclosed within
  * HTML tags, the starting word boundary is the start of a line, a whitespace
  * character or a `>` character. The ending word boundary is the end of a line,
- * a whitespace character or any closing HTML tag.
+ * a whitespace character, standard punctuation (,;:.!?) or any closing HTML tag.
  *
  * @param {string} prefix - string which forms part of RegExp constructor to identify
  * the start of the item. This should not include any capturing groups.
  * @param {*} replace - function or replacement string.
- * @returns {module:libs/utils/text/markdownLight~Replacement}
+ * @returns {module:libs/utils/text/textProcessing~Replacement}
  */
 export function getItemReplacement(prefix, replace) {
+  const startCapture = '(^|[ >])';
+  const wordCapture = '((?:&#?[a-zA-Z0-9]+?;|[^\\s<>])+?)?';
+  const classCapture = '(?:>([a-zA_Z]*))?';
+  const endLookAhead = '(?=[\\s,;:.?!]|$|</.+?>)';
+
   const re = new RegExp(
-    `(^|[ >])${prefix}([^\\s<>]+)?(?:>([a-zA_Z]*))?(?=\\s|$|</.+?>)`,
+    `${startCapture}${prefix}${wordCapture}${classCapture}${endLookAhead}`,
     'gmi'
   );
   return {

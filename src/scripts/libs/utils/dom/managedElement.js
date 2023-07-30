@@ -22,6 +22,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import * as base64 from '../text/base64.js';
+
 /**
  * ManagedElement class. This wraps a DOM element which is accessible via the
  * element property. The remove method unregisters any listners and calls remove
@@ -53,6 +55,7 @@ export class ManagedElement {
    * @type {boolean}
    */
   #elementRemovable;
+
   /**
    * Create a managed element.If passed a tag, a new element is created. If
    * passed an Element, the element is assumed to already exist.
@@ -99,6 +102,83 @@ export class ManagedElement {
   }
 
   /**
+   * Get the children
+   * @returns {ManagedElement[]}
+   */
+  get children() {
+    return this.#children;
+  }
+
+  /**
+   * @returns {string} the inner element's html.
+   */
+  get innerHTML() {
+    return this.#element.innerHTML;
+  }
+
+  /**
+   * Sets the inner element's html.
+   * @param {string} data - the content.
+   */
+  set innerHTML(data) {
+    this.#element.innerHTML = data;
+  }
+
+  /**
+   * @returns {string} the inner element's textContent
+   */
+  get textContent() {
+    return this.#element.textContent;
+  }
+
+  /**
+   * Set the inner element's textContent.
+   * @param {string} data - content
+   */
+  set textContent(data) {
+    this.#element.textContent = data;
+  }
+
+  /**
+   * Get the inner element's classList
+   */
+  get classList() {
+    return this.#element.classList;
+  }
+
+  /**
+   * Hide the element
+   */
+  hide() {
+    this.#element.style.display = 'none';
+  }
+
+  /**
+   * Fade out the element. This is done by applying the fade-out class and removing
+   * the fade-in class.
+   */
+  fadeOut() {
+    this.#element.classList.remove('fade-in');
+    this.#element.classList.add('fade-out');
+  }
+
+  /**
+   * Fade in the element. This is done by applying the fade-in class and removing
+   * the fade-out class.
+   */
+  fadeIn() {
+    this.#element.classList.remove('fade-out');
+    this.#element.classList.add('fade-in');
+  }
+
+  /**
+   * Show or unhide the element
+   */
+  show() {
+    this.#element.style.display = 'unset';
+  }
+
+  /**
    * Append child. These are removed when this is removed.
    * @param {ManagedElement} managedElement
    * @param {string | number} childId - id for child/
@@ -134,11 +214,13 @@ export class ManagedElement {
    * Add event listener to own element.
    * This is just a convenience method that calls listenToEventOn(eventType, this, eventId);
    * @param {string} eventType - type of event.
-   * @param {string | number} eventId - id that will be returned to event handlers/
-   * This is done by adding a data-event-id attribute to the element.
+   * @param {string | number | function} eventIdOrHandler - if a string or number
+   * is provide, this is the id that will be returned to event handlers.
+   * This is done by adding a data-event-id attribute to the element. If it is
+   * a function, then that function will be called.
    */
-  listenToOwnEvent(eventType, eventId) {
-    this.listenToEventOn(eventType, this, eventId);
+  listenToOwnEvent(eventType, eventIdOrHandler) {
+    this.listenToEventOn(eventType, this, eventIdOrHandler);
   }
   /**
    * Add event listener to the target element.
@@ -146,10 +228,12 @@ export class ManagedElement {
    * When this element is removed, any listeners are also removed.
    * @param {string} eventType
    * @param {ManagedElement} target
-   * @param {string | number} eventId - id that will be returned to event handlers/
-   * This is done by adding a data-event-id attribute to the element.
+   * @param {string | number | function} eventIdOrHandler - if a string or number
+   * is provide, this is the id that will be returned to event handlers.
+   * This is done by adding a data-event-id attribute to the element. If it is
+   * a function, then that function will be called.
    */
-  listenToEventOn(eventType, target, eventId) {
+  listenToEventOn(eventType, target, eventIdOrHandler) {
     if (!(target instanceof ManagedElement)) {
       throw new Error('Expect ManagedElement');
     }
@@ -157,8 +241,13 @@ export class ManagedElement {
       managedElement: target,
       eventType: eventType,
     });
-    target.element.setAttribute('data-event-id', eventId);
-    target.element.addEventListener(eventType, this);
+
+    if (eventIdOrHandler instanceof Function) {
+      target.element.addEventListener(eventType, eventIdOrHandler);
+    } else {
+      target.element.setAttribute('data-event-id', eventIdOrHandler);
+      target.element.addEventListener(eventType, this);
+    }
   }
 
   /**
@@ -166,9 +255,10 @@ export class ManagedElement {
    * @param {Event} event
    */
   handleEvent(event) {
-    console.log(
-      `${event.type} fired on ${event.currentTarget.tagName}. Class ${event.target.className}.`
+    console.debug(
+      `Event ${event.type} fired on <${event.currentTarget.tagName}>: class ${event.target.className}.`
     );
+
     const handlerName =
       'handle' +
       event.type.charAt(0).toUpperCase() +
@@ -195,11 +285,49 @@ export class ManagedElement {
     }
   }
 
-  /** Remove children only. */
+  /**
+   * Remove children only.
+   * This calls replaceChildren on the element after removing any managed
+   * elements to ensure the anything added via a direct call to the element's
+   * innerHTML is also removed.
+   */
   removeChildren() {
     this.#children.forEach((child) => {
       child.remove();
     });
     this.#children = [];
+    this.#element.replaceChildren();
+  }
+
+  /**
+   * Sets an attribute on the element. The value is encoded to ensure it cannot
+   * corrupt any html and to prevent script injection.
+   * @param {string} name
+   * @param {string} value
+   */
+  setSafeAttribute(name, value) {
+    this.#element.setAttribute(name, base64.stringToBase64(value));
+  }
+
+  /**
+   * Gets an attribute previous set by setSafeAttribute.
+   * @param {string} name
+   * @returns {string}
+   */
+  getSafeAttribute(name) {
+    return base64.base64ToString(this.#element.getAttribute(name));
+  }
+
+  /**
+   * Gets an attribute previous set by setSafeAttribute.
+   * Unlike the instance method, this retrieves it from a Element. This
+   * is normally used when handling DOM events where the ManagedElement is not
+   * available.
+   * @param {Element} element
+   * @param {string} name
+   * @returns {string}
+   */
+  static getSafeAttribute(element, name) {
+    return base64.base64ToString(element.getAttribute(name));
   }
 }

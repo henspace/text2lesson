@@ -24,11 +24,14 @@
     "prebuildChild": "node ./tools/prebuild.js",
     "buildChild": "rollup -c",
     "postbuildChild": "node ./tools/postbuild.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "testAll": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ./src",
+    "testWatch": "node --experimental-vm-modules node_modules/jest/bin/jest.js ./src --watch",
     "jsdoc": "jsdoc -c jsdoc.json && jsdoc -c jsdoc-build-utils.json",
     "compress": "terser ./build/rapid-qanda.js --compress --comments false --output ./build/rapid-qanda.min.js",
     "lint": "npx eslint ./src/**/*.js",
-    "scratchpad": "node ./tools/scratchpad.js && node ./tools/scratchpad.js"
+    "serveSource": "node ./tools/server/server.js ./src 8080",
+    "serveBuild": "node ./tools/server/server.js ./build/dist 8081"
   },
   "keywords": [
     "lesson",

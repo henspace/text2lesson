@@ -22,10 +22,24 @@
  */
 /*global test, expect */
 
-import { MockedJsonResponse } from '../../../../jest-mocks/fetch';
+import { MockedJsonResponse } from '../../../../jest-mocks/mockedJsonResponse.js';
 import * as resolver from './i18FileResolver.js';
 import { i18n, setActiveTranslations } from './i18n.js';
 import { jest } from '@jest/globals';
+
+/**
+ * Jest mock function.
+ * @type {jest.fn}
+ */
+window.fetch = jest.fn((url) => {
+  console.log(`In mocked fetch for url ${url}`);
+  return Promise.resolve(
+    MockedJsonResponse.badResponse(
+      404,
+      'Page not found. Mock the implementation.'
+    )
+  );
+});
 
 const LANGUAGE_LISTING_URL = 'languages.json';
 const JSON_LOCATION = 'assets/test/';

@@ -8,11 +8,11 @@
         "lessons": [
           {
             "title": "FR What does a computer understand?",
-            "file": "00-00-00 FR.test.md"
+            "file": "00-00-00 FR.test.txt"
           },
           {
             "title": "FR HTML, CSS, and JavaScript?",
-            "file": "00-00-01 FR.test.md"
+            "file": "00-00-01 FR.test.txt"
           }
         ]
       }
@@ -26,12 +26,12 @@
         "title": "01-00 FR.test",
         "lessons": [
           {
-            "title": "01-00-00 FR.test.md",
-            "file": "01-00-00 FR.test.md"
+            "title": "01-00-00 FR.test.txt",
+            "file": "01-00-00 FR.test.txt"
           },
           {
-            "title": "01-00-01 FR.test.md",
-            "file": "01-00-01 FR.test.md"
+            "title": "01-00-01 FR.test.txt",
+            "file": "01-00-01 FR.test.txt"
           }
         ]
       },
@@ -39,12 +39,12 @@
         "title": "01-01 FR.test",
         "lessons": [
           {
-            "title": "01-01-00 FR.test.md",
-            "file": "01-01-00 FR.test.md"
+            "title": "01-01-00 FR.test.txt",
+            "file": "01-01-00 FR.test.txt"
           },
           {
-            "title": "01-01-01 FR.test.md",
-            "file": "01-01-01 FR.test.md"
+            "title": "01-01-01 FR.test.txt",
+            "file": "01-01-01 FR.test.txt"
           }
         ]
       }

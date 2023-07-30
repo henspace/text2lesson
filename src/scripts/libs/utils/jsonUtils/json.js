@@ -48,7 +48,7 @@ export function fetchText(url) {
  * parsing the file. On error, rejects with Error.
  */
 function fetchFile(url, responseType) {
-  console.log(`Fetch ${url}`);
+  console.debug(`Fetch ${url}`);
   return fetch(url).then((response) => {
     if (!response.ok) {
       return Promise.reject(

@@ -21,6 +21,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { escapeHtml } from '../text/textProcessing.js';
 /**
  * @typedef {Object<string, string>} Translations - key: value pair. The key is
  * a unique identification for the translation.
@@ -46,12 +47,22 @@ export function areActiveTranslationsSet() {
  * @param {Translations} translations - translations to use.
  */
 export function setActiveTranslations(translations) {
+  sanitiseTranslations(translations);
   if (activeTranslations) {
     fallbackTranslations = activeTranslations;
   }
   activeTranslations = translations;
 }
 
+/**
+ *
+ * @param {Translations} translations
+ */
+function sanitiseTranslations(translations) {
+  for (const key in translations) {
+    translations[key] = escapeHtml(translations[key]);
+  }
+}
 /**
  * Complete the template. Replacement values are inserted in the template at
  * locations marked with ${n}, where n is the index of the replacement provided
@@ -67,7 +78,7 @@ export function setActiveTranslations(translations) {
  * @param {string} template template using ${} placeholders.
  * @param {string[]} values results of the replacement expressions from the original
  *  string literal.
- * @returns Completed template.
+ * @returns Completed template. HTML is escaped to prevent injection via tranlations.
  */
 function completeTemplate(template, values) {
   let defaultIndex = 0;
@@ -79,7 +90,7 @@ function completeTemplate(template, values) {
     if (index < values.length) {
       return values[index];
     } else {
-      console.log(`Cannot find {${index}} for "${template}"`);
+      console.error(`Cannot find {${index}} for "${template}"`);
       return '${?}';
     }
   });
@@ -130,7 +141,6 @@ export function i18n(strings, ...values) {
     });
     output = result.join('');
   }
-  console.log(`Decoded ${strings.join(',')} to ${output}`);
   return output;
 }
 

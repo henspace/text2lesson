@@ -32,9 +32,9 @@ import { showModalMask, hideModalMask } from './modalMask.js';
  * Definition of a menu item.
  * @typedef {Object} MenuItemDefinition
  * @property {string} text - the text displayed in the menu.
- * @property {function(): Promise} action - function that is called to action the
- * menu selection. Returns Promise that fufils to anything.
- * If the action is not defined, the text property is ignored and a separator
+ * @property {module:libs/utils/command/commands#Command} command - command used to action
+ * the menu selection.
+ * If the command is not defined, the text property is ignored and a separator
  * is added.
  */
 
@@ -95,7 +95,7 @@ class MenuItem extends ManagedElement {
    */
   constructor(label) {
     super('div');
-    this.element.innerHTML = label;
+    this.element.textContent = label;
   }
 }
 
@@ -125,7 +125,7 @@ class MenuItems extends ManagedElement {
     this.menuDefinition = menuDefinition;
     this.menuDefinition.forEach((menuDef, index) => {
       let item;
-      if (menuDef.action) {
+      if (menuDef.command) {
         item = new MenuItem(menuDef.text);
         item.element.className = 'utils-menu-item';
         this.listenToEventOn('click', item, index);
@@ -144,9 +144,9 @@ class MenuItems extends ManagedElement {
   handleClickEvent(event, eventId) {
     hideMenuItems();
     const index = parseInt(eventId);
-    console.log(`Event ${event.type} with id ${eventId}`);
-    this.menuDefinition[index].action().then((value) => {
-      console.log(`Finished menu option ${value}.`);
+    console.debug(`Handling event ${event.type} with id ${eventId}`);
+    this.menuDefinition[index].command.execute().then((value) => {
+      console.debug(`Finished handling menu option ${value}.`);
     });
   }
 }

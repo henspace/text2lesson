@@ -26,17 +26,17 @@ import { BUILD_INFO } from './data/constants.js';
 import { getSettingDefinitions } from './data/settingDefinitions.js';
 import { getMainMenuItems } from './data/menuItems.js';
 import { WELCOME } from './data/welcome.js';
-import { loadCurrentLesson } from './lessons/lessonManager.js';
+import { lessonManager } from './lessons/lessonManager.js';
 
 import { setMenuItems } from './libs/utils/userIo/menu.js';
-import { showInfo, showFatal } from './libs/utils/userIo/modalDialog.js';
-import debug from './libs/utils/debug.js';
+import { ModalDialog } from './libs/utils/userIo/modalDialog.js';
 import { registerServiceWorker } from './libs/utils/serviceWorkers/serviceWorkersUtilities.js';
 import { resolveLanguages } from './libs/utils/i18n/i18FileResolver.js';
 import { loadSettingDefinitions } from './libs/utils/userIo/settings.js';
 import { setStorageKeyPrefix } from './libs/utils/userIo/settings.js';
 import { i18n } from './libs/utils/i18n/i18n.js';
-import { loadLibraries } from './lessons/lessonManager.js';
+import { ManagedElement } from './libs/utils/dom/managedElement.js';
+import { LibraryPresenter } from './lessons/presenters/libraryPresenter.js';
 
 /**
  * Get the language files required for the application.
@@ -50,7 +50,7 @@ function getLanguages() {
   }
   return resolveLanguages('./languages.json')
     .then(() => {
-      debug.log(
+      console.info(
         `Build information: ${
           BUILD_INFO.bundleName
         } ${BUILD_INFO.version()} ${BUILD_INFO.mode()}`
@@ -60,9 +60,9 @@ function getLanguages() {
     .catch((error) => {
       const fetchSummary = error.fetchSummary;
       if (fetchSummary && fetchSummary.length > 0 && fetchSummary[0].read) {
-        console.log(`${error}\nUsing translation ${fetchSummary[0].url}`);
+        console.error(`${error}\nUsing translation ${fetchSummary[0].url}`);
       } else {
-        console.log(error.message);
+        console.error(error.message);
         return Promise.reject(error);
       }
       return;
@@ -76,26 +76,38 @@ if (BUILD_INFO.isBuilt()) {
 window.addEventListener('load', () => {
   setStorageKeyPrefix(`LR_${BUILD_INFO.bundleName().replace('.', '_')}`);
   getLanguages()
-    .then(() => loadLibraries('assets/lessons/libraries.json'))
+    .then(() => lessonManager.loadLibraries('assets/lessons/libraries.json'))
     .then(() => loadSettingDefinitions(getSettingDefinitions()))
-    .then(() => console.log(i18n`Test translation.`))
     .then(() => {
       const language = i18n`language::`;
       if (language !== '') {
-        console.log(`Language ${language}`);
+        console.info(`Language ${language}`);
         document.documentElement.setAttribute('lang', language);
       }
       return true;
     })
     .then(() => setMenuItems(getMainMenuItems()))
     .then(() => {
-      return showInfo(WELCOME);
+      return ModalDialog.showInfo(WELCOME);
     })
+    .then(() => lessonManager.loadCurrentLibrary())
     .then(() => {
-      loadCurrentLesson();
+      return runPresentationLoop();
     })
     .catch((error) => {
-      console.log(error);
-      showFatal(error).then(() => window.location.reload());
+      console.error(error);
+      ModalDialog.showFatal(error).then(() => window.location.reload());
     });
 });
+
+/**
+ * The main pesentation loop.
+ */
+async function runPresentationLoop() {
+  const stage = new ManagedElement(document.getElementById('stage'));
+  let presenter = new LibraryPresenter();
+  for (;;) {
+    presenter = await presenter.presentOnStage(stage);
+    stage.removeChildren();
+  }
+}

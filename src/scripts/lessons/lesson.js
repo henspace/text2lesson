@@ -21,9 +21,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Problem } from './problem.js';
-import { Metadata } from './metadata.js';
-
 /**
  * Encapsulation of a lesson.
  */
@@ -31,7 +28,7 @@ export class Lesson {
   /**
    * @type {Metadata}
    */
-  #metaData;
+  #metadata;
 
   /**
    * @type {Problem[]}
@@ -42,16 +39,16 @@ export class Lesson {
    * get the metadata
    * @returns {Metadata}
    */
-  get metaData() {
-    return this.#metaData;
+  get metadata() {
+    return this.#metadata;
   }
 
   /**
    * Set the metadata
    * @param {Metadata} value
    */
-  set metaData(value) {
-    this.#metaData = value;
+  set metadata(value) {
+    this.#metadata = value;
   }
 
   /**

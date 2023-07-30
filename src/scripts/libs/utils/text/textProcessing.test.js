@@ -1,7 +1,7 @@
 /**
  * @file Test markdown light
  *
- * @module libs/utils/text/markdownLight.test
+ * @module libs/utils/text/textProcessing.test
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -25,134 +25,140 @@ import { test, expect } from '@jest/globals';
 import {
   decodeFromEntities,
   encodeToEntities,
-  parse,
+  parseMarkdown,
   escapeHtml,
-} from './markdownLight.js';
+} from './textProcessing.js';
 
 test('Paragraphs split on blank lines', () => {
   const data = 'line 1\nline 2\n\nline 3\nline 4\n\nline 5\nline 6';
-  expect(parse(data)).toMatch(
+  expect(parseMarkdown(data)).toMatch(
     /<p>line 1\nline 2<\/p>\s*<p>line 3\nline 4<\/p>\s*<p>line 5\nline 6<\/p>/
   );
 });
 
 test('Line endings normalised to newline', () => {
-  expect(parse('line 1\r\nline 2\nline 3')).toMatch('line 1\nline 2\nline 3');
+  expect(parseMarkdown('line 1\r\nline 2\nline 3')).toMatch(
+    'line 1\nline 2\nline 3'
+  );
 });
 
 test('Atx headings return correct levels', () => {
-  expect(parse('# test\n')).toBe('\n\n<h1>test</h1>\n\n');
-  expect(parse('# test####\n')).toBe('\n\n<h1>test</h1>\n\n');
-  expect(parse('#test\n')).toBe('\n\n<h1>test</h1>\n\n');
-  expect(parse('## test\n')).toBe('\n\n<h2>test</h2>\n\n');
-  expect(parse('##### test\n')).toBe('\n\n<h5>test</h5>\n\n');
-  expect(parse('########## test\n')).toBe('\n\n<h6>test</h6>\n\n');
+  expect(parseMarkdown('# test\n')).toBe('\n\n<h1>test</h1>\n\n');
+  expect(parseMarkdown('# test####\n')).toBe('\n\n<h1>test</h1>\n\n');
+  expect(parseMarkdown('#test\n')).toBe('\n\n<h1>test</h1>\n\n');
+  expect(parseMarkdown('## test\n')).toBe('\n\n<h2>test</h2>\n\n');
+  expect(parseMarkdown('##### test\n')).toBe('\n\n<h5>test</h5>\n\n');
+  expect(parseMarkdown('########## test\n')).toBe('\n\n<h6>test</h6>\n\n');
 
-  expect(parse(`# test1\n## test2\n`)).toBe(
+  expect(parseMarkdown(`# test1\n## test2\n`)).toBe(
     '\n\n<h1>test1</h1>\n\n<h2>test2</h2>\n\n'
   );
 });
 
 test('Setext headings return correct levels', () => {
-  expect(parse('test\n======\n')).toBe('\n\n<h1>test</h1>\n\n');
-  expect(parse('test\n----\n')).toBe('\n\n<h2>test</h2>\n\n');
+  expect(parseMarkdown('test\n======\n')).toBe('\n\n<h1>test</h1>\n\n');
+  expect(parseMarkdown('test\n----\n')).toBe('\n\n<h2>test</h2>\n\n');
 });
 
 test('Block quote returns block', () => {
-  expect(parse('start\n> line 1\n> line 2\nend')).toBe(
+  expect(parseMarkdown('start\n> line 1\n> line 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<blockquote>\nline 1\nline 2\n</blockquote>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n> line 1\n> line 2')).toBe(
+  expect(parseMarkdown('start\n> line 1\n> line 2')).toBe(
     '\n\n<p>start</p>\n\n<blockquote>\nline 1\nline 2</blockquote>\n\n'
   );
 });
 
 test('Code block returns preformatted code', () => {
-  expect(parse('start\n    line 1\n    line 2\nend')).toBe(
+  expect(parseMarkdown('start\n    line 1\n    line 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<pre><code>\nline 1\nline 2\n</code></pre>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n\tline 1\n\tline 2\nend')).toBe(
+  expect(parseMarkdown('start\n\tline 1\n\tline 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<pre><code>\nline 1\nline 2\n</code></pre>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n        line 1\n        line 2\nend')).toBe(
+  expect(parseMarkdown('start\n        line 1\n        line 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<pre><code>\n    line 1\n    line 2\n</code></pre>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n\t\tline 1\n\t\t\tline 2\nend')).toBe(
+  expect(parseMarkdown('start\n\t\tline 1\n\t\t\tline 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<pre><code>\n\tline 1\n\t\tline 2\n</code></pre>\n\n<p>end</p>\n\n'
   );
 });
 
 test('Unordered list returns ul block', () => {
-  expect(parse('start\n* line 1\n* line 2\nend')).toBe(
+  expect(parseMarkdown('start\n* line 1\n* line 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<ul>\n<li>line 1</li>\n<li>line 2</li>\n</ul>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n+ line 1\n+ line 2\nend')).toBe(
+  expect(parseMarkdown('start\n+ line 1\n+ line 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<ul>\n<li>line 1</li>\n<li>line 2</li>\n</ul>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n- line 1\n- line 2\nend')).toBe(
+  expect(parseMarkdown('start\n- line 1\n- line 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<ul>\n<li>line 1</li>\n<li>line 2</li>\n</ul>\n\n<p>end</p>\n\n'
   );
 });
 
 test('Ordered list returns ol block', () => {
-  expect(parse('start\n1. line 1\n2. line 2\nend')).toBe(
+  expect(parseMarkdown('start\n1. line 1\n2. line 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<ol>\n<li>line 1</li>\n<li>line 2</li>\n</ol>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n1. line 1\n1. line 2\nend')).toBe(
+  expect(parseMarkdown('start\n1. line 1\n1. line 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<ol>\n<li>line 1</li>\n<li>line 2</li>\n</ol>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n10. line 1\n11. line 2\nend')).toBe(
+  expect(parseMarkdown('start\n10. line 1\n11. line 2\nend')).toBe(
     '\n\n<p>start</p>\n\n<ol>\n<li>line 1</li>\n<li>line 2</li>\n</ol>\n\n<p>end</p>\n\n'
   );
 });
 
 test('Horizontal rules returns <hr> block', () => {
-  expect(parse('start\n\n---\nend')).toBe(
+  expect(parseMarkdown('start\n\n---\nend')).toBe(
     '\n\n<p>start</p>\n\n<hr>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n\n***\nend')).toBe(
+  expect(parseMarkdown('start\n\n***\nend')).toBe(
     '\n\n<p>start</p>\n\n<hr>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n\n___\nend')).toBe(
+  expect(parseMarkdown('start\n\n___\nend')).toBe(
     '\n\n<p>start</p>\n\n<hr>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n\n- - -\nend')).toBe(
+  expect(parseMarkdown('start\n\n- - -\nend')).toBe(
     '\n\n<p>start</p>\n\n<hr>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n\n* * *\nend')).toBe(
+  expect(parseMarkdown('start\n\n* * *\nend')).toBe(
     '\n\n<p>start</p>\n\n<hr>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n\n_ _ _\nend')).toBe(
+  expect(parseMarkdown('start\n\n_ _ _\nend')).toBe(
     '\n\n<p>start</p>\n\n<hr>\n\n<p>end</p>\n\n'
   );
-  expect(parse('start\n\n__\nend')).toBe(
+  expect(parseMarkdown('start\n\n__\nend')).toBe(
     '\n\n<p>start</p>\n\n<p>__\nend</p>\n\n'
   );
 });
 
 test('Image links create img elements', () => {
-  expect(parse('![test title](https://example.com "with title")')).toMatch(
+  expect(
+    parseMarkdown('![test title](https://example.com "with title")')
+  ).toMatch(
     '<img alt="test title" src="https://example.com" title="with title"/>'
   );
-  expect(parse('![test title](https://example.com)')).toMatch(
+  expect(parseMarkdown('![test title](https://example.com)')).toMatch(
     '<img alt="test title" src="https://example.com" title=""/>'
   );
 });
 
 test('Links create anchors', () => {
-  expect(parse('[test title](https://example.com "with title")')).toMatch(
+  expect(
+    parseMarkdown('[test title](https://example.com "with title")')
+  ).toMatch(
     '<a target="_blank" href="https://example.com" title="with title">test title</a>'
   );
-  expect(parse('[test title](http://example.com)')).toMatch(
+  expect(parseMarkdown('[test title](http://example.com)')).toMatch(
     '<a target="_blank" href="http://example.com" title="">test title</a>'
   );
 });
 
 test('Auto links create anchors', () => {
-  expect(parse('<http://example.com>')).toMatch(
+  expect(parseMarkdown('<http://example.com>')).toMatch(
     '<a target="_blank" href="http://example.com">http://example.com</a>'
   );
-  expect(parse('<https://example.com>')).toMatch(
+  expect(parseMarkdown('<https://example.com>')).toMatch(
     '<a target="_blank" href="https://example.com">https://example.com</a>'
   );
 });
@@ -161,8 +167,10 @@ test('Email addresses create email links', () => {
   const email = 'john.doe@somedomain.com';
   const encoded = encodeToEntities(email);
 
-  expect(parse(`<${email}>`)).toMatch(`<a href="${encoded}">${encoded}</a>`);
-  expect(parse(email)).toMatch(email);
+  expect(parseMarkdown(`<${email}>`)).toMatch(
+    `<a href="${encoded}">${encoded}</a>`
+  );
+  expect(parseMarkdown(email)).toMatch(email);
 });
 
 test('Encode html entities is valid', () => {
@@ -177,78 +185,84 @@ test('Markdown characters can be escaped', () => {
   const chrSet = '\\`*_{}[]()#+-.!';
   for (const chr of chrSet) {
     console.log(`test: ${chr}`);
-    expect(parse(`\\${chr}`)).toMatch(encodeToEntities(chr));
+    expect(parseMarkdown(`\\${chr}`)).toMatch(encodeToEntities(chr));
   }
 });
 
 test('Inline code creates <code> element', () => {
-  expect(parse('`this is code` and `more code`')).toMatch(
+  expect(parseMarkdown('`this is code` and `more code`')).toMatch(
     '<code>this is code</code> and <code>more code</code>'
   );
-  expect(parse('``this is (`) code``')).toMatch(
+  expect(parseMarkdown('``this is (`) code``')).toMatch(
     '<code>this is (`) code</code>'
   );
 });
 
 test('Ampersand escaped unless entity', () => {
-  expect(parse('test & ampersand')).toMatch('test &amp; ampersand');
-  expect(parse('test &copy; entity')).toMatch('test &copy; entity');
-  expect(parse('test &#34; entity')).toMatch('test &#34; entity');
-  expect(parse('test &#x3f; entity')).toMatch('test &#x3f; entity');
+  expect(parseMarkdown('test & ampersand')).toMatch('test &amp; ampersand');
+  expect(parseMarkdown('test &copy; entity')).toMatch('test &copy; entity');
+  expect(parseMarkdown('test &#34; entity')).toMatch('test &#34; entity');
+  expect(parseMarkdown('test &#x3f; entity')).toMatch('test &#x3f; entity');
 });
 
 test('Less than escaped unless linebreak', () => {
-  expect(parse('test <tag> here')).toMatch('test &lt;tag> here');
-  expect(parse('test <br> here')).toMatch('test <br> here');
-  expect(parse('test <BR> here')).toMatch('test <BR> here');
+  expect(parseMarkdown('test <tag> here')).toMatch('test &lt;tag> here');
+  expect(parseMarkdown('test <br> here')).toMatch('test <br> here');
+  expect(parseMarkdown('test <BR> here')).toMatch('test <BR> here');
 });
 
 test('Double asterisk creates strong element', () => {
-  expect(parse('test **some words** text')).toMatch(
+  expect(parseMarkdown('test **some words** text')).toMatch(
     'test <strong>some words</strong> text'
   );
-  expect(parse('test **some * words** text')).toMatch(
+  expect(parseMarkdown('test **some * words** text')).toMatch(
     'test <strong>some * words</strong> text'
   );
-  expect(parse('test ** some words** text')).toMatch(
+  expect(parseMarkdown('test ** some words** text')).toMatch(
     'test <em>* some words</em>* text'
   );
-  expect(parse('test **some words ** text')).toMatch(
+  expect(parseMarkdown('test **some words ** text')).toMatch(
     'test <em>*some words *</em> text'
   );
-  expect(parse('test ** some words ** text')).toMatch(
+  expect(parseMarkdown('test ** some words ** text')).toMatch(
     'test <em>* some words *</em> text'
   );
 });
 
 test('Double underscore creates strong element', () => {
-  expect(parse('test __some words__ text')).toMatch(
+  expect(parseMarkdown('test __some words__ text')).toMatch(
     'test <strong>some words</strong> text'
   );
-  expect(parse('test __some _ words__ text')).toMatch(
+  expect(parseMarkdown('test __some _ words__ text')).toMatch(
     'test <strong>some _ words</strong> text'
   );
-  expect(parse('test __ some words__ text')).toMatch(
+  expect(parseMarkdown('test __ some words__ text')).toMatch(
     'test <em>_ some words</em>_ text'
   );
-  expect(parse('test __some words __ text')).toMatch(
+  expect(parseMarkdown('test __some words __ text')).toMatch(
     'test <em>_some words _</em> text'
   );
-  expect(parse('test __ some words __ text')).toMatch(
+  expect(parseMarkdown('test __ some words __ text')).toMatch(
     'test <em>_ some words _</em> text'
   );
 });
 
 test('Single asterisk creates em element', () => {
-  expect(parse('test *some words* text')).toMatch(
+  expect(parseMarkdown('test *some words* text')).toMatch(
     'test <em>some words</em> text'
   );
-  expect(parse('test *some * words* text')).toMatch(
+  expect(parseMarkdown('test *some * words* text')).toMatch(
     'test <em>some * words</em> text'
   );
-  expect(parse('test * some words* text')).toMatch('test * some words* text');
-  expect(parse('test *some words * text')).toMatch('test *some words * text');
-  expect(parse('test * some words * text')).toMatch('test * some words * text');
+  expect(parseMarkdown('test * some words* text')).toMatch(
+    'test * some words* text'
+  );
+  expect(parseMarkdown('test *some words * text')).toMatch(
+    'test *some words * text'
+  );
+  expect(parseMarkdown('test * some words * text')).toMatch(
+    'test * some words * text'
+  );
 });
 
 test('preProcessing applied', () => {
@@ -263,8 +277,8 @@ test('preProcessing applied', () => {
       rep: 'output',
     },
   ];
-  expect(parse(test)).toMatch(test);
-  expect(parse(test, { pre: preProcess })).toMatch(
+  expect(parseMarkdown(test)).toMatch(test);
+  expect(parseMarkdown(test, { pre: preProcess })).toMatch(
     'test <strong>output</strong>'
   );
 });
@@ -281,12 +295,14 @@ test('postProcessing applied', () => {
       rep: 'output',
     },
   ];
-  expect(parse(test)).toMatch('test <strong>input</strong>');
-  expect(parse(test, { post: postProcess })).toMatch('test <TAG>output</TAG>');
+  expect(parseMarkdown(test)).toMatch('test <strong>input</strong>');
+  expect(parseMarkdown(test, { post: postProcess })).toMatch(
+    'test <TAG>output</TAG>'
+  );
 });
 
 test('parse uses replacement character for null', () => {
-  const result = parse('test\x00string');
+  const result = parseMarkdown('test\x00string');
   expect(result).toMatch('test\ufffdstring');
 });
 

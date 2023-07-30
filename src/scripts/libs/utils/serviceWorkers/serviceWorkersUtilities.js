@@ -31,12 +31,12 @@ export function registerServiceWorker(buildMode) {
       navigator.serviceWorker
         .register('./sw.js')
         .then((registration) => {
-          console.log('SW registered: ', registration);
+          console.info('SW registered: ', registration);
           let controller = navigator.serviceWorker.controller;
-          console.log(`Page controlled by ${controller}.`);
+          console.info(`Page controlled by ${controller}.`);
         })
         .catch((registrationError) => {
-          console.log('SW registration failed: ', registrationError);
+          console.error('SW registration failed: ', registrationError);
         });
     });
   }
