@@ -23,33 +23,37 @@
  */
 
 import { lessonManager } from '../lessonManager.js';
-import { Presenter } from './presenter.js';
-import { BookPresenter } from './bookPresenter.js';
-import { LessonPresenter } from './lessonPresenter.js';
+import { ListPresenter } from './listPresenter.js';
 
 /**
  * Class to present a chapter.
  * Presentation of a chapter involves displaying all of the lessons available in
  * the chapter.
+ * @extends module:lessons/presenters/listPresenter.ListPresenter
  */
-export class ChapterPresenter extends Presenter {
+export class ChapterPresenter extends ListPresenter {
   /**
    * Construct.
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
-  constructor() {
-    super('chapterPresenter', {
-      titles: lessonManager.lessonTitles,
-      itemClassName: 'lesson',
-      next: (index) => {
-        lessonManager.lessonIndex = index;
-        return Promise.resolve(new LessonPresenter(index));
-      },
-      previous: () => {
-        const currentLessonInfo = lessonManager.currentLessonInfo;
-        return Promise.resolve(
-          new BookPresenter(currentLessonInfo.indexes.book)
-        );
-      },
-    });
+  constructor(config) {
+    config.titles = lessonManager.lessonTitles;
+    config.className = 'chapter-presenter';
+    config.itemClassName = 'lesson';
+    super(config);
+    this.setupKeyboardNavigation();
+  }
+  /**
+   * @override
+   */
+  next(index) {
+    lessonManager.lessonIndex = index;
+    return this.config.factory.getNext(this, this.config);
+  }
+  /**
+   * @override
+   */
+  previous() {
+    return this.config.factory.getPrevious(this, this.config);
   }
 }

@@ -21,13 +21,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-import { jest, test, expect } from '@jest/globals';
+import { jest, beforeEach, test, expect } from '@jest/globals';
+
+const currentLessonInfo = {
+  libraryKey: 'key',
+  file: 'libfile',
+  indexes: {
+    book: 0,
+    chapter: 0,
+    lesson: 0,
+  },
+  titles: {
+    library: 'the library',
+    book: 'the book',
+    chapter: 'the chapter',
+    lesson: 'the lesson',
+  },
+};
+
+class MockPresenter {
+  constructor(config) {
+    this.config = config;
+  }
+  next(indexIgnored) {
+    return null;
+  }
+  previous() {
+    return null;
+  }
+}
 
 jest.unstable_mockModule('./presenter.js', () => {
   return {
-    Presenter: jest.fn(function (className, config) {
+    Presenter: jest.fn(function (config) {
       this.config = config;
-      this.className = className;
     }),
   };
 });
@@ -40,65 +67,83 @@ jest.unstable_mockModule('../lessonManager.js', () => {
       chapterIndex: 0,
       lessonIndex: 0,
       chapterTitles: ['title1', 'title2', 'title3'],
-      currentLessonInfo: {
-        libraryKey: 'key',
-        file: 'libfile',
-        indexes: {
-          book: 0,
-          chapter: 0,
-          lesson: 0,
-        },
-        titles: {
-          library: 'the library',
-          book: 'the book',
-          chapter: 'the chapter',
-          lesson: 'the lesson',
-        },
+      currentLessonInfo: currentLessonInfo,
+      loadCurrentLesson: () => {
+        return Promise.resolve();
       },
     },
   };
 });
 
-jest.unstable_mockModule('./lessonPresenter.js', () => {
+jest.unstable_mockModule('./presenterFactory.js', () => {
   return {
-    LessonPresenter: jest.fn((indexIgnored) => null),
+    presenterFactory: {
+      hasNext: jest.fn((callerIgnored) => true),
+      hasPrevious: jest.fn((callerIgnored, configIgnored) => true),
+      getNext: jest.fn((callerIgnored, config) => new MockPresenter(config)),
+      getPrevious: jest.fn(
+        (callerIgnored, config) => new MockPresenter(config)
+      ),
+    },
   };
 });
 
-jest.unstable_mockModule('./bookPresenter.js', () => {
-  return {
-    BookPresenter: jest.fn((indexIgnored) => null),
-  };
-});
-const { BookPresenter } = await import('./bookPresenter.js');
-
-const { LessonPresenter } = await import('./lessonPresenter.js');
+const { presenterFactory } = await import('./presenterFactory');
 const { lessonManager } = await import('../lessonManager.js');
-const { ChapterPresenter } = await import('./chapterPresenter');
+const { ChapterPresenter } = await import('./chapterPresenter.js');
+
+beforeEach(() => {
+  presenterFactory.getNext.mockClear();
+  presenterFactory.getPrevious.mockClear();
+});
 
 test('constructor provides base class with class name of chapterPresenter.', () => {
-  const presenter = new ChapterPresenter();
-  expect(presenter.className).toBe('chapterPresenter');
+  const chapterPresenter = new ChapterPresenter({});
+  expect(chapterPresenter.config.className).toBe('chapterPresenter');
 });
 
-test('constructor provides base class with chapter titles.', () => {
-  const presenter = new ChapterPresenter();
-  expect(presenter.config.titles).toStrictEqual(lessonManager.lessonTitles);
+test('constructor provides base class with lesson titles.', () => {
+  const chapterPresenter = new ChapterPresenter({});
+  expect(chapterPresenter.config.titles).toStrictEqual(
+    lessonManager.lessonTitles
+  );
 });
 
-test('next function provides LessonPresenter constructed with index', () => {
-  const presenter = new ChapterPresenter();
+test('next function provides presenter from presenterFactory constructed with config', () => {
+  const config = {
+    factory: presenterFactory,
+  };
+  const chapterPresenter = new ChapterPresenter(config);
   const index = 6;
-  return presenter.config.next(index).then((next) => {
-    expect(LessonPresenter).toHaveBeenCalledWith(index);
-    expect(next).toBeInstanceOf(LessonPresenter);
-  });
+  const next = chapterPresenter.next(index);
+  expect(next).toBeInstanceOf(MockPresenter);
+  expect(presenterFactory.getNext).toBeCalledTimes(1);
+  expect(presenterFactory.getPrevious).toBeCalledTimes(0);
+  let expectedConfig = { ...chapterPresenter.config };
+  expect(presenterFactory.getNext.mock.calls[0][0]).toBe(chapterPresenter);
+  expect(presenterFactory.getNext.mock.calls[0][1]).toEqual(expectedConfig);
 });
 
-test('previous function returns BookPresenter called with index 0', () => {
-  const presenter = new ChapterPresenter(0);
-  return presenter.config.previous().then((prev) => {
-    expect(prev).toBeInstanceOf(BookPresenter);
-    expect(BookPresenter).toHaveBeenCalledWith(0);
+test("next function sets lessonManager's lessonIndex to index", () => {
+  const chapterPresenter = new ChapterPresenter({
+    factory: presenterFactory,
   });
+  const index = 6;
+  chapterPresenter.next(index);
+  expect(lessonManager.lessonIndex).toBe(index);
+});
+
+test('previous function provides presenter from presenterFactory constructed with config', () => {
+  const config = {
+    factory: presenterFactory,
+  };
+  const chapterPresenter = new ChapterPresenter(config);
+  const index = 6;
+  const next = chapterPresenter.previous(index);
+  expect(next).toBeInstanceOf(MockPresenter);
+  expect(presenterFactory.getNext).toBeCalledTimes(0);
+  expect(presenterFactory.getPrevious).toBeCalledTimes(1);
+  let expectedConfig = { ...chapterPresenter.config };
+  expect(presenterFactory.getPrevious.mock.calls[0][0]).toBe(chapterPresenter);
+  expect(presenterFactory.getPrevious.mock.calls[0][1]).toEqual(expectedConfig);
 });

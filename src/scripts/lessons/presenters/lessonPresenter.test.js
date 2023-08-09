@@ -21,18 +21,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-import { jest, test, expect } from '@jest/globals';
-import { CachedLesson } from '../cachedLesson.js';
-import { Lesson } from '../lesson.js';
-
-jest.unstable_mockModule('./presenter.js', () => {
-  return {
-    Presenter: jest.fn(function (className, config) {
-      this.config = config;
-      this.className = className;
-    }),
-  };
-});
+import { jest, beforeEach, test, expect } from '@jest/globals';
 
 const currentLessonInfo = {
   libraryKey: 'key',
@@ -50,6 +39,26 @@ const currentLessonInfo = {
   },
 };
 
+class MockPresenter {
+  constructor(config) {
+    this.config = config;
+  }
+  next(indexIgnored) {
+    return null;
+  }
+  previous() {
+    return null;
+  }
+}
+
+jest.unstable_mockModule('./presenter.js', () => {
+  return {
+    Presenter: jest.fn(function (config) {
+      this.config = config;
+    }),
+  };
+});
+
 jest.unstable_mockModule('../lessonManager.js', () => {
   return {
     lessonManager: {
@@ -59,67 +68,114 @@ jest.unstable_mockModule('../lessonManager.js', () => {
       lessonIndex: 0,
       chapterTitles: ['title1', 'title2', 'title3'],
       currentLessonInfo: currentLessonInfo,
-      loadCurrentLesson: jest.fn(() => {
-        return Promise.resolve(new CachedLesson({}, 'title: test lesson'));
-      }),
+      loadCurrentLesson: () => {
+        return Promise.resolve({ content: 'cachedLesson' });
+      },
     },
   };
 });
 
-jest.unstable_mockModule('./problemPresenter.js', () => {
+const mockLessonConverter = jest.fn(() => new MockLesson());
+
+const MockLessonSource = function (source) {
+  this.source = source;
+  this.convertToLesson = mockLessonConverter;
+};
+
+const MockLesson = jest.fn(() => {});
+
+jest.unstable_mockModule('../lessonSource.js', () => {
   return {
-    ProblemPresenter: jest.fn((indexIgnored, lessonIgnored) => null),
+    LessonSource: {
+      createFromSource: jest.fn((rawSource) => new MockLessonSource(rawSource)),
+    },
   };
 });
 
-jest.unstable_mockModule('./chapterPresenter.js', () => {
+jest.unstable_mockModule('./presenterFactory.js', () => {
   return {
-    ChapterPresenter: jest.fn((indexIgnored) => null),
+    presenterFactory: {
+      hasNext: jest.fn((callerIgnored) => true),
+      hasPrevious: jest.fn((callerIgnored, configIgnored) => true),
+      getNext: jest.fn((callerIgnored, config) => new MockPresenter(config)),
+      getPrevious: jest.fn(
+        (callerIgnored, config) => new MockPresenter(config)
+      ),
+    },
   };
 });
 
+const { presenterFactory } = await import('./presenterFactory');
 const { lessonManager } = await import('../lessonManager.js');
-const { ChapterPresenter } = await import('./chapterPresenter.js');
-const { ProblemPresenter } = await import('./problemPresenter.js');
-const { LessonPresenter } = await import('./lessonPresenter');
+const { LessonSource } = await import('../lessonSource.js');
+const { LessonPresenter } = await import('./lessonPresenter.js');
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  //presenterFactory.hasPrevious.mockClear();
+  //presenterFactory.getNext.mockClear();
+  //presenterFactory.getPrevious.mockClear();
+});
 
 test('constructor provides base class with class name of lessonPresenter.', () => {
-  const presenter = new LessonPresenter();
-  expect(presenter.className).toBe('lessonPresenter');
+  const lessonPresenter = new LessonPresenter({});
+  expect(lessonPresenter.config.className).toBe('lessonPresenter');
 });
 
-test('constructor provides base class with lesson info titles.', () => {
-  const presenter = new LessonPresenter();
-  expect(presenter.config.titles).toHaveLength(4);
-  expect(presenter.config.titles[0]).toBe(currentLessonInfo.titles.library);
-  expect(presenter.config.titles[1]).toBe(currentLessonInfo.titles.book);
-  expect(presenter.config.titles[2]).toBe(currentLessonInfo.titles.chapter);
-  expect(presenter.config.titles[3]).toBe(currentLessonInfo.titles.lesson);
+test('constructor provides base class with current lesson titles.', () => {
+  const lessonPresenter = new LessonPresenter({});
+
+  expect(lessonPresenter.config.titles).toStrictEqual([
+    lessonManager.currentLessonInfo.titles.library,
+    lessonManager.currentLessonInfo.titles.book,
+    lessonManager.currentLessonInfo.titles.chapter,
+    lessonManager.currentLessonInfo.titles.lesson,
+  ]);
 });
 
-test('next function provides LessonPresenter constructed index of 0 and with lesson created from loaded lesson', () => {
-  const presenter = new LessonPresenter();
+test('next function provides presenter from presenterFactory constructed with config', async () => {
+  const config = {
+    factory: presenterFactory,
+  };
+  const lessonPresenter = new LessonPresenter(config);
   const index = 6;
-  const metadataKey = 'testKey';
-  const metadataValue = 'testValue';
-
-  lessonManager.loadCurrentLesson.mockReturnValueOnce(
-    Promise.resolve(new CachedLesson({}, `${metadataKey}:${metadataValue}`))
-  );
-  return presenter.config.next(index).then((next) => {
-    expect(next).toBeInstanceOf(ProblemPresenter);
-    expect(ProblemPresenter.mock.calls[0][0]).toBe(0);
-    /** @type{Lesson} */
-    const lesson = ProblemPresenter.mock.calls[0][1];
-    expect(lesson).toBeInstanceOf(Lesson);
-    expect(lesson.metadata.getValue(metadataKey)).toBe(metadataValue);
-  });
+  const next = await lessonPresenter.next(index);
+  expect(next).toBeInstanceOf(MockPresenter);
+  expect(presenterFactory.getNext).toBeCalledTimes(1);
+  expect(presenterFactory.getPrevious).toBeCalledTimes(0);
+  let expectedConfig = { ...lessonPresenter.config };
+  expect(presenterFactory.getNext.mock.calls[0][0]).toBe(lessonPresenter);
+  expect(presenterFactory.getNext.mock.calls[0][1]).toEqual(expectedConfig);
 });
 
-test('previous function returns ChapterPresenter called with index 0', () => {
-  const presenter = new LessonPresenter(0);
-  return presenter.config.previous().then((prev) => {
-    expect(prev).toBeInstanceOf(ChapterPresenter);
-    expect(ChapterPresenter).toHaveBeenCalledWith(0);
-  });
+test('next function provides presenterFactory constructed with config containing a lesson', async () => {
+  const config = {
+    factory: presenterFactory,
+  };
+  const lessonPresenter = new LessonPresenter(config);
+  const index = 6;
+  const next = await lessonPresenter.next(index);
+  expect(next).toBeInstanceOf(MockPresenter);
+  expect(presenterFactory.getNext).toBeCalledTimes(1);
+  expect(presenterFactory.getPrevious).toBeCalledTimes(0);
+  let expectedConfig = { ...lessonPresenter.config };
+  expect(presenterFactory.getNext.mock.calls[0][0]).toBe(lessonPresenter);
+  expect(presenterFactory.getNext.mock.calls[0][1]).toEqual(expectedConfig);
+  expect(LessonSource.createFromSource).toHaveBeenCalledWith('cachedLesson');
+  expect(mockLessonConverter).toBeCalledTimes(1);
+});
+
+test('previous function provides presenter from presenterFactory constructed with config', () => {
+  const config = {
+    factory: presenterFactory,
+  };
+  const lessonPresenter = new LessonPresenter(config);
+  const index = 6;
+  const next = lessonPresenter.previous(index);
+  expect(next).toBeInstanceOf(MockPresenter);
+  expect(presenterFactory.getNext).toBeCalledTimes(0);
+  expect(presenterFactory.getPrevious).toBeCalledTimes(1);
+  let expectedConfig = { ...lessonPresenter.config };
+  expect(presenterFactory.getPrevious.mock.calls[0][0]).toBe(lessonPresenter);
+  expect(presenterFactory.getPrevious.mock.calls[0][1]).toEqual(expectedConfig);
 });

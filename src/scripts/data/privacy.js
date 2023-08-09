@@ -21,13 +21,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { i18n } from '../libs/utils/i18n/i18n.js';
-
+import { i18n } from '../utils/i18n/i18n.js';
+import { parseMarkdown } from '../utils/text/textProcessing.js';
 /**
  * Markdown text describing the privacy policy.
- * @type {string}
+ * Implemented as function to prevent it being resolved during module load, which
+ * could occur before languages are loaded.
+ * @returns {string}
  */
-export const PRIVACY = i18n`# $_PRODUCT_NAME_TXT_$
+const getPrivacy = () => i18n`# $_PRODUCT_NAME_TXT_$
 ## Privacy
 The application does not collect any data at all. No information is stored
 or sent back to the server. No cookies are used.
@@ -38,3 +40,11 @@ are stored.
 If your device supports it, your progress can be shared with others using the 
 Web Share api. Where you can share information depends upon the other apps
 installed on your device.`;
+
+/**
+ * Get the privacy statement.
+ * @returns {Promise} fulfils to HTML
+ */
+export function getPrivacyStatement() {
+  return Promise.resolve(parseMarkdown(getPrivacy()));
+}

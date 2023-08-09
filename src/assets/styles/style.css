@@ -1,5 +1,13 @@
-@import '../libs/styles/utils.css';
+@import './utils-icons.css';
+@import './utils.css';
 @import './lessons.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /*
  * z-indexes
  * 0: default
@@ -34,57 +42,129 @@
   --window-contrast: hsl(0, 50, 100);
   --window-highlight: hsl(0, 50, 60);
 
-  --panel-border: solid 4px;
-  --content-padding: 8px;
+  --padding: 0.3rem;
   --font-base-size: 15px;
+  --line-thickness: max(2px, 0.2rem);
+  --outline-offset: calc(0.5 * var(--line-thickness));
+  --panel-border: solid var(--line-thickness);
+  --margin: calc(var(--outline-offset) + var(--line-thickness));
 }
 
-noscript {
+/* Element ordering classes */
+.always-on-top {
   z-index: 100;
 }
 
+.on-top {
+  z-index: 10;
+}
+
+.modal {
+  z-index: 5;
+}
+
+#modal-mask {
+  z-index: 4;
+}
+
 html {
+  background-color: var(--window-base);
+  color: var(--window-contrast);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: calc(var(--font-base-size) + 0.390625vw);
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background-color: var(--window-base);
-  color: var(--window-contrast);
   display: flex;
   flex-direction: column;
   height: 100%;
+  hyphens: auto;
+  margin: 0;
   min-height: 100vh;
-  margin: 0px;
-  padding: 0px;
+  overflow-wrap: break-word;
   width: 100%;
 }
 
-body > div,
-body > H1 {
-  padding: var(--content-padding);
+body > div {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-H1.title {
-  margin: 0 3rem 0 3rem;
+/* container class is typically for divs that contain user visible content. 
+ * The defaults for divs are to have no padding and no margins
+*/
+.container {
+  margin: 0;
+  padding: var(--padding);
+}
+
+.framed {
+  border: solid var(--line-thickness) var(--primary-base);
+}
+
+#title {
+  background-color: var(--background-base);
+  color: var(--background-contrast);
+  display: flex;
+}
+
+#title #action-buttons {
+  flex: 0 0 auto;
+}
+#title h1 {
+  flex: 0 1 auto;
+  margin: 0;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 #header {
-  background-color: var(--primary-base);
-  color: var(--primary-contrast);
+  background-color: var(--tertiary-base);
+  color: var(--tertiary-contrast);
 }
 
 #content {
-  background-color: var(--secondary-base);
-  color: var(--secondary-contrast);
+  background-color: var(--background-base);
+  color: var(--background-contrast);
+  display: flex;
   flex: 1;
+  flex-direction: column;
+}
+
+#stage {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 0;
 }
 
 #footer {
   background-color: var(--tertiary-base);
   color: var(--tertiary-contrast);
-  margin-top: -2rem;
+}
+
+#modal-mask {
+  background-color: var(--window-base);
+  visibility: hidden;
+  height: 100%;
+  left: 0px;
+  opacity: 0;
+  padding: 0px;
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  transition: opacity 1s;
+}
+
+#modal-mask:has(~ .modal) {
+  opacity: 0.5;
+  visibility: visible;
+}
+
+p {
+  margin: var(--margin) 0 var(--margin) 0;
 }

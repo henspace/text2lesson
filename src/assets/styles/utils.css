@@ -1,0 +1,87 @@
+/**
+ * Styles for utilities
+ */
+@import './utils-menu.css';
+@import './utils-controls.css';
+@import './utils-dialogs.css';
+
+button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/*
+* common selection styles for selectable elements
+* Buttons and inputs are automatically regarded as selectable without the addition
+* of the selectable class.
+*/
+
+button:not(.icon-only-button) {
+  min-width: 4em;
+  text-align: center;
+}
+
+.icon-only-button {
+  background-color: inherit;
+  border: none;
+  color: inherit;
+  font-size: 2rem;
+  padding: 0px;
+  text-align: center;
+  line-height: 2rem;
+}
+
+button,
+input,
+select,
+.selectable,
+.selectable-off {
+  background-color: var(--primary-base);
+  border: none;
+  border-radius: var(--line-thickness);
+  color: var(--primary-contrast);
+  cursor: pointer;
+  font-size: 1rem;
+  list-style-position: inside;
+  margin: var(--margin);
+  min-width: 1rem;
+  min-height: 1rem;
+  outline-offset: var(--outline-offset);
+  outline-color: var(--primary-highlight);
+  outline-width: var(--line-thickness);
+  padding: var(--padding);
+  transition: outline 0.5s;
+}
+
+li.selectable,
+li.selectable-off {
+  background-color: var(--secondary-base);
+  color: var(--secondary-contrast);
+  outline-color: var(--secondary-highlight);
+}
+
+button:hover,
+input:hover,
+select:hover,
+.selectable:hover {
+  outline-style: dotted;
+}
+
+button:focus,
+input:focus,
+select:focus,
+.selectable:focus {
+  outline-style: dashed;
+}
+
+button:hover:focus,
+input:hover:focus,
+select:hover:focus,
+.selectable:hover:focus {
+  outline-style: solid;
+}
+
+.problem-answer p:first-of-type {
+  display: inline-block;
+  margin: 0;
+}

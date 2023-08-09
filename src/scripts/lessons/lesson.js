@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { ItemMarker } from './itemMarker.js';
 
 /**
  * Encapsulation of a lesson.
@@ -35,6 +36,23 @@ export class Lesson {
    */
   #problems = [];
 
+  /**
+   * @type {number}
+   */
+  #problemIndex = 0;
+
+  /**
+   * Marker to keep track of scores
+   * @type {Marker}
+   */
+  #marker = new ItemMarker();
+
+  /**
+   * Create the lesson with scores initialised to zero.
+   */
+  constructor() {
+    this.#marker.reset();
+  }
   /**
    * get the metadata
    * @returns {Metadata}
@@ -52,6 +70,22 @@ export class Lesson {
   }
 
   /**
+   * Get the problems.
+   * @returns {Problem[]}
+   */
+  get problems() {
+    return this.#problems;
+  }
+
+  /**
+   * Get the marks
+   * @return {module:lessons/itemMarker~Marks}
+   */
+  get marks() {
+    return this.#marker.marks;
+  }
+
+  /**
    * Add problem to the lesson.
    * @param {Problem} problem
    */
@@ -60,10 +94,49 @@ export class Lesson {
   }
 
   /**
-   * Get the problems.
-   * @returns {Problem[]}
+   * Reset the problem index
    */
-  get problems() {
-    return this.#problems;
+  restart() {
+    this.#problemIndex = 0;
+  }
+
+  /**
+   * Check if there are more problems.
+   * @returns {boolean} true if more questions remain to be answered.
+   */
+  get hasMoreProblems() {
+    return this.#problemIndex < this.#problems.length;
+  }
+
+  /**
+   * Get next problem.
+   * This advances the internal index.
+   * If there aren't any more, it returns null;
+   * @returns {Problem | null}
+   */
+  getNextProblem() {
+    return this.#problemIndex < this.#problems.length
+      ? this.#problems[this.#problemIndex++]
+      : null;
+  }
+
+  /**
+   * Gets the next problem but without advancing the internal index.
+   * If there aren't any more, it returns null;
+   * @returns {Problem | null}
+   */
+  peekAtNextProblem() {
+    return this.#problemIndex < this.#problems.length
+      ? this.#problems[this.#problemIndex]
+      : null;
+  }
+
+  /**
+   *
+   * @param {Problem} problem
+   * @param {module:lessons/marker.MarkStates} state
+   */
+  markProblem(problem, state) {
+    this.#marker.markItem(problem, state);
   }
 }

@@ -25,18 +25,19 @@
 import { BUILD_INFO } from './data/constants.js';
 import { getSettingDefinitions } from './data/settingDefinitions.js';
 import { getMainMenuItems } from './data/menuItems.js';
-import { WELCOME } from './data/welcome.js';
+import { getWelcome } from './data/welcome.js';
 import { lessonManager } from './lessons/lessonManager.js';
 
-import { setMenuItems } from './libs/utils/userIo/menu.js';
-import { ModalDialog } from './libs/utils/userIo/modalDialog.js';
-import { registerServiceWorker } from './libs/utils/serviceWorkers/serviceWorkersUtilities.js';
-import { resolveLanguages } from './libs/utils/i18n/i18FileResolver.js';
-import { loadSettingDefinitions } from './libs/utils/userIo/settings.js';
-import { setStorageKeyPrefix } from './libs/utils/userIo/settings.js';
-import { i18n } from './libs/utils/i18n/i18n.js';
-import { ManagedElement } from './libs/utils/dom/managedElement.js';
-import { LibraryPresenter } from './lessons/presenters/libraryPresenter.js';
+import { setMenuItems } from './utils/userIo/menu.js';
+import { ModalDialog } from './utils/userIo/modalDialog.js';
+import { registerServiceWorker } from './utils/serviceWorkers/serviceWorkersUtilities.js';
+import { resolveLanguages } from './utils/i18n/i18FileResolver.js';
+import { loadSettingDefinitions } from './utils/userIo/settings.js';
+import { persistentData } from './utils/userIo/storage.js';
+import { i18n } from './utils/i18n/i18n.js';
+import { StageManager } from './lessons/presenters/stageManager.js';
+import { PresenterFactory } from './lessons/presenters/presenterFactory.js';
+import { toast } from './utils/userIo/toast.js';
 
 /**
  * Get the language files required for the application.
@@ -74,7 +75,9 @@ if (BUILD_INFO.isBuilt()) {
 }
 
 window.addEventListener('load', () => {
-  setStorageKeyPrefix(`LR_${BUILD_INFO.bundleName().replace('.', '_')}`);
+  persistentData.setStorageKeyPrefix(
+    `LR_${BUILD_INFO.bundleName().replace('.', '_')}`
+  );
   getLanguages()
     .then(() => lessonManager.loadLibraries('assets/lessons/libraries.json'))
     .then(() => loadSettingDefinitions(getSettingDefinitions()))
@@ -88,26 +91,22 @@ window.addEventListener('load', () => {
     })
     .then(() => setMenuItems(getMainMenuItems()))
     .then(() => {
-      return ModalDialog.showInfo(WELCOME);
+      toast('Debug message for testing');
+      return ModalDialog.showInfo(getWelcome(), i18n`Welcome`);
     })
     .then(() => lessonManager.loadCurrentLibrary())
     .then(() => {
-      return runPresentationLoop();
+      const stage = document.getElementById('stage');
+      return new StageManager(stage).startShow(PresenterFactory.getInitial());
+    })
+    .then(() => {
+      console.warn('Did not expect to get here.');
+      ModalDialog.showInfo(
+        i18n`The application has finished. It will now start again.`
+      ).then(() => window.location.reload());
     })
     .catch((error) => {
       console.error(error);
       ModalDialog.showFatal(error).then(() => window.location.reload());
     });
 });
-
-/**
- * The main pesentation loop.
- */
-async function runPresentationLoop() {
-  const stage = new ManagedElement(document.getElementById('stage'));
-  let presenter = new LibraryPresenter();
-  for (;;) {
-    presenter = await presenter.presentOnStage(stage);
-    stage.removeChildren();
-  }
-}

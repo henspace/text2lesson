@@ -75,16 +75,16 @@ test('get and set wrong answers access property', () => {
   expect(problem.wrongAnswers).toStrictEqual(data);
 });
 
-test('Question type defaults to ACTIVITY', () => {
+test('Question type defaults to SLIDE', () => {
   const problem = new Problem();
-  expect(problem.questionType).toBe(QuestionType.ACTIVITY);
+  expect(problem.questionType).toBe(QuestionType.SLIDE);
 });
 
-test('Question type defaults to ACTIVITY if no question set', () => {
+test('Question type defaults to SLIDE if no question set', () => {
   const problem = new Problem();
   problem.rightAnswers = ['Test'];
   problem.wrongAnswers = ['Test'];
-  expect(problem.questionType).toBe(QuestionType.ACTIVITY);
+  expect(problem.questionType).toBe(QuestionType.SLIDE);
 });
 
 test('Simple question identified correctly.', () => {
@@ -169,7 +169,7 @@ test('Order question identified correctly.', () => {
   expect(lesson.problems[0].questionType).toBe(QuestionType.ORDER);
 });
 
-test('Activity identified correctly if not of fill type and no right answers', () => {
+test('Slide identified correctly if not of fill type and no right answers', () => {
   const source = `
   (?)A question with one correct answer ...one ... blank
   (x)wrong
@@ -177,10 +177,10 @@ test('Activity identified correctly if not of fill type and no right answers', (
   const lessonSource = LessonSource.createFromSource(source);
   const lesson = lessonSource.convertToLesson();
   expect(lesson.problems).toHaveLength(1);
-  expect(lesson.problems[0].questionType).toBe(QuestionType.ACTIVITY);
+  expect(lesson.problems[0].questionType).toBe(QuestionType.SLIDE);
 });
 
-test('Activity identified correctly if no question', () => {
+test('Slide identified correctly if no question', () => {
   const source = `
   (i)Intro
   (=)right answer
@@ -189,15 +189,41 @@ test('Activity identified correctly if no question', () => {
   const lessonSource = LessonSource.createFromSource(source);
   const lesson = lessonSource.convertToLesson();
   expect(lesson.problems).toHaveLength(1);
-  expect(lesson.problems[0].questionType).toBe(QuestionType.ACTIVITY);
+  expect(lesson.problems[0].questionType).toBe(QuestionType.SLIDE);
 });
 
-test('Activity identified correctly if just intro', () => {
+test('Slide identified correctly if just intro', () => {
   const source = `
   (i)Intro
   `;
   const lessonSource = LessonSource.createFromSource(source);
   const lesson = lessonSource.convertToLesson();
   expect(lesson.problems).toHaveLength(1);
-  expect(lesson.problems[0].questionType).toBe(QuestionType.ACTIVITY);
+  expect(lesson.problems[0].questionType).toBe(QuestionType.SLIDE);
+});
+
+test('Extract firstWordsOfRightAnswers extracts correctly', () => {
+  const problem = new Problem();
+  const data = [
+    TextItem.createFromSource('WordOne Test string 1'),
+    TextItem.createFromSource('WordTwo string 2'),
+    TextItem.createFromSource('WordThree string 3'),
+  ];
+  const firstWords = ['WordOne', 'WordTwo', 'WordThree'];
+
+  problem.rightAnswers = data;
+  expect(problem.firstWordsOfRightAnswers).toStrictEqual(firstWords);
+});
+
+test('Extract firstWordsOfWrongAnswers extracts correctly', () => {
+  const problem = new Problem();
+  const data = [
+    TextItem.createFromSource('WordOne Test string 1'),
+    TextItem.createFromSource('WordTwo string 2'),
+    TextItem.createFromSource('WordThree string 3'),
+  ];
+  const firstWords = ['WordOne', 'WordTwo', 'WordThree'];
+
+  problem.wrongAnswers = data;
+  expect(problem.firstWordsOfWrongAnswers).toStrictEqual(firstWords);
 });

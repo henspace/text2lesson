@@ -19,7 +19,7 @@
     "sourceDir": "./src"
   },
   "scripts": {
-    "buildDev": "npm run jsdoc && node ./tools/run-in-env.js -d buildChild",
+    "buildDev": "npm run jsdocCheck && node ./tools/run-in-env.js -d buildChild",
     "buildProd": "npm run test && npm run jsdoc && node ./tools/run-in-env.js -p buildChild",
     "prebuildChild": "node ./tools/prebuild.js",
     "buildChild": "rollup -c",
@@ -27,6 +27,7 @@
     "testAll": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ./src",
     "testWatch": "node --experimental-vm-modules node_modules/jest/bin/jest.js ./src --watch",
+    "jsdocCheck": "jsdoc -c jsdoc.json -t templates/silent",
     "jsdoc": "jsdoc -c jsdoc.json && jsdoc -c jsdoc-build-utils.json",
     "compress": "terser ./build/rapid-qanda.js --compress --comments false --output ./build/rapid-qanda.min.js",
     "lint": "npx eslint ./src/**/*.js",

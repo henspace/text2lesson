@@ -36,11 +36,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { fetchText, fetchJson } from '../libs/utils/jsonUtils/json.js';
+import { fetchText, fetchJson } from '../utils/jsonUtils/json.js';
 import { CachedLesson } from './cachedLesson.js';
 
 /**
- * @typedef {Map<string, LibraryInfo>} this.#librariesInfo - object containing
+ * @typedef {Map<string, LibraryInfo>} Libraries - object containing
  * all available this.#libraries accessible to the application. The keyword is used
  * as a unique identifier for the library.
  */
@@ -107,7 +107,7 @@ import { CachedLesson } from './cachedLesson.js';
 class LessonManager {
   /**
    * Available this.#libraries.
-   * @type {this.#libraries}
+   * @type {Map.<string, Libraries>}
    */
   #libraries = new Map();
   #currentLibraryKey;
@@ -238,9 +238,9 @@ class LessonManager {
     const book = this.#getCurrentBook();
     return {
       libraryKey: this.#currentLibraryKey,
-      file: book.chapters[this.#currentChapterIndex].lessons[
+      file: book?.chapters[this.#currentChapterIndex]?.lessons[
         this.#currentLessonIndex
-      ].file,
+      ]?.file,
       url: url,
       indexes: {
         book: this.#currentBookIndex,
@@ -248,13 +248,13 @@ class LessonManager {
         lesson: this.#currentLessonIndex,
       },
       titles: {
-        library: this.#libraries.get(this.#currentLibraryKey).title,
-        book: book.title,
-        chapter: book.chapters[this.#currentChapterIndex].title,
+        library: this.#libraries.get(this.#currentLibraryKey)?.title,
+        book: book?.title,
+        chapter: book?.chapters[this.#currentChapterIndex]?.title,
         lesson:
-          book.chapters[this.#currentChapterIndex].lessons[
+          book?.chapters[this.#currentChapterIndex]?.lessons[
             this.#currentLessonIndex
-          ].title,
+          ]?.title,
       },
     };
   }
@@ -287,21 +287,36 @@ class LessonManager {
 
   /**
    * Ensure all indexes are within the bounds of the library's contents.
-   * ANy invalid index is set to 0.
+   * Any invalid index is set to 0.
+   * If library.books is not set, not indexes are adjusted.
    */
   #ensureIndexesValid() {
     const library = this.#libraries.get(this.#currentLibraryKey);
-    if (this.#currentBookIndex >= library.books.length) {
+
+    if (this.#indexInvalid(this.#currentBookIndex, library?.books)) {
       this.#currentBookIndex = 0;
     }
-    const book = library.books[this.#currentBookIndex];
-    if (this.#currentChapterIndex >= book.chapters.length) {
+    const book = library?.books[this.#currentBookIndex];
+    if (this.#indexInvalid(this.#currentChapterIndex, book?.chapters)) {
       this.#currentChapterIndex = 0;
     }
-    const chapter = book.chapters[this.#currentChapterIndex];
-    if (this.#currentLessonIndex >= chapter.lessons.length) {
+    const chapter = book?.chapters[this.#currentChapterIndex];
+    if (this.#indexInvalid(this.#currentLessonIndex, chapter?.lessons.length)) {
       this.#currentLessonIndex = 0;
     }
+  }
+
+  /** Check if index is invalid.
+   * It is regarded as invalid if it is out of the bounds of the array.
+   * If the array is null or undefined, then then index is _NOT_ regarded as
+   * invalid.
+   * @returns {boolean}
+   */
+  #indexInvalid(index, arrayData) {
+    if (arrayData === null || arrayData === undefined) {
+      return false;
+    }
+    return isNaN(index) || index < 0 || index >= arrayData.length;
   }
 
   /**

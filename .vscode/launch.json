@@ -15,7 +15,7 @@
       "runtimeArgs" :["--trace-warnings", "--experimental-vm-modules", "--inspect-brk"],
       "console":"integratedTerminal",
       "args": [
-        "${fileBasenameNoExtension}",
+        "/${fileBasenameNoExtension}",
         "--runInBand"
       ]
     }

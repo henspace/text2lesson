@@ -1,6 +1,6 @@
 /**
  * @file Utility functions for dealing with files
- * @module
+ * @module tools/file-utils
  *
  * @license GPL-3.0-or-later
  * Lesson RunnerCreate quizzes and lessons from plain text files.
@@ -31,7 +31,7 @@ import * as crypto from 'node:crypto';
  *  replaceAll method is used, so the Regex must be global.
  * @property {string} sub - the substitution value. The JavaScript
  *  replaceAll method is used, so captured groups can be used.
- * @property {!string | string[]} fileType - the filetypes that the replacement
+ * @property {!string | string[]} filetype - the filetypes that the replacement
  *  applies to. This is effectively the uppercase file extension without the
  *  dot.
  */
@@ -102,6 +102,18 @@ export class StringTransformer {
     return Buffer.from(contents, 'utf-8');
   }
 }
+
+/**
+ * CSS transformer. This removes comments except those where the starting comment
+ * marker is immediately followed by an exclamation mark; i.e /*!
+ */
+export const CSS_TRANSFORMER = new StringTransformer([
+  {
+    search: /\/\*[^!](?:.|\s)*?\*\//gm,
+    sub: '',
+    filetype: 'CSS',
+  },
+]);
 
 /**
  * Wrapper for StringTransformer which collects replacements i18n strings and

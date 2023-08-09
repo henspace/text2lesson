@@ -22,27 +22,37 @@
  *
  */
 import { lessonManager } from '../lessonManager.js';
-import { Presenter } from './presenter.js';
-import { BookPresenter } from './bookPresenter.js';
+import { ListPresenter } from './listPresenter.js';
 
 /**
  * Class to present a library.
  * Presentation of a library involves displaying all of the books available in
  * the library.
+ * @extends module:lessons/presenters/listPresenter.ListPresenter
  */
-export class LibraryPresenter extends Presenter {
+export class LibraryPresenter extends ListPresenter {
   /**
    * Construct.
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
-  constructor() {
-    super('libraryPresenter', {
-      titles: lessonManager.bookTitles,
-      itemClassName: 'book',
-      next: (index) => {
-        lessonManager.bookIndex = index;
-        return Promise.resolve(new BookPresenter(index));
-      },
-      hideBackButton: true,
-    });
+  constructor(config) {
+    config.titles = lessonManager.bookTitles;
+    config.className = 'library-presenter';
+    config.itemClassName = 'book';
+    super(config);
+    this.setupKeyboardNavigation();
+  }
+  /**
+   * @override
+   */
+  next(index) {
+    lessonManager.bookIndex = index;
+    return this.config.factory.getNext(this, this.config);
+  }
+  /**
+   * @override
+   */
+  previous() {
+    return this.config.factory.getPrevious(this, this.config);
   }
 }

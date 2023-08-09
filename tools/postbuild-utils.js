@@ -64,6 +64,7 @@ export function compress(filePath, transformer) {
     },
     compress: {
       defaults: true,
+      keep_classnames: true,
     },
     mangle: false,
   };
@@ -117,12 +118,13 @@ export function generateServiceWorker() {
 }
 
 /**
- * Get a Replacement object suitable for replacing the script name in a script
- * tag. Note the script name is used for the search but the entire path will be
- * replaced.
+ * Get a {@link module:tools/file-utils~Replacement} object suitable for replacing
+ * the script name in a script tag. Note the script name is used for the search
+ * but the entire path will be replaced.
  * @param {string} scriptName - name to find and replace
  * @param {string} replacementName - the substitution name
  * @param {string} filetype - the filetype this substitution will be applied to.
+ * @returns {module:tools/file-utils~Replacement}
  */
 export function getScriptReplacement(scriptName, replacementName, filetype) {
   const scriptNameEscaped = scriptName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -140,7 +142,7 @@ export function getScriptReplacement(scriptName, replacementName, filetype) {
 
 /**
  * Copy HTML file to the build folder.
- * References to the entry script are replace by the bundled script name.
+ * References to the entry script are replaced by the bundled script name.
  * @param {string} htmlFilePath - path to the html file to copy.
  * @return {Promise} Fulfills to the target path of the resulting file.
  */
@@ -163,6 +165,8 @@ export function copyHtmlFileToBuildRoot(htmlFilePath) {
 /** Extract a header block from the content. The header block is the first
  * javascript comment block that begins with /**. Each line is expected to start
  * with a * character as with normal JSDoc blocks.
+ * @param {string} content - the text to search
+ * @returns {string} the header.
  */
 export function extractHeader(content) {
   const lines = content.split('\n');
@@ -202,6 +206,12 @@ export function extractHeader(content) {
   return header.join('\n');
 }
 
+/**
+ * Transpile the code using Babel. Configuration options are picked up from
+ * 'babel.config.json' file by Babel.
+ * @param {string} filepath
+ * @returns
+ */
 export function transpile(filepath) {
   return babel
     .transformFileAsync(filepath)

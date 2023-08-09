@@ -42,9 +42,8 @@ const { mkdir, readdir, readFile, rm, writeFile } = await import(
   'node:fs/promises'
 );
 
-const { FileManager, StringTransformer, doFiletypesMatch } = await import(
-  './file-utils.js'
-);
+const { CSS_TRANSFORMER, FileManager, StringTransformer, doFiletypesMatch } =
+  await import('./file-utils.js');
 
 /** Name of subdirectory */
 const SUBDIR = 'subdir';
@@ -203,6 +202,10 @@ describe('StringTransformer tests', () => {
   test(
     'transform correctly replaces text matching regular expression',
     stringTransformerTransformTest
+  );
+  test(
+    'CSS transform correctly replaces text matching regular expression',
+    cssTransformTest
   );
 });
 
@@ -612,4 +615,22 @@ function stringTransformerTransformTest() {
 
   expect(contents.match(/<dir>/g).length).toBe(3);
   expect(contents.match(/!DIR!/g)).toBeNull();
+}
+
+function cssTransformTest() {
+  const TRANSFORMS_TEXT = `
+  /* remove*/
+  keep
+  /* remove
+   * remove
+   * remove
+   */
+  keep
+  `;
+  const bufferIn = Buffer.from(TRANSFORMS_TEXT);
+
+  var bufferOut = CSS_TRANSFORMER.transform(bufferIn, 'CSS');
+  var contents = bufferOut.toString('utf-8');
+  expect(contents.match(/remove/g)).toBeNull();
+  expect(contents.match(/keep/g).length).toBe(2);
 }

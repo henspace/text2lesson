@@ -1,0 +1,21 @@
+/**
+ * Icon values for use in :before and :after  pseudo elements.
+ * Based on Font Awesome 6
+ */
+:root {
+  --icon-font-family: 'Font Awesome 6 Free';
+  --icon-font-weight: var(--icon-font-weight);
+  --icon-unchecked-bullet: '\f192';
+  --icon-checked-bullet: '\f111';
+  --icon-correct: '\f14a';
+  --icon-incorrect: '\f2d3';
+  --icon-flagged: '\f024';
+  --icon-book: '\f02d';
+  --icon-chapter: '\f518';
+  --icon-lesson: '\f022';
+  --icon-problem: '\f05a';
+
+  --icon-privacy: '\f21b';
+  --icon-settings: '\f013';
+  --icon-warning: '\f071';
+}

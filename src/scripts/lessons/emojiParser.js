@@ -21,8 +21,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { i18n } from '../libs/utils/i18n/i18n.js';
-import { getErrorAttributeHtml } from '../libs/utils/errorHandling/errors.js';
+import { i18n } from '../utils/i18n/i18n.js';
+import { getErrorAttributeHtml } from '../utils/errorHandling/errors.js';
 
 /**
  * Array of predefined emojis. All keys must be in lowercase. Do not use underscores

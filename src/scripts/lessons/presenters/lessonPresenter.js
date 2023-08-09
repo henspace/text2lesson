@@ -1,7 +1,7 @@
 /**
  * @file Lesson Presenter
  *
- * @module lessons\presenters\lessonPresenter
+ * @module lessons/presenters/lessonPresenter
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -22,44 +22,61 @@
  *
  */
 
-import { Presenter } from './presenter.js';
-import { ProblemPresenter } from './problemPresenter.js';
-import { ChapterPresenter } from './chapterPresenter.js';
+import { ListPresenter } from './listPresenter.js';
 import { lessonManager } from '../lessonManager.js';
 import { LessonSource } from '../lessonSource.js';
+import { escapeHtml } from '../../utils/text/textProcessing.js';
 
 /**
  * Class to present a Lesson.
  * Presentation of a Lesson involves displaying the lesson summary.
+ * @extends module:lessons/presenters/presenter.Presenter
  */
-export class LessonPresenter extends Presenter {
+export class LessonPresenter extends ListPresenter {
+  /**
+   * @type {module:lessons/lessonManager~LessonInfo}
+   */
+  #lessonInfo;
   /**
    * Construct.
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
-  constructor() {
-    const lessonInfo = lessonManager.currentLessonInfo;
-    super('lessonPresenter', {
-      titles: [
-        lessonInfo.titles.library,
-        lessonInfo.titles.book,
-        lessonInfo.titles.chapter,
-        lessonInfo.titles.lesson,
-      ],
-      itemClassName: 'lessonTitle',
-      next: (indexIgnored) => {
-        return lessonManager.loadCurrentLesson().then((cachedLesson) => {
-          const lessonSource = LessonSource.createFromSource(
-            cachedLesson.content
-          );
-          return new ProblemPresenter(0, lessonSource.convertToLesson());
-        });
-      },
-      previous: () => {
-        const currentLessonInfo = lessonManager.currentLessonInfo;
-        return Promise.resolve(
-          new ChapterPresenter(currentLessonInfo.indexes.chapter)
-        );
-      },
+  constructor(config) {
+    config.titles = ['placeholder']; // this will be replaced later.
+    config.className = 'lesson-presenter';
+    config.itemClassName = 'lessonTitle';
+    super(config);
+    this.#lessonInfo = lessonManager.currentLessonInfo;
+    this.#buildCustomContent();
+    this.setupKeyboardNavigation();
+  }
+
+  /**
+   * Build custom content for the lesson.
+   */
+  #buildCustomContent() {
+    const li = this.element.querySelector('li');
+    li.innerHTML = `
+      <p>${escapeHtml(this.#lessonInfo.titles.library)}</p>
+      <p>${escapeHtml(this.#lessonInfo.titles.book)}</p>
+      <p>${escapeHtml(this.#lessonInfo.titles.chapter)}</p>
+      <p>${escapeHtml(this.#lessonInfo.titles.lesson)}</p>
+    `;
+  }
+  /**
+   * @override
+   */
+  next(indexIgnored) {
+    return lessonManager.loadCurrentLesson().then((cachedLesson) => {
+      const lessonSource = LessonSource.createFromSource(cachedLesson.content);
+      this.config.lesson = lessonSource.convertToLesson();
+      return this.config.factory.getNext(this, this.config);
     });
+  }
+  /**
+   * @override
+   */
+  previous() {
+    return this.config.factory.getPrevious(this, this.config);
   }
 }

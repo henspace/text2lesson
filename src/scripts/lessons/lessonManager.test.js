@@ -25,7 +25,7 @@
 import { CachedLesson } from './cachedLesson.js';
 import { jest, test, expect, beforeAll, beforeEach } from '@jest/globals';
 
-jest.unstable_mockModule('../libs/utils/jsonUtils/json.js', () => ({
+jest.unstable_mockModule('../utils/jsonUtils/json.js', () => ({
   fetchJson: jest.fn(() => {
     console.log('Mocking fetch');
     return Promise.reject(new Error('response needs to be set.'));
@@ -35,7 +35,7 @@ jest.unstable_mockModule('../libs/utils/jsonUtils/json.js', () => ({
   ),
 }));
 
-const json = await import('../libs/utils/jsonUtils/json.js');
+const json = await import('../utils/jsonUtils/json.js');
 const { lessonManager } = await import('./lessonManager.js');
 
 const libraries = {

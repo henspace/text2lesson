@@ -21,9 +21,9 @@
  */
 
 import * as textItemParser from './textItem.js';
-import * as obfuscator from '../libs/utils/text/obfuscator.js';
+import * as obfuscator from '../utils/text/obfuscator.js';
 import * as emoji from './emojiParser.js';
-import { unescapeAttribute } from '../libs/utils/errorHandling/errors.js';
+import { unescapeAttribute } from '../utils/errorHandling/errors.js';
 import { Metadata } from './metadata.js';
 
 import { test, expect } from '@jest/globals';
@@ -300,4 +300,24 @@ test('Null is replaced by unicode replacement character when passed in', () => {
   const source = 'Testing \0 Null';
   const textitem = textItemParser.TextItem.createFromSource(source);
   expect(textitem.html).toMatch('Testing \ufffd Null');
+});
+
+test('Extract first word correctly finds first word in html', () => {
+  const firstWord = 'TheFirstWord';
+  const source = `\n\n${firstWord} from sentence\n\n`;
+  const textitem = textItemParser.TextItem.createFromSource(source);
+  expect(textitem.firstWord).toEqual(firstWord);
+});
+
+test('Extract first word correctly finds first word in html ignoring formatting', () => {
+  const firstWord = 'TheFirstWord';
+  const source = `\n\n_${firstWord}_ from sentence\n\n`;
+  const textitem = textItemParser.TextItem.createFromSource(source);
+  expect(textitem.firstWord).toEqual(firstWord);
+});
+test('Extract first word correctly finds first word in html ignoring formatting around whole sentence', () => {
+  const firstWord = 'TheFirstWord';
+  const source = `\n\n_${firstWord} from sentence_\n\n`;
+  const textitem = textItemParser.TextItem.createFromSource(source);
+  expect(textitem.firstWord).toEqual(firstWord);
 });

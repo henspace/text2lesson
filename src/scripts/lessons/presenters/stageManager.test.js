@@ -41,9 +41,9 @@ beforeEach(() => {
 });
 
 test('startShow waits until presenter fulfils to null', () => {
-  const presenterA = new Presenter();
-  const presenterB = new Presenter();
-  const presenterC = new Presenter();
+  const presenterA = new Presenter({});
+  const presenterB = new Presenter({});
+  const presenterC = new Presenter({});
   const spyA = jest.spyOn(presenterA, 'presentOnStage');
   const spyB = jest.spyOn(presenterB, 'presentOnStage');
   const spyC = jest.spyOn(presenterC, 'presentOnStage');
@@ -60,9 +60,9 @@ test('startShow waits until presenter fulfils to null', () => {
 });
 
 test('startShow clears stage content before each presentation and on fulfilment', () => {
-  const presenterA = new Presenter();
-  const presenterB = new Presenter();
-  const presenterC = new Presenter();
+  const presenterA = new Presenter({});
+  const presenterB = new Presenter({});
+  const presenterC = new Presenter({});
   const spyA = jest.spyOn(presenterA, 'presentOnStage');
   const spyB = jest.spyOn(presenterB, 'presentOnStage');
   const spyC = jest.spyOn(presenterC, 'presentOnStage');

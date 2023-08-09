@@ -22,6 +22,7 @@
  */
 
 import { Lesson } from './lesson.js';
+import { MarkState } from './itemMarker.js';
 import { Problem } from './problem.js';
 import { test, expect } from '@jest/globals';
 
@@ -33,7 +34,7 @@ test('metadata set and get access metadata property', () => {
   expect(lesson.metadata).toBe(metadata);
 });
 
-test('addProblem add to array of problems.', () => {
+test('addProblem adds to array of problems.', () => {
   const lesson = new Lesson();
   for (let n = 0; n < 4; n++) {
     const problem = new Problem();
@@ -44,5 +45,93 @@ test('addProblem add to array of problems.', () => {
   expect(problems).toHaveLength(4);
   problems.forEach((value, index) => {
     expect(value.intro).toBe(`intro${index}`);
+  });
+});
+
+test('problem index starts at problem zero', () => {
+  const lesson = new Lesson();
+  const testProblems = [];
+  for (let n = 0; n < 4; n++) {
+    const problem = new Problem();
+    problem.intro = `intro${n}`;
+    lesson.addProblem(problem);
+    testProblems.push(problem);
+  }
+  expect(lesson.getNextProblem()).toBe(testProblems[0]);
+});
+
+test('getNextProblem traverses problems and returns null when no more', () => {
+  const lesson = new Lesson();
+  const testProblems = [];
+  for (let n = 0; n < 4; n++) {
+    const problem = new Problem();
+    problem.intro = `intro${n}`;
+    lesson.addProblem(problem);
+    testProblems.push(problem);
+  }
+  testProblems.forEach((value) => {
+    expect(lesson.getNextProblem()).toBe(value);
+  });
+  expect(lesson.getNextProblem()).toBeNull();
+});
+
+test('restart sets index back to zero', () => {
+  const lesson = new Lesson();
+  const testProblems = [];
+  for (let n = 0; n < 4; n++) {
+    const problem = new Problem();
+    problem.intro = `intro${n}`;
+    lesson.addProblem(problem);
+    testProblems.push(problem);
+  }
+  lesson.getNextProblem();
+  lesson.getNextProblem();
+  lesson.restart();
+  expect(lesson.getNextProblem()).toBe(testProblems[0]);
+});
+
+test('hasMoreProblems checks to see if there are more questions', () => {
+  const lesson = new Lesson();
+  const testProblems = [];
+  for (let n = 0; n < 4; n++) {
+    const problem = new Problem();
+    problem.intro = `intro${n}`;
+    lesson.addProblem(problem);
+    testProblems.push(problem);
+  }
+  for (let index = 0; index < testProblems.length; index++) {
+    expect(lesson.hasMoreProblems).toBe(true);
+    lesson.getNextProblem();
+  }
+  expect(lesson.hasMoreProblems).toBe(false);
+});
+
+test('markProblem adjusts marks', () => {
+  const lesson = new Lesson();
+  expect(lesson.marks).toStrictEqual({
+    correct: 0,
+    incorrect: 0,
+    skipped: 0,
+    markedItems: [],
+  });
+  const markedProblems = [
+    { state: MarkState.CORRECT, item: { value: 'test1' } },
+    { state: MarkState.INCORRECT, item: { value: 'test2' } },
+    { state: MarkState.INCORRECT, item: { value: 'test3' } },
+    { state: MarkState.SKIPPED, item: { value: 'test4' } },
+    { state: MarkState.SKIPPED, item: { value: 'test5' } },
+    { state: MarkState.SKIPPED, item: { value: 'test6' } },
+  ];
+  markedProblems.forEach((data) => {
+    lesson.markProblem(data.item, data.state);
+  });
+  const marks = lesson.marks;
+  expect(marks.markedItems).toHaveLength(markedProblems.length);
+  expect(marks.correct).toEqual(1);
+  expect(marks.incorrect).toEqual(2);
+  expect(marks.skipped).toEqual(3);
+  markedProblems.forEach((data, index) => {
+    expect(marks.markedItems[index].state).toEqual(data.state);
+    expect(marks.markedItems[index].item).toEqual(data.item);
   });
 });
