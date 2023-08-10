@@ -172,6 +172,16 @@ export class TextItem {
   }
 
   /**
+   * Get a plain text version
+   */
+  get plainText() {
+    return this.#html
+      .replace(/<(?:[^>]*missing-word[^>]*)>/g, '...')
+      .replace(/<[^>]*>/g, '')
+      .replace(/\s+/g, ' ');
+  }
+
+  /**
    * Get the missing words.
    * @returns {string[]}
    * */

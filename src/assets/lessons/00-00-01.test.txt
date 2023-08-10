@@ -1,1 +1,4 @@
 EN test 00-00-01
+(?) test
+(=) yes
+(+) no

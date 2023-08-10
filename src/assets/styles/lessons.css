@@ -14,7 +14,7 @@ a.problem {
   text-decoration: none;
 }
 
-.problem-presenter .button-bar {
+.Presenter .button-bar {
   text-align: center;
 }
 
@@ -85,30 +85,55 @@ a.problem {
 }
 
 /** List markers for presenter */
-.library-presenter li::marker {
+li.library::marker {
+  content: var(--icon-library) ' ';
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+}
+
+li.book::marker {
   content: var(--icon-book) ' ';
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
 }
 
-.book-presenter li::marker {
+li.chapter::marker {
   content: var(--icon-chapter) ' ';
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
 }
 
-.chapter-presenter li::marker {
+li.lesson::marker {
   content: var(--icon-lesson) ' ';
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
 }
-.lesson-presenter li::marker {
+li.problem::marker {
   content: var(--icon-problem) ' ';
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
 }
 
-#stage ul {
+.MarksPresenter li.correct::marker {
+  content: var(--icon-correct) ' ';
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+}
+
+.MarksPresenter li.incorrect::marker {
+  content: var(--icon-incorrect) ' ';
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+}
+
+.MarksPresenter li.skipped::marker {
+  content: var(--icon-skipped) ' ';
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+}
+
+ul.presentation,
+.problem-answers ul {
   padding: 0;
 }
 
@@ -117,6 +142,6 @@ a.problem {
   flex-direction: column;
   flex: 1;
 }
-.problem-question.expanded {
+.presentation.expanded {
   flex: 1;
 }

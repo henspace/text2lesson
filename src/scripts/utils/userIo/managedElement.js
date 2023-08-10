@@ -147,6 +147,20 @@ export class ManagedElement {
     return this.#element.classList;
   }
 
+   /**
+   * Get the inner element's className
+   */
+   get className() {
+    return this.#element.className;
+  }
+
+  /**
+   * Set the inner element's className
+   */
+  set className(value) {
+    this.#element.className = value;
+  }
+
   /**
    * Hide the element
    */
@@ -195,11 +209,11 @@ export class ManagedElement {
    * Append child. These are removed when this is removed.
    * @param {module:utils/userIo/managedElement.ManagedElement} managedElement
    * @param {string | number} childId - id for child/
-   * @returns {module:utils/userIo/managedElement.ManagedElement} element as received to allow chaining
+   * @returns {module:utils/userIo/managedElement.ManagedElement | Element} element as received to allow chaining
    */
   insertChildAtTop(managedElement) {
     this.#element.insertBefore(
-      managedElement.element,
+      managedElement.element ?? managedElement,
       this.#element.firstChild
     );
     this.#children.push(managedElement);
@@ -210,11 +224,11 @@ export class ManagedElement {
    * Add an element to another existing DOM element. The child is added to a list of
    * elements that are removed when this element is removed. The parent, as it
    * is prexisting, is not touched on removal.
-   * @param {module:utils/userIo/managedElement.ManagedElement} managedElement
+   * @param {module:utils/userIo/managedElement.ManagedElement | Element} managedElement
    * @param {Element} parent - parent to which the element is added.
    */
   appendChildTo(managedElement, parent) {
-    parent.appendChild(managedElement.element);
+    parent.appendChild(managedElement.element ?? managedElement);
     this.#children.push(managedElement);
   }
 
@@ -385,6 +399,7 @@ export class ManagedElement {
     this.#element.focus();
   }
 
+ 
   /**
    * Gets an attribute previous set by setSafeAttribute.
    * Unlike the instance method, this retrieves it from a Element. This
@@ -396,5 +411,13 @@ export class ManagedElement {
    */
   static getSafeAttribute(element, name) {
     return ManagedElement.decodeString(element.getAttribute(name));
+  }
+
+  /**
+   * Get the underlying element from either a ManagedElement or Element
+    @param {Element | module:utils/userIo/managedElement.ManagedElement} item - the Element or ManagedElement
+   */
+  static getElement(item) {
+    return item.element ?? item;
   }
 }

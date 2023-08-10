@@ -28,10 +28,12 @@
 .display-card {
   box-shadow: var(--margin) var(--margin) rgba(128, 128, 128, 0.5);
   background-color: var(--secondary-base);
+  clip-path: polygon(2% 2%, 100% 0, 97% 97%, 0 100%);
   color: var(--secondary-contrast);
   min-height: 10vh;
   max-height: 80vh;
   overflow: auto;
+  padding: 1rem;
   position: relative;
   width: 100%;
   visibility: hidden;

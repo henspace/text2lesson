@@ -84,14 +84,18 @@ export class SlideProblemPresenter extends ProblemPresenter {
     super(config);
     this.#buildSlideShow();
     this.submitButton.hide();
-    this.nextButton.hide();
   }
 
+  /**
+   * Build the content.
+   */
   #buildSlideShow() {
-    this.#cards = new DisplayCards(this.problem.intro.html);
+    this.#cards = new DisplayCards(
+      this.problem.intro.html || this.problem.question.html
+    );
     this.#visualCard = new ManagedElement('div', 'display-card');
     this.questionElement.appendChild(this.#visualCard);
-    this.onlyUseQuestionElement();
+    this.expandPresentation();
     this.#addMediaButtons();
   }
 
@@ -118,7 +122,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
   #addButtonToButtonBar(button, icon, eventId) {
     icons.applyIconToElement(icon, button.element);
     this.listenToEventOn('click', button, eventId); // numeric handler means this will resolve the presenter.
-    this.addButton(button);
+    this.addButtonToBar(button);
   }
 
   /**
@@ -140,6 +144,14 @@ export class SlideProblemPresenter extends ProblemPresenter {
       return;
     }
     this.#visualCard.innerHTML = this.#cards.getNext();
+    const cardRect = this.#visualCard.element.getBoundingClientRect();
+    const presentationRect = this.presentation.element.getBoundingClientRect();
+    const verticalSpace = presentationRect.height - cardRect.height;
+    if (verticalSpace > 0) {
+      this.#visualCard.element.style.marginTop = `${Math.floor(
+        verticalSpace / 2
+      )}px`;
+    }
     if (this.#visualCard.classList.contains('card-offscreen')) {
       this.#visualCard.classList.replace('card-offscreen', 'card-onscreen');
     } else {
@@ -169,8 +181,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
       this.#pauseButton.hide();
       this.#playButton.hide();
       this.#skipButton.hide();
-      this.nextButton.show();
-      this.nextButton.focus();
+      this.showNextButton(true);
       return true;
     }
     return false;

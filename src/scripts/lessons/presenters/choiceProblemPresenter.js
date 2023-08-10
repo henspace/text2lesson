@@ -42,12 +42,16 @@ import {
  */
 export class ChoiceProblemPresenter extends ProblemPresenter {
   /**
+   * @type {module:utils/userIo/ManagedElement.ManagedElement}
+   */
+  #answerListElement;
+
+  /**
    * Construct.
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
     super(config);
-    this.nextButton.hide();
     this.#buildSimpleOrMultiple();
   }
 
@@ -63,19 +67,13 @@ export class ChoiceProblemPresenter extends ProblemPresenter {
   }
 
   /**
-   * Append the question element.
-   * @private
-   */
-  #populateQuestion() {}
-
-  /**
    * Append the answers.
    * @private
    */
   #buildAnswers() {
-    this.answerListElement = new ManagedElement('ul');
-    this.answerElement.appendChild(this.answerListElement);
-    this.answerListElement.setAttributes({
+    this.#answerListElement = new ManagedElement('ul');
+    this.answerElement.appendChild(this.#answerListElement);
+    this.#answerListElement.setAttributes({
       'aria-label': i18n`Possible answers`,
       'aria-role':
         this.problem.questionType === QuestionType.MULTI ? '' : 'radiogroup',
@@ -87,12 +85,12 @@ export class ChoiceProblemPresenter extends ProblemPresenter {
     shuffle(answers);
 
     answers.forEach((element) => {
-      this.answerListElement.appendChild(element);
+      this.#answerListElement.appendChild(element);
       this.listenToEventOn('click', element, ElementId.CLICKED_ANSWER);
       this.listenToEventOn('keydown', element, ElementId.CLICKED_ANSWER);
     });
 
-    setTimeout(() => this.answerListElement.children[0].focus());
+    setTimeout(() => this.#answerListElement.children[0].focus());
   }
 
   /**

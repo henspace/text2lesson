@@ -38,7 +38,6 @@ export class BookPresenter extends ListPresenter {
    */
   constructor(config) {
     config.titles = lessonManager.chapterTitles;
-    config.className = 'book-presenter';
     config.itemClassName = 'chapter';
     super(config);
     this.setupKeyboardNavigation();
@@ -49,12 +48,6 @@ export class BookPresenter extends ListPresenter {
    */
   next(index) {
     lessonManager.chapterIndex = index;
-    return this.config.factory.getNext(this, this.config);
-  }
-  /**
-   * @override
-   */
-  previous() {
-    return this.config.factory.getPrevious(this, this.config);
+    return super.next(index);
   }
 }

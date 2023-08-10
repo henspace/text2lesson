@@ -22,8 +22,7 @@
  *
  */
 
-import { Presenter, PREVIOUS_ID } from './presenter.js';
-import { icons } from '../../utils/userIo/icons.js';
+import { Presenter } from './presenter.js';
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
 
 /**
@@ -32,24 +31,15 @@ import { ManagedElement } from '../../utils/userIo/managedElement.js';
  */
 
 export class ListPresenter extends Presenter {
-  #list;
-
   /**
    * Construct simple list presenter
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
-    super(config, 'div');
+    super(config, 'ul');
     this.#buildContent();
   }
 
-  /**
-   * Get the list managed element.
-   * @returns {module:utils/userIo/managedElement.ManagedElement}
-   */
-  get listManagedElement() {
-    return this.#list;
-  }
   /**
    * Build the presenter content.
    * If the config includes the `previous` function, a back button is automatically
@@ -57,31 +47,17 @@ export class ListPresenter extends Presenter {
    * @private
    */
   #buildContent() {
-    this.#list = new ManagedElement('ul');
     this.config?.titles?.forEach((title, index) => {
       const itemElement = new ManagedElement('li', this.config.itemClassName);
       itemElement.setAttribute('tabindex', '0');
       itemElement.classList.add('selectable');
-      //this.appendChild(itemElement);
-      this.#list.appendChild(itemElement);
+      this.presentation.appendChild(itemElement);
       itemElement.element.textContent = title;
       this.listenToEventOn('click', itemElement, index);
     });
 
-    this.appendChild(this.#list);
     if (this.config?.factory?.hasPrevious(this)) {
-      this.#appendBackButton();
+      this.showBackButton();
     }
-  }
-
-  /**
-   * Append a backbutton.
-   * @private
-   */
-  #appendBackButton() {
-    const backElement = new ManagedElement('button', 'backNavigation');
-    this.appendChild(backElement);
-    icons.applyIconToElement(icons.back, backElement.element);
-    this.listenToEventOn('click', backElement, PREVIOUS_ID);
   }
 }

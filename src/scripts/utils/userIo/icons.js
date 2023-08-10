@@ -22,6 +22,7 @@
  */
 
 import { i18n } from '../i18n/i18n.js';
+import { ManagedElement } from './managedElement.js';
 
 /**
  * HTML semantic roles for tagnames.
@@ -44,110 +45,124 @@ const HTML_SEMANTIC_ROLES = {
  * resolving i18n strings prior to the resolution of languages.
  */
 class IconGenerator {
+  #cache = new Map();
+
+  /**
+   * Get the icon key from css
+   * @returns html for icon or !? if not found.
+   */
+  #getIconHtml(key) {
+    if (!this.#cache.has(key)) {
+      const cssValue = getComputedStyle(
+        document.documentElement
+      ).getPropertyValue(key);
+      this.#cache.set(key, cssValue.substring(1, cssValue.length - 1));
+    }
+    return this.#cache.get(key) ?? '!?';
+  }
+
   /** @returns {IconDetails} information for icon */
   get back() {
     return {
-      content: '<i class="fa-solid fa-left-long"></i>',
+      content: this.#getIconHtml('--icon-back-nav-html'), // '<i class="fa-solid fa-left-long"></i>',
       accessibleName: i18n`Back`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get cancel() {
     return {
-      content: '<i class="fa-solid fa-xmark"></i>',
+      content: this.#getIconHtml('--icon-cancel-html'),
       accessibleName: i18n`Cancel`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get closeMenu() {
     return {
-      content: '<i class="fa-solid fa-circle-xmark"></i>',
+      content: this.#getIconHtml('--icon-close-menu-html'),
       accessibleName: i18n`Close menu`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get forward() {
     return {
-      content: '<i class="fa-solid fa-right-long"></i>',
+      content: this.#getIconHtml('--icon-forward-nav-html'),
       accessibleName: i18n`Forward`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get nextProblem() {
     return {
-      content: '<i class="fa-solid fa-right-long"></i>',
+      content: this.#getIconHtml('--icon-next-problem-html'),
       accessibleName: i18n`Continue`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get flag() {
     return {
-      content: '<i class="fa-solid fa-flag"></i>',
+      content: this.#getIconHtml('--icon-flagged-html'),
       accessibleName: i18n`Flag`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get no() {
     return {
-      content: '<i class="fa-solid fa-thumbs-down"></i>',
+      content: this.#getIconHtml('--icon-no-html'),
       accessibleName: i18n`No`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get ok() {
     return {
-      content: '<i class="fa-solid fa-check"></i>',
+      content: this.#getIconHtml('--icon-ok-html'),
       accessibleName: i18n`OK`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get pause() {
     return {
-      content: '<i class="fa-solid fa-pause"></i>',
+      content: this.#getIconHtml('--icon-pause-html'),
       accessibleName: i18n`Pause`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get play() {
     return {
-      content: '<i class="fa-solid fa-play"></i>',
+      content: this.#getIconHtml('--icon-play-html'),
       accessibleName: i18n`Play`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get resetToFactory() {
     return {
-      content:
-        '<i class="fa-solid fa-right-long"></i> <i class="fa-solid fa-industry"/></i>',
+      content: this.#getIconHtml('--icon-reset-to-factory-html'),
       accessibleName: i18n`Factory reset`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get skip() {
     return {
-      content: '<i class="fa-solid fa-forward-step"></i>',
+      content: this.#getIconHtml('--icon-skip-html'),
       accessibleName: i18n`Skip`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get submitAnswer() {
     return {
-      content:
-        '<i class="fa-solid fa-right-long"></i> <i class="fa-solid fa-list-check"></i>',
+      content: this.#getIconHtml('--icon-submit-answer-html'),
       accessibleName: i18n`Check answer`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get openMenu() {
     return {
-      content: '<i class="fa-solid fa-bars"></i>',
+      content: this.#getIconHtml('--icon-open-menu-html'),
       accessibleName: i18n`Open menu`,
     };
   }
   /** @returns {IconDetails} information for icon */
   get yes() {
     return {
-      content: '<i class="fa-solid fa-thumbs-up"></i>',
+      content: this.#getIconHtml('--icon-yes-html'),
       accessibleName: i18n`Yes`,
     };
   }
@@ -174,12 +189,13 @@ class IconGenerator {
    * semantics are regarded as sufficient. However, if the text is hidden, the
    * aria-label will still be added.
    * @param {IconDetails} icon
-   * @param {Element} element
+   * @param {Element | module:utils/userIo/managedElement.ManagedElement} item - element or ManagedElement to which the icon is added.
    * @param {Object} options
    * @param {boolean} options.hideText - if true, the text is hidden.
    * @param {string} [options.role] - the aria role.
    */
-  applyIconToElement(icon, element, options = {}) {
+  applyIconToElement(icon, item, options = {}) {
+    const element = ManagedElement.getElement(item);
     const role = options.role?.toLowerCase();
     element.innerHTML = icon.content;
     if (icon.accessibleName && !options.hideText) {

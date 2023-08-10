@@ -4,18 +4,95 @@
  */
 :root {
   --icon-font-family: 'Font Awesome 6 Free';
-  --icon-font-weight: var(--icon-font-weight);
+  --icon-font-weight: 400;
+
+  /* navigation */
+  --icon-back-nav: '\f30a';
+  --icon-back-nav-html: '<i class="fa-solid fa-left-long"></i>';
+
+  --icon-forward-nav: '\f30b';
+  --icon-forward-nav-html: '<i class="fa-solid fa-right-long"></i>';
+
+  /* dialog controls */
+  --icon-ok: '\f00c';
+  --icon-ok-html: '<i class="fa-solid fa-check"></i>';
+
+  --icon-cancel: '\f00d';
+  --icon-cancel-html: '<i class="fa-solid fa-xmark"></i>';
+
+  --icon-no: '\f165';
+  --icon-no-html: '<i class="fa-solid fa-thumbs-down"></i>';
+
+  --icon-yes: '\f164';
+  --icon-yes-html: '<i class="fa-solid fa-thumbs-up"></i>';
+
+  --icon-reset-to-factory: '\f30b  \f275';
+  --icon-reset-to-factory-html: '<i class="fa-solid fa-right-long"></i> <i class="fa-solid fa-industry"/></i>';
+
+  /* menu */
+  --icon-open-menu: '\f0c9';
+  --icon-open-menu-html: '<i class="fa-solid fa-bars"></i>';
+
+  --icon-close-menu: '\f057';
+  --icon-close-menu-html: '<i class="fa-solid fa-circle-xmark"></i>';
+
+  /* question controls */
+  --icon-next-problem: '\f30b';
+  --icon-next-problem-html: '<i class="fa-solid fa-right-long"></i>';
+
+  --icon-submit-answer: '\f30b  \f0ae';
+  --icon-submit-answer-html: '<i class="fa-solid fa-right-long"></i> <i class="fa-solid fa-list-check"></i>';
+
+  /* media */
+  --icon-pause: '\f04c';
+  --icon-pause-html: '<i class="fa-solid fa-pause"></i>';
+
+  --icon-play: '\f04b';
+  --icon-play-html: '<i class="fa-solid fa-play"></i>';
+
+  --icon-skip: '\f051';
+  --icon-skip-html: '<i class="fa-solid fa-forward-step"></i>';
+
+  /* bullets and markers */
   --icon-unchecked-bullet: '\f192';
+  --icon-unchecked-bullet-html: '<i class="fa-solid fa-circle-dot"></i>';
+
   --icon-checked-bullet: '\f111';
+  --icon-checked-bullet-html: '<i class="fa-solid fa-circle"></i>';
+
   --icon-correct: '\f14a';
+  --icon-correct-html: '<i class="fa-solid fa-square-check"></i>';
+
   --icon-incorrect: '\f2d3';
+  --icon-incorrect-html: '<i class="fa-solid fa-square-xmark"></i>';
+
+  --icon-skipped: '\f5a4';
+  --icon-skipped-html: '<i class="fa-solid fa-face-meh-blank"></i>';
+
   --icon-flagged: '\f024';
+  --icon-flagged-html: '<i class="fa-solid fa-flag"></i>';
+
+  --icon-library: '\f19c';
+  --icon-library-html: '<i class="fa-solid fa-building-columns"></i>';
+
   --icon-book: '\f02d';
+  --icon-book-html: '<i class="fa-solid fa-book"></i>';
+
   --icon-chapter: '\f518';
+  --icon-chapter-html: '<i class="fa-solid fa-book-open"></i>';
+
   --icon-lesson: '\f022';
-  --icon-problem: '\f05a';
+  --icon-lesson-html: '<i class="fa-solid fa-rectangle-list"></i>';
+
+  --icon-problem: '\f059';
+  --icon-problem-html: '<i class="fa-solid fa-circle-question"></i>';
 
   --icon-privacy: '\f21b';
+  --icon-privacy-html: '<i class="fa-solid fa-user-secret"></i>';
+
   --icon-settings: '\f013';
+  --icon-settings-html: '<i class="fa-solid fa-gear"></i>';
+
   --icon-warning: '\f071';
+  --icon-warning-html: '<i class="fa-solid fa-triangle-exclamation"></i>';
 }

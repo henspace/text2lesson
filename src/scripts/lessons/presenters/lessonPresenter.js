@@ -43,8 +43,7 @@ export class LessonPresenter extends ListPresenter {
    */
   constructor(config) {
     config.titles = ['placeholder']; // this will be replaced later.
-    config.className = 'lesson-presenter';
-    config.itemClassName = 'lessonTitle';
+    config.itemClassName = 'lesson';
     super(config);
     this.#lessonInfo = lessonManager.currentLessonInfo;
     this.#buildCustomContent();

@@ -1,58 +1,43 @@
 # EN test 00-00-00
 AUTHOR: John Doe
 
+
 (i) Welcome to this lesson written by meta:AUTHOR.
 This is just a test file for the UI.
 It contains some *markdown* purely for testing purposes.
 This tests a simple multiple choice question with one answer.
 
-This is an automatic slide show which I'm work on. It automatically creates the cards.
 
-I'd expect this to be card 23.
+And more 
+
+
+And more
+
 
 And this should be card 4.
 
-(i)This is a fill type question where you need to select the missing words.
-
-(?) Fill in the three blank words. The number ...six is bigger than ...three which is bigger than the even number ...two.
-(x) one
-
-(i) A simple single choice.
+(?)
 
 (?) What is the capital of the UK?
 (=) London
 (x) New York
 (x) Paris
 
+(?)Which of these countries speak English?
+(=) America
+(=) Australia
+(x) France
+(x) Spain
 
+(?) Fill in the three blank words. The number ...six is bigger than ...three which is bigger than the even number ...two.
+(x) one
 
-(i)This is an order question.
 (?)Put the words in the right order ...
 (=) one
 (=) two
 (=) three
 (x) red-herring
 (x) garbage
-
-(i) This is just an slide with multiple paragraphs.
-
-It should appear as a slide show.
-
-(i) Another simple single choice.
-
-(?) What is the capital of the UK?
-(=) London
-(x) New York
-(x) Paris
-
-(i)This tests a multiple choice question with multiple answers.
-
-(?)Which of these countries speak English?
-
-(=) America
-(=) Australia
-(x) France
-(x) Spain
 
 
 

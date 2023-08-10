@@ -50,7 +50,6 @@ export class FillProblemPresenter extends ProblemPresenter {
     super(config);
     this.#createMissingWordSelectors();
     this.answerElement.hide();
-    this.nextButton.hide();
   }
 
   /**

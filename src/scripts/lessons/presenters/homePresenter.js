@@ -26,7 +26,6 @@ import { ListPresenter } from './listPresenter.js';
 import { getHomeText } from '../../data/home.js';
 import { parseMarkdown } from '../../utils/text/textProcessing.js';
 import { i18n } from '../../utils/i18n/i18n.js';
-import { ManagedElement } from '../../utils/userIo/managedElement.js';
 
 /**
  * Class to present a slide show.
@@ -41,29 +40,13 @@ export class HomePresenter extends ListPresenter {
    */
   constructor(config) {
     config.titles = [i18n`Open library`];
-    config.className = 'home-presenter';
-    config.itemClassName = '';
+    config.itemClassName = 'library';
     super(config);
     this.#buildContent();
     this.setupKeyboardNavigation();
   }
 
   #buildContent() {
-    const preamble = new ManagedElement('div');
-    preamble.innerHTML = parseMarkdown(getHomeText());
-    this.insertChildAtTop(preamble);
-  }
-
-  /**
-   * @override
-   */
-  next(indexIgnored) {
-    return this.config.factory.getNext(this, this.config);
-  }
-  /**
-   * @override
-   */
-  previous() {
-    return this.config.factory.getPrevious(this, this.config);
+    this.addPreamble(parseMarkdown(getHomeText()));
   }
 }

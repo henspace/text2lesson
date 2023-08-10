@@ -78,7 +78,7 @@ window.addEventListener('load', () => {
   persistentData.setStorageKeyPrefix(
     `LR_${BUILD_INFO.bundleName().replace('.', '_')}`
   );
-  getLanguages()
+  return getLanguages()
     .then(() => lessonManager.loadLibraries('assets/lessons/libraries.json'))
     .then(() => loadSettingDefinitions(getSettingDefinitions()))
     .then(() => {

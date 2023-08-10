@@ -54,7 +54,8 @@ import { ArrayIndexer } from '../../utils/arrayIndexer.js';
  * Identification used for the back button.
  * @type{string}
  */
-export const PREVIOUS_ID = 'PREVIOUS';
+export const BACKWARDS_ID = 'BACKWARDS';
+export const FORWARDS_ID = 'FORWARDS';
 
 /**
  * Base presenter class. This is expected to be extended and the `next` and
@@ -81,25 +82,143 @@ export class Presenter extends ManagedElement {
   #navigator;
 
   /**
+   * Preamble
+   * @type {module:utils/userIo/managedElement.ManagedElement}
+   */
+  #preamble;
+
+  /**
+   * Presentation
+   * @type {module:utils/userIo/managedElement.ManagedElement}
+   */
+  #presentation;
+
+  /**
+   * Get the presentation
+   * @returns {module:utils/userIo/managedElement.ManagedElement}
+   */
+  get presentation() {
+    return this.#presentation;
+  }
+  /**
+   * Button bar
+   * @type {module:utils/userIo/managedElement.ManagedElement}
+   */
+  #buttonBar;
+  /**
+   * Back button
+   * @type {module:utils/userIo/managedElement.ManagedElement}
+   */
+  #backwardsButton;
+
+  /**
+   * Next button
+   * @type {module:utils/userIo/managedElement.ManagedElement}
+   */
+  #forwardsButton;
+
+  /**
    * Construct the presenter
    * @param {PresenterConfig} - configuration for the presenter.
-   * @param {string} tagName - type of containing element. This defaults to a UL
-   * element as titles are added as LI items.
+   * @param {string} presentationTagName - type of presentation containing element. This defaults to a div
    */
-  constructor(config, tagName = 'ul') {
-    super(tagName, config.className);
+  constructor(config, presentationTagName = 'div') {
+    super('div');
+    this.#addClassNames();
     this.config = config;
+    this.#buildContent(presentationTagName);
+  }
+
+  #addClassNames() {
+    let item = this;
+    do {
+      this.classList.add(item.constructor.name);
+      item = Object.getPrototypeOf(item);
+    } while (item.constructor.name !== 'Object');
   }
 
   /**
-   * Append a backbutton.
-   * @private
+   * Add preamble
+   * @param {string} presentationTagName - type of the presentation container
    */
-  #appendBackButton() {
-    const backElement = new ManagedElement('button', 'backNavigation');
-    this.appendChild(backElement);
-    icons.applyIconToElement(icons.back, backElement.element);
-    this.listenToEventOn('click', backElement, PREVIOUS_ID);
+  #buildContent(presentationTagName) {
+    this.#preamble = new ManagedElement('div', 'preamble');
+    this.#presentation = new ManagedElement(
+      presentationTagName,
+      'presentation'
+    );
+    this.#buttonBar = new ManagedElement('div', 'button-bar');
+    this.#addNavigationButtons();
+    this.appendChild(this.#preamble);
+    this.appendChild(this.#presentation);
+    this.appendChild(this.#buttonBar);
+  }
+
+  /**
+   * Set up the presenter to expand.
+   * The presentation is expanded.
+   */
+  expandPresentation() {
+    this.#presentation.classList.add('expanded');
+  }
+  /**
+   * Add button bar to the presenter's button bar.
+   * @param {module:utils/userIo/managedElement.ManagedElement}
+   */
+  addButtonToBar(managedButton) {
+    this.#buttonBar.appendChild(managedButton);
+  }
+
+  /**
+   * Preamble html or ManagedElement
+   * @param {string | Element | module:utils/userIo/managedElement.ManagedElement}
+   */
+  addPreamble(data) {
+    this.#preamble.removeChildren();
+    if (typeof data === 'string') {
+      this.#preamble.innerHTML = data;
+    } else {
+      this.#preamble.appendChild(data);
+    }
+  }
+
+  /**
+   * Add back and forward navigation buttons.
+   * These are initially hidden.
+   */
+  #addNavigationButtons() {
+    this.#backwardsButton = new ManagedElement('button', 'back-navigation');
+    icons.applyIconToElement(icons.back, this.#backwardsButton);
+    this.listenToEventOn('click', this.#backwardsButton, BACKWARDS_ID);
+    this.addButtonToBar(this.#backwardsButton);
+    this.#backwardsButton.hide();
+
+    this.#forwardsButton = new ManagedElement('button', 'forward-navigation');
+    icons.applyIconToElement(icons.forward, this.#forwardsButton);
+    this.listenToEventOn('click', this.#forwardsButton, FORWARDS_ID);
+    this.addButtonToBar(this.#forwardsButton);
+    this.#forwardsButton.hide();
+  }
+  /**
+   * Show the back button.
+   * @param {boolean} focus - if true, the button will also get focus.
+   */
+  showBackButton() {
+    this.#backwardsButton.show();
+    if (focus) {
+      this.#backwardsButton.focus();
+    }
+  }
+
+  /**
+   * Show the forwards button.
+   * @param {boolean} focus - if true, the button will also get focus.
+   */
+  showNextButton(focus) {
+    this.#forwardsButton.show();
+    if (focus) {
+      this.#forwardsButton.focus();
+    }
   }
 
   /**
@@ -122,21 +241,24 @@ export class Presenter extends ManagedElement {
 
   /**
    * Get configuration for the next presenter.
-   * This should be overridden.
+   * The default implementation just calls the presenter factory in the configuration
+   * to get the next presenter. This should be overridden if you need to take action based on the index.
+   *
    * @param {number} index - index of the item that triggered the call.
    * @returns {Presenter | Promise} new Presenter or Promise that fulfils to a Presenter.
    */
   next(indexIgnored) {
-    return null;
+    return this.config.factory.getNext(this, this.config);
   }
 
   /**
    * Move to the previous Presenter.
-   * This should be overridden.
+   * The default implementation just calls the presenter factory in the configuration
+   * to get the previous presenter.
    * @returns {Presenter} new Presenter
    */
   previous() {
-    return null;
+    return this.config.factory.getPrevious(this, this.config);
   }
 
   /**
@@ -173,8 +295,10 @@ export class Presenter extends ManagedElement {
     let nextPresenter = null;
     if (!isNaN(index)) {
       nextPresenter = this.next(index);
-    } else if (eventId.toUpperCase() === PREVIOUS_ID) {
+    } else if (eventId.toUpperCase() === BACKWARDS_ID) {
       nextPresenter = this.previous();
+    } else if (eventId.toUpperCase() === FORWARDS_ID) {
+      nextPresenter = this.next(FORWARDS_ID);
     }
 
     this.#resolutionExecutor(nextPresenter);

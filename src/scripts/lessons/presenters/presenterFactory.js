@@ -33,6 +33,7 @@ import { FillProblemPresenter } from './fillProblemPresenter.js';
 import { OrderProblemPresenter } from './orderProblemPresenter.js';
 import { SlideProblemPresenter } from './slideProblemPresenter.js';
 import { QuestionType } from '../problem.js';
+import {MarksPresenter} from './marksPresenter.js';
 
 /**
  * Navigation definition for Presenters.
@@ -49,6 +50,7 @@ const NAVIGATION = {
   FillProblemPresenter: { previous: null, next: ProblemPresenter },
   OrderProblemPresenter: { previous: null, next: ProblemPresenter },
   SlideProblemPresenter: { previous: null, next: ProblemPresenter },
+  MarksPresenter: {previous: null, next: HomePresenter}
 };
 
 function getSuitableProblemPresenter(config) {
@@ -108,7 +110,7 @@ export class PresenterFactory {
       if (config.lesson.hasMoreProblems) {
         return getSuitableProblemPresenter(config);
       } else {
-        return null;
+        return new MarksPresenter(config);
       }
     } else {
       const klass = NAVIGATION[caller.constructor.name].next;

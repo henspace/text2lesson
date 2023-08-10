@@ -98,14 +98,9 @@ export class ProblemPresenter extends Presenter {
 
   /** @type {module:utils/userIo/managedElement.ManagedElement} */
   #explanationElement;
-  /** @type {module:utils/userIo/managedElement.ManagedElement} */
-  #buttonBar;
 
   /** @type {module:utils/userIo/controls.ManagedElement} */
   #submitButton;
-
-  /** @type {module:utils/userIo/managedElement.ManagedElement} */
-  #nextButton;
 
   /** @type {boolean} */
   #freezeAnswers;
@@ -116,7 +111,6 @@ export class ProblemPresenter extends Presenter {
    */
   constructor(config) {
     config.titles = [];
-    config.className = 'problem-presenter';
     config.itemClassName = '';
     super(config, 'div');
     this.#problem = config.lesson.getNextProblem();
@@ -129,13 +123,12 @@ export class ProblemPresenter extends Presenter {
     this.#explanationElement.innerHTML = this.#problem.explanation.html;
     this.#explanationElement.hide();
 
-    this.appendChild(this.#questionElement);
-    this.appendChild(this.#answerElement);
-    this.appendChild(this.#explanationElement);
-    this.addButtonBar();
+    this.presentation.appendChild(this.#questionElement);
+    this.presentation.appendChild(this.#answerElement);
+    this.presentation.appendChild(this.#explanationElement);
+    this.addButtons();
 
     this.#submitButton.show();
-    this.#nextButton.show();
     this.#freezeAnswers = false;
   }
 
@@ -170,68 +163,43 @@ export class ProblemPresenter extends Presenter {
   /**
    * @returns {module:utils/userIo/managedElement.ManagedElement}
    */
-  get nextButton() {
-    return this.#nextButton;
-  }
-
-  /**
-   * @returns {module:utils/userIo/managedElement.ManagedElement}
-   */
   get submitButton() {
     return this.#submitButton;
   }
 
   /**
-   * Set up the presenter to only use the question element.
-   * The questionElement is expanded.
-   */
-  onlyUseQuestionElement() {
-    this.questionElement.classList.add('expanded');
-    this.#answerElement.hide();
-    this.#explanationElement.hide();
-  }
-
-  /**
    * Add button bar to the presenter.
    */
-  addButtonBar() {
-    this.#buttonBar = new ManagedElement('div', 'button-bar');
-    this.#addSubmitButton(this.#buttonBar);
-    this.#addNextButton(this.#buttonBar);
-    this.appendChild(this.#buttonBar);
+  addButtons() {
+    this.#addSubmitButton();
+    //this.#addNextButton();
   }
 
-  /** Add a button to the button bar.
-   * @param {module:utils/userIo/managedElement.ManagedElement} managedButton
-   */
-  addButton(managedButton) {
-    this.#buttonBar.appendChild(managedButton);
-  }
   /**
    * Append a submit button. In this context, submit means sending the selected
    * answers for marking.
-   * @param {modal:utils/userIo/managedElement.ManagedElement} bar - the containing bar.
    * @private
    */
-  #addSubmitButton(bar) {
+  #addSubmitButton() {
     this.#submitButton = new ManagedElement('button', ClassName.ANSWER_SUBMIT);
     icons.applyIconToElement(icons.submitAnswer, this.#submitButton.element);
     this.listenToEventOn('click', this.#submitButton, ElementId.CLICKED_SUBMIT); // numeric handler means this will resolve the presenter.
-    bar.appendChild(this.#submitButton);
+    this.addButtonToBar(this.#submitButton);
   }
 
   /**
    * Add the next button hidden. The next button is used to move
    * to the next Presenter.
-   * @param {modal:utils/userIo/managedElement.ManagedElement} bar - the containing bar.
    * @private
    */
-  #addNextButton(bar) {
+  /*
+  #addNextButton() {
     this.#nextButton = new ManagedElement('button', ClassName.NEXT_PROBLEM);
     icons.applyIconToElement(icons.nextProblem, this.#nextButton.element);
     this.listenToEventOn('click', this.#nextButton, ElementId.CLICKED_NEXT);
-    bar.appendChild(this.#nextButton);
+    this.addButtonToBar(this.#nextButton);
   }
+  */
 
   /**
    * @override
@@ -264,26 +232,12 @@ export class ProblemPresenter extends Presenter {
         }
         break;
       case ElementId.CLICKED_SUBMIT:
+        this.#freezeAnswers = true;
         this.#processClickedSubmit();
         break;
-      case ElementId.CLICKED_NEXT:
-        super.handleClickEvent(event, '0');
-        break;
+      default:
+        super.handleClickEvent(event, eventId);
     }
-  }
-
-  /**
-   * @override
-   */
-  next(indexIgnored) {
-    return this.config.factory.getNext(this, this.config);
-  }
-
-  /**
-   * @override
-   */
-  previous() {
-    return this.config.factory.getPrevious(this, this.config);
   }
 
   /**
@@ -305,8 +259,7 @@ export class ProblemPresenter extends Presenter {
       correct ? MarkState.CORRECT : MarkState.INCORRECT
     );
     this.#submitButton.hide();
-    this.#nextButton.show();
-    this.#nextButton.focus();
+    this.showNextButton(true);
   }
 
   /**

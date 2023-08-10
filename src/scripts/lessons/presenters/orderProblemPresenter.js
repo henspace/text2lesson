@@ -49,7 +49,6 @@ export class OrderProblemPresenter extends ProblemPresenter {
   constructor(config) {
     super(config);
     this.#buildOrder();
-    this.nextButton.hide();
   }
   /**
    * Build and order type question
