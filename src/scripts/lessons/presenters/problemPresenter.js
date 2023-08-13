@@ -28,6 +28,7 @@ import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { ModalDialog } from '../../utils/userIo/modalDialog.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { MarkState } from '../itemMarker.js';
+import { celebrator, CelebrationType } from '../candy/celebrators.js';
 
 /**
  * Class names
@@ -260,6 +261,7 @@ export class ProblemPresenter extends Presenter {
     );
     this.#submitButton.hide();
     this.showNextButton(true);
+    celebrator.celebrate(correct ? CelebrationType.HAPPY : CelebrationType.SAD);
   }
 
   /**

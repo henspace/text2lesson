@@ -1,4 +1,5 @@
 @import './cards.css';
+@import './candy.css';
 
 button.backNavigation {
   align-self: self-start;
@@ -29,37 +30,40 @@ a.problem {
   outline-color: var(--secondary-highlight);
 }
 
+.problem-answer::after,
 .problem-answer::marker {
-  content: var(--icon-unchecked-bullet) ' ';
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
+}
+
+.problem-answer::marker {
+  content: var(--icon-unchecked-bullet) ' ';
 }
 
 .problem-answer.selected-answer {
   border-color: var(--tertiary-highlight);
+  background-color: var(--tertiary-base);
+  color: var(--tertiary-contrast);
+}
+
+.problem-answer.incorrect-answer p {
+  text-decoration: line-through;
 }
 
 .problem-answer.selected-answer::marker {
   content: var(--icon-checked-bullet) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
-}
-.problem-answer.correct-answer::marker {
-  content: var(--icon-correct) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
 }
 
-.problem-answer.incorrect-answer::marker {
-  content: var(--icon-incorrect) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
+.problem-answer.correct-answer::after {
+  content: var(--icon-correct);
 }
 
-.problem-answer.missed-answer::marker {
-  content: var(--icon-flagged) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
+.problem-answer.incorrect-answer::after {
+  content: var(--icon-incorrect);
+}
+
+.problem-answer.missed-answer::after {
+  content: var(--icon-flagged);
 }
 
 .missing-word.correct-answer,
@@ -144,4 +148,31 @@ ul.presentation,
 }
 .presentation.expanded {
   flex: 1;
+}
+
+/* certificate styling */
+.MarksPresenter h1,
+.MarksPresenter h2,
+.MarksPresenter h3 {
+  margin-top: var(--margin);
+}
+
+.MarksPresenter h1,
+.MarksPresenter .result-summary {
+  text-align: center;
+}
+.MarksPresenter .result-summary::after {
+  font-size: 3em;
+}
+.MarksPresenter .result-summary.poor::after {
+  content: '\1f62c';
+}
+.MarksPresenter .result-summary.bad::after {
+  content: '1f614';
+}
+.MarksPresenter .result-summary.good::after {
+  content: '\1f948';
+}
+.MarksPresenter .result-summary.excellent::after {
+  content: '\1f947';
 }

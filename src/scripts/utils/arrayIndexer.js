@@ -25,13 +25,13 @@
 export class ArrayIndexer {
   /**
    * Array of the items to index
-   * @type {*[]}
+   * @type {Array<*>}
    */
   #items;
 
   /**
+   * * Should increment wrap.
    * @type {boolean}
-   * Should increment wrap.
    */
   #wrap;
 
@@ -43,7 +43,7 @@ export class ArrayIndexer {
 
   /**
    * Construct the indexer
-   * @param {*[]} items - array to managed index
+   * @param {Array<*>} items - array to managed index
    * @param {boolean} wrap - should index wrap or not.
    */
   constructor(items, wrap = true) {
@@ -53,7 +53,7 @@ export class ArrayIndexer {
   }
 
   /** Get the underlying array.
-   * @returns {*[]}
+   * @returns {Array<*>}
    */
   get items() {
     return this.#items;

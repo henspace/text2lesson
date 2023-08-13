@@ -64,7 +64,7 @@ class Toast extends ManagedElement {
    * Get rid of the toast message.
    */
   #dismiss() {
-    this.element.style.opacity = 0;
+    this.style.opacity = 0;
     this.remove();
     focusManager.findBestFocus();
   }
@@ -100,7 +100,7 @@ export function toast(message) {
   const toast = new Toast(message);
   document.body.appendChild(toast.element);
   setTimeout(() => {
-    toast.element.style.top = '45vh';
+    toast.style.top = '45vh';
     toast.focus();
   });
 }

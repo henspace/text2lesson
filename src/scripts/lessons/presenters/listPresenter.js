@@ -52,7 +52,7 @@ export class ListPresenter extends Presenter {
       itemElement.setAttribute('tabindex', '0');
       itemElement.classList.add('selectable');
       this.presentation.appendChild(itemElement);
-      itemElement.element.textContent = title;
+      itemElement.textContent = title;
       this.listenToEventOn('click', itemElement, index);
     });
 

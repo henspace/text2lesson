@@ -44,9 +44,9 @@ import { ArrayIndexer } from '../../utils/arrayIndexer.js';
 /**
  * @typedef {Object} PresenterConfig
  * @property {string[]} titles - titles that are displayed for each item.
- * @property {string} className - class name for the presenter's container.
  * @property {string} itemClassName - class name for the items.
  * @property {module:lessons/lesson/Lesson} [lesson] - the lesson. It is optional for most presenters.
+ * @property {lessons/lessonManager~LessonInfo} lessonInfo - information about the lesson.
  * @property {PresenterFactory} factory - the presenter factory used to create the next and previous presenters.
  */
 
@@ -232,7 +232,7 @@ export class Presenter extends ManagedElement {
       console.error('setUpKeyboardNavigation can only be called once.');
       return;
     }
-    const items = managedElements ?? this.children;
+    const items = managedElements ?? this.managedChildren;
     this.#navigator = new ArrayIndexer(items, true);
     items.forEach((item) => {
       this.listenToEventOn('keydown', item);

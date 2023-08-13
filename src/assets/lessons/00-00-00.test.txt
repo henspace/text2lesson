@@ -1,6 +1,12 @@
 # EN test 00-00-00
 AUTHOR: John Doe
 
+(?) What is the capital of the UK?
+(=) London
+(x) New York
+(x) Paris
+
+(########################################)
 
 (i) Welcome to this lesson written by meta:AUTHOR.
 This is just a test file for the UI.

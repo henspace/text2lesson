@@ -23,6 +23,7 @@
  */
 
 import { jest, beforeEach, test, expect } from '@jest/globals';
+import { LessonSource } from '../lessonSource.js';
 
 const currentLessonInfo = {
   libraryKey: 'key',
@@ -51,20 +52,6 @@ class MockPresenter {
     return null;
   }
 }
-
-const MockLesson = function () {
-  return {
-    getNextProblem: jest.fn(() => 'a problem'),
-  };
-};
-
-jest.unstable_mockModule('./presenter.js', () => {
-  return {
-    Presenter: jest.fn(function (config) {
-      this.config = config;
-    }),
-  };
-});
 
 jest.unstable_mockModule('../lessonManager.js', () => {
   return {
@@ -104,36 +91,21 @@ beforeEach(() => {
   presenterFactory.getPrevious.mockClear();
 });
 
-test('constructor provides base class with class name of problemPresenter.', () => {
-  const config = {
-    lesson: new MockLesson(),
-    factory: presenterFactory,
-  };
-  const problemPresenter = new ProblemPresenter(config);
-  expect(problemPresenter.config.className).toBe('problemPresenter');
-});
-
 test('constructor gets next problem from the lesson.', () => {
+  const lesson = LessonSource.createFromSource('test data').convertToLesson();
+  const spy = jest.spyOn(lesson, 'getNextProblem');
   const config = {
-    lesson: new MockLesson(),
+    lesson: lesson,
     factory: presenterFactory,
   };
   new ProblemPresenter(config);
-  expect(config.lesson.getNextProblem).toBeCalledTimes(1);
-});
-
-test('constructor provides base class with no titles.', () => {
-  const config = {
-    lesson: new MockLesson(),
-    factory: presenterFactory,
-  };
-  const problemPresenter = new ProblemPresenter(config);
-  expect(problemPresenter.config.titles).toHaveLength(0);
+  expect(spy).toBeCalledTimes(1);
 });
 
 test('next function provides presenter from presenterFactory constructed with config', () => {
+  const lesson = LessonSource.createFromSource('test data').convertToLesson();
   const config = {
-    lesson: new MockLesson(),
+    lesson: lesson,
     factory: presenterFactory,
   };
   const problemPresenter = new ProblemPresenter(config);
@@ -148,8 +120,9 @@ test('next function provides presenter from presenterFactory constructed with co
 });
 
 test('previous function provides presenter from presenterFactory constructed with config', () => {
+  const lesson = LessonSource.createFromSource('test data').convertToLesson();
   const config = {
-    lesson: new MockLesson(),
+    lesson: lesson,
     factory: presenterFactory,
   };
   const problemPresenter = new ProblemPresenter(config);

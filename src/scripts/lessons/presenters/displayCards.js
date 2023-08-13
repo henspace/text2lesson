@@ -22,10 +22,17 @@
  *
  */
 
+import { ReadSpeedCalculator } from '../../utils/userIo/readSpeedCalculator.js';
+/**
+ * @typedef {Object} CardDetail
+ * @property {string} html - the html content.
+ * @property {number} readTimeSecs - how long it will normally take to read a card in seconds.
+ */
+
 export class DisplayCards {
   /**
    * Html broken down into blocks.
-   * @type {string[]} blocks
+   * @type {string[]}
    */
   #blocks;
 
@@ -35,12 +42,17 @@ export class DisplayCards {
   #index;
 
   /**
+   * @type {ReadSpeedCalculator}
+   */
+  #readSpeedCalculator;
+  /**
    * Create the set of cards.
    * @param {*} html
    */
   constructor(html) {
     this.#blocks = this.#splitHtml(html);
     this.#index = 0;
+    this.#readSpeedCalculator = new ReadSpeedCalculator();
   }
 
   /**
@@ -61,11 +73,15 @@ export class DisplayCards {
 
   /**
    * Gets the next block. The index is increment after providing the block.
-   * @returns the next block or null
+   * @returns {CardDetail} the next block or null
    */
   getNext() {
     if (this.#index < this.#blocks.length) {
-      return this.#blocks[this.#index++];
+      const html = this.#blocks[this.#index++];
+      return {
+        html: html,
+        readTimeSecs: this.#readSpeedCalculator.getSecondsToRead(html),
+      };
     }
     return null;
   }

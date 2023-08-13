@@ -1,7 +1,7 @@
 /**
  * @file Presenter factory to remove circular dependendies with Presenter modules
  *
- * @module lessons/presenters/navigatorFactory
+ * @module lessons/presenters/presenterFactory
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -23,6 +23,7 @@
  */
 
 import { HomePresenter } from './homePresenter.js';
+import { ListPresenter } from './listPresenter.js';
 import { LibraryPresenter } from './libraryPresenter.js';
 import { BookPresenter } from './bookPresenter.js';
 import { ChapterPresenter } from './chapterPresenter.js';
@@ -33,7 +34,7 @@ import { FillProblemPresenter } from './fillProblemPresenter.js';
 import { OrderProblemPresenter } from './orderProblemPresenter.js';
 import { SlideProblemPresenter } from './slideProblemPresenter.js';
 import { QuestionType } from '../problem.js';
-import {MarksPresenter} from './marksPresenter.js';
+import { MarksPresenter } from './marksPresenter.js';
 
 /**
  * Navigation definition for Presenters.
@@ -50,9 +51,14 @@ const NAVIGATION = {
   FillProblemPresenter: { previous: null, next: ProblemPresenter },
   OrderProblemPresenter: { previous: null, next: ProblemPresenter },
   SlideProblemPresenter: { previous: null, next: ProblemPresenter },
-  MarksPresenter: {previous: null, next: HomePresenter}
+  MarksPresenter: { previous: null, next: ChapterPresenter },
 };
 
+/**
+ * Get a suitable problem presenter based on the configuratoin.
+ * @param {LessonConfig} config
+ * @returns {Presenter}
+ */
 function getSuitableProblemPresenter(config) {
   const problem = config.lesson.peekAtNextProblem();
   switch (problem.questionType) {
@@ -62,12 +68,14 @@ function getSuitableProblemPresenter(config) {
       return new FillProblemPresenter(config);
     case QuestionType.MULTI:
       return new ChoiceProblemPresenter(config);
-    case QuestionType.SLIDE:
-      return new SlideProblemPresenter(config);
     case QuestionType.SIMPLE:
       return new ChoiceProblemPresenter(config);
+    case QuestionType.SLIDE:
+    default:
+      return new SlideProblemPresenter(config);
   }
 }
+
 /**
  * Factory for generating the navigation for Presenters.
  *
@@ -99,7 +107,7 @@ export class PresenterFactory {
   /**
    * Get the appropriate navigator for the calling {@link module:lessons/presenters/presenter.Presenter}
    * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
-   * * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
    * @returns {constructor} Constructor for the next Presenter or null.
    */
   getNext(caller, config) {
@@ -114,7 +122,9 @@ export class PresenterFactory {
       }
     } else {
       const klass = NAVIGATION[caller.constructor.name].next;
-      return klass ? new klass(config) : null;
+      return klass
+        ? this.skipUnecessaryListPresenters(new klass(config), config)
+        : null;
     }
   }
   /**
@@ -125,6 +135,24 @@ export class PresenterFactory {
   getPrevious(caller, config) {
     const klass = NAVIGATION[caller.constructor.name].previous;
     return klass ? new klass(config) : null;
+  }
+
+  /**
+   * For list presenters, skip to next if it only has one entry.
+   * @param {Presenter} presenter
+   * @param {module:lessons/presenters/presenter~PresenterConfig} configuration
+   * @returns {Presenter}
+   */
+  skipUnecessaryListPresenters(presenter, config) {
+    while (presenter instanceof ListPresenter && config.titles.length <= 0) {
+      console.debug(
+        `Skipping presenter ${presenter.constructor.name} and there's no selection required.`
+      );
+      if (config.titles.length <= 1) {
+        presenter = this.getNext(presenter, config);
+      }
+    }
+    return presenter;
   }
 
   /**

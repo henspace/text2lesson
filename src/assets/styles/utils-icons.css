@@ -54,11 +54,11 @@
   --icon-skip-html: '<i class="fa-solid fa-forward-step"></i>';
 
   /* bullets and markers */
-  --icon-unchecked-bullet: '\f192';
-  --icon-unchecked-bullet-html: '<i class="fa-solid fa-circle-dot"></i>';
+  --icon-unchecked-bullet: '\f111';
+  --icon-unchecked-bullet-html: '<i class="fa-regular fa-circle"></i>';
 
-  --icon-checked-bullet: '\f111';
-  --icon-checked-bullet-html: '<i class="fa-solid fa-circle"></i>';
+  --icon-checked-bullet: '\f005';
+  --icon-checked-bullet-html: '<i class="fa-solid fa-star"></i>';
 
   --icon-correct: '\f14a';
   --icon-correct-html: '<i class="fa-solid fa-square-check"></i>';

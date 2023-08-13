@@ -21,60 +21,85 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-import { jest, test, expect } from '@jest/globals';
+import { jest, beforeEach, test, expect } from '@jest/globals';
+import { ItemMarker } from '../itemMarker.js';
 
-jest.unstable_mockModule('./libraryPresenter.js', () => {
-  return {
-    LibraryPresenter: function (config) {
-      this.config = config;
+const mockedLessonManager = {
+  libraryTitles: ['lib1', 'lib2'],
+  bookTitles: ['book1', 'book2'],
+  chapterTitles: ['chapter1', 'chapter2'],
+  lessonTitles: ['lesson1', 'lesson2'],
+  currentLessonInfo: {
+    titles: {
+      library: 'library',
+      book: 'book',
+      chapter: 'chapter',
+      lesson: 'lesson',
     },
+  },
+};
+
+jest.unstable_mockModule('../lessonManager.js', () => {
+  return {
+    lessonManager: mockedLessonManager,
   };
 });
 
-jest.unstable_mockModule('./bookPresenter.js', () => {
+jest.unstable_mockModule('../lesson.js', () => {
   return {
-    BookPresenter: function (config) {
-      this.config = config;
-    },
+    Lesson: jest.fn(function () {
+      this.marker = new ItemMarker();
+      return {
+        hasMoreProblems: true,
+        peekAtNextProblem: jest.fn(() => new Problem()),
+        getNextProblem: jest.fn(() => new Problem()),
+        nextProblem: jest.fn(() => new Problem()),
+        marks: this.marker.marks,
+      };
+    }),
   };
 });
 
-jest.unstable_mockModule('./chapterPresenter.js', () => {
+jest.unstable_mockModule('../problem.js', () => {
   return {
-    ChapterPresenter: function (config) {
-      this.config = config;
+    QuestionType: {
+      SIMPLE: 'simple',
+      MULTI: 'multi',
+      FILL: 'fill',
+      ORDER: 'order',
+      SLIDE: 'slide',
     },
+    Problem: jest.fn(() => {
+      return {
+        questionType: 'slide',
+        intro: { html: 'intro' },
+        question: { html: 'intro' },
+        explanation: { html: 'intro' },
+      };
+    }),
   };
 });
 
-jest.unstable_mockModule('./lessonPresenter.js', () => {
-  return {
-    LessonPresenter: function (config) {
-      this.config = config;
-    },
-  };
-});
+const { Lesson } = await import('../lesson.js');
+const { Problem } = await import('../problem.js');
 
-jest.unstable_mockModule('./problemPresenter.js', () => {
-  return {
-    ProblemPresenter: function (config) {
-      this.config = config;
-    },
-  };
-});
-
+const { HomePresenter } = await import('./homePresenter.js');
 const { LibraryPresenter } = await import('./libraryPresenter.js');
 const { BookPresenter } = await import('./bookPresenter.js');
 const { ChapterPresenter } = await import('./chapterPresenter.js');
 const { LessonPresenter } = await import('./lessonPresenter.js');
+
 const { ProblemPresenter } = await import('./problemPresenter.js');
-const { presenterFactory } = await import('./presenterFactory.js');
+const { SlideProblemPresenter } = await import('./slideProblemPresenter.js');
+const { MarksPresenter } = await import('./marksPresenter.js');
+
+const { PresenterFactory } = await import('./presenterFactory.js');
 
 const TEST_DATA = [
   {
     callerClass: LibraryPresenter,
-    hasPrevious: false,
-    previous: null,
+    hasPrevious: true,
+    previous: HomePresenter,
     next: BookPresenter,
   },
   {
@@ -93,25 +118,32 @@ const TEST_DATA = [
     callerClass: LessonPresenter,
     hasPrevious: true,
     previous: ChapterPresenter,
-    next: ProblemPresenter,
+    next: SlideProblemPresenter,
   },
   {
     callerClass: ProblemPresenter,
     hasPrevious: false,
     previous: null,
-    next: ProblemPresenter,
+    next: SlideProblemPresenter,
   },
 ];
 
-test('Library presenter no previous, BookPresenter next, null previous', () => {
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
+test('Factory provides expected next and previous presenters for test data', () => {
+  const presenterFactory = new PresenterFactory();
   TEST_DATA.forEach((data) => {
     const config = {
+      titles: ['title1', 'title2'],
       value: data.callerClass.name,
-      lesson: {
-        hasMoreProblems: () => true,
-      },
+      lesson: null,
     };
+
+    config.lesson = new Lesson();
     const caller = new data.callerClass(config);
+    console.log(`Test ${caller.constructor.name}`);
     const next = presenterFactory.getNext(caller, config);
     const previous = presenterFactory.getPrevious(caller, config);
     expect(presenterFactory.hasPrevious(caller)).toBe(data.hasPrevious);
@@ -134,38 +166,40 @@ test('Library presenter no previous, BookPresenter next, null previous', () => {
 
 test(
   'If lesson has more problems, next called by a ProblemPresenter ' +
-    'is another ProblemPresenter',
+    'is another ProblemPresenter set by problem question type.',
   () => {
     const config = {
-      lesson: {
-        hasMoreProblems: true,
-      },
+      lesson: new Lesson(),
     };
-
+    const presenterFactory = new PresenterFactory();
     const presenter = new ProblemPresenter(config);
     expect(presenterFactory.getNext(presenter, config)).toBeInstanceOf(
-      ProblemPresenter
+      SlideProblemPresenter
     );
   }
 );
 
 test(
   'If lesson has no more problems, next called by a ProblemPresenter ' +
-    'is a ResultPresenter',
+    'is a MarksPresenter',
   () => {
     const config = {
-      lesson: {
-        hasMoreProblems: false,
+      lesson: new Lesson(),
+      lessonInfo: {
+        titles: {
+          library: 'library',
+          book: 'book',
+          chapter: 'chapter',
+          lesson: 'lesson',
+        },
       },
     };
-
+    const presenterFactory = new PresenterFactory();
     const presenter = new ProblemPresenter(config);
-    expect(presenterFactory.getNext(presenter, config)).toBeNull();
-    /*
-    @ToDo
+    jest.replaceProperty(config.lesson, 'hasMoreProblems', false);
     expect(presenterFactory.getNext(presenter, config)).toBeInstanceOf(
-      ResultPresenter
+      MarksPresenter
     );
-    */
+    jest.replaceProperty(config.lesson, 'hasMoreProblems', true);
   }
 );

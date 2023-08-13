@@ -25,8 +25,46 @@
 import { Presenter } from './presenter.js';
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { MarkState } from '../itemMarker.js';
+import { i18n } from '../../utils/i18n/i18n.js';
+import { escapeHtml } from '../../utils/text/textProcessing.js';
 
+/**
+ * Classes used for styling medals.
+ * percent gives the score required to achieve the result.
+ * @enum {{percent:number, cssClass:string}}
+ */
+const MedalDetails = {
+  POOR: {
+    upperLimit: 25,
+    cssClass: 'poor',
+  },
+  BAD: {
+    upperLimit: 50,
+    cssClass: 'bad',
+  },
+  GOOD: {
+    upperLimit: 75,
+    cssClass: 'good',
+  },
+  EXCELLENT: {
+    upperLimit: 100,
+    cssClass: 'excellent',
+  },
+};
+
+/**
+ * Presenter for showing the results of a test.
+ */
 export class MarksPresenter extends Presenter {
+  /**
+   * @type {module:lessons/itemMarker~Marks}
+   */
+  #marks;
+
+  /**
+   *
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config
+   */
   constructor(config) {
     super(config);
     this.#buildContent();
@@ -36,20 +74,79 @@ export class MarksPresenter extends Presenter {
    * Build the results content.
    */
   #buildContent() {
-    const marks = this.config.lesson.marks;
-    const heading = new ManagedElement('h2');
-    heading.innerHTML = `Correct: ${marks.correct}; Incorrect: ${marks.incorrect}; skipped: ${marks.skipped}`;
-    this.presentation.appendChild(heading);
+    this.#addHeadings();
+    this.#addAnswers();
+    this.#addResult();
+    this.showNextButton();
+  }
 
+  /**
+   * Add the titles.
+   */
+  #addHeadings() {
+    this.presentation.createAndAppendChild(
+      'h1',
+      i18n`Certificate of achievement`
+    );
+    this.presentation.createAndAppendChild(
+      'h2',
+      this.config.lessonInfo.titles.lesson
+    );
+    this.presentation.createAndAppendChild(
+      'h3',
+      escapeHtml(`[${this.config.lessonInfo.titles.library}: 
+        ${this.config.lessonInfo.titles.chapter}: 
+        ${this.config.lessonInfo.titles.book}]`)
+    );
+  }
+
+  /**
+   * Add a list of answers.
+   */
+  #addAnswers() {
     const answers = new ManagedElement('ul');
-    marks.markedItems.forEach((markedItem) => {
+    this.config.lesson.marks.markedItems.forEach((markedItem) => {
       const li = new ManagedElement('li');
       li.innerHTML = `${markedItem.item.question.plainText}`;
       li.classList.add(this.#getClassForMarkState(markedItem.state));
       answers.appendChild(li);
     });
     this.presentation.appendChild(answers);
-    this.showNextButton();
+  }
+
+  /**
+   * Add the score
+   */
+  #addResult() {
+    const marks = this.config.lesson.marks;
+    const totalQuestions = marks.correct + marks.incorrect + marks.skipped;
+    const percent =
+      totalQuestions == 0
+        ? 0
+        : Math.round((100 * marks.correct) / totalQuestions);
+    const summary = i18n`Score: ${percent}% (${marks.correct}/${totalQuestions})`;
+    const summaryItem = this.presentation.createAndAppendChild(
+      'p',
+      summary,
+      'result-summary'
+    );
+    summaryItem.classList.add(this.#calcMedalClass(percent));
+  }
+
+  /**
+   * Add a medal based on the score.
+   * The medal is added by adding a class to result which can then be styled in
+   * CSS. Four classes are available:
+   * bad, poor, good, excellent.
+   */
+  #calcMedalClass(percent) {
+    for (const key in MedalDetails) {
+      const details = MedalDetails[key];
+      if (percent < details.upperLimit) {
+        return details.cssClass;
+      }
+    }
+    return MedalDetails.EXCELLENT;
   }
 
   /**

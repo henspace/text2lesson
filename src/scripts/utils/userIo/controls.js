@@ -59,20 +59,20 @@ export class RangeIndicator extends ManagedElement {
     const maxValue = parseFloat(controlEl.max ?? 100);
     const currentValue = parseFloat(controlEl.value);
     const proportion = (currentValue - minValue) / (maxValue - minValue);
-    this.element.textContent = event.target.value;
-    this.element.style.opacity = 100;
-    const top = controlEl.offsetTop - this.element.offsetHeight;
+    this.textContent = event.target.value;
+    this.style.opacity = 100;
+    const top = controlEl.offsetTop - this.offsetHeight;
     let left =
       controlEl.offsetLeft +
       controlEl.offsetWidth * proportion -
-      this.element.offsetWidth / 2;
+      this.offsetWidth / 2;
     left = Math.max(controlEl.offsetLeft, left);
     left = Math.min(
-      controlEl.offsetLeft + controlEl.offsetWidth - this.element.offsetWidth,
+      controlEl.offsetLeft + controlEl.offsetWidth - this.offsetWidth,
       left
     );
-    this.element.style.left = `${left}px`;
-    this.element.style.top = `${top}px`;
+    this.style.left = `${left}px`;
+    this.style.top = `${top}px`;
     this.show();
   }
 
@@ -80,16 +80,16 @@ export class RangeIndicator extends ManagedElement {
    * Hide the indicator.
    */
   hide() {
-    this.element.style.opacity = 0;
-    this.element.style.visibility = 'hidden';
+    this.style.opacity = 0;
+    this.style.visibility = 'hidden';
   }
 
   /**
    * Show the indicator.
    */
   show() {
-    this.element.style.visibility = 'visible';
-    this.element.style.opacity = 100;
+    this.style.visibility = 'visible';
+    this.style.opacity = 100;
   }
 }
 
@@ -101,7 +101,7 @@ export class RangeIndicator extends ManagedElement {
 export class SeparatorControl extends ManagedElement {
   constructor(key, definition) {
     super('div', 'utils-separator');
-    this.element.innerHTML =
+    this.innerHTML =
       '<span class="utils-hr"><hr></span>' +
       `<span> ${escapeHtml(definition.label)} </span>` +
       '<span class="utils-hr"><hr></span>';
@@ -122,10 +122,10 @@ export class InputControl extends ManagedElement {
   constructor(key, definition) {
     super('input');
     this.type = definition.type;
-    this.element.setAttribute('type', definition.type);
-    this.element.setAttribute('min', definition.min);
-    this.element.setAttribute('max', definition.max);
-    this.element.className = definition.type;
+    this.setAttribute('type', definition.type);
+    this.setAttribute('min', definition.min);
+    this.setAttribute('max', definition.max);
+    this.className = definition.type;
   }
 
   /**
@@ -135,10 +135,10 @@ export class InputControl extends ManagedElement {
   setValue(value) {
     switch (this.type) {
       case 'checkbox':
-        this.element.checked = value;
+        this.checked = value;
         return;
       default:
-        this.element.value = value;
+        this.value = value;
         return;
     }
   }
@@ -150,11 +150,11 @@ export class InputControl extends ManagedElement {
   getValue() {
     switch (this.type) {
       case 'checkbox':
-        return this.element.checked;
+        return this.checked;
       case 'range':
-        return parseFloat(this.element.value);
+        return parseFloat(this.value);
       default:
-        return this.element.value;
+        return this.value;
     }
   }
 }
@@ -174,7 +174,7 @@ export class SelectControl extends ManagedElement {
     super('select');
     this.definition = definition;
     if (definition.type) {
-      this.element.className = definition.type;
+      this.className = definition.type;
     }
     this.#addOptions();
   }
@@ -185,10 +185,10 @@ export class SelectControl extends ManagedElement {
    */
   setValue(value) {
     console.log(value);
-    const options = [...this.element.options];
+    const options = [...this.$.options];
     const index = options.findIndex((option) => option.value === value);
     if (index >= 0) {
-      this.element.selectedIndex = index;
+      this.$.selectedIndex = index;
     } else {
       console.warn(`Could not set select control to value of ${value}`);
     }
@@ -199,7 +199,7 @@ export class SelectControl extends ManagedElement {
    * @returns {*} value
    */
   getValue() {
-    return this.element.selectedOptions[0].value;
+    return this.$.selectedOptions[0].value;
   }
 
   /**
@@ -207,7 +207,7 @@ export class SelectControl extends ManagedElement {
    * @returns {string} text
    */
   getText() {
-    return this.element.selectedOptions[0].text;
+    return this.$.selectedOptions[0].text;
   }
 
   /**
@@ -224,7 +224,7 @@ export class SelectControl extends ManagedElement {
 
     this.options?.forEach((value, key) => {
       const option = new Option(value, key);
-      this.element.add(option);
+      this.$.add(option);
     });
   }
 
@@ -235,9 +235,9 @@ export class SelectControl extends ManagedElement {
   reloadOptions() {
     this.options = this.definition.options;
     if (typeof this.definition.options === 'function') {
-      let n = this.element.length;
+      let n = this.$.length;
       while (n-- > 0) {
-        this.element.remove(0);
+        this.$.remove(0);
       }
     }
     this.#addOptions();

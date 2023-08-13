@@ -38,6 +38,7 @@
 
 import { fetchText, fetchJson } from '../utils/jsonUtils/json.js';
 import { CachedLesson } from './cachedLesson.js';
+import { LocalLibrary } from './localLibrary.js';
 
 /**
  * @typedef {Map<string, LibraryInfo>} Libraries - object containing
@@ -105,6 +106,10 @@ import { CachedLesson } from './cachedLesson.js';
  */
 
 class LessonManager {
+  /**
+   * @type {LocalLibrary}
+   */
+  #localLibrary = new LocalLibrary();
   /**
    * Available this.#libraries.
    * @type {Map.<string, Libraries>}

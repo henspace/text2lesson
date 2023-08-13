@@ -92,6 +92,17 @@ export class StringTransformer {
       return buffer;
     }
 
+    /** check if any replacements should be applied */
+    let applyTransforms = false;
+    this.replacements.forEach((replacement) => {
+      if (doFiletypesMatch(filetype, replacement.filetype)) {
+        applyTransforms = true;
+      }
+    });
+    if (!applyTransforms) {
+      return buffer;
+    }
+
     let contents = buffer.toString('utf-8');
 
     this.replacements.forEach((replacement) => {

@@ -27,6 +27,7 @@ import {
   encodeToEntities,
   parseMarkdown,
   escapeHtml,
+  getPlainTextFromHtml,
 } from './textProcessing.js';
 
 test('Paragraphs split on blank lines', () => {
@@ -322,4 +323,18 @@ test('escapeHtml uses replacement character for null', () => {
   const result = escapeHtml('test\x00string');
   expect(result).toHaveLength(11);
   expect(result).toBe('test\ufffdstring');
+});
+
+test('getPlainTextFromHtml handles plain text', () => {
+  expect(getPlainTextFromHtml(' one two three four')).toBe(
+    ' one two three four'
+  );
+});
+
+test('getPlainTextFromHtml handles removes html tags', () => {
+  expect(
+    getPlainTextFromHtml(
+      ' one <i>two</i> <div class="a class">three</div> four'
+    )
+  ).toBe(' one two three four');
 });

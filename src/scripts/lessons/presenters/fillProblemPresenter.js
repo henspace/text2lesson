@@ -57,7 +57,7 @@ export class FillProblemPresenter extends ProblemPresenter {
    */
   #createMissingWordSelectors() {
     const questionWordElements =
-      this.questionElement.element.querySelectorAll('.missing-word');
+      this.questionElement.querySelectorAll('.missing-word');
 
     this.#missingWordCorrectAnswers = [];
 
@@ -94,7 +94,7 @@ export class FillProblemPresenter extends ProblemPresenter {
     let correct = true;
     this.#missingWordSelectors.forEach((selectControl, index) => {
       const givenAnswer = selectControl.getText();
-      const container = selectControl.element.parentElement;
+      const container = selectControl.parentElement;
       selectControl.remove();
       container.textContent = givenAnswer;
       if (givenAnswer === this.#missingWordCorrectAnswers[index]) {

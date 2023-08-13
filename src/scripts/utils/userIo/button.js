@@ -42,7 +42,7 @@ export class BarButton extends ManagedElement {
     if (detail.content) {
       icons.applyIconToElement(detail, this.element);
     } else {
-      this.element.innerHTML = detail;
+      this.innerHTML = detail;
     }
   }
 }
@@ -73,7 +73,7 @@ export class ButtonBar extends ManagedElement {
 
     buttons.forEach((value, index) => {
       const button = new BarButton(value);
-      button.element.setAttribute('data-index', index);
+      button.setAttribute('data-index', index);
       this.appendChild(button, index);
       this.listenToEventOn('click', button, index);
     });

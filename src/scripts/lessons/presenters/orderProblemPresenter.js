@@ -85,7 +85,7 @@ export class OrderProblemPresenter extends ProblemPresenter {
     let correct = true;
     this.#missingWordSelectors.forEach((selectControl, index) => {
       const givenAnswer = selectControl.getText();
-      const container = selectControl.element.parentElement;
+      const container = selectControl.parentElement;
       selectControl.remove();
       container.textContent = givenAnswer;
       if (givenAnswer === this.#missingWordCorrectAnswers[index]) {

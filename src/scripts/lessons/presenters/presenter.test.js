@@ -57,6 +57,7 @@ let stage;
 
 beforeAll(() => {
   stage = new ManagedElement('div', 'stage');
+  stage.appendTo(document.body);
 });
 
 beforeEach(() => {
@@ -84,20 +85,21 @@ test('constructor creates ManagedElement', () => {
   };
   const presenter = new Presenter(config);
   expect(presenter).toBeInstanceOf(ManagedElement);
-  expect(presenter.element.tagName).toBe('DIV');
+  expect(presenter.tagName).toBe('DIV');
 });
 
-test('constructor creates ManagedElement with class name', () => {
+test('constructor creates ManagedElement with class name base on interitance', () => {
   const config = {
     className: 'myClass',
     titles: [],
   };
   const presenter = new Presenter(config);
   expect(presenter).toBeInstanceOf(ManagedElement);
-  expect(presenter.element.className).toBe(config.className);
+  expect(presenter.classList.contains('ManagedElement')).toBe(true);
+  expect(presenter.classList.contains('Presenter')).toBe(true);
 });
 
-test('presentOnStage displays content on stage', () => {
+test('presentOnStage creates preamble, presentation and button-bar elements.', () => {
   const config = {
     className: 'presenter',
     titles: ['title1', 'title2'],
@@ -108,17 +110,20 @@ test('presentOnStage displays content on stage', () => {
   const presenter = new Presenter(config);
   expect(stage.children).toHaveLength(0);
   const promise = presenter.presentOnStage(stage);
-  expect(stage.children).toHaveLength(1);
-  expect(stage.children[0]).toBe(presenter);
+  expect(stage.managedChildren).toHaveLength(1);
+  expect(stage.managedChildren[0]).toBe(presenter);
 
   const rootElement = presenter.element;
-  expect(rootElement.children).toHaveLength(config.titles.length);
-  for (let index = 0; index < rootElement.children.length; index++) {
-    const child = rootElement.children.item(index);
-    expect(child.tagName).toBe('A');
-    expect(child.className).toBe(config.itemClassName);
-    expect(child.textContent).toBe(config.titles[index]);
-  }
+  expect(rootElement.children).toHaveLength(3);
+  expect(rootElement.children.item(0).classList.contains('preamble')).toBe(
+    true
+  );
+  expect(rootElement.children.item(1).classList.contains('presentation')).toBe(
+    true
+  );
+  expect(rootElement.children.item(2).classList.contains('button-bar')).toBe(
+    true
+  );
 
   presenter.handleClickEvent(null, 1); // resolve promise
   return promise;
@@ -132,24 +137,9 @@ test('presentOnStage displays content with backbutton at end', () => {
   };
   const presenter = new Presenter(config);
   const promise = presenter.presentOnStage(stage);
-  const rootElement = presenter.element;
-  const backButton = rootElement.lastElementChild;
-  expect(backButton.tagName).toBe('A');
-  expect(backButton.className).toBe('backNavigation');
-  presenter.handleClickEvent(null, 0); // resolve promise
-  return promise;
-});
-
-test('presentOnStage displays content with no backbutton at end', () => {
-  const config = {
-    titles: ['title1', 'title2'],
-    itemClassName: 'test',
-    factory: presenterFactory,
-  };
-  presenterFactory.hasPrevious.mockReturnValueOnce(false);
-  const presenter = new Presenter(config);
-  const promise = presenter.presentOnStage(stage);
-  expect(presenter.element.lastElementChild.className).toBe('test');
+  const backButton = document.querySelector('.button-bar').firstChild;
+  expect(backButton.tagName).toBe('BUTTON');
+  expect(backButton.classList.contains('back-navigation')).toBe(true);
   presenter.handleClickEvent(null, 0); // resolve promise
   return promise;
 });
@@ -161,37 +151,16 @@ test('presentOnStage fulfils on click of backbutton', () => {
     itemClassName: 'item',
     factory: presenterFactory,
   });
-  jest.spyOn(presenter, 'next').mockReturnValue(null);
+  jest.spyOn(presenter, 'next').mockReturnValue(new MockPresenter());
   jest.spyOn(presenter, 'previous').mockReturnValue(new MockPresenter());
   expect.assertions(1);
   const promise = presenter.presentOnStage(stage).then((nextPresenter) => {
     expect(nextPresenter).toBeInstanceOf(MockPresenter);
   });
-  console.log(`Class ${presenter.element.lastElementChild.className}`);
-  presenter.element.lastElementChild.dispatchEvent(new Event('click'));
-  return promise;
-});
-
-test('presenter created with listeners on targets which fulfil on click.', () => {
-  const config = {
-    className: 'Presenter',
-    titles: ['target 1', 'target 2', 'target 3'],
-    itemClassName: 'item',
-    factory: presenterFactory,
-  };
-  const presenter = new Presenter(config);
-  jest
-    .spyOn(presenter, 'next')
-    .mockImplementation((index) => new MockPresenter({ index: index }));
-  const childIndex = 1;
-
-  expect.assertions(2);
-  const promise = presenter.presentOnStage(stage).then((nextPresenter) => {
-    expect(nextPresenter).toBeInstanceOf(MockPresenter);
-    expect(nextPresenter.config.index).toBe(childIndex);
-  });
-
-  clickElement(presenter.element.children[childIndex], '1');
+  console.log(`Class ${presenter.lastElementChild.className}`);
+  document
+    .querySelector('.button-bar')
+    .lastElementChild.dispatchEvent(new Event('click'));
   return promise;
 });
 
@@ -218,7 +187,7 @@ test('presentOnStage calls next method with index if eventId is parses as a numb
     .then((nextPresenterIgnored) => {
       expect(spyNext).toBeCalledWith(triggerEventId);
     });
-  target.element.dispatchEvent(new Event('click'));
+  target.dispatchEvent(new Event('click'));
   return promise;
 });
 
@@ -244,13 +213,13 @@ test('presentOnStage fulfils with result of next function for numeric ids', () =
     expect(nextPresenter).toBeInstanceOf(MockPresenter);
     expect(nextPresenter.config.index).toBe(triggerEventId);
   });
-  target.element.dispatchEvent(new Event('click'));
+  target.dispatchEvent(new Event('click'));
   return promise;
 });
 
-test('presentOnStage fulfils with result of previous function for id of "PREVIOUS"', () => {
+test('presentOnStage fulfils with result of previous function for id of "BACKWARDS"', () => {
   expect.assertions(2);
-  const triggerEventId = 'PREVIOUS';
+  const triggerEventId = 'BACKWARDS';
   const config = {
     className: 'Presenter',
     titles: ['target 1', 'target 2', 'target 3'],
@@ -261,11 +230,13 @@ test('presentOnStage fulfils with result of previous function for id of "PREVIOU
   jest
     .spyOn(presenter, 'next')
     .mockImplementation((index) => new MockPresenter({ index: index }));
-  jest
-    .spyOn(presenter, 'previous')
-    .mockImplementation(() => new MockPresenter({ index: 1001 }));
+  jest.spyOn(presenter, 'previous').mockImplementation(() => {
+    console.log('Mock implementation of previous called.');
+    return new MockPresenter({ index: 1001 });
+  });
 
   const target = new ManagedElement('div');
+
   presenter.appendChild(target);
   presenter.listenToEventOn('click', target, triggerEventId);
 
@@ -273,13 +244,14 @@ test('presentOnStage fulfils with result of previous function for id of "PREVIOU
     expect(nextPresenter).toBeInstanceOf(MockPresenter);
     expect(nextPresenter.config.index).toBe(1001);
   });
-  target.element.dispatchEvent(new Event('click'));
+
+  target.dispatchEvent(new Event('click'));
   return promise;
 });
 
-test('presentOnStage fulfils with null for id which does not parse as an integer and does not equal "PREVIOUS"', () => {
+test('presentOnStage fulfils with null for id which does not parse as an integer and does not equal "FORWARDS"', () => {
   expect.assertions(1);
-  const triggerEventId = 'NOT_PREVIOUS';
+  const triggerEventId = 'NOT_FORWARDS';
   const config = {
     className: 'Presenter',
     titles: ['target 1', 'target 2', 'target 3'],
@@ -301,6 +273,6 @@ test('presentOnStage fulfils with null for id which does not parse as an integer
   const promise = presenter.presentOnStage(stage).then((nextPresenter) => {
     expect(nextPresenter).toBeNull();
   });
-  target.element.dispatchEvent(new Event('click'));
+  target.dispatchEvent(new Event('click'));
   return promise;
 });

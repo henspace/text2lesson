@@ -175,10 +175,11 @@ export class TextItem {
    * Get a plain text version
    */
   get plainText() {
-    return this.#html
-      .replace(/<(?:[^>]*missing-word[^>]*)>/g, '...')
-      .replace(/<[^>]*>/g, '')
-      .replace(/\s+/g, ' ');
+    const elidedHtml = this.#html.replace(
+      /<(?:[^>]*missing-word[^>]*)>/g,
+      '...'
+    );
+    return textProcessing.getPlainTextFromHtml(elidedHtml);
   }
 
   /**

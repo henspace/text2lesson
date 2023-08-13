@@ -24,7 +24,7 @@
 
 class FocusManager {
   constructor() {
-    window.addEventListener('focusin', (event) => {
+    window.addEventListener('focus', (event) => {
       console.debug(
         `Window has focus. Restore focus to active element. Active element ${document.activeElement.tagName} ${document.activeElement.className}`,
         document.activeElement,

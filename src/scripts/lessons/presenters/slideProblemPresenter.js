@@ -40,6 +40,17 @@ const MediaID = {
 };
 
 /**
+ * States of the card.
+ * @enum {number}
+ */
+const CardState = {
+  INACTIVE: 0,
+  ARRIVING: 1,
+  READING: 2,
+  LEAVING: 3,
+};
+
+/**
  * Class to present a slide show.
  * Presentation of a Problem provides the full problem and answer.
  * @class
@@ -74,7 +85,22 @@ export class SlideProblemPresenter extends ProblemPresenter {
    * TimerId
    * @type {number}
    */
-  #timerId;
+  #readTimerId;
+
+  /**
+   * @type {CardState}
+   */
+  #cardState = CardState.INACTIVE;
+
+  /**
+   * @type {module:lessons/presenters/displayCards~CardDetail}
+   */
+  #currentCardDetail;
+
+  /**
+   * @type {boolean}
+   */
+  #paused;
 
   /**
    * Construct.
@@ -94,6 +120,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
       this.problem.intro.html || this.problem.question.html
     );
     this.#visualCard = new ManagedElement('div', 'display-card');
+    this.listenToEventOn('animationend', this.#visualCard);
     this.questionElement.appendChild(this.#visualCard);
     this.expandPresentation();
     this.#addMediaButtons();
@@ -138,38 +165,65 @@ export class SlideProblemPresenter extends ProblemPresenter {
     return super.presentOnStage(stageElement);
   }
 
+  /**
+   * Set the card state adjusting css classes as required.
+   * @param {CardState} cardState
+   */
+  #setCardState(cardState) {
+    switch (cardState) {
+      case CardState.ARRIVING:
+        this.#visualCard.classList.remove('card-offscreen');
+        this.#visualCard.classList.add('card-onscreen');
+        break;
+      case CardState.LEAVING:
+        this.#visualCard.classList.remove('card-onscreen');
+        this.#visualCard.classList.add('card-offscreen');
+        break;
+    }
+    this.#cardState = cardState;
+  }
+
+  /**
+   * Show the next card.
+   */
   #showNextCard() {
     console.log('Show the next card');
     if (this.#endShowIfLastCard()) {
       return;
     }
-    this.#visualCard.innerHTML = this.#cards.getNext();
-    const cardRect = this.#visualCard.element.getBoundingClientRect();
-    const presentationRect = this.presentation.element.getBoundingClientRect();
+    this.#currentCardDetail = this.#cards.getNext();
+    this.#visualCard.innerHTML = this.#currentCardDetail.html;
+    const cardRect = this.#visualCard.getBoundingClientRect();
+    const presentationRect = this.presentation.getBoundingClientRect();
     const verticalSpace = presentationRect.height - cardRect.height;
     if (verticalSpace > 0) {
-      this.#visualCard.element.style.marginTop = `${Math.floor(
-        verticalSpace / 2
-      )}px`;
-    }
-    if (this.#visualCard.classList.contains('card-offscreen')) {
-      this.#visualCard.classList.replace('card-offscreen', 'card-onscreen');
-    } else {
-      this.#visualCard.classList.add('card-onscreen');
+      this.#visualCard.style.marginTop = `${Math.floor(verticalSpace / 2)}px`;
     }
 
-    this.#timerId = setTimeout(() => {
-      this.#removeCard();
-    }, 5000);
+    this.#setCardState(CardState.ARRIVING);
   }
+
+  /**
+   * Leave card on screen while it's read.
+   * After the read time the remove card is called.
+   */
+  #readCard() {
+    this.#setCardState(CardState.READING);
+    if (!this.#paused) {
+      this.#readTimerId = setTimeout(() => {
+        this.#removeCard();
+      }, this.#currentCardDetail.readTimeSecs * 1000);
+    }
+  }
+
+  /**
+   * Remove the card
+   */
   #removeCard() {
     if (this.#endShowIfLastCard()) {
       return;
     }
-    this.#visualCard.classList.replace('card-onscreen', 'card-offscreen');
-    this.#timerId = setTimeout(() => {
-      this.#showNextCard();
-    }, 1000);
+    this.#setCardState(CardState.LEAVING);
   }
 
   /**
@@ -197,29 +251,47 @@ export class SlideProblemPresenter extends ProblemPresenter {
   handleClickEvent(event, eventId) {
     switch (eventId) {
       case MediaID.PAUSE:
-        clearTimeout(this.#timerId);
+        clearTimeout(this.#readTimerId);
         this.#showMediaButtons(false);
+        this.#paused = true;
         return;
       case MediaID.PLAY:
-        clearTimeout(this.#timerId);
+        clearTimeout(this.#readTimerId);
         this.#showMediaButtons(true);
-        this.#continueSlides();
+        if (this.#cardState === CardState.READING) {
+          this.#removeCard();
+        }
+        this.#paused = false;
         return;
       case MediaID.SKIP:
-        clearTimeout(this.#timerId);
+        clearTimeout(this.#readTimerId);
         this.#showMediaButtons(true);
-        this.#continueSlides();
+        if (this.#cardState === CardState.READING) {
+          this.#removeCard();
+        }
+        this.#paused = false;
         return;
     }
     super.handleClickEvent(event, eventId);
   }
 
-  /** Continue the slide show. */
-  #continueSlides() {
-    if (this.#visualCard.classList.contains('card-onscreen')) {
-      this.#removeCard();
-    } else {
-      this.#showNextCard();
+  /**
+   * Handle animation end event
+   * @param {Event} event
+   * @param {eventId} eventId - this will not be set.
+   */
+  handleAnimationendEvent(eventIgnored, eventIdIgnored) {
+    switch (this.#cardState) {
+      case CardState.ARRIVING:
+        this.#readCard();
+        break;
+      case CardState.LEAVING:
+        this.#showNextCard();
+        break;
+      default:
+        console.error(
+          `Animation unexpectedly ended with card in state ${this.#cardState}`
+        );
     }
   }
 

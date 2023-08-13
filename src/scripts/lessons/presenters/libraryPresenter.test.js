@@ -51,14 +51,6 @@ class MockPresenter {
   }
 }
 
-jest.unstable_mockModule('./presenter.js', () => {
-  return {
-    Presenter: jest.fn(function (config) {
-      this.config = config;
-    }),
-  };
-});
-
 jest.unstable_mockModule('../lessonManager.js', () => {
   return {
     lessonManager: {
@@ -95,11 +87,6 @@ const { LibraryPresenter } = await import('./libraryPresenter.js');
 beforeEach(() => {
   presenterFactory.getNext.mockClear();
   presenterFactory.getPrevious.mockClear();
-});
-
-test('constructor provides base class with class name of libraryPresenter.', () => {
-  const libraryPresenter = new LibraryPresenter({});
-  expect(libraryPresenter.config.className).toBe('libraryPresenter');
 });
 
 test('constructor provides base class with book titles.', () => {

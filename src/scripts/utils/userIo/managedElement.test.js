@@ -39,14 +39,52 @@ test('creates element', () => {
   const tag = 'div';
   const me = new ManagedElement(tag);
   expect(me.element).toBeInstanceOf(Element);
-  expect(me.element.tagName).toEqual(tag.toUpperCase());
+  expect(me.tagName).toEqual(tag.toUpperCase());
+});
+
+test('$ provides access to underlying element', () => {
+  const me = new ManagedElement('div', 'test-class');
+  me.appendTo(document.body);
+  const htmlElement = document.querySelector('.test-class');
+  expect(me.$).toBe(htmlElement);
+});
+
+test('Static $ provides access to underlying element of a ManagedElement', () => {
+  const me = new ManagedElement('div', 'test-class');
+  me.appendTo(document.body);
+  const htmlElement = document.querySelector('.test-class');
+  expect(ManagedElement.$(me)).toBe(htmlElement);
+});
+
+test('Static $ just returns element if passed an Element instead of a ManagedElement', () => {
+  const htmlElement = document.createElement('div');
+  expect(ManagedElement.$(htmlElement)).toBe(htmlElement);
+});
+
+test('Static getElement provides access to underlying element of a ManagedElement', () => {
+  const me = new ManagedElement('div', 'test-class');
+  me.appendTo(document.body);
+  const htmlElement = document.querySelector('.test-class');
+  expect(ManagedElement.getElement(me)).toBe(htmlElement);
+});
+
+test('Static getElement just returns element if passed an Element instead of a ManagedElement', () => {
+  const htmlElement = document.createElement('div');
+  expect(ManagedElement.getElement(htmlElement)).toBe(htmlElement);
+});
+
+test('Getter for element provides access to underlying element', () => {
+  const me = new ManagedElement('div', 'test-class');
+  me.appendTo(document.body);
+  const htmlElement = document.querySelector('.test-class');
+  expect(me.element).toBe(htmlElement);
 });
 
 test('sets class name', () => {
   const tag = 'div';
   const className = 'myclass';
   const me = new ManagedElement(tag, className);
-  expect(me.element.className).toEqual(className);
+  expect(me.className).toEqual(className);
 });
 
 test('appends ManagedElement to itself', () => {
@@ -55,9 +93,11 @@ test('appends ManagedElement to itself', () => {
   const me = new ManagedElement(tag);
   const meChild = new ManagedElement(tagChild);
   me.appendChild(meChild);
-  expect(me.element.children).toHaveLength(1);
-  expect(meChild.element.children).toHaveLength(0);
-  expect(me.element.children[0].tagName).toEqual(tagChild.toUpperCase());
+  expect(me.managedChildren).toHaveLength(1);
+  expect(me.$.children).toHaveLength(1);
+  expect(meChild.managedChildren).toHaveLength(0);
+  expect(meChild.$.children).toHaveLength(0);
+  expect(me.$.children.item(0).tagName).toEqual(tagChild.toUpperCase());
 });
 
 test('appends itself to another', () => {
@@ -67,9 +107,10 @@ test('appends itself to another', () => {
 
   const me = new ManagedElement(tag);
   me.appendTo(parentElement);
-  expect(me.element.children).toHaveLength(0);
+  expect(me.managedChildren).toHaveLength(0);
+  expect(me.$.children).toHaveLength(0);
   expect(parentElement.children).toHaveLength(1);
-  expect(parentElement.children[0].tagName).toEqual(tag.toUpperCase());
+  expect(parentElement.children.item(0).tagName).toEqual(tag.toUpperCase());
 });
 
 test('appends ManagedElement to another', () => {
@@ -81,25 +122,12 @@ test('appends ManagedElement to another', () => {
   const me = new ManagedElement(tag);
   const meChild = new ManagedElement(tagChild);
   me.appendChildTo(meChild, peerElement);
-  expect(me.element.children).toHaveLength(0);
-  expect(meChild.element.children).toHaveLength(0);
+  expect(me.managedChildren).toHaveLength(1);
+  expect(me.$.children).toHaveLength(0);
+  expect(meChild.managedChildren).toHaveLength(0);
+  expect(meChild.$.children).toHaveLength(0);
   expect(peerElement.children).toHaveLength(1);
-  expect(peerElement.children[0].tagName).toEqual(tagChild.toUpperCase());
-});
-
-test('appends ManagedElement to another', () => {
-  const tag = 'div';
-  const tagChild = 'p';
-  const peerElement = document.createElement('span');
-  document.body.appendChild(peerElement);
-
-  const me = new ManagedElement(tag);
-  const meChild = new ManagedElement(tagChild);
-  me.appendChildTo(meChild, peerElement);
-  expect(me.element.children).toHaveLength(0);
-  expect(meChild.element.children).toHaveLength(0);
-  expect(peerElement.children).toHaveLength(1);
-  expect(peerElement.children[0].tagName).toEqual(tagChild.toUpperCase());
+  expect(peerElement.children.item(0).tagName).toEqual(tagChild.toUpperCase());
 });
 
 test('add listener to itself results in call to handleEvent', () => {
@@ -107,7 +135,7 @@ test('add listener to itself results in call to handleEvent', () => {
   const me = new ManagedElement(tag);
   const spy = jest.spyOn(me, 'handleEvent');
   me.listenToOwnEvent('click');
-  me.element.dispatchEvent(new Event('click'));
+  me.dispatchEvent(new Event('click'));
   expect(spy.mock.calls).toHaveLength(1);
   expect(spy.mock.calls[0][0].type).toEqual('click');
 });
@@ -120,8 +148,8 @@ test('add listener to itself with handler function results in call to handler fu
   me.listenToOwnEvent('click', () => {
     clickCount++;
   });
-  me.element.dispatchEvent(new Event('click'));
-  me.element.dispatchEvent(new Event('click'));
+  me.dispatchEvent(new Event('click'));
+  me.dispatchEvent(new Event('click'));
   expect(spy.mock.calls).toHaveLength(0);
   expect(clickCount).toEqual(2);
 });
@@ -133,7 +161,7 @@ test('add listener to another in call to handleEvent', () => {
   const peer = new ManagedElement(peerTag);
   const spy = jest.spyOn(me, 'handleEvent');
   me.listenToEventOn('click', peer);
-  peer.element.dispatchEvent(new Event('click'));
+  peer.dispatchEvent(new Event('click'));
   expect(spy.mock.calls).toHaveLength(1);
   expect(spy.mock.calls[0][0].type).toEqual('click');
 });
@@ -146,7 +174,7 @@ test('call handler for own event with event and eventId', () => {
   const handlerName = 'handleActionEvent';
   me[handlerName] = jest.fn();
   me.listenToOwnEvent(eventType, eventId);
-  me.element.dispatchEvent(new Event(eventType));
+  me.dispatchEvent(new Event(eventType));
   expect(me[handlerName].mock.calls).toHaveLength(1);
   expect(me[handlerName].mock.calls[0][0].type).toEqual('action');
   expect(me[handlerName].mock.calls[0][1]).toEqual(eventId);
@@ -162,7 +190,7 @@ test("call handler for different element's event with event and eventId", () => 
   const handlerName = 'handleActionEvent';
   me[handlerName] = jest.fn();
   me.listenToEventOn(eventType, peer, eventId);
-  peer.element.dispatchEvent(new Event(eventType));
+  peer.dispatchEvent(new Event(eventType));
   expect(me[handlerName].mock.calls).toHaveLength(1);
   expect(me[handlerName].mock.calls[0][0].type).toEqual('action');
   expect(me[handlerName].mock.calls[0][1]).toEqual(eventId);
@@ -184,7 +212,7 @@ test('call handler with eventId set even when delegated', () => {
   document.body.appendChild(peer.element);
   peer.appendChild(peerChild);
   me.listenToEventOn(eventType, peer, eventId);
-  peerChild.element.dispatchEvent(new Event(eventType, { bubbles: true }));
+  peerChild.dispatchEvent(new Event(eventType, { bubbles: true }));
   expect(me[handlerName].mock.calls).toHaveLength(1);
   expect(me[handlerName].mock.calls[0][0].type).toEqual('action');
   expect(me[handlerName].mock.calls[0][1]).toEqual(eventId);
@@ -270,7 +298,7 @@ test('Getter for element accesses underlying element', () => {
   const testId = 'testId';
   const me = new ManagedElement('div', className);
   document.body.appendChild(me.element);
-  me.element.id = testId;
+  me.$.id = testId;
   expect(me.element).toBe(document.getElementById(testId));
 });
 
@@ -279,7 +307,7 @@ test('Getter for id accesses underlying element', () => {
   const testId = 'testId';
   const me = new ManagedElement('div', className);
   document.body.appendChild(me.element);
-  me.element.id = testId;
+  me.$.id = testId;
   expect(me.id).toBe(testId);
 });
 
@@ -289,10 +317,27 @@ test('Setter for id accesses underlying element', () => {
   const me = new ManagedElement('div', className);
   document.body.appendChild(me.element);
   me.id = testId;
-  expect(me.element.id).toBe(testId);
+  expect(me.$.id).toBe(testId);
 });
 
-test('Getter for children provides array of added children', () => {
+test('Getter for managed children provides array of added children', () => {
+  const me = new ManagedElement('div');
+  const children = [];
+  const N_CHILDREN = 4;
+  for (let n = 0; n < N_CHILDREN; n++) {
+    const child = new ManagedElement('div');
+    child.id = `ID${n}`;
+    children.push(child);
+    me.appendChild(child);
+  }
+
+  expect(me.managedChildren.length).toBe(N_CHILDREN);
+  me.managedChildren.forEach((value, index) => {
+    expect(value.id).toBe(`ID${index}`);
+  });
+});
+
+test("Getter for children provides the underlying element's html collection", () => {
   const me = new ManagedElement('div');
   const children = [];
   const N_CHILDREN = 4;
@@ -304,16 +349,14 @@ test('Getter for children provides array of added children', () => {
   }
 
   expect(me.children.length).toBe(N_CHILDREN);
-  me.children.forEach((value, index) => {
-    expect(value.id).toBe(`ID${index}`);
-  });
+  expect(me.children).toBe(me.element.children);
 });
 
 test('setSafeAttribute encodes attribute in base64', () => {
   const id = 'testElement';
   const me = new ManagedElement('div');
   document.body.appendChild(me.element);
-  me.element.id = id;
+  me.$.id = id;
   const attributeName = 'data-test';
   const attributeValue = 'a test value';
   me.setSafeAttribute(attributeName, attributeValue);
@@ -419,18 +462,18 @@ test('show element sets display property to unset', () => {
 
 test('fadeIn adds fade-in class and removes fade-out class', () => {
   const me = new ManagedElement('div', 'fade-out');
-  expect(me.element.classList.contains('fade-out')).toBe(true);
+  expect(me.$.classList.contains('fade-out')).toBe(true);
   me.fadeIn();
-  expect(me.element.classList.contains('fade-out')).toBe(false);
-  expect(me.element.classList.contains('fade-in')).toBe(true);
+  expect(me.$.classList.contains('fade-out')).toBe(false);
+  expect(me.$.classList.contains('fade-in')).toBe(true);
 });
 
 test('fadeOut adds fade-out class and removes fade-in class', () => {
   const me = new ManagedElement('div', 'fade-in');
-  expect(me.element.classList.contains('fade-in')).toBe(true);
+  expect(me.$.classList.contains('fade-in')).toBe(true);
   me.fadeOut();
-  expect(me.element.classList.contains('fade-in')).toBe(false);
-  expect(me.element.classList.contains('fade-out')).toBe(true);
+  expect(me.$.classList.contains('fade-in')).toBe(false);
+  expect(me.$.classList.contains('fade-out')).toBe(true);
 });
 
 test("classList accesses element's class list", () => {

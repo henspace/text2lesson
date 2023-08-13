@@ -111,14 +111,12 @@ export class LabeledControl extends ManagedElement {
     super('div');
     this.#storage = options.storage;
     this.#manager = options.manager;
-    this.element.className = 'labeled-control-container';
+    this.className = 'labeled-control-container';
     this.label = new ManagedElement('label');
     this.appendChild(this.label);
     this.key = key;
     this.definition = definition;
-    this.label.element.innerHTML = `<span>${escapeHtml(
-      definition.label
-    )}</span>`;
+    this.label.innerHTML = `<span>${escapeHtml(definition.label)}</span>`;
     if (definition.type === 'select') {
       this.control = new SelectControl(key, definition);
     } else {
@@ -157,7 +155,7 @@ export class LabeledControl extends ManagedElement {
     if (this.definition.validate) {
       const validation = this.definition.validate(value);
       if (!validation.pass) {
-        this.error.element.textContent = validation.errorMessage;
+        this.error.textContent = validation.errorMessage;
         this.classList.add('utils-error');
         return;
       }

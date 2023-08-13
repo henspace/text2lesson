@@ -34,10 +34,6 @@ import { escapeHtml } from '../../utils/text/textProcessing.js';
  */
 export class LessonPresenter extends ListPresenter {
   /**
-   * @type {module:lessons/lessonManager~LessonInfo}
-   */
-  #lessonInfo;
-  /**
    * Construct.
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
@@ -45,7 +41,7 @@ export class LessonPresenter extends ListPresenter {
     config.titles = ['placeholder']; // this will be replaced later.
     config.itemClassName = 'lesson';
     super(config);
-    this.#lessonInfo = lessonManager.currentLessonInfo;
+    this.config.lessonInfo = lessonManager.currentLessonInfo;
     this.#buildCustomContent();
     this.setupKeyboardNavigation();
   }
@@ -54,12 +50,12 @@ export class LessonPresenter extends ListPresenter {
    * Build custom content for the lesson.
    */
   #buildCustomContent() {
-    const li = this.element.querySelector('li');
+    const li = this.querySelector('li');
     li.innerHTML = `
-      <p>${escapeHtml(this.#lessonInfo.titles.library)}</p>
-      <p>${escapeHtml(this.#lessonInfo.titles.book)}</p>
-      <p>${escapeHtml(this.#lessonInfo.titles.chapter)}</p>
-      <p>${escapeHtml(this.#lessonInfo.titles.lesson)}</p>
+      <p>${escapeHtml(this.config.lessonInfo.titles.library)}</p>
+      <p>${escapeHtml(this.config.lessonInfo.titles.book)}</p>
+      <p>${escapeHtml(this.config.lessonInfo.titles.chapter)}</p>
+      <p>${escapeHtml(this.config.lessonInfo.titles.lesson)}</p>
     `;
   }
   /**

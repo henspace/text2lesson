@@ -21,7 +21,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-import { shuffle } from './shuffle.js';
+import { shuffle } from './arrayManip.js';
 import { test, expect } from '@jest/globals';
 
 test('shuffle alters array', () => {

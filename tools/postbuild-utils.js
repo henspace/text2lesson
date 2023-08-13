@@ -210,7 +210,7 @@ export function extractHeader(content) {
  * Transpile the code using Babel. Configuration options are picked up from
  * 'babel.config.json' file by Babel.
  * @param {string} filepath
- * @returns
+ * @returns {Promise} fulfils to undefined.
  */
 export function transpile(filepath) {
   return babel

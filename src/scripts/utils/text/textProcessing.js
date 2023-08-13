@@ -351,3 +351,12 @@ export function escapeHtml(data) {
   data = processReplacements(data, securityReps);
   return processReplacements(data, htmlEscAllReps);
 }
+
+/**
+ * Convert html into plain text
+ * @param {string} html
+ * @returns {string} the plain text
+ */
+export function getPlainTextFromHtml(html) {
+  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ');
+}

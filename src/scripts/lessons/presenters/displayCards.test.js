@@ -30,8 +30,8 @@ test('Check html broken into blocks on divs and paragraphs.', () => {
   const html =
     '<p>first line\n\nsecond line</p>\n\n<div>third line\nfourth line\n</div>';
   const cards = new DisplayCards(html);
-  expect(cards.getNext()).toBe('<p>first line\n\nsecond line</p>');
-  expect(cards.getNext()).toBe('<div>third line\nfourth line\n</div>');
+  expect(cards.getNext().html).toBe('<p>first line\n\nsecond line</p>');
+  expect(cards.getNext().html).toBe('<div>third line\nfourth line\n</div>');
   expect(cards.getNext()).toBeNull();
 });
 
@@ -39,8 +39,8 @@ test('Check html broken into blocks on divs and paragraphs in upper case.', () =
   const html =
     '<P>first line\n\nsecond line</P>\n\n<DIV>third line\nfourth line\n</DIV>';
   const cards = new DisplayCards(html);
-  expect(cards.getNext()).toBe('<P>first line\n\nsecond line</P>');
-  expect(cards.getNext()).toBe('<DIV>third line\nfourth line\n</DIV>');
+  expect(cards.getNext().html).toBe('<P>first line\n\nsecond line</P>');
+  expect(cards.getNext().html).toBe('<DIV>third line\nfourth line\n</DIV>');
   expect(cards.getNext()).toBeNull();
 });
 
@@ -48,16 +48,25 @@ test('Check html broken into blocks on divs and paragraphs with unterminated las
   const html =
     '<p>first line\n\nsecond line</p>\n\n<div>third line\nfourth line\n';
   const cards = new DisplayCards(html);
-  expect(cards.getNext()).toBe('<p>first line\n\nsecond line</p>');
-  expect(cards.getNext()).toBe('<div>third line\nfourth line');
+  expect(cards.getNext().html).toBe('<p>first line\n\nsecond line</p>');
+  expect(cards.getNext().html).toBe('<div>third line\nfourth line');
   expect(cards.getNext()).toBeNull();
 });
 
 test('Check html broken into blocks on divs and paragraphs with no breaks.', () => {
   const html = 'this is a test';
   const cards = new DisplayCards(html);
-  expect(cards.getNext()).toBe('this is a test');
+  expect(cards.getNext().html).toBe('this is a test');
   expect(cards.getNext()).toBeNull();
+});
+
+test('Read time provided', () => {
+  const expectedWordsPerMinute = 130;
+  const nWords = 260;
+  const expectedDuration = (nWords * 60.0) / expectedWordsPerMinute;
+  let data = '  <i> random_word </i>'.repeat(nWords);
+  const cards = new DisplayCards(data);
+  expect(cards.getNext().readTimeSecs).toBeCloseTo(expectedDuration, 0);
 });
 
 test('hasMore detects if there are more elements.', () => {
@@ -65,9 +74,9 @@ test('hasMore detects if there are more elements.', () => {
     '<P>first line\n\nsecond line</P>\n\n<DIV>third line\nfourth line\n</DIV>';
   const cards = new DisplayCards(html);
   expect(cards.hasMore).toBe(true);
-  expect(cards.getNext()).toBe('<P>first line\n\nsecond line</P>');
+  expect(cards.getNext().html).toBe('<P>first line\n\nsecond line</P>');
   expect(cards.hasMore).toBe(true);
-  expect(cards.getNext()).toBe('<DIV>third line\nfourth line\n</DIV>');
+  expect(cards.getNext().html).toBe('<DIV>third line\nfourth line\n</DIV>');
   expect(cards.hasMore).toBe(false);
   expect(cards.getNext()).toBeNull();
 });
