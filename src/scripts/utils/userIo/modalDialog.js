@@ -41,23 +41,23 @@ import { focusManager } from './focusManager.js';
 /**
  * Get the appropriate FontAwesome classes for dialogType
  * @param {ModalDialog.DialogType} dialogType
- * @returns {string[]} array of FontAwesome class names.
+ * @returns {module:utils/icons~IconDetails} icon
  */
-function getFaClassForType(dialogType) {
+function getIconDetailsForType(dialogType) {
   switch (dialogType) {
     case ModalDialog.DialogType.WARNING:
-      return ['fa-solid', 'fa-circle-exclamation'];
+      return icons.warning;
     case ModalDialog.DialogType.ERROR:
-      return ['fa-solid', 'fa-triangle-exclamation'];
+      return icons.error;
     case ModalDialog.DialogType.FATAL:
-      return ['fa-solid', 'fa-skull-crossbones'];
+      return icons.fatal;
     case ModalDialog.DialogType.QUESTION:
-      return ['fa-solid', 'fa-circle-question'];
+      return icons.question;
     case ModalDialog.DialogType.SETTINGS:
-      return ['fa-solid', 'fa-gear'];
+      return icons.settings;
     case ModalDialog.DialogType.INFO:
     default:
-      return ['fa-solid', 'fa-circle-info'];
+      return icons.info;
   }
 }
 
@@ -76,6 +76,7 @@ export class ModalDialog {
     INFO: 'info',
     QUESTION: 'question',
     SETTINGS: 'settings',
+    WARNING: 'warning',
   };
 
   /**
@@ -155,7 +156,7 @@ export class ModalDialog {
     const titleBar = new ManagedElement('div', 'utils-title-bar');
     titleBar.classList.add('container');
 
-    this.#icon = new ManagedElement('div', 'utils-dialog-icon');
+    this.#icon = new ManagedElement('span', 'utils-dialog-icon');
     titleBar.appendChild(this.#icon);
 
     this.#titleText = new ManagedElement('span');
@@ -199,7 +200,9 @@ export class ModalDialog {
       this.#content.innerHTML = dialogDefinition.content;
     }
 
-    this.#icon.classList.add(...dialogDefinition.iconClasses);
+    icons.applyIconToElement(dialogDefinition.iconDetails, this.#icon, {
+      hideText: true,
+    });
 
     return this.#buttonBar
       .showButtons(dialogDefinition.buttons)
@@ -263,13 +266,13 @@ export class ModalDialog {
       content = ModalDialog.#addReloadWarning(content);
     }
 
-    const iconClasses = getFaClassForType(options?.dialogType);
+    const iconDetails = getIconDetailsForType(options?.dialogType);
     const dialogDefinition = {
       title: title && title.length > 0 ? title : ':',
       buttons: options?.buttons,
       content: content,
       dialogType: options?.dialogType,
-      iconClasses: iconClasses,
+      iconDetails: iconDetails,
     };
     return dialog.#showDialogDefinition(dialogDefinition);
   }

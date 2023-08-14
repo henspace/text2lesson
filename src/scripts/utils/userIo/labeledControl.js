@@ -1,7 +1,7 @@
 /**
  * @file Labeled control. This is a special control for use on dialogs.
  *
- * @module utils\userIo\labeledControl
+ * @module utils/userIo/labeledControl
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.

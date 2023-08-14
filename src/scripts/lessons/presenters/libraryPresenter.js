@@ -23,6 +23,7 @@
  */
 import { lessonManager } from '../lessonManager.js';
 import { ListPresenter } from './listPresenter.js';
+import { escapeHtml } from '../../utils/text/textProcessing.js';
 
 /**
  * Class to present a library.
@@ -39,7 +40,19 @@ export class LibraryPresenter extends ListPresenter {
     config.titles = lessonManager.bookTitles;
     config.itemClassName = 'book';
     super(config);
+    this.#buildPreamble();
     this.setupKeyboardNavigation();
+  }
+
+  /**
+   * Set up the preamble
+   */
+  #buildPreamble() {
+    this.addPreamble(
+      `<span class='library-title'>${escapeHtml(
+        lessonManager.libraryTitle
+      )}</span>`
+    );
   }
   /**
    * @override

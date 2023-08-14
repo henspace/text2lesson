@@ -83,17 +83,17 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
-  get forward() {
+  get error() {
     return {
-      content: this.#getIconHtml('--icon-forward-nav-html'),
-      accessibleName: i18n`Forward`,
+      content: this.#getIconHtml('--icon-error-html'),
+      accessibleName: i18n`Open menu`,
     };
   }
   /** @returns {IconDetails} information for icon */
-  get nextProblem() {
+  get fatal() {
     return {
-      content: this.#getIconHtml('--icon-next-problem-html'),
-      accessibleName: i18n`Continue`,
+      content: this.#getIconHtml('--icon-fatal-html'),
+      accessibleName: i18n`Open menu`,
     };
   }
   /** @returns {IconDetails} information for icon */
@@ -103,6 +103,28 @@ class IconGenerator {
       accessibleName: i18n`Flag`,
     };
   }
+  /** @returns {IconDetails} information for icon */
+  get forward() {
+    return {
+      content: this.#getIconHtml('--icon-forward-nav-html'),
+      accessibleName: i18n`Forward`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get info() {
+    return {
+      content: this.#getIconHtml('--icon-info-html'),
+      accessibleName: i18n`Flag`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get nextProblem() {
+    return {
+      content: this.#getIconHtml('--icon-next-problem-html'),
+      accessibleName: i18n`Continue`,
+    };
+  }
+
   /** @returns {IconDetails} information for icon */
   get no() {
     return {
@@ -132,10 +154,24 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get question() {
+    return {
+      content: this.#getIconHtml('--icon-question-html'),
+      accessibleName: i18n`Flag`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get resetToFactory() {
     return {
       content: this.#getIconHtml('--icon-reset-to-factory-html'),
       accessibleName: i18n`Factory reset`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get settings() {
+    return {
+      content: this.#getIconHtml('--icon-settings-html'),
+      accessibleName: i18n`Flag`,
     };
   }
   /** @returns {IconDetails} information for icon */
@@ -156,6 +192,13 @@ class IconGenerator {
   get openMenu() {
     return {
       content: this.#getIconHtml('--icon-open-menu-html'),
+      accessibleName: i18n`Open menu`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get warning() {
+    return {
+      content: this.#getIconHtml('--icon-warning-html'),
       accessibleName: i18n`Open menu`,
     };
   }

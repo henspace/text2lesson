@@ -70,6 +70,11 @@
   color: var(--primary-contrast);
 }
 
+.utils-title-bar .utils-dialog-icon {
+  display: inline-block;
+  width: 1.5rem;
+}
+
 .utils-error {
   border: var(--line-thickness) solid var(--error-base);
 }

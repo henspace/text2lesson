@@ -112,6 +112,12 @@ li.lesson::marker {
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
 }
+
+li.lesson-summary::marker {
+  content: var(--icon-info) ' ';
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+}
 li.problem::marker {
   content: var(--icon-problem) ' ';
   font-family: var(--icon-font-family);
@@ -136,6 +142,38 @@ li.problem::marker {
   font-weight: var(--icon-font-weight);
 }
 
+/* markers for lesson navigation titles */
+span.library-title,
+span.book-title,
+span.chapter-title,
+span.lesson-title {
+  margin-right: var(--margin);
+}
+
+.library-title::before,
+.book-title::before,
+.chapter-title::before,
+.lesson-title::before {
+  display: inline-block;
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+  width: 1.5rem;
+}
+
+.library-title::before {
+  content: var(--icon-library);
+}
+.book-title::before {
+  content: var(--icon-book);
+}
+.chapter-title::before {
+  content: var(--icon-chapter);
+}
+.lesson-title::before {
+  content: var(--icon-lesson);
+}
+
+/* stage adjustments for styling */
 ul.presentation,
 .problem-answers ul {
   padding: 0;

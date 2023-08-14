@@ -29,6 +29,9 @@ const mockedLessonManager = {
   bookTitles: ['book1', 'book2'],
   chapterTitles: ['chapter1', 'chapter2'],
   lessonTitles: ['lesson1', 'lesson2'],
+  bookIndex: 0,
+  chapterIndex: 0,
+  lessonIndex: 0,
   currentLessonInfo: {
     titles: {
       library: 'library',
@@ -80,6 +83,7 @@ jest.unstable_mockModule('../problem.js', () => {
   };
 });
 
+const { lessonManager } = await import('../lessonManager.js');
 const { Lesson } = await import('../lesson.js');
 const { Problem } = await import('../problem.js');
 
@@ -137,7 +141,6 @@ test('Factory provides expected next and previous presenters for test data', () 
   TEST_DATA.forEach((data) => {
     const config = {
       titles: ['title1', 'title2'],
-      value: data.callerClass.name,
       lesson: null,
     };
 
@@ -196,10 +199,231 @@ test(
     };
     const presenterFactory = new PresenterFactory();
     const presenter = new ProblemPresenter(config);
-    jest.replaceProperty(config.lesson, 'hasMoreProblems', false);
+    const replacedProperty = jest.replaceProperty(
+      config.lesson,
+      'hasMoreProblems',
+      false
+    );
     expect(presenterFactory.getNext(presenter, config)).toBeInstanceOf(
       MarksPresenter
     );
-    jest.replaceProperty(config.lesson, 'hasMoreProblems', true);
+    replacedProperty.restore();
   }
 );
+
+test('If only one book, chapter and lesson, HomePresenter moves straight to LessonPresenter', () => {
+  const bookTitles = jest.replaceProperty(mockedLessonManager, 'bookTitles', [
+    'OneBook',
+  ]);
+  const chapterTitles = jest.replaceProperty(
+    mockedLessonManager,
+    'chapterTitles',
+    ['OneChapter']
+  );
+  const lessonTitles = jest.replaceProperty(
+    mockedLessonManager,
+    'lessonTitles',
+    ['OneLesson']
+  );
+
+  const bookIndex = jest.replaceProperty(mockedLessonManager, 'bookIndex', 99);
+  const chapterIndex = jest.replaceProperty(
+    mockedLessonManager,
+    'chapterIndex',
+    99
+  );
+  const lessonIndex = jest.replaceProperty(
+    mockedLessonManager,
+    'lessonIndex',
+    99
+  );
+  const config = {
+    lesson: new Lesson(),
+    lessonInfo: {
+      titles: {
+        library: 'library',
+        book: 'book',
+        chapter: 'chapter',
+        lesson: 'lesson',
+      },
+    },
+  };
+  const presenterFactory = new PresenterFactory();
+  const presenter = new HomePresenter(config);
+
+  expect(presenterFactory.getNext(presenter, config)).toBeInstanceOf(
+    LessonPresenter
+  );
+  expect(lessonManager.bookIndex).toBe(0);
+  expect(lessonManager.chapterIndex).toBe(0);
+  expect(lessonManager.lessonIndex).toBe(0);
+  bookTitles.restore();
+  chapterTitles.restore();
+  lessonTitles.restore();
+  bookIndex.restore();
+  chapterIndex.restore();
+  lessonIndex.restore();
+});
+
+test('If only one book and chapter, HomePresenter moves straight to ChapterPresenter', () => {
+  const bookTitles = jest.replaceProperty(mockedLessonManager, 'bookTitles', [
+    'OneBook',
+  ]);
+  const chapterTitles = jest.replaceProperty(
+    mockedLessonManager,
+    'chapterTitles',
+    ['OneChapter']
+  );
+  const lessonTitles = jest.replaceProperty(
+    mockedLessonManager,
+    'lessonTitles',
+    ['OneLesson', 'TwoLessons']
+  );
+
+  const bookIndex = jest.replaceProperty(mockedLessonManager, 'bookIndex', 99);
+  const chapterIndex = jest.replaceProperty(
+    mockedLessonManager,
+    'chapterIndex',
+    99
+  );
+  const lessonIndex = jest.replaceProperty(
+    mockedLessonManager,
+    'lessonIndex',
+    99
+  );
+  const config = {
+    lesson: new Lesson(),
+    lessonInfo: {
+      titles: {
+        library: 'library',
+        book: 'book',
+        chapter: 'chapter',
+        lesson: 'lesson',
+      },
+    },
+  };
+  const presenterFactory = new PresenterFactory();
+  const presenter = new HomePresenter(config);
+
+  expect(presenterFactory.getNext(presenter, config)).toBeInstanceOf(
+    ChapterPresenter
+  );
+  expect(lessonManager.bookIndex).toBe(0);
+  expect(lessonManager.chapterIndex).toBe(0);
+  expect(lessonManager.lessonIndex).toBe(99);
+  bookTitles.restore();
+  chapterTitles.restore();
+  lessonTitles.restore();
+  bookIndex.restore();
+  chapterIndex.restore();
+  lessonIndex.restore();
+});
+
+test('If only one book, HomePresenter moves straight to BookPresenter', () => {
+  const bookTitles = jest.replaceProperty(mockedLessonManager, 'bookTitles', [
+    'OneBook',
+  ]);
+  const chapterTitles = jest.replaceProperty(
+    mockedLessonManager,
+    'chapterTitles',
+    ['OneChapter', 'TwoChapters']
+  );
+  const lessonTitles = jest.replaceProperty(
+    mockedLessonManager,
+    'lessonTitles',
+    ['OneLesson', 'TwoLessons']
+  );
+
+  const bookIndex = jest.replaceProperty(mockedLessonManager, 'bookIndex', 99);
+  const chapterIndex = jest.replaceProperty(
+    mockedLessonManager,
+    'chapterIndex',
+    99
+  );
+  const lessonIndex = jest.replaceProperty(
+    mockedLessonManager,
+    'lessonIndex',
+    99
+  );
+  const config = {
+    lesson: new Lesson(),
+    lessonInfo: {
+      titles: {
+        library: 'library',
+        book: 'book',
+        chapter: 'chapter',
+        lesson: 'lesson',
+      },
+    },
+  };
+  const presenterFactory = new PresenterFactory();
+  const presenter = new HomePresenter(config);
+
+  expect(presenterFactory.getNext(presenter, config)).toBeInstanceOf(
+    BookPresenter
+  );
+  expect(lessonManager.bookIndex).toBe(0);
+  expect(lessonManager.chapterIndex).toBe(99);
+  expect(lessonManager.lessonIndex).toBe(99);
+  bookTitles.restore();
+  chapterTitles.restore();
+  lessonTitles.restore();
+  bookIndex.restore();
+  chapterIndex.restore();
+  lessonIndex.restore();
+});
+
+test('If multiple books, HomePresenter moves to LibraryPresenter', () => {
+  const bookTitles = jest.replaceProperty(mockedLessonManager, 'bookTitles', [
+    'OneBook',
+    'TwoBooks',
+  ]);
+  const chapterTitles = jest.replaceProperty(
+    mockedLessonManager,
+    'chapterTitles',
+    ['OneChapter', 'TwoChapters']
+  );
+  const lessonTitles = jest.replaceProperty(
+    mockedLessonManager,
+    'lessonTitles',
+    ['OneLesson', 'TwoLessons']
+  );
+
+  const bookIndex = jest.replaceProperty(mockedLessonManager, 'bookIndex', 99);
+  const chapterIndex = jest.replaceProperty(
+    mockedLessonManager,
+    'chapterIndex',
+    99
+  );
+  const lessonIndex = jest.replaceProperty(
+    mockedLessonManager,
+    'lessonIndex',
+    99
+  );
+  const config = {
+    lesson: new Lesson(),
+    lessonInfo: {
+      titles: {
+        library: 'library',
+        book: 'book',
+        chapter: 'chapter',
+        lesson: 'lesson',
+      },
+    },
+  };
+  const presenterFactory = new PresenterFactory();
+  const presenter = new HomePresenter(config);
+
+  expect(presenterFactory.getNext(presenter, config)).toBeInstanceOf(
+    LibraryPresenter
+  );
+  expect(lessonManager.bookIndex).toBe(99);
+  expect(lessonManager.chapterIndex).toBe(99);
+  expect(lessonManager.lessonIndex).toBe(99);
+  bookTitles.restore();
+  chapterTitles.restore();
+  lessonTitles.restore();
+  bookIndex.restore();
+  chapterIndex.restore();
+  lessonIndex.restore();
+});

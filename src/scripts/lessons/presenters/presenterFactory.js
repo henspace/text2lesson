@@ -23,7 +23,6 @@
  */
 
 import { HomePresenter } from './homePresenter.js';
-import { ListPresenter } from './listPresenter.js';
 import { LibraryPresenter } from './libraryPresenter.js';
 import { BookPresenter } from './bookPresenter.js';
 import { ChapterPresenter } from './chapterPresenter.js';
@@ -35,6 +34,7 @@ import { OrderProblemPresenter } from './orderProblemPresenter.js';
 import { SlideProblemPresenter } from './slideProblemPresenter.js';
 import { QuestionType } from '../problem.js';
 import { MarksPresenter } from './marksPresenter.js';
+import { lessonManager } from '../lessonManager.js';
 
 /**
  * Navigation definition for Presenters.
@@ -121,10 +121,10 @@ export class PresenterFactory {
         return new MarksPresenter(config);
       }
     } else {
-      const klass = NAVIGATION[caller.constructor.name].next;
-      return klass
-        ? this.skipUnecessaryListPresenters(new klass(config), config)
-        : null;
+      const klass = this.#skipUnnecessaryListPresenters(
+        NAVIGATION[caller.constructor.name].next
+      );
+      return klass ? new klass(config) : null;
     }
   }
   /**
@@ -139,20 +139,47 @@ export class PresenterFactory {
 
   /**
    * For list presenters, skip to next if it only has one entry.
-   * @param {Presenter} presenter
-   * @param {module:lessons/presenters/presenter~PresenterConfig} configuration
-   * @returns {Presenter}
+   * @param {Class} presenterClass
+   * @returns {Class}
    */
-  skipUnecessaryListPresenters(presenter, config) {
-    while (presenter instanceof ListPresenter && config.titles.length <= 0) {
-      console.debug(
-        `Skipping presenter ${presenter.constructor.name} and there's no selection required.`
-      );
-      if (config.titles.length <= 1) {
-        presenter = this.getNext(presenter, config);
+  #skipUnnecessaryListPresenters(presenterClass) {
+    for (;;) {
+      const nextClass = this.#moveToNextPresenterIfUnnecessary(presenterClass);
+      if (nextClass === presenterClass) {
+        return presenterClass;
       }
+      presenterClass = nextClass;
     }
-    return presenter;
+  }
+
+  /**
+   * Move to the next presenter if the current one only has one option to choose
+   * from.
+   * @param {Class} presenterClass
+   * @returns {Class} new Class. This will be unchanged if no switch occured.
+   */
+  #moveToNextPresenterIfUnnecessary(presenterClass) {
+    switch (presenterClass.name) {
+      case 'LibraryPresenter':
+        if (lessonManager.bookTitles.length <= 1) {
+          lessonManager.bookIndex = 0;
+          return BookPresenter;
+        }
+        break;
+      case 'BookPresenter':
+        if (lessonManager.chapterTitles.length <= 1) {
+          lessonManager.chapterIndex = 0;
+          return ChapterPresenter;
+        }
+        break;
+      case 'ChapterPresenter':
+        if (lessonManager.lessonTitles.length <= 1) {
+          lessonManager.lessonIndex = 0;
+          return LessonPresenter;
+        }
+        break;
+    }
+    return presenterClass;
   }
 
   /**

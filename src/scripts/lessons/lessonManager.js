@@ -167,6 +167,15 @@ class LessonManager {
   }
 
   /**
+   * Get the current library title. If key is not valid, returns an empty string.
+   * @returns {string}
+   */
+  get libraryTitle() {
+    const title = this.#libraries.get(this.#currentLibraryKey)?.title;
+    return title ?? '';
+  }
+
+  /**
    * Get the library titles.
    * @returns {Map<string, string>}
    */
@@ -176,6 +185,15 @@ class LessonManager {
       options.set(key, value.title);
     });
     return options;
+  }
+
+  /**
+   * Get the book chapter title. If index is not valid, returns an empty string.
+   * @returns {string}
+   */
+  get bookTitle() {
+    const title = this.#getCurrentBook()?.title;
+    return title ?? '';
   }
 
   /**
@@ -191,6 +209,16 @@ class LessonManager {
   }
 
   /**
+   * Get the current chapter title. If index is not valid, returns an empty string.
+   * @returns {string}
+   */
+  get chapterTitle() {
+    const title =
+      this.#getCurrentBook()?.chapters[this.#currentChapterIndex]?.title;
+    return title ?? '';
+  }
+
+  /**
    * Get list of all the chapter titles.
    * @returns {string[]}
    */
@@ -202,6 +230,17 @@ class LessonManager {
     return titles;
   }
 
+  /**
+   * Get the current lesson title. If index is not valid, returns an empty string.
+   * @returns {string}
+   */
+  get lessonTitle() {
+    const title =
+      this.#getCurrentBook()?.chapters[this.#currentChapterIndex]?.lessons[
+        this.#currentLessonIndex
+      ]?.title;
+    return title ?? '';
+  }
   /**
    * Get list of all the lesson titles.
    * @returns {string[]}

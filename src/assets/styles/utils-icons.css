@@ -13,6 +13,25 @@
   --icon-forward-nav: '\f30b';
   --icon-forward-nav-html: '<i class="fa-solid fa-right-long"></i>';
 
+  /* dialog types */
+  --icon-warning: '\f06a';
+  --icon-warning-html: '<i class="fa-solid fa-circle-exclamation"></i>';
+
+  --icon-error: '\f071';
+  --icon-error-html: '<i class="fa-solid fa-triangle-exclamation"></i>';
+
+  --icon-fatal: '\f714';
+  --icon-fatal-html: '<i class="fa-solid fa-skull-crossbones"></i>';
+
+  --icon-question: '\f059';
+  --icon-question-html: '<i class="fa-solid fa-circle-question"></i>';
+
+  --icon-settings: '\f013';
+  --icon-settings-html: '<i class="fa-solid fa-gear"></i>';
+
+  --icon-info: '\f05a';
+  --icon-info-html: '<i class="fa-solid fa-circle-info"></i>';
+
   /* dialog controls */
   --icon-ok: '\f00c';
   --icon-ok-html: '<i class="fa-solid fa-check"></i>';
