@@ -39,6 +39,7 @@
 import { fetchText, fetchJson } from '../utils/jsonUtils/json.js';
 import { CachedLesson } from './cachedLesson.js';
 import { LocalLibrary } from './localLibrary.js';
+import { escapeHtml } from '../utils/text/textProcessing.js';
 
 /**
  * @typedef {Map<string, LibraryInfo>} Libraries - object containing
@@ -376,6 +377,7 @@ class LessonManager {
   /**
    * Set the available libraries. The `librariesFileLocation` should be the path
    * to a JSON representation of a `libraries` object.
+   * Note that all titles are escaped.
    * @param {string} librariesFileLocation
    * @returns {Promise} fufils to number of libraries.
    */
@@ -383,6 +385,8 @@ class LessonManager {
     this.#libraries = new Map();
     return fetchJson(librariesFileLocation).then((entries) => {
       for (const key in entries) {
+        const entry = entries[key];
+        entry.title = escapeHtml(entry.title);
         this.#libraries.set(key, entries[key]);
         this.#libraries.get(key).books = [];
       }
@@ -406,8 +410,25 @@ class LessonManager {
     const fileLocation = library.file;
     return fetchJson(fileLocation).then((value) => {
       library.books = value;
+      this.#escapeAllTitles(library.books);
       this.#ensureIndexesValid();
       return;
+    });
+  }
+
+  /**
+   * Escape all the titles in the books
+   * @param {BookDetails}
+   */
+  #escapeAllTitles(books) {
+    books.forEach((book) => {
+      book.title = escapeHtml(book.title);
+      book.chapters.forEach((chapter) => {
+        chapter.title = escapeHtml(chapter.title);
+        chapter.lessons.forEach((lesson) => {
+          lesson.title = escapeHtml(lesson.title);
+        });
+      });
     });
   }
 

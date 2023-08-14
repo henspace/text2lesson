@@ -321,16 +321,18 @@ export class ManagedElement {
    * Shorthand way to create an element with content and append to this.
    * Create a managed element.
    * The html is not escaped so the caller must ensure there is no script injection.
-   * @param {string | Element} tag - the tag name for the new Element.
-   * @param {string} html
-   * @param {string} [cssClass]
+   * @param {string | Element} tagName - the tag name for the new Element.
+   * @param {?string} [cssClass]
+   * @param {!string} html
    * @returns {ManagedElement} - the new element.
    */
-  createAndAppendChild(tagName, html, cssClass) {
+  createAndAppendChild(tagName, cssClass, html) {
     const managedElement = new ManagedElement(tagName);
-    managedElement.innerHTML = html;
     if (cssClass) {
       managedElement.classList.add(cssClass);
+    }
+    if (html) {
+      managedElement.innerHTML = html;
     }
     this.appendChild(managedElement);
     return managedElement;

@@ -26,7 +26,6 @@ import { Presenter } from './presenter.js';
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { MarkState } from '../itemMarker.js';
 import { i18n } from '../../utils/i18n/i18n.js';
-import { escapeHtml } from '../../utils/text/textProcessing.js';
 
 /**
  * Classes used for styling medals.
@@ -86,17 +85,20 @@ export class MarksPresenter extends Presenter {
   #addHeadings() {
     this.presentation.createAndAppendChild(
       'h1',
+      null,
       i18n`Certificate of achievement`
     );
     this.presentation.createAndAppendChild(
       'h2',
+      null,
       this.config.lessonInfo.titles.lesson
     );
     this.presentation.createAndAppendChild(
       'h3',
-      escapeHtml(`[${this.config.lessonInfo.titles.library}: 
+      null,
+      `[${this.config.lessonInfo.titles.library}: 
         ${this.config.lessonInfo.titles.chapter}: 
-        ${this.config.lessonInfo.titles.book}]`)
+        ${this.config.lessonInfo.titles.book}]`
     );
   }
 
@@ -127,8 +129,8 @@ export class MarksPresenter extends Presenter {
     const summary = i18n`Score: ${percent}% (${marks.correct}/${totalQuestions})`;
     const summaryItem = this.presentation.createAndAppendChild(
       'p',
-      summary,
-      'result-summary'
+      'result-summary',
+      summary
     );
     summaryItem.classList.add(this.#calcMedalClass(percent));
   }

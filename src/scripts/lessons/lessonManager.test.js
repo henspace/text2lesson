@@ -39,48 +39,48 @@ const json = await import('../utils/jsonUtils/json.js');
 const { lessonManager } = await import('./lessonManager.js');
 
 const libraries = {
-  L1: { title: 'titleL1', file: 'fileL1.json' },
-  L2: { title: 'titleL2', file: 'fileL2.json' },
+  L1: { title: '<p>titleL1', file: 'fileL1.json' },
+  L2: { title: '<p>titleL2', file: 'fileL2.json' },
 };
 
 const libraryContents = {
   L1: [
     {
-      title: 'titleL1B1',
+      title: '<p>titleL1B1',
       location: 'locationL1B1/',
       chapters: [
         {
-          title: 'titleL1B1C1',
+          title: '<p>titleL1B1C1',
           lessons: [
-            { title: 'titleL1B1C1L1', file: 'fileL1B1C1L1.json' },
-            { title: 'titleL1B1C1L2', file: 'fileL1B1C1L2.json' },
+            { title: '<p>titleL1B1C1L1', file: 'fileL1B1C1L1.json' },
+            { title: '<p>titleL1B1C1L2', file: 'fileL1B1C1L2.json' },
           ],
         },
         {
-          title: 'titleL1B1C2',
+          title: '<p>titleL1B1C2',
           lessons: [
-            { title: 'titleL1B1C2L1', file: 'fileL1B1C2L1.json' },
-            { title: 'titleL1B1C2L2', file: 'fileL1B1C2L2.json' },
+            { title: '<p>titleL1B1C2L1', file: 'fileL1B1C2L1.json' },
+            { title: '<p>titleL1B1C2L2', file: 'fileL1B1C2L2.json' },
           ],
         },
       ],
     },
     {
-      title: 'titleL1B2',
+      title: '<p>titleL1B2',
       location: 'locationL1B2/',
       chapters: [
         {
-          title: 'titleL1B2C1',
+          title: '<p>titleL1B2C1',
           lessons: [
-            { title: 'titleL1B2C1L1', file: 'fileL1B2C1L1.json' },
-            { title: 'titleL1B2C1L2', file: 'fileL1B2C1L2.json' },
+            { title: '<p>titleL1B2C1L1', file: 'fileL1B2C1L1.json' },
+            { title: '<p>titleL1B2C1L2', file: 'fileL1B2C1L2.json' },
           ],
         },
         {
-          title: 'titleL1B2C2',
+          title: '<p>titleL1B2C2',
           lessons: [
-            { title: 'titleL1B2C2L1', file: 'fileL1B2C2L1.json' },
-            { title: 'titleL1B2C2L2', file: 'fileL1B2C2L2.json' },
+            { title: '<p>titleL1B2C2L1', file: 'fileL1B2C2L1.json' },
+            { title: '<p>titleL1B2C2L2', file: 'fileL1B2C2L2.json' },
           ],
         },
       ],
@@ -89,41 +89,41 @@ const libraryContents = {
 
   L2: [
     {
-      title: 'titleL2B1',
+      title: '<p>titleL2B1',
       location: 'locationL1B1/',
       chapters: [
         {
-          title: 'titleL2B1C1',
+          title: '<p>titleL2B1C1',
           lessons: [
-            { title: 'titleL2B1C1L1', file: 'fileL2B1C1L1.json' },
-            { title: 'titleL2B1C1L2', file: 'fileL2B1C1L2.json' },
+            { title: '<p>titleL2B1C1L1', file: 'fileL2B1C1L1.json' },
+            { title: '<p>titleL2B1C1L2', file: 'fileL2B1C1L2.json' },
           ],
         },
         {
-          title: 'titleL2B1C2',
+          title: '<p>titleL2B1C2',
           lessons: [
-            { title: 'titleL2B1C2L1', file: 'fileL2B1C2L1.json' },
-            { title: 'titleL2B1C2L2', file: 'fileL2B1C2L2.json' },
+            { title: '<p>titleL2B1C2L1', file: 'fileL2B1C2L1.json' },
+            { title: '<p>titleL2B1C2L2', file: 'fileL2B1C2L2.json' },
           ],
         },
       ],
     },
     {
-      title: 'titleL2B2',
+      title: '<p>titleL2B2',
       location: 'locationL1B2/',
       chapters: [
         {
-          title: 'titleL2B2C1',
+          title: '<p>titleL2B2C1',
           lessons: [
-            { title: 'titleL2B2C1L1', file: 'fileL2B2C1L1.json' },
-            { title: 'titleL2B2C1L2', file: 'fileL2B2C1L2.json' },
+            { title: '<p>titleL2B2C1L1', file: 'fileL2B2C1L1.json' },
+            { title: '<p>titleL2B2C1L2', file: 'fileL2B2C1L2.json' },
           ],
         },
         {
-          title: 'titleL2B2C2',
+          title: '<p>titleL2B2C2',
           lessons: [
-            { title: 'titleL2B2C2L1', file: 'fileL2B2C2L1.json' },
-            { title: 'titleL2B2C2L2', file: 'fileL2B2C2L2.json' },
+            { title: '<p>titleL2B2C2L1', file: 'fileL2B2C2L1.json' },
+            { title: '<p>titleL2B2C2L2', file: 'fileL2B2C2L2.json' },
           ],
         },
       ],
@@ -193,6 +193,25 @@ async function iterateLibraries(operation) {
     });
   }
 }
+
+test('All titles are escaped', () => {
+  /* Because of the way the lessonManager creates its maps, the original data gets
+   * modified. As such we can currently just check the libraries and libraryContent */
+  for (const key in libraries) {
+    expect(libraries[key].title).toMatch('&lt;p');
+  }
+  for (const key in libraryContents) {
+    libraryContents[key].forEach((book) => {
+      expect(book.title).toMatch('&lt;p');
+      book.chapters.forEach((chapter) => {
+        expect(chapter.title).toMatch('&lt;p');
+        chapter.lessons.forEach((lesson) => {
+          expect(lesson.title).toMatch('&lt;p');
+        });
+      });
+    });
+  }
+});
 
 test('formUrlForLesson creates url based on currentBookIndex, currentChapterIndex and currentLessonIndex', async () => {
   return iterateLibraries(async (testDetails) => {

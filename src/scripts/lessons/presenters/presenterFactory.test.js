@@ -25,6 +25,10 @@ import { jest, beforeEach, test, expect } from '@jest/globals';
 import { ItemMarker } from '../itemMarker.js';
 
 const mockedLessonManager = {
+  libraryTitle: '',
+  chapterTitle: '',
+  bookTitle: '',
+  lessonTitle: '',
   libraryTitles: ['lib1', 'lib2'],
   bookTitles: ['book1', 'book2'],
   chapterTitles: ['chapter1', 'chapter2'],

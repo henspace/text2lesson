@@ -19,6 +19,19 @@ a.problem {
   text-align: center;
 }
 
+.lesson-summary {
+  background-color: var(--tertiary-base);
+  border: none;
+  border-radius: var(--line-thickness);
+  color: var(--tertiary-contrast);
+  font-size: 1rem;
+  margin: var(--margin);
+  padding: var(--padding);
+}
+.lesson-summary span {
+  display: block;
+}
+
 .problem-answer {
   border-radius: 1em;
 }
@@ -113,11 +126,6 @@ li.lesson::marker {
   font-weight: var(--icon-font-weight);
 }
 
-li.lesson-summary::marker {
-  content: var(--icon-info) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
-}
 li.problem::marker {
   content: var(--icon-problem) ' ';
   font-family: var(--icon-font-family);

@@ -154,6 +154,14 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get playLesson() {
+    return {
+      content: this.#getIconHtml('--icon-play-html'),
+      accessibleName: i18n`Play lesson`,
+    };
+  }
+
+  /** @returns {IconDetails} information for icon */
   get question() {
     return {
       content: this.#getIconHtml('--icon-question-html'),

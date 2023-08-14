@@ -98,7 +98,6 @@ jest.unstable_mockModule('./presenterFactory.js', () => {
 });
 
 const { presenterFactory } = await import('./presenterFactory');
-const { lessonManager } = await import('../lessonManager.js');
 const { LessonSource } = await import('../lessonSource.js');
 const { LessonPresenter } = await import('./lessonPresenter.js');
 

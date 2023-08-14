@@ -58,6 +58,10 @@ jest.unstable_mockModule('../lessonManager.js', () => {
       bookIndex: 0,
       chapterIndex: 0,
       lessonIndex: 0,
+      libraryTitle: '',
+      chapterTitle: '',
+      bookTitle: '',
+      lessonTitle: '',
       chapterTitles: ['title1', 'title2', 'title3'],
       currentLessonInfo: currentLessonInfo,
       loadCurrentLesson: () => {

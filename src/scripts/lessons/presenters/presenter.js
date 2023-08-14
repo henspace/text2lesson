@@ -222,6 +222,16 @@ export class Presenter extends ManagedElement {
   }
 
   /**
+   * Restyle the forwards button
+   * This allows the next button's logic to be used but with a different presentation
+   * that might be more appropriate for presenter.
+   * @param {module:utils/userIo/icons~IconDetails}
+   */
+  applyIconToNextButton(iconDetails) {
+    icons.applyIconToElement(iconDetails, this.#forwardsButton);
+  }
+
+  /**
    * Set up keyboard navigation.
    * This can only be called once.
    * If element omitted, the titles are used.

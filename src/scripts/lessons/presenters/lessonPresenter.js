@@ -22,18 +22,18 @@
  *
  */
 
-import { ListPresenter } from './listPresenter.js';
+import { Presenter } from './presenter.js';
 import { lessonManager } from '../lessonManager.js';
 import { LessonSource } from '../lessonSource.js';
-import { escapeHtml } from '../../utils/text/textProcessing.js';
 import { i18n } from '../../utils/i18n/i18n.js';
+import { icons } from '../../utils/userIo/icons.js';
 
 /**
  * Class to present a Lesson.
  * Presentation of a Lesson involves displaying the lesson summary.
  * @extends module:lessons/presenters/presenter.Presenter
  */
-export class LessonPresenter extends ListPresenter {
+export class LessonPresenter extends Presenter {
   /**
    * Construct.
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
@@ -51,23 +51,35 @@ export class LessonPresenter extends ListPresenter {
    * Build custom content for the lesson.
    */
   #buildCustomContent() {
-    const li = this.querySelector('li');
-    li.innerHTML =
-      i18n`Selected lesson` +
-      `<p><span class ='library-title'>${escapeHtml(
-        this.config.lessonInfo.titles.library
-      )}</span></p>
-      <p><span class = 'book-title'>${escapeHtml(
-        this.config.lessonInfo.titles.book
-      )}</span></p>
-      <p><span class ='chapter-title'>${escapeHtml(
-        this.config.lessonInfo.titles.chapter
-      )}</span></p>
-      <p><span class ='lesson-title'>${escapeHtml(
-        this.config.lessonInfo.titles.lesson
-      )}</span></p>
-
-    `;
+    this.presentation.createAndAppendChild('h2', null, i18n`Selected lesson:`);
+    const summaryBlock = this.presentation.createAndAppendChild(
+      'div',
+      'lesson-summary'
+    );
+    summaryBlock.createAndAppendChild(
+      'span',
+      'lesson-title',
+      this.config.lessonInfo.titles.lesson
+    );
+    summaryBlock.createAndAppendChild('p', null, i18n`taken from`);
+    summaryBlock.createAndAppendChild(
+      'span',
+      'library-title',
+      this.config.lessonInfo.titles.library
+    );
+    summaryBlock.createAndAppendChild(
+      'span',
+      'book-title',
+      this.config.lessonInfo.titles.book
+    );
+    summaryBlock.createAndAppendChild(
+      'span',
+      'chapter-title',
+      this.config.lessonInfo.titles.chapter
+    );
+    this.presentation.appendChild(summaryBlock);
+    this.applyIconToNextButton(icons.playLesson);
+    this.showNextButton();
   }
   /**
    * @override
