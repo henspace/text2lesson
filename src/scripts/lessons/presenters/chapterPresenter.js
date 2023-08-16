@@ -48,12 +48,18 @@ export class ChapterPresenter extends ListPresenter {
    * Set up the preamble
    */
   #buildPreamble() {
-    this.addPreamble(
-      `<span class='library-title'>${lessonManager.libraryTitle}</span>
-      <span class='book-title'>${lessonManager.bookTitle}</span>
-      <span class='chapter-title'>${lessonManager.chapterTitle}</span>
-      `
-    );
+    if (lessonManager.usingLocalLibrary) {
+      this.addPreamble(
+        `<span class='library-title'>${lessonManager.libraryTitle}</span>`
+      );
+    } else {
+      this.addPreamble(
+        `<span class='library-title'>${lessonManager.libraryTitle}</span>
+        <span class='book-title'>${lessonManager.bookTitle}</span>
+        <span class='chapter-title'>${lessonManager.chapterTitle}</span>
+        `
+      );
+    }
   }
 
   /**

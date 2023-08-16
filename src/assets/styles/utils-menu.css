@@ -24,16 +24,3 @@
 .utils-menu-items hr {
   margin: 0;
 }
-
-/* list markers */
-.utils-li-marker-settings::marker {
-  content: var(--icon-settings) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
-}
-
-.utils-li-marker-privacy::marker {
-  content: var(--icon-privacy) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
-}

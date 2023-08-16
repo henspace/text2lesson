@@ -2,6 +2,22 @@
 @import './utils.css';
 @import './lessons.css';
 
+@media print {
+  html:has(.MarksPresenter),
+  html:has(.MarksPresenter) div {
+    color: black !important;
+    background-color: white !important;
+  }
+  button,
+  button:focus,
+  button:disabled,
+  html:has(.MarksPresenter) #title-bar,
+  html:has(.MarksPresenter) #header,
+  html:has(.MarksPresenter) #footer {
+    display: none !important;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -42,12 +58,13 @@
   --window-contrast: hsl(0, 50, 100);
   --window-highlight: hsl(0, 50, 60);
 
-  --padding: 0.3rem;
+  --padding: 0.4rem;
   --font-base-size: 15px;
   --line-thickness: max(2px, 0.2rem);
   --outline-offset: calc(0.5 * var(--line-thickness));
   --panel-border: solid var(--line-thickness);
   --margin: calc(var(--outline-offset) + var(--line-thickness));
+  --vh: 1vh;
 }
 
 /* Element ordering classes */
@@ -80,10 +97,11 @@ html {
 body {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   hyphens: auto;
   margin: 0;
-  min-height: 100vh;
+  max-height: calc(var(--vh, 1vh) * 100);
   overflow-x: hidden;
   overflow-wrap: break-word;
   width: 100%;
@@ -94,6 +112,15 @@ body > div {
   text-overflow: ellipsis;
 }
 
+h1 {
+  font-size: 1.5rem;
+}
+h2 {
+  font-size: 1.2rem;
+}
+h3 {
+  font-size: 1.1rem;
+}
 /* container class is typically for divs that contain user visible content. 
  * The defaults for divs are to have no padding and no margins
 */
@@ -106,27 +133,25 @@ body > div {
   border: solid var(--line-thickness) var(--primary-base);
 }
 
-#title {
+#title-bar {
+  align-items: center;
   background-color: var(--background-base);
   color: var(--background-contrast);
   display: flex;
+  justify-content: space-between;
+  border-bottom: solid var(--line-thickness) var(--tertiary-base);
 }
 
-#title #action-buttons {
+#title-bar #action-buttons-left {
   flex: 0 0 auto;
 }
-#title h1 {
+#title-bar h1 {
   flex: 0 1 auto;
   margin: 0;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-}
-
-#header {
-  background-color: var(--tertiary-base);
-  color: var(--tertiary-contrast);
 }
 
 #content {
@@ -147,6 +172,7 @@ body > div {
 #footer {
   background-color: var(--tertiary-base);
   color: var(--tertiary-contrast);
+  text-align: center;
 }
 
 #modal-mask {
@@ -162,11 +188,13 @@ body > div {
   transition: opacity 1s;
 }
 
-#modal-mask:has(~ .modal) {
-  opacity: 0.5;
-  visibility: visible;
-}
-
 p {
   margin: var(--margin) 0 var(--margin) 0;
+}
+
+a,
+a:visited,
+a:active {
+  background-color: inherit;
+  color: inherit;
 }

@@ -27,6 +27,7 @@ import { LibraryPresenter } from './libraryPresenter.js';
 import { BookPresenter } from './bookPresenter.js';
 import { ChapterPresenter } from './chapterPresenter.js';
 import { LessonPresenter } from './lessonPresenter.js';
+import { LessonEditorPresenter } from './lessonEditorPresenter.js';
 import { ProblemPresenter } from './problemPresenter.js';
 import { ChoiceProblemPresenter } from './choiceProblemPresenter.js';
 import { FillProblemPresenter } from './fillProblemPresenter.js';
@@ -46,6 +47,7 @@ const NAVIGATION = {
   BookPresenter: { previous: LibraryPresenter, next: ChapterPresenter },
   ChapterPresenter: { previous: BookPresenter, next: LessonPresenter },
   LessonPresenter: { previous: ChapterPresenter, next: ProblemPresenter },
+  LessonEditorPresenter: { previous: LessonPresenter, next: LessonPresenter },
   ProblemPresenter: { previous: null, next: ProblemPresenter },
   ChoiceProblemPresenter: { previous: null, next: ProblemPresenter },
   FillProblemPresenter: { previous: null, next: ProblemPresenter },
@@ -103,6 +105,31 @@ export class PresenterFactory {
    */
   hasPrevious(caller) {
     return !!NAVIGATION[caller.constructor.name].previous;
+  }
+  /**
+   * Get the home presenter.
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
+   * @returns {constructor} Constructor for the home Presenter or null.
+   */
+  getHome(config) {
+    return new HomePresenter(config);
+  }
+
+  /**
+   * Get the appropriate editor for the calling {@link module:lessons/presenters/presenter.Presenter}
+   * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
+   * @returns {constructor} Constructor for the home Presenter or null.
+   */
+  getEditor(caller, config) {
+    if (caller instanceof LessonPresenter) {
+      return new LessonEditorPresenter(config);
+    } else {
+      console.error(
+        `Attempt to edit a presenter for which there is no editor. Going home.`
+      );
+      return new HomePresenter(config);
+    }
   }
   /**
    * Get the appropriate navigator for the calling {@link module:lessons/presenters/presenter.Presenter}

@@ -34,6 +34,7 @@ button:not(.icon-only-button) {
 button,
 input,
 select,
+textarea,
 .selectable,
 .selectable-off {
   background-color: var(--primary-base);
@@ -63,22 +64,33 @@ li.selectable-off {
 button:hover,
 input:hover,
 select:hover,
-.selectable:hover {
+.selectable:hover,
+textarea:hover {
   outline-style: dotted;
 }
 
 button:focus,
 input:focus,
 select:focus,
-.selectable:focus {
+.selectable:focus,
+textarea:focus {
   outline-style: dashed;
 }
 
 button:hover:focus,
 input:hover:focus,
 select:hover:focus,
-.selectable:hover:focus {
+.selectable:hover:focus,
+textarea:hover:focus {
   outline-style: solid;
+}
+
+button:disabled,
+button:disabled:hover,
+button:disabled:focus,
+button:disabled:hover:focus {
+  outline-style: none;
+  opacity: 50%;
 }
 
 .problem-answer p:first-of-type {

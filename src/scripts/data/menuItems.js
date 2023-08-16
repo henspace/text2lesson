@@ -22,9 +22,9 @@
  */
 
 import { getPrivacyStatement } from './privacy.js';
-import { i18n } from '../utils/i18n/i18n.js';
 import { showAllSettings } from '../utils/userIo/settings.js';
 import { ModalDialog } from '../utils/userIo/modalDialog.js';
+import { icons } from '../utils/userIo/icons.js';
 
 /**
  * Get the main menu items.
@@ -33,14 +33,12 @@ import { ModalDialog } from '../utils/userIo/modalDialog.js';
 export function getMainMenuItems() {
   return [
     {
-      text: i18n`Settings`,
-      itemClass: 'settings',
+      iconDetails: icons.settings,
       command: { execute: () => showAllSettings() },
     },
-    { text: '', command: null },
+    { iconDetails: null, command: null },
     {
-      text: i18n`Privacy`,
-      itemClass: 'privacy',
+      iconDetails: icons.privacy,
       command: {
         execute: () =>
           getPrivacyStatement().then((statement) =>

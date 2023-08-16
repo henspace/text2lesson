@@ -1,17 +1,17 @@
 [
   {
-    "title": "<i></i>Learning to code",
+    "title": "Learning to code",
     "location": "assets/lessons/",
     "chapters": [
       {
-        "title": "<i></i>00-00.test",
+        "title": "00-00.test",
         "lessons": [
           {
-            "title": "<i></i>What does a computer understand?",
+            "title": "What does a computer understand?",
             "file": "00-00-00.test.txt"
           },
           {
-            "title": "<i></i>HTML, CSS, and JavaScript?",
+            "title": "HTML, CSS, and JavaScript?",
             "file": "00-00-01.test.txt"
           }
         ]
@@ -19,31 +19,31 @@
     ]
   },
   {
-    "title": "<i></i>Some other book",
+    "title": "Some other book",
     "location": "assets/lessons/",
     "chapters": [
       {
-        "title": "<i></i>01-00.test",
+        "title": "01-00.test",
         "lessons": [
           {
-            "title": "<i></i>01-00-00.test.txt",
+            "title": "01-00-00.test.txt",
             "file": "01-00-00.test.txt"
           },
           {
-            "title": "<i></i>01-00-01.test.txt",
+            "title": "01-00-01.test.txt",
             "file": "01-00-01.test.txt"
           }
         ]
       },
       {
-        "title": "<i></i>01-01.test",
+        "title": "01-01.test",
         "lessons": [
           {
-            "title": "<i></i>01-01-00.test.txt",
+            "title": "01-01-00.test.txt",
             "file": "01-01-00.test.txt"
           },
           {
-            "title": "<i></i>01-01-01.test.txt",
+            "title": "01-01-01.test.txt",
             "file": "01-01-01.test.txt"
           }
         ]

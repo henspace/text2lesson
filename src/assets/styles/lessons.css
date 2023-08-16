@@ -1,10 +1,6 @@
 @import './cards.css';
 @import './candy.css';
 
-button.backNavigation {
-  align-self: self-start;
-}
-
 a.book,
 a.chapter,
 a.lesson,
@@ -34,6 +30,10 @@ a.problem {
 
 .problem-answer {
   border-radius: 1em;
+}
+
+.problem-question {
+  flex: 1;
 }
 
 .problem-question select,
@@ -193,14 +193,47 @@ ul.presentation,
   flex: 1;
 }
 .presentation.expanded {
+  display: flex;
+  flex: 1;
+}
+
+.LessonEditorPresenter textarea {
+  flex: 1;
+  resize: none;
+}
+
+.LessonEditorPresenter .preamble {
+  display: flex;
+}
+
+.LessonEditorPresenter .preamble .labeled-control-container {
+  flex: 1;
+}
+
+.LessonEditorPresenter .preamble .labeled-control-container label {
+  display: flex;
+  align-items: baseline;
+}
+
+.LessonEditorPresenter .preamble span {
+  margin-right: 1rem;
+}
+.LessonEditorPresenter .preamble input {
   flex: 1;
 }
 
 /* certificate styling */
+.MarksPresenter {
+  margin: calc(2 * var(--margin));
+  padding: var(--padding);
+  border: double var(--line-thickness);
+}
+
 .MarksPresenter h1,
 .MarksPresenter h2,
 .MarksPresenter h3 {
   margin-top: var(--margin);
+  text-align: center;
 }
 
 .MarksPresenter h1,

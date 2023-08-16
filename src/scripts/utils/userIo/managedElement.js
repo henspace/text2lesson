@@ -113,6 +113,23 @@ export class ManagedElement {
   }
 
   /**
+   * @link {https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement}
+   * Get the disabled property of the underlying element.
+   * @return {boolean}
+   */
+  get disabled() {
+    return this.#element.disabled;
+  }
+
+  /**
+   * @link {https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement}
+   * Set the disabled property of the underlying element.
+   */
+  set disabled(value) {
+    this.#element.disabled = value;
+  }
+
+  /**
    * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
    * Get the id of the underlying element.
    * @return {string}
@@ -520,11 +537,7 @@ export class ManagedElement {
    * In all cases, all children and listeners are removed.
    */
   remove() {
-    this.#listeningTargets.forEach((target) => {
-      const element = target.managedElement.element;
-      element.removeEventListener(target.eventType, this);
-    });
-    this.#listeningTargets = [];
+    this.removeListeners();
     this.removeChildren();
     if (this.#elementRemovable) {
       this.#element.remove();
@@ -543,6 +556,20 @@ export class ManagedElement {
     });
     this.#managedChildren = [];
     this.#element.replaceChildren();
+  }
+
+  /**
+   * Remove listeners only. Listeners on the children are also removed
+   */
+  removeListeners() {
+    this.#listeningTargets.forEach((target) => {
+      const element = target.managedElement.element;
+      element.removeEventListener(target.eventType, this);
+    });
+    this.#managedChildren.forEach((child) => {
+      child.removeListeners();
+    });
+    this.#listeningTargets = [];
   }
 
   /**

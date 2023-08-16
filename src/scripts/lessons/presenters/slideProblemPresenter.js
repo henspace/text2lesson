@@ -121,6 +121,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
     );
     this.#visualCard = new ManagedElement('div', 'display-card');
     this.listenToEventOn('animationend', this.#visualCard);
+    this.questionElement.removeChildren();
     this.questionElement.appendChild(this.#visualCard);
     this.expandPresentation();
     this.#addMediaButtons();
@@ -198,9 +199,12 @@ export class SlideProblemPresenter extends ProblemPresenter {
     const verticalSpace = presentationRect.height - cardRect.height;
     if (verticalSpace > 0) {
       this.#visualCard.style.marginTop = `${Math.floor(verticalSpace / 2)}px`;
+    } else {
+      this.#visualCard.style.marginTop = `0px`;
     }
 
     this.#setCardState(CardState.ARRIVING);
+    this.#endShowIfLastCard();
   }
 
   /**
@@ -266,7 +270,10 @@ export class SlideProblemPresenter extends ProblemPresenter {
       case MediaID.SKIP:
         clearTimeout(this.#readTimerId);
         this.#showMediaButtons(true);
-        if (this.#cardState === CardState.READING) {
+        if (
+          this.#cardState === CardState.ARRIVING ||
+          this.#cardState === CardState.READING
+        ) {
           this.#removeCard();
         }
         this.#paused = false;

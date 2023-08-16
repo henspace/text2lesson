@@ -111,6 +111,7 @@
   color: var(--secondary-contrast);
   cursor: pointer;
   display: flex;
+  justify-content: space-between;
   left: 50vw;
   min-width: 30vw;
   outline-offset: calc(-2 * var(--line-thickness));

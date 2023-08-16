@@ -50,9 +50,13 @@ import { escapeHtml } from '../utils/text/textProcessing.js';
 /**
  * @typedef {Object} LibraryInfo - Information about a library.
  * @property {string} title - title of the library
- * @property {string} file - file containing the books available in the library.
- * This file should contain a JSON representation of a {@link Library}
+ * @property {string | function():LibraryContent} url - the url name which
+ * provides the path to a JSON representation of a {@link LibraryContent}
  * object.
+ * @property {function():LibraryContent} contentLoader - loader for the content as an alternative
+ * to provided the {@link LibraryContent}. This takes precedence over the url.
+ *
+ * {@link LibraryContent} object directly.
  */
 
 /**
@@ -62,12 +66,15 @@ import { escapeHtml } from '../utils/text/textProcessing.js';
  */
 
 /**
+ * @typedef {BookDetails[]} LibraryContent
+ */
+/**
  * @typedef {Object} Library - the library as used by the application.
  * @property {string} title - title of the library
  * @property {string} file - file containing the books available in the library.
  * This file should contain a JSON representation of a {@link LibraryContent}
  * object.
- * @property {BookDetails[]} books - the books in the library
+ * @property {LibraryContent} books - the books in the library
  */
 
 /**
@@ -87,11 +94,14 @@ import { escapeHtml } from '../utils/text/textProcessing.js';
 /**
  * @typedef {Object} LessonDetails - details of a lesson.
  * @property {string} title - title of the lesson.
- * @property {string} file - path to the actual lesson.
+ * @property {string} file - path to the actual lesson if it needs to be loaded.
+ * @property {function():string} contentLoader - loader for the content as an alternative
+ * to provided the file. This takes precedence.
  */
 
 /**
  * @typedef {Object} LessonInfo
+ * @property {boolean} usingLocalLibrary - flag whether this from a local lesson.
  * @property {string} libraryKey - key for the library
  * @property {string} file - file without any path.
  * @property {string} url - the url of the lesson. This is used as its unique key.
@@ -108,14 +118,16 @@ import { escapeHtml } from '../utils/text/textProcessing.js';
 
 class LessonManager {
   /**
-   * @type {LocalLibrary}
+   * @type {boolean}
    */
-  #localLibrary = new LocalLibrary();
+  #usingLocalLibrary = false;
+
   /**
    * Available this.#libraries.
    * @type {Map.<string, Libraries>}
    */
   #libraries = new Map();
+  #remoteLibraryKey;
   #currentLibraryKey;
   #currentBookIndex = 0;
   #currentChapterIndex = 0;
@@ -127,15 +139,43 @@ class LessonManager {
 
   constructor() {}
 
-  /** Set the current library.
+  /** Set the current remote library key.
    * The library's catalog should have already been loaded.
-   * If the key is invalid, the first entry in the this.#libraries is used.
+   * If the key is invalid, the first entry in the this.#libraries is used and storage
+   * is switched to the local library
    * @param {string} key the library key.
    */
-  set libraryKey(key) {
-    this.#currentLibraryKey = this.#libraries.has(key)
-      ? key
-      : this.#libraries.keys().next().value;
+  set remoteLibraryKey(key) {
+    if (!this.#libraries.has(key)) {
+      console.error(
+        `Ignored attempt to set remote invalid remote library key ${key}.`
+      );
+      this.#usingLocalLibrary = true;
+      return;
+    }
+    this.#remoteLibraryKey = key;
+    if (!this.#usingLocalLibrary) {
+      this.#currentLibraryKey = this.#remoteLibraryKey;
+    }
+  }
+
+  /**
+   * Switch which library is in use.
+   * @param {boolean} value - true to switch to local library.
+   */
+  set usingLocalLibrary(value) {
+    this.#usingLocalLibrary = value;
+    this.#currentLibraryKey = this.#usingLocalLibrary
+      ? LocalLibrary.LOCAL_LIBRARY_KEY
+      : this.#remoteLibraryKey;
+  }
+
+  /**
+   *  Get which library is in use.
+   *  @returns {boolean} true if using local library.
+   */
+  get usingLocalLibrary() {
+    return this.#usingLocalLibrary;
   }
 
   /**
@@ -184,6 +224,21 @@ class LessonManager {
     const options = new Map();
     this.#libraries.forEach((value, key) => {
       options.set(key, value.title);
+    });
+    return options;
+  }
+
+  /**
+   * Get the remote library titles.
+   * This ignores local storage.
+   * @returns {Map<string, string>}
+   */
+  get remoteLibraryTitles() {
+    const options = new Map();
+    this.#libraries.forEach((value, key) => {
+      if (key !== LocalLibrary.LOCAL_LIBRARY_KEY) {
+        options.set(key, value.title);
+      }
     });
     return options;
   }
@@ -282,6 +337,7 @@ class LessonManager {
     this.#ensureIndexesValid();
     const book = this.#getCurrentBook();
     return {
+      usingLocalLibrary: this.#usingLocalLibrary,
       libraryKey: this.#currentLibraryKey,
       file: book?.chapters[this.#currentChapterIndex]?.lessons[
         this.#currentLessonIndex
@@ -307,10 +363,9 @@ class LessonManager {
   /**
    * Form url to retrieve the lesson under book, chapter and sections.
    * The current settings for the library key and indexes are used.
-   * @returns url
+   * @returns {string} the url for the lesson content.
    */
   formUrlForLesson() {
-    this.#ensureIndexesValid();
     const books = this.#libraries.get(this.#currentLibraryKey).books;
     const fileLocation = books[this.#currentBookIndex].location;
     const fileName =
@@ -381,8 +436,10 @@ class LessonManager {
    * @param {string} librariesFileLocation
    * @returns {Promise} fufils to number of libraries.
    */
-  loadLibraries(librariesFileLocation) {
+  loadAllLibraries(librariesFileLocation) {
     this.#libraries = new Map();
+    const localLibrary = new LocalLibrary();
+    this.#libraries.set(localLibrary.key, localLibrary.info);
     return fetchJson(librariesFileLocation).then((entries) => {
       for (const key in entries) {
         const entry = entries[key];
@@ -395,20 +452,37 @@ class LessonManager {
   }
 
   /**
-   * Load the library associated with the `#currentLibraryKey`. If the key is invalid,
+   * Load the current libraries. This is the local storage library and the
+   * current remote library.
+   * @returns {Promise} fulfils to undefined.
+   */
+  loadAllLibraryContent() {
+    return this.#loadLibraryContent(LocalLibrary.LOCAL_LIBRARY_KEY).then(() =>
+      this.#loadLibraryContent(this.#remoteLibraryKey)
+    );
+  }
+
+  /**
+   * Load the library associated with the key. If the key is invalid,
    * it is altered to the first key of the #libraries.
    * Indexes are set to zero if found to be invalid.
    * @param {string} key - the library key
+   * @param {boolean} [force] - if true, the content will be reloaded even if it exists.
    * @returns {Promise} fulfils to undefined.
    */
-  loadCurrentLibrary() {
-    const library = this.#libraries.get(this.#currentLibraryKey);
+  #loadLibraryContent(key, force) {
+    const library = this.#libraries.get(key);
 
-    if (library.books.length > 0) {
+    if (library.books?.length > 0 && !force) {
       return Promise.resolve();
     }
-    const fileLocation = library.file;
-    return fetchJson(fileLocation).then((value) => {
+    if (library.contentLoader) {
+      library.books = library.contentLoader();
+      this.#escapeAllTitles(library.books);
+      this.#ensureIndexesValid();
+      return Promise.resolve();
+    }
+    return fetchJson(library.url).then((value) => {
       library.books = value;
       this.#escapeAllTitles(library.books);
       this.#ensureIndexesValid();
@@ -437,6 +511,35 @@ class LessonManager {
    * @returns {Promise} Fulfils to {@link module:lessons/cachedLesson~CachedLesson}
    */
   loadCurrentLesson() {
+    this.#ensureIndexesValid();
+    const contentLoader =
+      this.#getCurrentBook().chapters[this.#currentChapterIndex].lessons[
+        this.#currentLessonIndex
+      ].contentLoader;
+
+    if (contentLoader) {
+      return this.#loadLessonUsingContentLoader(contentLoader);
+    } else {
+      return this.#loadRemoteLesson();
+    }
+  }
+
+  /**
+   * Load the current lesson from local storage.
+   * @param {function():string} contentLoader - function that directly loads the
+   * content.
+   * @returns {Promise} Fulfils to {@link module:lessons/cachedLesson~CachedLesson}
+   */
+  #loadLessonUsingContentLoader(contentLoader) {
+    return Promise.resolve(
+      new CachedLesson(this.#buildCurrentLessonInfo(''), contentLoader())
+    );
+  }
+  /**
+   * Load the current lesson from remote storage.
+   * @returns {Promise} Fulfils to {@link module:lessons/cachedLesson~CachedLesson}
+   */
+  #loadRemoteLesson() {
     const url = this.formUrlForLesson();
     if (this.#cachedLesson?.info.url === url) {
       console.info(`Using cached version of lesson: ${url}`);
@@ -449,6 +552,25 @@ class LessonManager {
       this.#cachedLesson.content = text;
       return CachedLesson.clone(this.#cachedLesson);
     });
+  }
+
+  /**
+   * Updates the lesson content.
+   * This can only be called if using a local library.
+   * @param {string} title - lesson title.
+   * @param {string} content - lesson content.
+   * @throws {Error} thrown if trying to update a remote lesson.
+   * @returns {Promise} fulfils to undefined.
+   */
+  updateCurrentLessonContent(title, content) {
+    if (!this.#usingLocalLibrary) {
+      throw new Error('Attempt made to update a remote library.');
+    }
+    new LocalLibrary().saveLocalLesson(this.#currentLessonIndex, {
+      title: title,
+      content: content,
+    });
+    return this.#loadLibraryContent(LocalLibrary.LOCAL_LIBRARY_KEY, true);
   }
 }
 

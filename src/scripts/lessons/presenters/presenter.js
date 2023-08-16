@@ -25,6 +25,7 @@
  *
  */
 
+import { ModalDialog } from '../../utils/userIo/modalDialog.js';
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { focusManager } from '../../utils/userIo/focusManager.js';
@@ -51,19 +52,16 @@ import { ArrayIndexer } from '../../utils/arrayIndexer.js';
  */
 
 /**
- * Identification used for the back button.
- * @type{string}
- */
-export const BACKWARDS_ID = 'BACKWARDS';
-export const FORWARDS_ID = 'FORWARDS';
-
-/**
  * Base presenter class. This is expected to be extended and the `next` and
  * `previous` methods overridden.
  * @class
  * @extends module:utils/userIo/managedElement.ManagedElement
  */
 export class Presenter extends ManagedElement {
+  static HOME_ID = 'HOME';
+  static PREVIOUS_ID = 'BACKWARDS';
+  static NEXT_ID = 'FORWARDS';
+
   /**
    * The resolve function for the Promise returned by the `presentOnStage` method.
    * @type {function}
@@ -100,11 +98,18 @@ export class Presenter extends ManagedElement {
   get presentation() {
     return this.#presentation;
   }
+
   /**
-   * Button bar
+   * Button bar - bar at bottom
    * @type {module:utils/userIo/managedElement.ManagedElement}
    */
   #buttonBar;
+  /**
+   * Back button
+   * @type {module:utils/userIo/managedElement.ManagedElement}
+   */
+  #homeButton;
+
   /**
    * Back button
    * @type {module:utils/userIo/managedElement.ManagedElement}
@@ -163,10 +168,15 @@ export class Presenter extends ManagedElement {
   }
   /**
    * Add button bar to the presenter's button bar.
+   * The default button bar has the buttons in HOME, BACK, FORWARD order.
+   * This adds the button between the BACK and FORWARD buttons.
    * @param {module:utils/userIo/managedElement.ManagedElement}
    */
   addButtonToBar(managedButton) {
-    this.#buttonBar.appendChild(managedButton);
+    this.#buttonBar.element.insertBefore(
+      managedButton.element,
+      this.#buttonBar.element.lastElementChild
+    );
   }
 
   /**
@@ -187,18 +197,24 @@ export class Presenter extends ManagedElement {
    * These are initially hidden.
    */
   #addNavigationButtons() {
+    this.#homeButton = new ManagedElement('button', 'home-navigation');
+    icons.applyIconToElement(icons.home, this.#homeButton);
+    this.listenToEventOn('click', this.#homeButton, Presenter.HOME_ID);
+    this.#buttonBar.appendChild(this.#homeButton);
+
     this.#backwardsButton = new ManagedElement('button', 'back-navigation');
     icons.applyIconToElement(icons.back, this.#backwardsButton);
-    this.listenToEventOn('click', this.#backwardsButton, BACKWARDS_ID);
-    this.addButtonToBar(this.#backwardsButton);
+    this.listenToEventOn('click', this.#backwardsButton, Presenter.PREVIOUS_ID);
+    this.#buttonBar.appendChild(this.#backwardsButton);
     this.#backwardsButton.hide();
 
     this.#forwardsButton = new ManagedElement('button', 'forward-navigation');
     icons.applyIconToElement(icons.forward, this.#forwardsButton);
-    this.listenToEventOn('click', this.#forwardsButton, FORWARDS_ID);
-    this.addButtonToBar(this.#forwardsButton);
+    this.listenToEventOn('click', this.#forwardsButton, Presenter.NEXT_ID);
+    this.#buttonBar.appendChild(this.#forwardsButton);
     this.#forwardsButton.hide();
   }
+
   /**
    * Show the back button.
    * @param {boolean} focus - if true, the button will also get focus.
@@ -234,7 +250,7 @@ export class Presenter extends ManagedElement {
   /**
    * Set up keyboard navigation.
    * This can only be called once.
-   * If element omitted, the titles are used.
+   * If element omitted, the children of the presentation element are used.
    * @param {module:utils/userIo/managedElement.ManagedElement[]} [managedElements].
    */
   setupKeyboardNavigation(managedElements) {
@@ -242,10 +258,10 @@ export class Presenter extends ManagedElement {
       console.error('setUpKeyboardNavigation can only be called once.');
       return;
     }
-    const items = managedElements ?? this.managedChildren;
+    const items = managedElements ?? this.#presentation.managedChildren;
     this.#navigator = new ArrayIndexer(items, true);
-    items.forEach((item) => {
-      this.listenToEventOn('keydown', item);
+    items.forEach((item, index) => {
+      this.listenToEventOn('keydown', item, index);
     });
   }
 
@@ -254,7 +270,7 @@ export class Presenter extends ManagedElement {
    * The default implementation just calls the presenter factory in the configuration
    * to get the next presenter. This should be overridden if you need to take action based on the index.
    *
-   * @param {number} index - index of the item that triggered the call.
+   * @param {number | string} index - index of the item that triggered the call or the eventId if it can't be passed as a number.
    * @returns {Presenter | Promise} new Presenter or Promise that fulfils to a Presenter.
    */
   next(indexIgnored) {
@@ -287,6 +303,29 @@ export class Presenter extends ManagedElement {
   }
 
   /**
+   * Check if okay to leave.
+   * @param {string} message to ask
+   * @returns {boolean} true if okay
+   */
+  async askIfOkayToLeave(message) {
+    const confirmation = await ModalDialog.showConfirm(message);
+    return confirmation === ModalDialog.DialogIndex.CONFIRM_YES;
+  }
+
+  /**
+   * Prevent navigation away from page.
+   * This is called when the handleClickEvent method is handling a Home, Back or
+   * Forwards navigation button. It should be overriden if you need to prevent
+   * navigation. Implementers can use the `askIfOkayToLeave` method to ask.
+   * @param {Event} event
+   * @param {string} eventId
+   * @returns {boolean} true if navigation away from page should be allowed
+   */
+  async allowNavigation(eventIgnored, eventIdIgnored) {
+    return true;
+  }
+
+  /**
    * Handle the click event.
    * The method will resolve the `Promise` made by `presentOnStage`.
    * The resolution is determined by the eventId.
@@ -300,18 +339,31 @@ export class Presenter extends ManagedElement {
    * @param {Event} event
    * @param {string} eventId
    */
-  handleClickEvent(event, eventId) {
+  async handleClickEvent(event, eventId) {
     const index = parseInt(eventId);
-    let nextPresenter = null;
-    if (!isNaN(index)) {
-      nextPresenter = this.next(index);
-    } else if (eventId.toUpperCase() === BACKWARDS_ID) {
-      nextPresenter = this.previous();
-    } else if (eventId.toUpperCase() === FORWARDS_ID) {
-      nextPresenter = this.next(FORWARDS_ID);
+    const upperCaseId = !eventId ? '' : eventId.toString().toUpperCase();
+    if (
+      upperCaseId === Presenter.HOME_ID ||
+      upperCaseId === Presenter.PREVIOUS_ID ||
+      upperCaseId === Presenter.NEXT_ID
+    ) {
+      if (!(await this.allowNavigation())) {
+        return true;
+      }
     }
-
-    this.#resolutionExecutor(nextPresenter);
+    let nextPresenter = null;
+    if (upperCaseId === Presenter.PREVIOUS_ID) {
+      nextPresenter = this.previous();
+    } else if (upperCaseId === Presenter.NEXT_ID) {
+      nextPresenter = this.next(Presenter.NEXT_ID);
+    } else if (upperCaseId === Presenter.HOME_ID) {
+      nextPresenter = this.config.factory.getHome(this.config);
+    } else {
+      nextPresenter = this.next(isNaN(index) ? eventId : index);
+    }
+    if (nextPresenter) {
+      this.#resolutionExecutor(nextPresenter);
+    }
   }
 
   /**

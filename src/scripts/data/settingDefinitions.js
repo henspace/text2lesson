@@ -127,13 +127,13 @@ export function getSettingDefinitions() {
     },
     library: {
       type: 'select',
-      label: i18n`Library`,
+      label: i18n`Remote library`,
       defaultValue: DEFAULT_LIBRARY_KEY,
       onupdate: (value) => {
-        lessonManager.libraryKey = value;
+        lessonManager.remoteLibraryKey = value;
       },
       dependents: ['book'],
-      options: () => lessonManager.libraryTitles,
+      options: () => lessonManager.remoteLibraryTitles,
       reloadIfChanged: true,
     },
     test: {

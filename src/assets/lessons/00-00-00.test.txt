@@ -1,6 +1,13 @@
 # EN test 00-00-00
 AUTHOR: John Doe
 
+(i)This is a lesson which you need to create. See [How to write lessons](https://www.markdownguide.org/basic-syntax/).
+
+(?) Which of these is a way of writing quickly?
+= Tee-line
+x scribble
+x pitbull shorthand
+
 (?) What is the capital of the UK?
 (=) London
 (x) New York

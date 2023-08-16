@@ -1,7 +1,7 @@
 /**
- * @file Home message.
+ * @file Collection of urls.
  *
- * @module data/home
+ * @module data/urls
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -23,20 +23,9 @@
  */
 
 /**
- * Implemented as function to prevent it being computed if module load
- * occurs before languages have been resolved.
- * @returns {string} Text for welcome message.
+ * @enum {string}
  */
-
-import { i18n } from '../utils/i18n/i18n.js';
-
-export const getHomeText = () => i18n`
-Hi! Welcome to $_PRODUCT_NAME_TXT_$.
-This is the fun way to learn coding. This is intend to take you from absolutely
-no knowledge to being able to write code in HTML, CSS and JavaScript. What!
-you don't know what those are! Don't worry, you soon will.
-Let's get started.
-
-Click continue to access the lesson library and see what is available.
-
-`;
+export const Urls = {
+  HELP: 'https://google.com',
+  MARKDOWN_HELP: 'https://daringfireball.net/projects/markdown/',
+};

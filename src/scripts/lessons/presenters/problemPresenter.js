@@ -29,6 +29,7 @@ import { ModalDialog } from '../../utils/userIo/modalDialog.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { MarkState } from '../itemMarker.js';
 import { celebrator, CelebrationType } from '../candy/celebrators.js';
+import { i18n } from '../../utils/i18n/i18n.js';
 
 /**
  * Class names
@@ -173,7 +174,6 @@ export class ProblemPresenter extends Presenter {
    */
   addButtons() {
     this.#addSubmitButton();
-    //this.#addNextButton();
   }
 
   /**
@@ -187,20 +187,6 @@ export class ProblemPresenter extends Presenter {
     this.listenToEventOn('click', this.#submitButton, ElementId.CLICKED_SUBMIT); // numeric handler means this will resolve the presenter.
     this.addButtonToBar(this.#submitButton);
   }
-
-  /**
-   * Add the next button hidden. The next button is used to move
-   * to the next Presenter.
-   * @private
-   */
-  /*
-  #addNextButton() {
-    this.#nextButton = new ManagedElement('button', ClassName.NEXT_PROBLEM);
-    icons.applyIconToElement(icons.nextProblem, this.#nextButton.element);
-    this.listenToEventOn('click', this.#nextButton, ElementId.CLICKED_NEXT);
-    this.addButtonToBar(this.#nextButton);
-  }
-  */
 
   /**
    * @override
@@ -238,6 +224,19 @@ export class ProblemPresenter extends Presenter {
         break;
       default:
         super.handleClickEvent(event, eventId);
+    }
+  }
+
+  /**
+   * @override
+   */
+  async allowNavigation(event, eventId) {
+    if (eventId === Presenter.HOME_ID || eventId === Presenter.PREVIOUS_ID) {
+      return this.askIfOkayToLeave(
+        i18n`Are you sure you want to quit the lesson?`
+      );
+    } else {
+      return true;
     }
   }
 

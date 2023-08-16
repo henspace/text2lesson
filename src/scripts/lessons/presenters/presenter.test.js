@@ -67,17 +67,6 @@ beforeEach(() => {
   presenterFactory.getPrevious.mockClear();
 });
 
-/**
- * Click an element. The eventId will be added as the element's 'data-event-id'
- * attribute.
- * @param {Element} element
- * @param {string} eventId
- */
-function clickElement(element, eventId) {
-  element.setAttribute('data-event-id', eventId);
-  element.dispatchEvent(new Event('click'));
-}
-
 test('constructor creates ManagedElement', () => {
   const config = {
     className: 'presenter',
@@ -129,6 +118,21 @@ test('presentOnStage creates preamble, presentation and button-bar elements.', (
   return promise;
 });
 
+test('presentOnStage displays content with home button at start', () => {
+  const config = {
+    titles: ['title1', 'title2'],
+    itemClassName: 'test',
+    factory: presenterFactory,
+  };
+  const presenter = new Presenter(config);
+  const promise = presenter.presentOnStage(stage);
+  const homeButton = document.querySelector('.button-bar').firstChild;
+  expect(homeButton.tagName).toBe('BUTTON');
+  expect(homeButton.classList.contains('home-navigation')).toBe(true);
+  presenter.handleClickEvent(null, 0); // resolve promise
+  return promise;
+});
+
 test('presentOnStage displays content with backbutton at end', () => {
   const config = {
     titles: ['title1', 'title2'],
@@ -137,7 +141,7 @@ test('presentOnStage displays content with backbutton at end', () => {
   };
   const presenter = new Presenter(config);
   const promise = presenter.presentOnStage(stage);
-  const backButton = document.querySelector('.button-bar').firstChild;
+  const backButton = document.querySelector('.button-bar').children.item(1);
   expect(backButton.tagName).toBe('BUTTON');
   expect(backButton.classList.contains('back-navigation')).toBe(true);
   presenter.handleClickEvent(null, 0); // resolve promise
@@ -245,34 +249,6 @@ test('presentOnStage fulfils with result of previous function for id of "BACKWAR
     expect(nextPresenter.config.index).toBe(1001);
   });
 
-  target.dispatchEvent(new Event('click'));
-  return promise;
-});
-
-test('presentOnStage fulfils with null for id which does not parse as an integer and does not equal "FORWARDS"', () => {
-  expect.assertions(1);
-  const triggerEventId = 'NOT_FORWARDS';
-  const config = {
-    className: 'Presenter',
-    titles: ['target 1', 'target 2', 'target 3'],
-    itemClassName: 'item',
-    factory: presenterFactory,
-  };
-  const presenter = new Presenter(config);
-  jest
-    .spyOn(presenter, 'next')
-    .mockImplementation((index) => new MockPresenter({ index: index }));
-  jest
-    .spyOn(presenter, 'previous')
-    .mockImplementation(() => new MockPresenter({ index: 1001 }));
-
-  const target = new ManagedElement('div');
-  presenter.appendChild(target);
-  presenter.listenToEventOn('click', target, triggerEventId);
-
-  const promise = presenter.presentOnStage(stage).then((nextPresenter) => {
-    expect(nextPresenter).toBeNull();
-  });
   target.dispatchEvent(new Event('click'));
   return promise;
 });

@@ -1,12 +1,12 @@
 {
-  "name": "rapid-qanda",
+  "name": "text2lesson",
   "version": "1.0.0",
   "description": "Application for running lessons and quizzes",
   "private": true,
   "main": "main.js",
   "type": "module",
   "config": {
-    "appName": "rapid-qanda",
+    "appName": "text2lesson",
     "assetsDirRelToSource": "assets",
     "buildDistDir": "./build/dist",
     "buildReportDir": "./build/reports",
@@ -15,7 +15,7 @@
     "entryScriptRelToSource": "scripts/main.js",
     "i18nMasterLanguage": "en",
     "i18nAssetsDirRelToSource": "assets/i18n",
-    "productName": "Lesson Runner",
+    "productName": "Text2Lesson",
     "sourceDir": "./src"
   },
   "scripts": {
@@ -29,7 +29,7 @@
     "testWatch": "node --experimental-vm-modules node_modules/jest/bin/jest.js ./src --watch",
     "jsdocCheck": "jsdoc -c jsdoc.json -t templates/silent",
     "jsdoc": "jsdoc -c jsdoc.json && jsdoc -c jsdoc-build-utils.json",
-    "compress": "terser ./build/rapid-qanda.js --compress --comments false --output ./build/rapid-qanda.min.js",
+    "compress": "terser ./build/text2lesson.js --compress --comments false --output ./build/text2lesson.min.js",
     "lint": "npx eslint ./src/**/*.js",
     "serveSource": "node ./tools/server/server.js ./src 8080",
     "serveBuild": "node ./tools/server/server.js ./build/dist 8081"

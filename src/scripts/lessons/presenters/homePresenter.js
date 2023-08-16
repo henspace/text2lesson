@@ -26,6 +26,7 @@ import { ListPresenter } from './listPresenter.js';
 import { getHomeText } from '../../data/home.js';
 import { parseMarkdown } from '../../utils/text/textProcessing.js';
 import { i18n } from '../../utils/i18n/i18n.js';
+import { lessonManager } from '../lessonManager.js';
 
 /**
  * Class to present a slide show.
@@ -39,7 +40,7 @@ export class HomePresenter extends ListPresenter {
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
-    config.titles = [i18n`Open library`];
+    config.titles = [i18n`Open library`, i18n`Open local library`];
     config.itemClassName = 'library';
     super(config);
     this.#buildContent();
@@ -48,5 +49,13 @@ export class HomePresenter extends ListPresenter {
 
   #buildContent() {
     this.addPreamble(parseMarkdown(getHomeText()));
+  }
+
+  /**
+   * @override
+   */
+  next(index) {
+    lessonManager.usingLocalLibrary = index === 1;
+    return super.next(index);
   }
 }

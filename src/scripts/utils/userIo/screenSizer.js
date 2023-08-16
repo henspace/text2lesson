@@ -1,7 +1,7 @@
 /**
- * @file Home message.
+ * @file Handle screen resizing.
  *
- * @module data/home
+ * @module utils/userIo/screenSizer
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -21,22 +21,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+let throttleTimer = null;
 
 /**
- * Implemented as function to prevent it being computed if module load
- * occurs before languages have been resolved.
- * @returns {string} Text for welcome message.
+ * Set the vh variable. This allows for browsers that include the address bar
+ * in the vh calculation.
  */
+function setVhCssVariable() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
 
-import { i18n } from '../utils/i18n/i18n.js';
+/**
+ * Add event listener to handle resizing of the window.
+ */
+window.addEventListener('resize', () => {
+  if (throttleTimer !== null) {
+    return; // it will get handled.
+  }
+  throttleTimer = window.setTimeout(() => {
+    throttleTimer = null;
+    setVhCssVariable();
+  }, 1000);
+});
 
-export const getHomeText = () => i18n`
-Hi! Welcome to $_PRODUCT_NAME_TXT_$.
-This is the fun way to learn coding. This is intend to take you from absolutely
-no knowledge to being able to write code in HTML, CSS and JavaScript. What!
-you don't know what those are! Don't worry, you soon will.
-Let's get started.
-
-Click continue to access the lesson library and see what is available.
-
-`;
+setVhCssVariable();

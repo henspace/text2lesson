@@ -76,10 +76,24 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get closeEditor() {
+    return {
+      content: this.#getIconHtml('--icon-close-editor-html'),
+      accessibleName: i18n`Close editor`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get closeMenu() {
     return {
       content: this.#getIconHtml('--icon-close-menu-html'),
       accessibleName: i18n`Close menu`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get edit() {
+    return {
+      content: this.#getIconHtml('--icon-edit-html'),
+      accessibleName: i18n`Edit`,
     };
   }
   /** @returns {IconDetails} information for icon */
@@ -111,10 +125,31 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get help() {
+    return {
+      content: this.#getIconHtml('--icon-help-html'),
+      accessibleName: i18n`Help`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get home() {
+    return {
+      content: this.#getIconHtml('--icon-home-html'),
+      accessibleName: i18n`Home`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get info() {
     return {
       content: this.#getIconHtml('--icon-info-html'),
       accessibleName: i18n`Flag`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get load() {
+    return {
+      content: this.#getIconHtml('--icon-load-html'),
+      accessibleName: i18n`Open file`,
     };
   }
   /** @returns {IconDetails} information for icon */
@@ -160,6 +195,13 @@ class IconGenerator {
       accessibleName: i18n`Play lesson`,
     };
   }
+  /** @returns {IconDetails} information for icon */
+  get privacy() {
+    return {
+      content: this.#getIconHtml('--icon-privacy-html'),
+      accessibleName: i18n`Privacy`,
+    };
+  }
 
   /** @returns {IconDetails} information for icon */
   get question() {
@@ -176,10 +218,17 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get save() {
+    return {
+      content: this.#getIconHtml('--icon-save-html'),
+      accessibleName: i18n`Save file`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get settings() {
     return {
       content: this.#getIconHtml('--icon-settings-html'),
-      accessibleName: i18n`Flag`,
+      accessibleName: i18n`Settings`,
     };
   }
   /** @returns {IconDetails} information for icon */

@@ -222,6 +222,9 @@ const htmlCleanUpReps = [
  * @returns {string}
  */
 function processReplacements(data, replacements) {
+  if (!data) {
+    return data;
+  }
   replacements.forEach((sub) => {
     data = data.replaceAll(sub.re, sub.rep);
   });

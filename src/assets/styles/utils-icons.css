@@ -6,12 +6,19 @@
   --icon-font-family: 'Font Awesome 6 Free';
   --icon-font-weight: 400;
 
+  /* general */
+  --icon-help: '\f059';
+  --icon-help-html: '<i class="fa-solid fa-circle-question"></i>';
+
   /* navigation */
   --icon-back-nav: '\f30a';
   --icon-back-nav-html: '<i class="fa-solid fa-left-long"></i>';
 
   --icon-forward-nav: '\f30b';
   --icon-forward-nav-html: '<i class="fa-solid fa-right-long"></i>';
+
+  --icon-home: '\f015';
+  --icon-home-html: '<i class="fa-solid fa-home"></i>';
 
   /* dialog types */
   --icon-warning: '\f06a';
@@ -47,6 +54,19 @@
 
   --icon-reset-to-factory: '\f30b  \f275';
   --icon-reset-to-factory-html: '<i class="fa-solid fa-right-long"></i> <i class="fa-solid fa-industry"/></i>';
+
+  /* editor */
+  --icon-edit: '\f31c';
+  --icon-edit-html: '<i class="fa-solid fa-file-pen"></i>';
+
+  --icon-load: '\f5f4';
+  --icon-load-html: '<i class="fa-solid fa-file-arrow-up"></i>';
+
+  --icon-save: '\f56d';
+  --icon-save-html: '<i class="fa-solid fa-file-arrow-down"></i>';
+
+  --icon-close-editor: '\f2d3';
+  --icon-close-editor-html: '<i class="fa-solid fa-square-xmark"></i>';
 
   /* menu */
   --icon-open-menu: '\f0c9';

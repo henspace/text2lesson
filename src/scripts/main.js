@@ -22,13 +22,12 @@
  *
  */
 
-import { BUILD_INFO } from './data/constants.js';
+import { BuildInfo } from './data/constants.js';
 import { getSettingDefinitions } from './data/settingDefinitions.js';
 import { getMainMenuItems } from './data/menuItems.js';
 import { getWelcome } from './data/welcome.js';
 import { lessonManager } from './lessons/lessonManager.js';
 
-import { setMenuItems } from './utils/userIo/menu.js';
 import { ModalDialog } from './utils/userIo/modalDialog.js';
 import { registerServiceWorker } from './utils/serviceWorkers/serviceWorkersUtilities.js';
 import { resolveLanguages } from './utils/i18n/i18FileResolver.js';
@@ -38,7 +37,9 @@ import { i18n } from './utils/i18n/i18n.js';
 import { StageManager } from './lessons/presenters/stageManager.js';
 import { PresenterFactory } from './lessons/presenters/presenterFactory.js';
 import { toast } from './utils/userIo/toast.js';
-
+import { setTitleBarAndFooter } from './setTitleBarAndFooter.js';
+import './utils/userIo/modalMask.js';
+import './utils/userIo/screenSizer.js';
 /**
  * Get the language files required for the application.
  * If the application has not been build, the application just returns a fulfilled
@@ -46,15 +47,15 @@ import { toast } from './utils/userIo/toast.js';
  * @returns {Promise} Fulfils to undefined.
  */
 function getLanguages() {
-  if (!BUILD_INFO.isBuilt()) {
+  if (!BuildInfo.isBuilt()) {
     return Promise.resolve(undefined);
   }
   return resolveLanguages('./languages.json')
     .then(() => {
       console.info(
         `Build information: ${
-          BUILD_INFO.bundleName
-        } ${BUILD_INFO.version()} ${BUILD_INFO.mode()}`
+          BuildInfo.getBundleName
+        } ${BuildInfo.getVersion()} ${BuildInfo.getMode()}`
       );
       return;
     })
@@ -70,16 +71,16 @@ function getLanguages() {
     });
 }
 
-if (BUILD_INFO.isBuilt()) {
-  registerServiceWorker(BUILD_INFO.mode());
+if (BuildInfo.isBuilt()) {
+  registerServiceWorker(BuildInfo.getMode());
 }
 
 window.addEventListener('load', () => {
   persistentData.setStorageKeyPrefix(
-    `LR_${BUILD_INFO.bundleName().replace('.', '_')}`
+    `LR_${BuildInfo.getBundleName().replace('.', '_')}`
   );
   return getLanguages()
-    .then(() => lessonManager.loadLibraries('assets/lessons/libraries.json'))
+    .then(() => lessonManager.loadAllLibraries('assets/lessons/libraries.json'))
     .then(() => loadSettingDefinitions(getSettingDefinitions()))
     .then(() => {
       const language = i18n`language::`;
@@ -89,12 +90,12 @@ window.addEventListener('load', () => {
       }
       return true;
     })
-    .then(() => setMenuItems(getMainMenuItems()))
+    .then(() => setTitleBarAndFooter(getMainMenuItems()))
     .then(() => {
       toast('Debug message for testing');
       return ModalDialog.showInfo(getWelcome(), i18n`Welcome`);
     })
-    .then(() => lessonManager.loadCurrentLibrary())
+    .then(() => lessonManager.loadAllLibraryContent())
     .then(() => {
       const stage = document.getElementById('stage');
       return new StageManager(stage).startShow(PresenterFactory.getInitial());

@@ -26,6 +26,7 @@ import { ManagedElement } from './managedElement.js';
 import { icons } from './icons.js';
 import { ButtonBar } from './button.js';
 import { focusManager } from './focusManager.js';
+import * as modalMask from './modalMask.js';
 /**
  * @typedef {Object} DialogDefinition
  * @property {string} title
@@ -203,7 +204,7 @@ export class ModalDialog {
     icons.applyIconToElement(dialogDefinition.iconDetails, this.#icon, {
       hideText: true,
     });
-
+    modalMask.showMask();
     return this.#buttonBar
       .showButtons(dialogDefinition.buttons)
       .then((index) => {
@@ -218,6 +219,7 @@ export class ModalDialog {
    * @private
    */
   #hideDialog() {
+    modalMask.hideMask();
     this.#dialog.remove();
   }
 
@@ -297,7 +299,7 @@ export class ModalDialog {
    * @returns {Promise} Fulfils to index of button pressed.
    */
   static showWarning(content, title) {
-    return ModalDialog.showDialog(title ?? i18n`Error`, content, {
+    return ModalDialog.showDialog(title ?? i18n`Warning`, content, {
       dialogType: ModalDialog.DialogType.WARNING,
     });
   }
@@ -330,7 +332,8 @@ export class ModalDialog {
    * Shorthand call for ModalDialog.showDialog('Question', content, ModalDialog.DialogType.QUESTION)
    * @param {string} content
    * @param {string} [title] - optional title.
-   * @returns {Promise} Fulfils to index of button pressed.
+   * @returns {Promise} Fulfils to index of button pressed. This will be
+   * ModalDialog.DialogIndex.CONFIRM_YES or ModalDialog.DialogIndex.CONFIRM_YES.
    */
   static showConfirm(content, title) {
     return ModalDialog.showDialog(title ?? i18n`Question`, content, {

@@ -29,23 +29,12 @@ import { ManagedElement } from '../userIo/managedElement.js';
 import { icons } from './icons.js';
 import { focusManager } from './focusManager.js';
 import { ArrayIndexer } from '../arrayIndexer.js';
-
-/**
- * @type {Element}
- */
-let menuIconOpen;
-
-/**
- * @type {Element}
- */
-let menuContent;
+import * as modalMask from './modalMask.js';
 
 /**
  * Definition of a menu item.
  * @typedef {Object} MenuItemDefinition
- * @property {string} text - the text displayed in the menu.
- * @property {string} itemClass - name of an item class. This will be prefixed by
- * .utils-li-marker-' and is used to set additional styling.
+ * @property {module:utils/userIo/icons~IconDetails} iconDetails - the button definition for the menu item.
  * @property {module:libs/utils/command/commands#Command} command - command used to action
  * the menu selection.
  * If the command is not defined, the text property is ignored and a separator
@@ -53,65 +42,107 @@ let menuContent;
  */
 
 /**
- * Create the HTML for the menu.
- * This is added to the `body` element.
+ * Create a managed element for the menu. The element itself is the open button.
  */
-function createMenuHtml() {
-  menuIconOpen = document.createElement('button');
-  menuIconOpen.setAttribute('aria-haspopup', true);
-  icons.applyIconToElement(icons.openMenu, menuIconOpen, { hideText: true });
-  menuIconOpen.classList.add('utils-menu-icon-open', 'icon-only-button');
+export class Menu extends ManagedElement {
+  /**
+   * @type {Element}
+   */
+  #menuContent;
+  /**
+   * @type {MenuItems}
+   */
+  #menuItems;
 
-  const menuTitleBar = document.createElement('div');
-  menuTitleBar.classList.add('utils-menu-title');
+  /**
+   * create the menu.
+   */
+  constructor() {
+    super('button');
+    this.setAttribute('aria-haspopup', true);
+    icons.applyIconToElement(icons.openMenu, this, { hideText: true });
+    this.classList.add('utils-menu-icon-open', 'icon-only-button');
+    this.#createMenuContentHtml();
+    this.#menuItems = new MenuItems();
+  }
 
-  menuContent = document.createElement('div');
-  menuContent.classList.add('utils-menu-content');
-  menuContent.style.visibility = 'hidden';
-  menuContent.addEventListener('focusout', (event) => {
-    if (!menuContent.contains(event.relatedTarget)) {
-      // hideMenuItems();
+  /**
+   * Create the HTML for the menu.
+   * The menu added to the `body` element.
+   * @param {Element | module:utils/userIo/managedElement.ManagedElement} container
+   */
+  #createMenuContentHtml() {
+    const menuTitleBar = new ManagedElement('div');
+    menuTitleBar.classList.add('utils-menu-title');
+
+    this.#menuContent = new ManagedElement('div', 'utils-menu-content');
+    this.#menuContent.style.visibility = 'hidden';
+
+    document.body.insertBefore(
+      this.#menuContent.element,
+      document.getElementById('modal-mask').nextSibling
+    );
+
+    const menuItemsElement = new ManagedElement('div');
+    menuItemsElement.classList.add('container', 'utils-menu-items');
+    menuItemsElement.setAttribute('aria-role', 'menu');
+    this.#menuContent.appendChild(menuTitleBar);
+    this.#menuContent.appendChild(menuItemsElement);
+    this.listenToOwnEvent('click', 'OPEN');
+    this.listenToEventOn('click', this.#menuContent, 'CONTENT-ACTION');
+    this.listenToEventOn('keydown', this.#menuContent, 'CONTENT-ACTION');
+  }
+  /**
+   * Set the items for the menu.
+   * @param {MenuItemDefinition[]} items
+   */
+  setMenuItems(items) {
+    this.#menuItems.setMenuItems(items);
+  }
+  /**
+   * Show the menu items.
+   */
+  #showMenuItems() {
+    modalMask.showMask();
+    this.style.visibility = 'hidden';
+    this.#menuContent.classList.add('modal');
+    this.#menuContent.style.visibility = 'visible';
+    this.#menuContent.style.transform = 'translateX(0)';
+    this.#menuContent.querySelector('button.utils-menu-item').focus();
+  }
+
+  /**
+   * Hide the menu items.
+   */
+  #hideMenuItems() {
+    modalMask.hideMask();
+    this.style.visibility = 'visible';
+    this.#menuContent.style.transform = 'translateX(-100%)';
+    this.#menuContent.style.visibility = 'hidden';
+    this.#menuContent.classList.remove('modal');
+    focusManager.findBestFocus();
+  }
+  /**
+   * @override
+   */
+  handleClickEvent(eventIgnored, eventId) {
+    switch (eventId) {
+      case 'OPEN':
+        this.#showMenuItems();
+        break;
+      default:
+        this.#hideMenuItems();
     }
-  });
+  }
 
-  document.body.insertBefore(
-    menuContent,
-    document.getElementById('modal-mask').nextSibling
-  );
-  document.getElementById('action-buttons').appendChild(menuIconOpen);
-
-  const menuItemsElement = document.createElement('ul');
-  menuItemsElement.classList.add('container', 'utils-menu-items');
-  menuItemsElement.setAttribute('aria-role', 'menu');
-  menuContent.appendChild(menuTitleBar);
-  menuContent.appendChild(menuItemsElement);
-
-  menuIconOpen.addEventListener('click', () => {
-    showMenuItems();
-  });
-}
-
-/**
- * Show the menu items.
- */
-function showMenuItems() {
-  menuItems.resetNavigation();
-  menuIconOpen.style.visibility = 'hidden';
-  menuContent.classList.add('modal');
-  menuContent.style.visibility = 'visible';
-  menuContent.style.transform = 'translateX(0)';
-  menuContent.querySelector('li').focus();
-}
-
-/**
- * Hide the menu items.
- */
-function hideMenuItems() {
-  menuIconOpen.style.visibility = 'visible';
-  menuContent.style.transform = 'translateX(-100%)';
-  menuContent.style.visibility = 'hidden';
-  menuContent.classList.remove('modal');
-  focusManager.findBestFocus();
+  /**
+   * @override
+   */
+  handleKeydownEvent(event, eventIdIgnored) {
+    if (event.key === 'Escape') {
+      this.#hideMenuItems();
+    }
+  }
 }
 
 /**
@@ -120,20 +151,13 @@ function hideMenuItems() {
  */
 class MenuItem extends ManagedElement {
   /**
-   * @param {string} label - inner HTML for the item.
-   * @param {string} itemClass - name of styling class. This will be automatically
-   * prefixed by .utils-li-marker-';
+   * @param {module:utils/userIo/icons~IconDetails} iconDetail - icon to apply to button.
    */
-  constructor(label, itemClass) {
-    super('li', 'utils-menu-item');
-    this.textContent = label;
-    this.classList.add('selectable');
-    if (itemClass) {
-      this.classList.add(`utils-li-marker-${itemClass}`);
-    }
+  constructor(iconDetails) {
+    super('button', 'utils-menu-item');
+    icons.applyIconToElement(iconDetails, this);
     this.setAttributes({
       'aria-role': 'menuitem',
-      tabindex: '-1',
     });
   }
 }
@@ -180,11 +204,6 @@ class MenuItems extends ManagedElement {
       .querySelector('.utils-menu-title')
       .appendChild(this.#menuIconClose.element);
     this.listenToEventOn(
-      'keydown',
-      this.#menuIconClose,
-      MenuItems.CLOSE_EVENT_ID
-    );
-    this.listenToEventOn(
       'click',
       this.#menuIconClose,
       MenuItems.CLOSE_EVENT_ID
@@ -204,7 +223,7 @@ class MenuItems extends ManagedElement {
     this.menuDefinition.forEach((menuDef, index) => {
       let item;
       if (menuDef.command) {
-        item = new MenuItem(menuDef.text, menuDef.itemClass);
+        item = new MenuItem(menuDef.iconDetails);
         this.listenToEventOn('click', item, index);
         this.listenToEventOn('keydown', item, index);
         commandItems.push(item);
@@ -222,7 +241,6 @@ class MenuItems extends ManagedElement {
    * @param {string} eventId
    */
   handleClickEvent(event, eventId) {
-    hideMenuItems();
     const index = parseInt(eventId);
     if (isNaN(index)) {
       return;
@@ -232,55 +250,4 @@ class MenuItems extends ManagedElement {
       console.debug(`Finished handling menu option ${value}.`);
     });
   }
-
-  /**
-   * Handle key down event to allow up and down arrows to navigate list.
-   * @param {Event} event
-   * @param {string} eventId
-   */
-  handleKeydownEvent(event, eventId) {
-    const index = parseInt(eventId);
-    console.debug(`Key ${event.key} down for index ${index}`);
-    switch (event.key) {
-      case 'Tab':
-        if (event.shiftKey) {
-          this.#navigator.decrement().focus();
-        } else {
-          this.#navigator.increment().focus();
-        }
-        event.preventDefault();
-        break;
-      case 'Escape':
-        hideMenuItems();
-        break;
-      case ' ':
-      case 'Enter':
-        this.handleClickEvent(event, eventId);
-        break;
-    }
-  }
-
-  resetNavigation() {
-    this.#navigator.reset();
-    this.#navigator.increment().focus(); // this is because the first item is the close button but we start on the first menu item.
-  }
 }
-
-/**
- * Set the items for the menu.
- * @param {MenuItemDefinition[]} items
- */
-export function setMenuItems(items) {
-  menuItems.setMenuItems(items);
-}
-
-/**
- * Create the HTML including the menu items.
- *
- */
-createMenuHtml();
-
-/**
- * @type{MenuItems} - The items that comprise the menu.
- */
-const menuItems = new MenuItems();

@@ -35,7 +35,7 @@ import { Problem } from './problem.js';
 import { Lesson } from './lesson.js';
 import { ProblemSource } from './problemSource.js';
 /**
- * Keys for splitting the problem source into parts
+ * Keys for splitting the problem source into parts. All keys are lowerCase.
  */
 export const ProblemItemKey = {
   INTRO: 'i',
@@ -216,7 +216,7 @@ export class LessonSource {
     if (!match) {
       return { key: undefined, content: line };
     }
-    return { key: match[1], content: match[2] ?? '' };
+    return { key: match[1].toLowerCase(), content: match[2] ?? '' };
   }
 
   /**

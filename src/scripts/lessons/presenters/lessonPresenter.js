@@ -27,6 +27,7 @@ import { lessonManager } from '../lessonManager.js';
 import { LessonSource } from '../lessonSource.js';
 import { i18n } from '../../utils/i18n/i18n.js';
 import { icons } from '../../utils/userIo/icons.js';
+import { ManagedElement } from '../../utils/userIo/managedElement.js';
 
 /**
  * Class to present a Lesson.
@@ -34,6 +35,11 @@ import { icons } from '../../utils/userIo/icons.js';
  * @extends module:lessons/presenters/presenter.Presenter
  */
 export class LessonPresenter extends Presenter {
+  /**
+   * @type {string}
+   */
+  static EDIT_EVENT_ID = 'EDIT_LESSON';
+
   /**
    * Construct.
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
@@ -45,6 +51,9 @@ export class LessonPresenter extends Presenter {
     this.config.lessonInfo = lessonManager.currentLessonInfo;
     this.#buildCustomContent();
     this.setupKeyboardNavigation();
+    if (this.config?.factory?.hasPrevious(this)) {
+      this.showBackButton();
+    }
   }
 
   /**
@@ -67,29 +76,52 @@ export class LessonPresenter extends Presenter {
       'library-title',
       this.config.lessonInfo.titles.library
     );
-    summaryBlock.createAndAppendChild(
-      'span',
-      'book-title',
-      this.config.lessonInfo.titles.book
-    );
-    summaryBlock.createAndAppendChild(
-      'span',
-      'chapter-title',
-      this.config.lessonInfo.titles.chapter
-    );
+    if (!lessonManager.usingLocalLibrary) {
+      summaryBlock.createAndAppendChild(
+        'span',
+        'book-title',
+        this.config.lessonInfo.titles.book
+      );
+      summaryBlock.createAndAppendChild(
+        'span',
+        'chapter-title',
+        this.config.lessonInfo.titles.chapter
+      );
+    }
+
     this.presentation.appendChild(summaryBlock);
     this.applyIconToNextButton(icons.playLesson);
     this.showNextButton();
+    this.#addEditButtonIfLocal();
   }
+
+  /**
+   * Add the edit button
+   */
+  #addEditButtonIfLocal() {
+    if (this.config.lessonInfo.usingLocalLibrary) {
+      const editButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.edit, editButton);
+      this.addButtonToBar(editButton);
+      this.listenToEventOn('click', editButton, LessonPresenter.EDIT_EVENT_ID);
+    }
+  }
+
   /**
    * @override
    */
-  next(indexIgnored) {
-    return lessonManager.loadCurrentLesson().then((cachedLesson) => {
-      const lessonSource = LessonSource.createFromSource(cachedLesson.content);
-      this.config.lesson = lessonSource.convertToLesson();
-      return this.config.factory.getNext(this, this.config);
-    });
+  next(eventId) {
+    if (eventId === LessonPresenter.EDIT_EVENT_ID) {
+      return this.config.factory.getEditor(this, this.config);
+    } else {
+      return lessonManager.loadCurrentLesson().then((cachedLesson) => {
+        const lessonSource = LessonSource.createFromSource(
+          cachedLesson.content
+        );
+        this.config.lesson = lessonSource.convertToLesson();
+        return this.config.factory.getNext(this, this.config);
+      });
+    }
   }
   /**
    * @override

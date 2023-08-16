@@ -33,7 +33,7 @@ export class DataStoreManager {
   #storage;
   /**
    * String appended to keys to make storage unique when testing locally.
-   * If running a server on the unbuilt source, the {@link module:data/constants.BUILD_INFO.bundleName} is
+   * If running a server on the unbuilt source, the {@link module:data/constants.BuildInfo.getBundleName} is
    * not unique, so a prefix of 'LR' is also appended. This should be modified
    * for each application.
    * @type{string}

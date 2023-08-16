@@ -23,6 +23,8 @@
  */
 
 import { CachedLesson } from './cachedLesson.js';
+import { LocalLibrary } from './localLibrary.js';
+
 import { jest, test, expect, beforeAll, beforeEach } from '@jest/globals';
 
 jest.unstable_mockModule('../utils/jsonUtils/json.js', () => ({
@@ -39,8 +41,8 @@ const json = await import('../utils/jsonUtils/json.js');
 const { lessonManager } = await import('./lessonManager.js');
 
 const libraries = {
-  L1: { title: '<p>titleL1', file: 'fileL1.json' },
-  L2: { title: '<p>titleL2', file: 'fileL2.json' },
+  L1: { title: '<p>titleL1', url: 'fileL1.json' },
+  L2: { title: '<p>titleL2', url: 'fileL2.json' },
 };
 
 const libraryContents = {
@@ -134,14 +136,18 @@ const libraryContents = {
 beforeAll(() => {
   console.log('before all');
   json.fetchJson.mockReturnValueOnce(Promise.resolve(libraries));
-  return lessonManager.loadLibraries('somefile.json').then(async (count) => {
-    expect(count).toBe(Object.keys(libraries).length);
+  return lessonManager.loadAllLibraries('somefile.json').then(async (count) => {
+    expect(count).toBe(Object.keys(libraries).length + 1);
     for (const libraryKey in libraries) {
-      lessonManager.libraryKey = libraryKey;
-      json.fetchJson.mockReturnValueOnce(
-        Promise.resolve(libraryContents[libraryKey])
-      );
-      await lessonManager.loadCurrentLibrary();
+      if (libraryKey === LocalLibrary.LOCAL_LIBRARY_KEY) {
+        console.log('Ignoring local storage for these tests.');
+      } else {
+        lessonManager.remoteLibraryKey = libraryKey;
+        json.fetchJson.mockReturnValueOnce(
+          Promise.resolve(libraryContents[libraryKey])
+        );
+        await lessonManager.loadAllLibraryContent();
+      }
     }
     return true;
   });
@@ -170,6 +176,10 @@ beforeEach(() => {
  */
 async function iterateLibraries(operation) {
   for (const libraryKey in libraries) {
+    if (libraryKey === LocalLibrary.LOCAL_LIBRARY_KEY) {
+      console.log('Ignoring local storage for these tests.');
+      continue;
+    }
     lessonManager.libraryKey = libraryKey;
     const library = libraryContents[libraryKey];
     library.forEach((book, bookIndex) => {
@@ -211,19 +221,6 @@ test('All titles are escaped', () => {
       });
     });
   }
-});
-
-test('formUrlForLesson creates url based on currentBookIndex, currentChapterIndex and currentLessonIndex', async () => {
-  return iterateLibraries(async (testDetails) => {
-    const url = lessonManager.formUrlForLesson();
-    const file =
-      testDetails.library[testDetails.bookIndex].chapters[
-        testDetails.chapterIndex
-      ].lessons[testDetails.lessonIndex].file;
-    const location = testDetails.library[testDetails.bookIndex].location;
-    const expectedUrl = `${location}${file}`;
-    expect(url).toEqual(expectedUrl);
-  });
 });
 
 test('loadCurrentLesson loads lesson from json. Tests multiple methods.', async () => {
@@ -326,6 +323,7 @@ test('loadCurrentLesson loads lesson from cache if already loaded.', async () =>
 
 test('libraryTitles returns map of available titles', () => {
   const options = new Map();
+  options.set(LocalLibrary.LOCAL_LIBRARY_KEY, 'Local library');
   for (const key in libraries) {
     options.set(key, libraries[key].title);
   }
@@ -340,7 +338,7 @@ test('loadLibraries populates libraries from JSON', () => {
 
 test('set currentLibrary switches library', () => {
   for (const libraryKey in libraries) {
-    lessonManager.libraryKey = libraryKey;
+    lessonManager.remoteLibraryKey = libraryKey;
     const currentLesson = lessonManager.currentLessonInfo;
     expect(currentLesson.titles.library).toBe(libraries[libraryKey].title);
   }
@@ -348,7 +346,7 @@ test('set currentLibrary switches library', () => {
 
 test('set bookIndex switches book', async () => {
   return iterateLibraries(async (testDetails) => {
-    lessonManager.libraryKey = testDetails.libraryKey;
+    lessonManager.remoteLibraryKey = testDetails.libraryKey;
     lessonManager.bookIndex = testDetails.bookIndex;
     const currentLesson = lessonManager.currentLessonInfo;
     expect(currentLesson.titles.book).toBe(testDetails.book.title);
@@ -357,7 +355,7 @@ test('set bookIndex switches book', async () => {
 
 test('set chapterIndex switches chapter', async () => {
   return iterateLibraries(async (testDetails) => {
-    lessonManager.libraryKey = testDetails.libraryKey;
+    lessonManager.remoteLibraryKey = testDetails.libraryKey;
     lessonManager.bookIndex = testDetails.bookIndex;
     lessonManager.shapterIndex = testDetails.chapterIndex;
     const currentLesson = lessonManager.currentLessonInfo;
@@ -367,7 +365,7 @@ test('set chapterIndex switches chapter', async () => {
 
 test('set lessonIndex switches lesson', async () => {
   return iterateLibraries(async (testDetails) => {
-    lessonManager.libraryKey = testDetails.libraryKey;
+    lessonManager.remoteLibraryKey = testDetails.libraryKey;
     lessonManager.bookIndex = testDetails.bookIndex;
     lessonManager.chapterIndex = testDetails.chapterIndex;
     lessonManager.lessonIndex = testDetails.lessonIndex;
@@ -384,7 +382,7 @@ test('invalid book index defaults to book 0.', () => {
 
 test('bookTitles returns array of book titles', () => {
   for (const libraryKey in libraries) {
-    lessonManager.libraryKey = libraryKey;
+    lessonManager.remoteLibraryKey = libraryKey;
     const library = libraryContents[libraryKey];
     const titles = [];
     library.forEach((book) => {
@@ -397,7 +395,7 @@ test('bookTitles returns array of book titles', () => {
 
 test('chapterTitles returns array of chapter titles', () => {
   for (const libraryKey in libraries) {
-    lessonManager.libraryKey = libraryKey;
+    lessonManager.remoteLibraryKey = libraryKey;
     const library = libraryContents[libraryKey];
     library.forEach((book, index) => {
       const titles = [];
@@ -412,7 +410,7 @@ test('chapterTitles returns array of chapter titles', () => {
 
 test('lessonTitles returns array of lesson titles', () => {
   for (const libraryKey in libraries) {
-    lessonManager.libraryKey = libraryKey;
+    lessonManager.remoteLibraryKey = libraryKey;
     const library = libraryContents[libraryKey];
     library.forEach((book, index) => {
       lessonManager.bookIndex = index;
@@ -430,7 +428,7 @@ test('lessonTitles returns array of lesson titles', () => {
 
 test('currentLessonInfo provides LessonDetails', async () => {
   return iterateLibraries(async (testDetails) => {
-    lessonManager.libraryKey = testDetails.libraryKey;
+    lessonManager.remoteLibraryKey = testDetails.libraryKey;
     lessonManager.bookIndex = testDetails.bookIndex;
     lessonManager.chapterIndex = testDetails.chapterIndex;
     lessonManager.lessonIndex = testDetails.lessonIndex;

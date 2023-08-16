@@ -26,6 +26,7 @@ import { Presenter } from './presenter.js';
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { MarkState } from '../itemMarker.js';
 import { i18n } from '../../utils/i18n/i18n.js';
+import { lessonManager } from '../lessonManager.js';
 
 /**
  * Classes used for styling medals.
@@ -93,13 +94,15 @@ export class MarksPresenter extends Presenter {
       null,
       this.config.lessonInfo.titles.lesson
     );
-    this.presentation.createAndAppendChild(
-      'h3',
-      null,
-      `[${this.config.lessonInfo.titles.library}: 
-        ${this.config.lessonInfo.titles.chapter}: 
-        ${this.config.lessonInfo.titles.book}]`
-    );
+    let bookDetails = '<p>from:</p>';
+    if (lessonManager.usingLocalLibrary) {
+      bookDetails += `<span class='library-title'>${this.config.lessonInfo.titles.library}</span>`;
+    } else {
+      bookDetails += `<span class='library-title'>${this.config.lessonInfo.titles.library}</span> 
+      <span class='book-title'>${this.config.lessonInfo.titles.book}</span>
+      <span class='chapter-title'>${this.config.lessonInfo.titles.chapter}</span>`;
+    }
+    this.presentation.createAndAppendChild('div', null, bookDetails);
   }
 
   /**
@@ -148,7 +151,7 @@ export class MarksPresenter extends Presenter {
         return details.cssClass;
       }
     }
-    return MedalDetails.EXCELLENT;
+    return MedalDetails.EXCELLENT.cssClass;
   }
 
   /**

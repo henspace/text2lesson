@@ -104,13 +104,14 @@ export class LabeledControl extends ManagedElement {
    * to and from local storage.
    * @param {module:utils/userio/settings~SettingDefinition} definition
    * @param {Object} options - additional options
-   * @param {module:utils/userIo/storage.DataStoreManager} options.storage - used to retrieve and save data
+   * @param {module:utils/userIo/storage.DataStoreManager} options.storage - used to retrieve and save data.
+   * If not set, storage is not automatically updated.
    * @param {LabeledControlManager} options.manager Parent manager. If null, dependencies cannot be handled.
    */
   constructor(key, definition, options) {
     super('div');
-    this.#storage = options.storage;
-    this.#manager = options.manager;
+    this.#storage = options?.storage;
+    this.#manager = options?.manager;
     this.className = 'labeled-control-container';
     this.label = new ManagedElement('label');
     this.appendChild(this.label);
@@ -124,7 +125,9 @@ export class LabeledControl extends ManagedElement {
     }
 
     this.control.setValue(
-      this.#storage.getFromStorage(key, definition.defaultValue)
+      this.#storage
+        ? this.#storage.getFromStorage(key, definition.defaultValue)
+        : definition.defaultValue
     );
     this.label.appendChild(this.control);
 
@@ -162,7 +165,7 @@ export class LabeledControl extends ManagedElement {
     }
     this.classList.remove('utils-error');
 
-    this.#storage.saveToStorage(this.key, value);
+    this.#storage?.saveToStorage(this.key, value);
 
     if (this.definition.onupdate) {
       this.definition.onupdate(value);
