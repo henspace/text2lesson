@@ -104,6 +104,27 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get exit() {
+    return {
+      content: this.#getIconHtml('--icon-exit-html'),
+      accessibleName: i18n`Exit to main site`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get export() {
+    return {
+      content: this.#getIconHtml('--icon-export-html'),
+      accessibleName: i18n`Export lesson`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get exportAutoRun() {
+    return {
+      content: this.#getIconHtml('--icon-export-autorun-html'),
+      accessibleName: i18n`Export autorun`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get fatal() {
     return {
       content: this.#getIconHtml('--icon-fatal-html'),
@@ -210,6 +231,14 @@ class IconGenerator {
       accessibleName: i18n`Flag`,
     };
   }
+  /** @returns {IconDetails} information for icon */
+  get repeatLesson() {
+    return {
+      content: this.#getIconHtml('--icon-repeat-lesson-html'),
+      accessibleName: i18n`Repeat lesson`,
+    };
+  }
+
   /** @returns {IconDetails} information for icon */
   get resetToFactory() {
     return {

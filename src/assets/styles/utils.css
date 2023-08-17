@@ -16,7 +16,8 @@ button {
 * of the selectable class.
 */
 
-button:not(.icon-only-button) {
+button:not(.icon-only-button),
+.link-button {
   min-width: 4em;
   text-align: center;
 }
@@ -42,7 +43,9 @@ textarea,
   border-radius: var(--line-thickness);
   color: var(--primary-contrast);
   cursor: pointer;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1rem;
+  font-weight: normal;
   list-style-position: inside;
   margin: var(--margin);
   min-width: 1rem;

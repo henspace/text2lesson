@@ -27,6 +27,7 @@ import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { MarkState } from '../itemMarker.js';
 import { i18n } from '../../utils/i18n/i18n.js';
 import { lessonManager } from '../lessonManager.js';
+import { icons } from '../../utils/userIo/icons.js';
 
 /**
  * Classes used for styling medals.
@@ -57,6 +58,11 @@ const MedalDetails = {
  */
 export class MarksPresenter extends Presenter {
   /**
+   * @const
+   */
+  static RETRY_LESSON_ID = 'RETRY_LESSON';
+
+  /**
    * @type {module:lessons/itemMarker~Marks}
    */
   #marks;
@@ -77,6 +83,11 @@ export class MarksPresenter extends Presenter {
     this.#addHeadings();
     this.#addAnswers();
     this.#addResult();
+    this.#addRetryButton();
+    if (!this.config.lessonInfo.managed) {
+      this.hideHomeButton();
+      this.applyIconToNextButton(icons.exit);
+    }
     this.showNextButton();
   }
 
@@ -94,15 +105,31 @@ export class MarksPresenter extends Presenter {
       null,
       this.config.lessonInfo.titles.lesson
     );
-    let bookDetails = '<p>from:</p>';
-    if (lessonManager.usingLocalLibrary) {
-      bookDetails += `<span class='library-title'>${this.config.lessonInfo.titles.library}</span>`;
-    } else {
-      bookDetails += `<span class='library-title'>${this.config.lessonInfo.titles.library}</span> 
-      <span class='book-title'>${this.config.lessonInfo.titles.book}</span>
-      <span class='chapter-title'>${this.config.lessonInfo.titles.chapter}</span>`;
+    this.#addBookDetailsIfManaged();
+  }
+
+  /**
+   * Add book details if managed lesson.
+   */
+  #addBookDetailsIfManaged() {
+    if (this.config.lessonInfo.managed) {
+      let bookDetails = '<p>from:</p>';
+      if (lessonManager.usingLocalLibrary) {
+        bookDetails += `<span class='library-title'>${this.config.lessonInfo.titles.library}</span>`;
+      } else {
+        bookDetails += `<span class='library-title'>${this.config.lessonInfo.titles.library}</span> 
+        <span class='book-title'>${this.config.lessonInfo.titles.book}</span>
+        <span class='chapter-title'>${this.config.lessonInfo.titles.chapter}</span>`;
+      }
+      this.presentation.createAndAppendChild('div', null, bookDetails);
     }
-    this.presentation.createAndAppendChild('div', null, bookDetails);
+  }
+
+  #addRetryButton() {
+    const repeatButton = new ManagedElement('button');
+    icons.applyIconToElement(icons.repeatLesson, repeatButton);
+    this.addButtonToBar(repeatButton);
+    this.listenToEventOn('click', repeatButton, MarksPresenter.RETRY_LESSON_ID);
   }
 
   /**
@@ -168,5 +195,22 @@ export class MarksPresenter extends Presenter {
         return 'skipped';
     }
     return 'unknown-state';
+  }
+
+  /**
+   * @override
+   * @param {number | string} eventIndexOrId
+   */
+  next(eventId) {
+    switch (eventId) {
+      case MarksPresenter.RETRY_LESSON_ID:
+        return this.config.factory.getProblemAgain(this, this.config);
+      case Presenter.NEXT_ID:
+        sessionStorage.clear();
+        window.top.location.replace(window.location.href); // escape the iframe
+        break;
+      default:
+        return super.next(eventId);
+    }
   }
 }

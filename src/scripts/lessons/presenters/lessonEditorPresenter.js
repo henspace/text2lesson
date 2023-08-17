@@ -29,13 +29,19 @@ import { i18n } from '../../utils/i18n/i18n.js';
 import { LabeledControl } from '../../utils/userIo/labeledControl.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
+import { LessonExporter } from '../lessonImportExport.js';
 
 export class LessonEditorPresenter extends Presenter {
   static SAVE_EVENT_ID = 'SAVE';
+  static EXPORT_EVENT_ID = 'EXPORT';
+  static EXPORT_AUTORUN_EVENT_ID = 'EXPORT_RUNNER';
+
   #lessonTitleElement;
   #lessonTitleValue;
   #mainEditorElement;
   #saveButton;
+  #exportButton;
+  #exportAutoRunButton;
   #dirty;
   /**
    * Construct.
@@ -47,6 +53,8 @@ export class LessonEditorPresenter extends Presenter {
     super(config);
     this.#buildCustomContent();
     this.#addSaveButton();
+    this.#addExportButton();
+    this.#addExportAutoRunButton();
     this.expandPresentation();
     this.#setEditorAsClean();
     this.applyIconToNextButton(icons.closeEditor);
@@ -98,6 +106,7 @@ export class LessonEditorPresenter extends Presenter {
     this.#saveButton.disabled = true;
     this.#dirty = false;
   }
+
   /**
    * Add a save button */
   #addSaveButton() {
@@ -111,6 +120,31 @@ export class LessonEditorPresenter extends Presenter {
     this.addButtonToBar(this.#saveButton);
   }
 
+  /**
+   * Add an export button */
+  #addExportButton() {
+    this.#exportButton = new ManagedElement('button');
+    icons.applyIconToElement(icons.export, this.#exportButton);
+    this.listenToEventOn(
+      'click',
+      this.#exportButton,
+      LessonEditorPresenter.EXPORT_EVENT_ID
+    );
+    this.addButtonToBar(this.#exportButton);
+  }
+
+  /**
+   * Add an export autorun  button */
+  #addExportAutoRunButton() {
+    this.#exportAutoRunButton = new ManagedElement('button');
+    icons.applyIconToElement(icons.exportAutoRun, this.#exportAutoRunButton);
+    this.listenToEventOn(
+      'click',
+      this.#exportAutoRunButton,
+      LessonEditorPresenter.EXPORT_AUTORUN_EVENT_ID
+    );
+    this.addButtonToBar(this.#exportAutoRunButton);
+  }
   /**
    * Handle update of the editor.
    * @param {Event} eventIgnored
@@ -137,14 +171,47 @@ export class LessonEditorPresenter extends Presenter {
    * @override
    */
   handleClickEvent(event, eventId) {
-    if (eventId === LessonEditorPresenter.SAVE_EVENT_ID) {
-      lessonManager.updateCurrentLessonContent(
-        this.#lessonTitleValue,
-        this.#mainEditorElement.value
-      );
-      this.#setEditorAsClean();
-      return;
+    switch (eventId) {
+      case LessonEditorPresenter.SAVE_EVENT_ID:
+        return this.#saveLessonLocally();
+      case LessonEditorPresenter.EXPORT_EVENT_ID:
+        return this.#exportLesson();
+      case LessonEditorPresenter.EXPORT_AUTORUN_EVENT_ID:
+        return this.#exportAutoRunLesson();
+      default:
+        return super.handleClickEvent(event, eventId);
     }
-    super.handleClickEvent(event, eventId);
+  }
+
+  /**
+   * Save the lesson to local storage.
+   */
+  #saveLessonLocally() {
+    lessonManager.updateCurrentLessonContent(
+      this.#lessonTitleValue,
+      this.#mainEditorElement.value
+    );
+    this.#setEditorAsClean();
+  }
+  /**
+   * Export the lesson.
+   */
+  #exportLesson() {
+    const exporter = new LessonExporter(
+      this.#lessonTitleValue,
+      this.#mainEditorElement.value
+    );
+    exporter.exportLesson();
+  }
+
+  /**
+   * Export the lesson as an autorun file.
+   */
+  #exportAutoRunLesson() {
+    const exporter = new LessonExporter(
+      this.#lessonTitleValue,
+      this.#mainEditorElement.value
+    );
+    exporter.exportAutoRunLesson();
   }
 }

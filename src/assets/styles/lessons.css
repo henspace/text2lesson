@@ -247,7 +247,7 @@ ul.presentation,
   content: '\1f62c';
 }
 .MarksPresenter .result-summary.bad::after {
-  content: '1f614';
+  content: '\1f614';
 }
 .MarksPresenter .result-summary.good::after {
   content: '\1f948';

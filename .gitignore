@@ -2,6 +2,7 @@
 build/
 jsdoc/
 jsdoc-tools/
+scratchpad/
 
 # Logs
 logs

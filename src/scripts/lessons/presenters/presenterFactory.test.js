@@ -146,6 +146,9 @@ test('Factory provides expected next and previous presenters for test data', () 
     const config = {
       titles: ['title1', 'title2'],
       lesson: null,
+      lessonInfo: {
+        managed: true,
+      },
     };
 
     config.lesson = new Lesson();
@@ -177,6 +180,9 @@ test(
   () => {
     const config = {
       lesson: new Lesson(),
+      lessonInfo: {
+        managed: true,
+      },
     };
     const presenterFactory = new PresenterFactory();
     const presenter = new ProblemPresenter(config);

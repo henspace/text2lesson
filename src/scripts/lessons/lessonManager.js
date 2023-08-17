@@ -101,7 +101,8 @@ import { escapeHtml } from '../utils/text/textProcessing.js';
 
 /**
  * @typedef {Object} LessonInfo
- * @property {boolean} usingLocalLibrary - flag whether this from a local lesson.
+ * @property {boolean} managed - flag whether the lesson is managed by the manager. If this is false, all other fields are unmanaged.
+ * @property {boolean} usingLocalLibrary - flag whether the lesson manager is using local lessons.
  * @property {string} libraryKey - key for the library
  * @property {string} file - file without any path.
  * @property {string} url - the url of the lesson. This is used as its unique key.
@@ -327,6 +328,34 @@ class LessonManager {
   get currentLessonInfo() {
     return this.#buildCurrentLessonInfo();
   }
+  /**
+   * Get unmanaged lesson information.
+   * The lesson info is undefined except for the managed flag which is false and
+   * the lesson title.
+   * @param {string} lessonTitle
+   * @returns {LessonInfo}
+   */
+
+  getUnmanagedLessonInfo(lessonTitle) {
+    return {
+      managed: false,
+      usingLocalLibrary: false,
+      libraryKey: undefined,
+      file: undefined,
+      url: undefined,
+      indexes: {
+        book: 0,
+        chapter: 0,
+        lesson: 0,
+      },
+      titles: {
+        library: '',
+        book: '',
+        chapter: '',
+        lesson: lessonTitle,
+      },
+    };
+  }
 
   /**
    * Build the current lesson information.
@@ -337,6 +366,7 @@ class LessonManager {
     this.#ensureIndexesValid();
     const book = this.#getCurrentBook();
     return {
+      managed: true,
       usingLocalLibrary: this.#usingLocalLibrary,
       libraryKey: this.#currentLibraryKey,
       file: book?.chapters[this.#currentChapterIndex]?.lessons[

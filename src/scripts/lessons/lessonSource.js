@@ -221,6 +221,7 @@ export class LessonSource {
 
   /**
    * Converts the lesson source to a `Lesson`
+   * @returns {module:lessons/lesson.Lesson}
    */
   convertToLesson() {
     const lesson = new Lesson();

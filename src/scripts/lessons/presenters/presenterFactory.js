@@ -21,7 +21,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-
+import { sessionLesson } from '../sessionDataLesson.js';
 import { HomePresenter } from './homePresenter.js';
 import { LibraryPresenter } from './libraryPresenter.js';
 import { BookPresenter } from './bookPresenter.js';
@@ -109,7 +109,7 @@ export class PresenterFactory {
   /**
    * Get the home presenter.
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
-   * @returns {constructor} Constructor for the home Presenter or null.
+   * @returns {Presenter}  Presenter or null.
    */
   getHome(config) {
     return new HomePresenter(config);
@@ -119,7 +119,7 @@ export class PresenterFactory {
    * Get the appropriate editor for the calling {@link module:lessons/presenters/presenter.Presenter}
    * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
-   * @returns {constructor} Constructor for the home Presenter or null.
+   * @returns {Presenter}  Presenter or null.
    */
   getEditor(caller, config) {
     if (caller instanceof LessonPresenter) {
@@ -135,7 +135,7 @@ export class PresenterFactory {
    * Get the appropriate navigator for the calling {@link module:lessons/presenters/presenter.Presenter}
    * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
-   * @returns {constructor} Constructor for the next Presenter or null.
+   * @returns {Presenter} Presenter or null.
    */
   getNext(caller, config) {
     if (
@@ -154,14 +154,35 @@ export class PresenterFactory {
       return klass ? new klass(config) : null;
     }
   }
+
   /**
-   * Get the appropriate navigator for the calling {@link module:lessons/presenters/presenter.Presenter}
+   * Get the appropriate problem presenter to repeat the current problem.
    * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
-   * @returns {constructor} Constructor for the next Presenter or undefined.
+   * @returns {Presenter} Presenter or undefined.
    */
   getPrevious(caller, config) {
     const klass = NAVIGATION[caller.constructor.name].previous;
     return klass ? new klass(config) : null;
+  }
+  /**
+   * Get the appropriate problem presenter to repeat the current problem.
+   * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+   * @returns {Presenter} Presenter or undefined.
+   */
+  getProblemAgain(caller, config) {
+    if (!(caller instanceof MarksPresenter)) {
+      console.error(
+        'Attempt to retry problem from other than a MarksPresenter.'
+      );
+      return this.getHome(config);
+    } else {
+      config.lesson.restart();
+      if (config.lesson.hasMoreProblems) {
+        return getSuitableProblemPresenter(config);
+      } else {
+        return new MarksPresenter(config);
+      }
+    }
   }
 
   /**
@@ -211,8 +232,19 @@ export class PresenterFactory {
 
   /**
    * Get the initial presenter.
+   * @returns {Presenter}
    */
   static getInitial() {
-    return new HomePresenter({ factory: new PresenterFactory() });
+    const config = { factory: new PresenterFactory() };
+    if (sessionLesson.hasLesson) {
+      config.lesson = sessionLesson.lesson;
+      config.lessonInfo = sessionLesson.lessonInfo;
+      if (config.lesson.hasMoreProblems) {
+        return getSuitableProblemPresenter(config);
+      } else {
+        return new MarksPresenter(config);
+      }
+    }
+    return new HomePresenter(config);
   }
 }

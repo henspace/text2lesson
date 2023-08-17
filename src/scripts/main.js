@@ -25,7 +25,6 @@
 import { BuildInfo } from './data/constants.js';
 import { getSettingDefinitions } from './data/settingDefinitions.js';
 import { getMainMenuItems } from './data/menuItems.js';
-import { getWelcome } from './data/welcome.js';
 import { lessonManager } from './lessons/lessonManager.js';
 
 import { ModalDialog } from './utils/userIo/modalDialog.js';
@@ -36,7 +35,6 @@ import { persistentData } from './utils/userIo/storage.js';
 import { i18n } from './utils/i18n/i18n.js';
 import { StageManager } from './lessons/presenters/stageManager.js';
 import { PresenterFactory } from './lessons/presenters/presenterFactory.js';
-import { toast } from './utils/userIo/toast.js';
 import { setTitleBarAndFooter } from './setTitleBarAndFooter.js';
 import './utils/userIo/modalMask.js';
 import './utils/userIo/screenSizer.js';
@@ -91,10 +89,6 @@ window.addEventListener('load', () => {
       return true;
     })
     .then(() => setTitleBarAndFooter(getMainMenuItems()))
-    .then(() => {
-      toast('Debug message for testing');
-      return ModalDialog.showInfo(getWelcome(), i18n`Welcome`);
-    })
     .then(() => lessonManager.loadAllLibraryContent())
     .then(() => {
       const stage = document.getElementById('stage');

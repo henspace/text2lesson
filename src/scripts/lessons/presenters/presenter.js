@@ -216,6 +216,13 @@ export class Presenter extends ManagedElement {
   }
 
   /**
+   * Hide the home button.
+   */
+  hideHomeButton() {
+    this.#homeButton.hide();
+  }
+
+  /**
    * Show the back button.
    * @param {boolean} focus - if true, the button will also get focus.
    */
@@ -347,7 +354,7 @@ export class Presenter extends ManagedElement {
       upperCaseId === Presenter.PREVIOUS_ID ||
       upperCaseId === Presenter.NEXT_ID
     ) {
-      if (!(await this.allowNavigation())) {
+      if (!(await this.allowNavigation(event, eventId))) {
         return true;
       }
     }

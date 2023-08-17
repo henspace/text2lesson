@@ -132,6 +132,9 @@ export class ProblemPresenter extends Presenter {
 
     this.#submitButton.show();
     this.#freezeAnswers = false;
+    if (!this.config.lessonInfo.managed) {
+      this.hideHomeButton();
+    }
   }
 
   /**

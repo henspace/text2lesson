@@ -97,6 +97,9 @@ test('constructor gets next problem from the lesson.', () => {
   const config = {
     lesson: lesson,
     factory: presenterFactory,
+    lessonInfo: {
+      managed: true,
+    },
   };
   new ProblemPresenter(config);
   expect(spy).toBeCalledTimes(1);
@@ -107,6 +110,9 @@ test('next function provides presenter from presenterFactory constructed with co
   const config = {
     lesson: lesson,
     factory: presenterFactory,
+    lessonInfo: {
+      managed: true,
+    },
   };
   const problemPresenter = new ProblemPresenter(config);
   const index = 6;
@@ -124,6 +130,9 @@ test('previous function provides presenter from presenterFactory constructed wit
   const config = {
     lesson: lesson,
     factory: presenterFactory,
+    lessonInfo: {
+      managed: true,
+    },
   };
   const problemPresenter = new ProblemPresenter(config);
   const index = 6;
