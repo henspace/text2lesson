@@ -26,6 +26,7 @@ import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { ProblemPresenter } from './problemPresenter.js';
 import { DisplayCards } from './displayCards.js';
 import { icons } from '../../utils/userIo/icons.js';
+import { persistentData } from '../../utils/userIo/storage.js';
 
 const MediaClass = {
   PAUSE: 'pause',
@@ -192,6 +193,9 @@ export class SlideProblemPresenter extends ProblemPresenter {
     if (this.#endShowIfLastCard()) {
       return;
     }
+    // obtain reading speed again incase it's been adjusted.
+    const readingSpeed = persistentData.getFromStorage('readingSpeed', 130);
+    this.#cards.setWordsPerMinute(readingSpeed);
     this.#currentCardDetail = this.#cards.getNext();
     this.#visualCard.innerHTML = this.#currentCardDetail.html;
     const cardRect = this.#visualCard.getBoundingClientRect();

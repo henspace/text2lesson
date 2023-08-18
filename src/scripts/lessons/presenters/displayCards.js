@@ -100,4 +100,12 @@ export class DisplayCards {
   reset() {
     this.#index = 0;
   }
+
+  /**
+   * Set the words per minute of the underlying calculator.
+   * @param {number} wpm
+   */
+  setWordsPerMinute(wpm) {
+    this.#readSpeedCalculator.setWordsPerMinute(wpm);
+  }
 }

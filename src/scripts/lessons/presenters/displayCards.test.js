@@ -80,3 +80,13 @@ test('hasMore detects if there are more elements.', () => {
   expect(cards.hasMore).toBe(false);
   expect(cards.getNext()).toBeNull();
 });
+
+test('setWordsPerMinute adjusts reading speed', () => {
+  const expectedWordsPerMinute = 200;
+  const nWords = 260;
+  const expectedDuration = (nWords * 60.0) / expectedWordsPerMinute;
+  let data = '  <i> random_word </i>'.repeat(nWords);
+  const cards = new DisplayCards(data);
+  cards.setWordsPerMinute(expectedWordsPerMinute);
+  expect(cards.getNext().readTimeSecs).toBeCloseTo(expectedDuration, 0);
+});

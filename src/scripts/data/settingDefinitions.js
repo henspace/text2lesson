@@ -38,6 +38,7 @@ const DEFAULT_COLOR_SPREAD = 120;
 const DEFAULT_DARK_MODE = false;
 const DEFAULT_FONT_SIZE = 15;
 const DEFAULT_LIBRARY_KEY = 'EN';
+const DEFAULT_READING_SPEED = '180';
 
 /**
  * Create a palette.
@@ -121,6 +122,13 @@ export function getSettingDefinitions() {
         cssVariables.setProperty('--font-base-size', `${value}px`);
       },
     },
+    readingSpeed: {
+      type: 'range',
+      label: i18n`Reading speed (wpm)`,
+      defaultValue: DEFAULT_READING_SPEED,
+      min: 80,
+      max: 1000,
+    },
     lessonInfo: {
       type: 'separator',
       label: i18n`Lesson settings`,
@@ -132,23 +140,8 @@ export function getSettingDefinitions() {
       onupdate: (value) => {
         lessonManager.remoteLibraryKey = value;
       },
-      dependents: ['book'],
       options: () => lessonManager.remoteLibraryTitles,
       reloadIfChanged: true,
-    },
-    test: {
-      type: 'checkbox',
-      label: 'test item',
-      defaultValue: true,
-      onupdate: (value) =>
-        console.debug(`Updating test item with value ${value}`),
-      validate: (value) => {
-        console.debug(`Validating test with value ${value}.`);
-        return {
-          pass: value,
-          errorMessage: value ? '' : 'Testing validation failure.',
-        };
-      },
     },
   };
 }

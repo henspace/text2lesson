@@ -49,6 +49,11 @@ Once fully loaded, the iframe src is replaced by the full text2lesson applicatio
       body {
         overflow: hidden;
       }
+      noscript {
+        left: 0;
+        position: absolute;
+        top: 0;
+      }
       #progress {
         padding: 1em;
         position: absolute;
@@ -67,7 +72,14 @@ Once fully loaded, the iframe src is replaced by the full text2lesson applicatio
   </head>
   <body>
     <iframe id="data-loader"></iframe>
-    <div id="progress">Loading $_PRODUCT_NAME_TXT_$:</div>
+    <div id="progress"></div>
+    <noscript class="always-on-top">
+      <p>
+        Your browser does not support scripts and so this application cannot
+        run. If you've disabled scripts, you will need to enable them to
+        proceed. Sorry.
+      </p>
+    </noscript>
   </body>
   <script>
     const LESSON_TITLE_B64 = "${b64Title}";
@@ -78,6 +90,7 @@ Once fully loaded, the iframe src is replaced by the full text2lesson applicatio
     const loader = document.getElementById('data-loader');
     const progress = document.getElementById('progress');
     const dataChunks = LESSON_SOURCE_B64.match(/.{1,1800}/g);
+    progress.innerHTML = 'Loading: ';
     let index = -1;
     loaded = false;
     const eventListener = loader.addEventListener('load', () => {

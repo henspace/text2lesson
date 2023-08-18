@@ -30,6 +30,8 @@ const AVERAGE_WORDS_PER_MINUTE = 130;
  * Calculator for reading speeds.
  */
 export class ReadSpeedCalculator {
+  static MIN_WPM = 80;
+  static MAX_WPM = 1000;
   /**
    * @type {number}
    */
@@ -40,8 +42,26 @@ export class ReadSpeedCalculator {
    * @param {number} [wordsPerMinute = AVERAGE_WORDS_PER_MINUTE]
    */
   constructor(wordsPerMinute = AVERAGE_WORDS_PER_MINUTE) {
-    this.#secondsPerWord = 60.0 / wordsPerMinute;
+    this.setWordsPerMinute(wordsPerMinute);
   }
+
+  /**
+   * Set the words per minute. This is clipped at ReadSpeedCalulator.MIN_WPM and ReadSpeedCalulator.MAX_WPM;
+   * @param {number} wordsPerMinute
+   */
+  setWordsPerMinute(wordsPerMinute) {
+    let wpm = parseInt(wordsPerMinute);
+    if (isNaN(wpm)) {
+      console.error(
+        `Attempt made to set words per minute to non-numeric value of ${wordsPerMinute}`
+      );
+      return;
+    }
+    wpm = Math.max(wordsPerMinute, ReadSpeedCalculator.MIN_WPM);
+    wpm = Math.min(wpm, ReadSpeedCalculator.MAX_WPM);
+    this.#secondsPerWord = 60.0 / wpm;
+  }
+
   /**
    * Calculate the read time for the data.
    * @param {string} data - this can be plain text or html

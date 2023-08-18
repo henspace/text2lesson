@@ -358,7 +358,7 @@ class IconGenerator {
     const role = options.role?.toLowerCase();
     element.innerHTML = icon.content;
     if (icon.accessibleName && !options.hideText) {
-      element.innerHTML += ` ${label}`;
+      element.innerHTML += `&nbsp;${label}`;
     }
 
     if (this.semanticsAddressRole(element, role)) {

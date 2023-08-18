@@ -1,7 +1,7 @@
 # Text2Lesson
 
-Text2Lesson is designed to make the creation of lesson quick and simple using
-just plain text.
+Text2Lesson has been designed to make the creation of lessons quick and simple
+using just plain text.
 
 # Lesson format
 
@@ -25,6 +25,7 @@ Item identifiers are as follows:
 - (=) right answer
 - (x) wrong answer
 - (+) explanation
+- (#) problem separator
 
 The key character and opening and closing brackets can be repeated allowing more
 visually distinctive item separators to be created. The separator can also be
@@ -80,6 +81,8 @@ the way the question is defined:
   categories.
 
 # Markdown
+
+ToDo
 
 ## Missing words
 

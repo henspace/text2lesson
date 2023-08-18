@@ -26,6 +26,6 @@
  * @enum {string}
  */
 export const Urls = {
-  HELP: 'https://google.com',
-  MARKDOWN_HELP: 'https://daringfireball.net/projects/markdown/',
+  HELP: `${window.location.origin}/assets/documents/help.md`,
+  PRIVACY: `${window.location.origin}/assets/documents/privacy.md`,
 };

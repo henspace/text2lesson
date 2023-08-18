@@ -74,6 +74,7 @@ form.button-wrapper {
   display: inline;
   margin: 0px;
   padding: 0px;
+  white-space: nowrap;
 }
 
 li.selectable,

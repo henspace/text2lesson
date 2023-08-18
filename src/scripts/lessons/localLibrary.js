@@ -128,7 +128,7 @@ export class LocalLibrary {
    * @returns {LocalLesson}
    */
   #loadLocalLesson(index) {
-    const lessonHelpLink = `[How to write lessons](${Urls.MARKDOWN_HELP})`;
+    const lessonHelpLink = `[How to write lessons](${Urls.HELP})`;
     const defaultLesson = {
       title: i18n`Lesson ${index}`,
       content: i18n`(i)This is a lesson which you need to create. See ${lessonHelpLink}`,
