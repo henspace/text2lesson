@@ -22,10 +22,11 @@
  *
  */
 
+const rootUrl = window.location.href.replace(/index\.html(\?.*)?$/, '');
 /**
  * @enum {string}
  */
 export const Urls = {
-  HELP: `${window.location.origin}/assets/documents/help.md`,
-  PRIVACY: `${window.location.origin}/assets/documents/privacy.md`,
+  HELP: `${rootUrl}assets/documents/help.md`,
+  PRIVACY: `${rootUrl}assets/documents/privacy.md`,
 };
