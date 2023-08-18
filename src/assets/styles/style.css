@@ -166,12 +166,19 @@ h3 {
   display: flex;
   flex: 1;
   flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: 0;
+}
+
+#stage:has(.SlideProblemPresenter) {
+  overflow-y: hidden;
 }
 
 #footer {
   background-color: var(--tertiary-base);
   color: var(--tertiary-contrast);
+  font-size: 0.8rem;
   text-align: center;
 }
 

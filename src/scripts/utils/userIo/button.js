@@ -32,7 +32,7 @@ import { focusManager } from './focusManager.js';
 export class BarButton extends ManagedElement {
   /**
    * Button
-   * @param {string | {module:data/icons}} IconDetail - if just a string
+   * @param {string | module:utils/userIo/icons~IconDetails} IconDetail - if just a string
    * it is assumed to hold a string that is suitable for accessibility.
    * @param {string} detail.content the text to display. This can contain HTML and soe
    * @param {string} detail.accessibleName text for accessibility

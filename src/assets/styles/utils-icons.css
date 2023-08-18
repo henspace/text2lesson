@@ -10,6 +10,9 @@
   --icon-help: '\f059';
   --icon-help-html: '<i class="fa-solid fa-circle-question"></i>';
 
+  --icon-open-folder: '\f07c';
+  --icon-open-folder-html: '<i class="fa-solid fa-folder-open"></i>';
+
   /* navigation */
   --icon-back-nav: '\f30a';
   --icon-back-nav-html: '<i class="fa-solid fa-left-long"></i>';
@@ -70,6 +73,9 @@
 
   --icon-export-autorun: '\f563  \f085';
   --icon-export-autorun-html: '<i class="fa-solid fa-file-export"></i><i class="fa-solid fa-gears"></i>';
+
+  --icon-import: '\f56f';
+  --icon-import-html: '<i class="fa-solid fa-file-import"></i>';
 
   --icon-load: '\f5f4';
   --icon-load-html: '<i class="fa-solid fa-file-arrow-up"></i>';

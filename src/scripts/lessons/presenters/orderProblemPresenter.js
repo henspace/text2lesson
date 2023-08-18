@@ -73,7 +73,7 @@ export class OrderProblemPresenter extends ProblemPresenter {
       orderedAnswers.appendChild(span);
     }
     this.answerElement.appendChild(orderedAnswers);
-    this.setupKeyboardNavigation(this.#missingWordSelectors);
+    this.autoAddKeydownEvents(this.#missingWordSelectors);
   }
 
   /**

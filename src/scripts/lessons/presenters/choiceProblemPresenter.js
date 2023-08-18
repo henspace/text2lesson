@@ -63,7 +63,7 @@ export class ChoiceProblemPresenter extends ProblemPresenter {
    */
   #buildSimpleOrMultiple() {
     this.#buildAnswers();
-    this.setupKeyboardNavigation(this.answerElement.managedChildren);
+    this.autoAddKeydownEvents(this.answerElement.managedChildren);
   }
 
   /**

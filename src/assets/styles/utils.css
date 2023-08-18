@@ -57,6 +57,25 @@ textarea,
   transition: outline 0.5s;
 }
 
+textarea,
+input[type='input'] {
+  border: var(--line-thickness) solid var(--background-contrast);
+  color: var(--background-contrast);
+  background-color: var(--background-base);
+}
+
+.file-input-button input {
+  position: absolute;
+  visibility: hidden;
+  width: 1em;
+}
+
+form.button-wrapper {
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+}
+
 li.selectable,
 li.selectable-off {
   background-color: var(--secondary-base);

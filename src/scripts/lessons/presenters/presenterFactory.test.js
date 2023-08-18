@@ -23,6 +23,7 @@
  */
 import { jest, beforeEach, test, expect } from '@jest/globals';
 import { ItemMarker } from '../itemMarker.js';
+import { LessonOrigin } from '../lessonManager.js';
 
 const mockedLessonManager = {
   libraryTitle: '',
@@ -37,6 +38,7 @@ const mockedLessonManager = {
   chapterIndex: 0,
   lessonIndex: 0,
   currentLessonInfo: {
+    origin: LessonOrigin.REMOTE,
     titles: {
       library: 'library',
       book: 'book',
@@ -49,6 +51,12 @@ const mockedLessonManager = {
 jest.unstable_mockModule('../lessonManager.js', () => {
   return {
     lessonManager: mockedLessonManager,
+    LessonOrigin: {
+      REMOTE: 'remote',
+      LOCAL: 'local',
+      SESSION: 'session',
+      FILE_SYSTEM: 'file_system',
+    },
   };
 });
 
@@ -147,7 +155,7 @@ test('Factory provides expected next and previous presenters for test data', () 
       titles: ['title1', 'title2'],
       lesson: null,
       lessonInfo: {
-        managed: true,
+        origin: LessonOrigin.REMOTE,
       },
     };
 
@@ -181,7 +189,7 @@ test(
     const config = {
       lesson: new Lesson(),
       lessonInfo: {
-        managed: true,
+        origin: LessonOrigin.REMOTE,
       },
     };
     const presenterFactory = new PresenterFactory();

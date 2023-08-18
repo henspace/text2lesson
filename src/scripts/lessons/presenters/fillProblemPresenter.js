@@ -82,7 +82,7 @@ export class FillProblemPresenter extends ProblemPresenter {
       element.appendChild(selector.element);
       this.#missingWordSelectors.push(selector);
     });
-    this.setupKeyboardNavigation(this.#missingWordSelectors);
+    this.autoAddKeydownEvents(this.#missingWordSelectors);
   }
 
   /**

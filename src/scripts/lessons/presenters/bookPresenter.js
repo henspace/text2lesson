@@ -40,7 +40,7 @@ export class BookPresenter extends ListPresenter {
     config.titles = lessonManager.chapterTitles;
     config.itemClassName = 'chapter';
     super(config);
-    this.setupKeyboardNavigation();
+    this.autoAddKeydownEvents();
     this.#buildPreamble();
   }
   /**

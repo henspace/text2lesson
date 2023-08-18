@@ -41,7 +41,7 @@ export class ChapterPresenter extends ListPresenter {
     config.itemClassName = 'lesson';
     super(config);
     this.#buildPreamble();
-    this.setupKeyboardNavigation();
+    this.autoAddKeydownEvents();
   }
 
   /**

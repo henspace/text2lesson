@@ -28,6 +28,7 @@ import { MarkState } from '../itemMarker.js';
 import { i18n } from '../../utils/i18n/i18n.js';
 import { lessonManager } from '../lessonManager.js';
 import { icons } from '../../utils/userIo/icons.js';
+import { LessonOrigin } from '../lessonManager.js';
 
 /**
  * Classes used for styling medals.
@@ -84,13 +85,30 @@ export class MarksPresenter extends Presenter {
     this.#addAnswers();
     this.#addResult();
     this.#addRetryButton();
-    if (!this.config.lessonInfo.managed) {
-      this.hideHomeButton();
-      this.applyIconToNextButton(icons.exit);
-    }
-    this.showNextButton();
+    this.#adjustButtonsForOrigin();
   }
 
+  /**
+   * Adjust the buttons for the lesson origin.
+   */
+  #adjustButtonsForOrigin() {
+    switch (this.config.lessonInfo.origin) {
+      case LessonOrigin.SESSION:
+        this.hideHomeButton();
+        this.applyIconToNextButton(icons.exit);
+        this.showNextButton();
+        break;
+      case LessonOrigin.REMOTE:
+        this.applyIconToNextButton(icons.selectLesson);
+        this.showNextButton();
+        break;
+      case LessonOrigin.FILE_SYSTEM:
+      case LessonOrigin.LOCAL:
+      default:
+        // no next button. Just Home and repeat.
+        break;
+    }
+  }
   /**
    * Add the titles.
    */
@@ -206,11 +224,12 @@ export class MarksPresenter extends Presenter {
       case MarksPresenter.RETRY_LESSON_ID:
         return this.config.factory.getProblemAgain(this, this.config);
       case Presenter.NEXT_ID:
-        sessionStorage.clear();
-        window.top.location.replace(window.location.href); // escape the iframe
-        break;
-      default:
-        return super.next(eventId);
+        if (this.config.lessonInfo.origin === LessonOrigin.SESSION) {
+          sessionStorage.clear();
+          window.top.location.replace(window.location.href); // escape the iframe
+          return;
+        }
     }
+    return super.next(eventId);
   }
 }

@@ -249,20 +249,25 @@ export class Presenter extends ManagedElement {
    * This allows the next button's logic to be used but with a different presentation
    * that might be more appropriate for presenter.
    * @param {module:utils/userIo/icons~IconDetails}
+   * @param {?string} overrideText - text to override label if required.
    */
-  applyIconToNextButton(iconDetails) {
-    icons.applyIconToElement(iconDetails, this.#forwardsButton);
+  applyIconToNextButton(iconDetails, overrideText) {
+    icons.applyIconToElement(iconDetails, this.#forwardsButton, {
+      overrideText: overrideText,
+    });
   }
 
   /**
-   * Set up keyboard navigation.
+   * Add a keydown event for all the element's children.
+   * The default handling is to trigger a click event on space or enter.
+   * This is used primarily to make items such as LI elements behave more like buttons.
    * This can only be called once.
    * If element omitted, the children of the presentation element are used.
    * @param {module:utils/userIo/managedElement.ManagedElement[]} [managedElements].
    */
-  setupKeyboardNavigation(managedElements) {
+  autoAddKeydownEvents(managedElements) {
     if (this.#navigator) {
-      console.error('setUpKeyboardNavigation can only be called once.');
+      console.error('autoAddKeydownEvents can only be called once.');
       return;
     }
     const items = managedElements ?? this.#presentation.managedChildren;

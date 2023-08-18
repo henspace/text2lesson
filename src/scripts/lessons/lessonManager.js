@@ -101,7 +101,7 @@ import { escapeHtml } from '../utils/text/textProcessing.js';
 
 /**
  * @typedef {Object} LessonInfo
- * @property {boolean} managed - flag whether the lesson is managed by the manager. If this is false, all other fields are unmanaged.
+ * @property {LessonOrigin} - indicate of where the lesson originated. If this is not REMOTE, all other fields are unmanaged.
  * @property {boolean} usingLocalLibrary - flag whether the lesson manager is using local lessons.
  * @property {string} libraryKey - key for the library
  * @property {string} file - file without any path.
@@ -116,6 +116,18 @@ import { escapeHtml } from '../utils/text/textProcessing.js';
  * @property {string} titles.chapter - title of the chapter
  * @property {string} titles.lesson - title of the lesson
  */
+
+/**
+ * Possible origins for lessons.
+ * @const
+ * @enum {string}
+ */
+export const LessonOrigin = {
+  REMOTE: 'remote',
+  LOCAL: 'local',
+  SESSION: 'session',
+  FILE_SYSTEM: 'file_system',
+};
 
 class LessonManager {
   /**
@@ -333,12 +345,13 @@ class LessonManager {
    * The lesson info is undefined except for the managed flag which is false and
    * the lesson title.
    * @param {string} lessonTitle
+   * @param {LessonOrigin} origin - this should be SESSION or FILE_SYSTEM if unmanaged
    * @returns {LessonInfo}
    */
 
-  getUnmanagedLessonInfo(lessonTitle) {
+  getUnmanagedLessonInfo(lessonTitle, origin) {
     return {
-      managed: false,
+      origin: origin,
       usingLocalLibrary: false,
       libraryKey: undefined,
       file: undefined,
@@ -366,7 +379,9 @@ class LessonManager {
     this.#ensureIndexesValid();
     const book = this.#getCurrentBook();
     return {
-      managed: true,
+      origin: this.#usingLocalLibrary
+        ? LessonOrigin.LOCAL
+        : LessonOrigin.REMOTE,
       usingLocalLibrary: this.#usingLocalLibrary,
       libraryKey: this.#currentLibraryKey,
       file: book?.chapters[this.#currentChapterIndex]?.lessons[

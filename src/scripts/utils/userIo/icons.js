@@ -139,6 +139,13 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get openFolder() {
+    return {
+      content: this.#getIconHtml('--icon-open-folder-html'),
+      accessibleName: i18n`Open folder`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get forward() {
     return {
       content: this.#getIconHtml('--icon-forward-nav-html'),
@@ -160,10 +167,31 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get import() {
+    return {
+      content: this.#getIconHtml('--icon-import-html'),
+      accessibleName: i18n`Import file`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get info() {
     return {
       content: this.#getIconHtml('--icon-info-html'),
       accessibleName: i18n`Flag`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get selectLesson() {
+    return {
+      content: this.#getIconHtml('--icon-lesson-html'),
+      accessibleName: i18n`Select lesson`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get library() {
+    return {
+      content: this.#getIconHtml('--icon-library-html'),
+      accessibleName: i18n`Open library`,
     };
   }
   /** @returns {IconDetails} information for icon */
@@ -322,24 +350,26 @@ class IconGenerator {
    * @param {Object} options
    * @param {boolean} options.hideText - if true, the text is hidden.
    * @param {string} [options.role] - the aria role.
+   * @param {string} [options.overrideText] - if set, this overrides the button's normal label
    */
   applyIconToElement(icon, item, options = {}) {
+    const label = options.overrideText ?? icon.accessibleName;
     const element = ManagedElement.getElement(item);
     const role = options.role?.toLowerCase();
     element.innerHTML = icon.content;
     if (icon.accessibleName && !options.hideText) {
-      element.innerHTML += ` ${icon.accessibleName}`;
+      element.innerHTML += ` ${label}`;
     }
 
     if (this.semanticsAddressRole(element, role)) {
       // semantics match role but still add aria-label if text hidden.
       if (options.hideText) {
-        element.setAttribute('aria-label', icon.accessibleName);
+        element.setAttribute('aria-label', label);
       }
       return; // semantics match role.
     }
     element.setAttribute('role', role);
-    element.setAttribute('aria-label', icon.accessibleName);
+    element.setAttribute('aria-label', label);
   }
 }
 

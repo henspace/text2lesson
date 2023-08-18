@@ -43,6 +43,9 @@ Once fully loaded, the iframe src is replaced by the full text2lesson applicatio
         margin: 0;
         padding: 0;
       }
+      html {
+        height: -webkit-fill-available; 
+      }
       body {
         overflow: hidden;
       }
@@ -74,8 +77,7 @@ Once fully loaded, the iframe src is replaced by the full text2lesson applicatio
     const APPLICATION_URL = '${appUrl}';
     const loader = document.getElementById('data-loader');
     const progress = document.getElementById('progress');
-    const chunkSize = 50;
-    const dataChunks = LESSON_SOURCE_B64.match(/.{1,50}/g);
+    const dataChunks = LESSON_SOURCE_B64.match(/.{1,1800}/g);
     let index = -1;
     loaded = false;
     const eventListener = loader.addEventListener('load', () => {

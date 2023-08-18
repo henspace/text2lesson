@@ -57,28 +57,6 @@ const NAVIGATION = {
 };
 
 /**
- * Get a suitable problem presenter based on the configuratoin.
- * @param {LessonConfig} config
- * @returns {Presenter}
- */
-function getSuitableProblemPresenter(config) {
-  const problem = config.lesson.peekAtNextProblem();
-  switch (problem.questionType) {
-    case QuestionType.ORDER:
-      return new OrderProblemPresenter(config);
-    case QuestionType.FILL:
-      return new FillProblemPresenter(config);
-    case QuestionType.MULTI:
-      return new ChoiceProblemPresenter(config);
-    case QuestionType.SIMPLE:
-      return new ChoiceProblemPresenter(config);
-    case QuestionType.SLIDE:
-    default:
-      return new SlideProblemPresenter(config);
-  }
-}
-
-/**
  * Factory for generating the navigation for Presenters.
  *
  * #Use of minifiers#
@@ -90,6 +68,27 @@ function getSuitableProblemPresenter(config) {
  */
 
 export class PresenterFactory {
+  /**
+   * Get a suitable problem presenter based on the configuratoin.
+   * @param {LessonConfig} config
+   * @returns {Presenter}
+   */
+  getSuitableProblemPresenter(config) {
+    const problem = config.lesson.peekAtNextProblem();
+    switch (problem.questionType) {
+      case QuestionType.ORDER:
+        return new OrderProblemPresenter(config);
+      case QuestionType.FILL:
+        return new FillProblemPresenter(config);
+      case QuestionType.MULTI:
+        return new ChoiceProblemPresenter(config);
+      case QuestionType.SIMPLE:
+        return new ChoiceProblemPresenter(config);
+      case QuestionType.SLIDE:
+      default:
+        return new SlideProblemPresenter(config);
+    }
+  }
   /**
    * Test if next exists for caller.
    * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
@@ -143,7 +142,7 @@ export class PresenterFactory {
       caller instanceof LessonPresenter
     ) {
       if (config.lesson.hasMoreProblems) {
-        return getSuitableProblemPresenter(config);
+        return this.getSuitableProblemPresenter(config);
       } else {
         return new MarksPresenter(config);
       }
@@ -178,7 +177,7 @@ export class PresenterFactory {
     } else {
       config.lesson.restart();
       if (config.lesson.hasMoreProblems) {
-        return getSuitableProblemPresenter(config);
+        return this.getSuitableProblemPresenter(config);
       } else {
         return new MarksPresenter(config);
       }
@@ -240,7 +239,7 @@ export class PresenterFactory {
       config.lesson = sessionLesson.lesson;
       config.lessonInfo = sessionLesson.lessonInfo;
       if (config.lesson.hasMoreProblems) {
-        return getSuitableProblemPresenter(config);
+        return config.factory.getSuitableProblemPresenter(config);
       } else {
         return new MarksPresenter(config);
       }

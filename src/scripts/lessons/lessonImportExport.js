@@ -22,8 +22,17 @@
  *
  */
 
-import { stringToBase64 } from '../utils/text/base64.js';
+import { base64ToString, stringToBase64 } from '../utils/text/base64.js';
 import { getAutoRunHtml } from '../data/templates/autorunHtml.js';
+import { ModalDialog } from '../utils/userIo/modalDialog.js';
+import { icons } from '../utils/userIo/icons.js';
+import { i18n } from '../utils/i18n/i18n.js';
+
+/**
+ * @typedef {Object} LessonImportExportSummary
+ * @property {string} title - the lesson's title
+ * @property {string} source - the source text for the lesson
+ */
 /**
  * Class to handle exporting of a lesson.
  */
@@ -81,8 +90,29 @@ export class LessonExporter {
 
   /**
    * Export the lesson by creating a temporary anchor and clicking it.
+   * @returns {Promise} fulfils to undefined
    */
   exportLesson() {
+    return ModalDialog.showDialog(
+      i18n`Select type of export`,
+      i18n`Select the type of export required. AutoRun files provide an easy way for users to run a lesson.`,
+      {
+        dialogType: ModalDialog.DialogType.QUESTION,
+        buttons: [icons.export, icons.exportAutoRun],
+      }
+    ).then((index) => {
+      if (index === 0) {
+        return this.exportPlainLesson();
+      } else {
+        return this.exportAutoRunLesson();
+      }
+    });
+  }
+
+  /**
+   * Export the lesson by creating a temporary anchor and clicking it.
+   */
+  exportPlainLesson() {
     this.saveDataToFile(stringToBase64(this.lessonAsString), 'txt');
   }
 
@@ -110,5 +140,26 @@ export class LessonExporter {
     });
     document.body.appendChild(tempA);
     tempA.click();
+  }
+}
+
+export class LessonImporter {
+  /**
+   * Create the importer.
+   */
+  constructor() {}
+
+  /**
+   * Convert data previously saved by a call to exportPlainData.
+   * @param {string} exportedData
+   * @returns {LessonImportExportSummary} null if fails.
+   */
+  convert(exportedData) {
+    try {
+      return JSON.parse(base64ToString(exportedData));
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
 }

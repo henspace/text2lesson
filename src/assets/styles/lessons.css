@@ -15,6 +15,15 @@ a.problem {
   text-align: center;
 }
 
+.HomePresenter .presentation {
+  display: flex;
+  flex-direction: column;
+}
+.HomePresenter .presentation button {
+  flex: 1;
+  text-align: left;
+}
+
 .lesson-summary {
   background-color: var(--tertiary-base);
   border: none;

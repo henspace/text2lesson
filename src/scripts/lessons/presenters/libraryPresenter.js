@@ -40,7 +40,7 @@ export class LibraryPresenter extends ListPresenter {
     config.itemClassName = 'book';
     super(config);
     this.#buildPreamble();
-    this.setupKeyboardNavigation();
+    this.autoAddKeydownEvents();
   }
 
   /**

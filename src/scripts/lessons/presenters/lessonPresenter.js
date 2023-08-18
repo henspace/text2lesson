@@ -50,7 +50,7 @@ export class LessonPresenter extends Presenter {
     super(config);
     this.config.lessonInfo = lessonManager.currentLessonInfo;
     this.#buildCustomContent();
-    this.setupKeyboardNavigation();
+    this.autoAddKeydownEvents();
     if (this.config?.factory?.hasPrevious(this)) {
       this.showBackButton();
     }

@@ -35,7 +35,7 @@ import * as modalMask from './modalMask.js';
  * santise the data.
  * @property {ModalDialog.DialogType} dialogType
  * @property {string[]} iconClasses - array of classes that are applied to the icon
- * @property {string[]} buttons - array of labels for buttons. These normally
+ * @property {string[] | string | module:utils/userIo/icons~IconDetails[]} buttons - array of labels for buttons. These normally
  * only apply to questions.
  */
 

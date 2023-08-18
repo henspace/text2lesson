@@ -24,6 +24,7 @@
     "prebuildChild": "node ./tools/prebuild.js",
     "buildChild": "rollup -c",
     "postbuildChild": "node ./tools/postbuild.js",
+    "commitAll": "git add * && git commit && npm version patch",
     "testAll": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ./src",
     "testWatch": "node --experimental-vm-modules node_modules/jest/bin/jest.js ./src --watch",

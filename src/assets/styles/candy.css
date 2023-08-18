@@ -47,19 +47,16 @@
       var(--celebrator-off-top-y)
     );
   }
-  40% {
+  50% {
     transform: translate(var(--celebrator-center-x), var(--celebrator-center-y))
-      rotate(60deg);
-  }
-  60% {
-    transform: translate(50vw, 50vh) rotate(0deg);
+      rotate(360deg);
   }
   100% {
     transform: translate(
         var(--celebrator-off-left-x),
         var(--celebrator-off-top-y)
       )
-      rotate(360deg);
+      rotate(0deg);
   }
 }
 

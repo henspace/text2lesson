@@ -4,6 +4,8 @@
 .utils-dialog {
   background-color: var(--background-base);
   color: var(--background-contrast);
+  display: flex;
+  flex-direction: column;
   left: 50%;
   min-height: 10vh;
   max-height: 90vh;

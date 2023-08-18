@@ -22,12 +22,11 @@
  *
  */
 import { base64ToString } from '../utils/text/base64.js';
-import { LessonSource } from './lessonSource.js';
-import { lessonManager } from './lessonManager.js';
-import { escapeHtml } from '../utils/text/textProcessing.js';
+import { UnmanagedLesson } from './unmanagedLesson.js';
+import { LessonOrigin } from './lessonManager.js';
 
 /** Class to handle lesson provided via the session storage. */
-class SessionLesson {
+class SessionLesson extends UnmanagedLesson {
   /**
    * @type {string}
    * @const
@@ -36,59 +35,14 @@ class SessionLesson {
   static TITLE_KEY = 'title';
 
   /**
-   * @type {string}
-   */
-  #data;
-
-  /**
-   * @type {string}
-   */
-  #title;
-
-  /**
-   * @type {module:lessons/lesson.Lesson}
-   */
-  #lesson;
-
-  /**
    * Create the session lesson
    */
   constructor() {
-    this.#title = this.#getSessionItem(SessionLesson.TITLE_KEY);
-    const data = this.#getSessionItem(SessionLesson.DATA_KEY);
-    if (data) {
-      this.#lesson = this.#convertDataToLesson(data);
-    }
-  }
-
-  /**
-   * Convert the lesson data into a lesson.
-   * @param {string} data
-   * @returns {module:lessons/lesson.Lesson}
-   */
-  #convertDataToLesson(data) {
-    const lessonSource = LessonSource.createFromSource(data);
-    return lessonSource.convertToLesson();
-  }
-  /**
-   * @returns {boolean} true if there is lesson data.
-   */
-  get hasLesson() {
-    return !!this.#lesson;
-  }
-
-  /**
-   * @returns {module:lessons/lesson.Lesson}
-   */
-  get lesson() {
-    return this.#lesson;
-  }
-
-  /**
-   * Get the lesson info
-   */
-  get lessonInfo() {
-    return lessonManager.getUnmanagedLessonInfo(escapeHtml(this.#title));
+    super(
+      SessionLesson.#getSessionItem(SessionLesson.TITLE_KEY),
+      SessionLesson.#getSessionItem(SessionLesson.DATA_KEY),
+      LessonOrigin.SESSION
+    );
   }
 
   /**
@@ -96,7 +50,7 @@ class SessionLesson {
    * @param {string} key
    * @returns {string}
    */
-  #getSessionItem(key) {
+  static #getSessionItem(key) {
     const storedValue = sessionStorage.getItem(key);
     if (storedValue) {
       return base64ToString(storedValue);

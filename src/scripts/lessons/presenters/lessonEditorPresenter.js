@@ -29,19 +29,23 @@ import { i18n } from '../../utils/i18n/i18n.js';
 import { LabeledControl } from '../../utils/userIo/labeledControl.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
-import { LessonExporter } from '../lessonImportExport.js';
+import { LessonExporter, LessonImporter } from '../lessonImportExport.js';
+import { FileInputButton } from '../../utils/userIo/fileInput.js';
+import { ModalDialog } from '../../utils/userIo/modalDialog.js';
+import { toast } from '../../utils/userIo/toast.js';
 
 export class LessonEditorPresenter extends Presenter {
   static SAVE_EVENT_ID = 'SAVE';
   static EXPORT_EVENT_ID = 'EXPORT';
-  static EXPORT_AUTORUN_EVENT_ID = 'EXPORT_RUNNER';
+  static IMPORT_EVENT_ID = 'IMPORT';
 
   #lessonTitleElement;
   #lessonTitleValue;
   #mainEditorElement;
   #saveButton;
+  #importForm;
+  #importButton;
   #exportButton;
-  #exportAutoRunButton;
   #dirty;
   /**
    * Construct.
@@ -53,8 +57,8 @@ export class LessonEditorPresenter extends Presenter {
     super(config);
     this.#buildCustomContent();
     this.#addSaveButton();
+    this.#addImportButton();
     this.#addExportButton();
-    this.#addExportAutoRunButton();
     this.expandPresentation();
     this.#setEditorAsClean();
     this.applyIconToNextButton(icons.closeEditor);
@@ -121,6 +125,20 @@ export class LessonEditorPresenter extends Presenter {
   }
 
   /**
+   * Add an import button
+   */
+  #addImportButton() {
+    this.#importForm = new ManagedElement('form', 'button-wrapper');
+    this.#importButton = new FileInputButton();
+    this.#importForm.appendChild(this.#importButton);
+    this.listenToEventOn(
+      FileInputButton.DATA_AVAILABLE_EVENT_NAME,
+      this.#importButton,
+      LessonEditorPresenter.IMPORT_EVENT_ID
+    );
+    this.addButtonToBar(this.#importForm);
+  }
+  /**
    * Add an export button */
   #addExportButton() {
     this.#exportButton = new ManagedElement('button');
@@ -134,16 +152,31 @@ export class LessonEditorPresenter extends Presenter {
   }
 
   /**
-   * Add an export autorun  button */
-  #addExportAutoRunButton() {
-    this.#exportAutoRunButton = new ManagedElement('button');
-    icons.applyIconToElement(icons.exportAutoRun, this.#exportAutoRunButton);
-    this.listenToEventOn(
-      'click',
-      this.#exportAutoRunButton,
-      LessonEditorPresenter.EXPORT_AUTORUN_EVENT_ID
-    );
-    this.addButtonToBar(this.#exportAutoRunButton);
+   * Handle file input.
+   * @param {*} event
+   * @param {*} eventId
+   */
+  handleDataAvailableEvent(event, eventIdIgnored) {
+    this.#importForm.element.reset(); // If we don't do this, we won't get new events for the same file.
+    const importer = new LessonImporter();
+    const importSummary = importer.convert(event.detail.content);
+    if (!importSummary) {
+      toast(
+        `Unable to import the file ${event.detail?.file?.name}. The file may be corrupt or the wrong type of file.`
+      );
+      return;
+    }
+    return ModalDialog.showConfirm(
+      i18n`Are you sure you want to overwrite your lesson?`
+    ).then((answer) => {
+      if (answer === ModalDialog.DialogIndex.CONFIRM_YES) {
+        this.#lessonTitleElement.setValue(importSummary.title);
+        this.#lessonTitleValue = importSummary.title;
+        this.#mainEditorElement.value = importSummary.content;
+        this.#setEditorAsDirty();
+      }
+      return;
+    });
   }
   /**
    * Handle update of the editor.
@@ -176,8 +209,6 @@ export class LessonEditorPresenter extends Presenter {
         return this.#saveLessonLocally();
       case LessonEditorPresenter.EXPORT_EVENT_ID:
         return this.#exportLesson();
-      case LessonEditorPresenter.EXPORT_AUTORUN_EVENT_ID:
-        return this.#exportAutoRunLesson();
       default:
         return super.handleClickEvent(event, eventId);
     }
@@ -202,16 +233,5 @@ export class LessonEditorPresenter extends Presenter {
       this.#mainEditorElement.value
     );
     exporter.exportLesson();
-  }
-
-  /**
-   * Export the lesson as an autorun file.
-   */
-  #exportAutoRunLesson() {
-    const exporter = new LessonExporter(
-      this.#lessonTitleValue,
-      this.#mainEditorElement.value
-    );
-    exporter.exportAutoRunLesson();
   }
 }
