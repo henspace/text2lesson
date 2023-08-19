@@ -27,6 +27,7 @@ import { ProblemPresenter } from './problemPresenter.js';
 import { DisplayCards } from './displayCards.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { persistentData } from '../../utils/userIo/storage.js';
+import { Presenter } from './presenter.js';
 
 const MediaClass = {
   PAUSE: 'pause',
@@ -191,6 +192,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
   #showNextCard() {
     console.log('Show the next card');
     if (this.#endShowIfLastCard()) {
+      this.handleClickEvent(new Event('click'), Presenter.NEXT_ID);
       return;
     }
     // obtain reading speed again incase it's been adjusted.
@@ -228,9 +230,6 @@ export class SlideProblemPresenter extends ProblemPresenter {
    * Remove the card
    */
   #removeCard() {
-    if (this.#endShowIfLastCard()) {
-      return;
-    }
     this.#setCardState(CardState.LEAVING);
   }
 

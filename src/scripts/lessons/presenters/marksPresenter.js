@@ -113,16 +113,16 @@ export class MarksPresenter extends Presenter {
    * Add the titles.
    */
   #addHeadings() {
+    const lessonTitle =
+      this.config.lessonInfo.titles.lesson ||
+      this.config.lesson.metadata.getValue('TITLE', i18n`Unknown title`);
+
     this.presentation.createAndAppendChild(
       'h1',
       null,
       i18n`Certificate of achievement`
     );
-    this.presentation.createAndAppendChild(
-      'h2',
-      null,
-      this.config.lessonInfo.titles.lesson
-    );
+    this.presentation.createAndAppendChild('h2', null, lessonTitle);
     this.#addBookDetailsIfManaged();
   }
 

@@ -64,6 +64,15 @@ input[type='input'] {
   background-color: var(--background-base);
 }
 
+input[type='range'] {
+  accent-color: var(--primary-base);
+  padding-left: 0;
+  padding-right: 0;
+}
+input[type='checkbox'] {
+  accent-color: var(--primary-base);
+}
+
 .file-input-button input {
   position: absolute;
   visibility: hidden;

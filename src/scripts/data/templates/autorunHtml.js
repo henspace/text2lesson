@@ -29,9 +29,7 @@ export function getAutoRunHtml(b64Title, b64LessonData) {
 
   return `<!DOCTYPE html>
 <!-- 
-This file embeds the session-data-builder in an iframe and then 
-builds up the lesson in session storage as base64 encoded data.
-Once fully loaded, the iframe src is replaced by the full text2lesson application.
+Text2Lesson loader.
 -->
 <html lang="en">
   <head>
@@ -106,7 +104,7 @@ Once fully loaded, the iframe src is replaced by the full text2lesson applicatio
           loader.src = \`\${LOADER_URL}?data=\${encodeURI(dataChunks[index++])}\`;
         }
       } else {
-        loader.src = APPLICATION_URL;
+        window.location.replace(APPLICATION_URL);
         loaded = true;
         progress.style.display = 'none';
       }

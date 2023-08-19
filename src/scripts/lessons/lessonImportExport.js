@@ -31,7 +31,7 @@ import { i18n } from '../utils/i18n/i18n.js';
 /**
  * @typedef {Object} LessonImportExportSummary
  * @property {string} title - the lesson's title
- * @property {string} source - the source text for the lesson
+ * @property {string} content - the source text for the lesson
  */
 /**
  * Class to handle exporting of a lesson.
@@ -150,16 +150,30 @@ export class LessonImporter {
   constructor() {}
 
   /**
-   * Convert data previously saved by a call to exportPlainData.
+   * Convert data previously saved by a call to exportPlainData or plain text.
    * @param {string} exportedData
    * @returns {LessonImportExportSummary} null if fails.
    */
   convert(exportedData) {
+    if (this.isDataPlainText(exportedData)) {
+      return {
+        title: '',
+        content: exportedData,
+      };
+    }
     try {
       return JSON.parse(base64ToString(exportedData));
     } catch (error) {
       console.error(error);
       return null;
     }
+  }
+  /**
+   * Simple check to see if the data is plain text.
+   * @param {string} data
+   * @returns {boolean} true if plain text file.
+   */
+  isDataPlainText(data) {
+    return !!data.match(/^ {0,3}(?:\(+([i?])\1*\)+)(.*)$/m);
   }
 }
