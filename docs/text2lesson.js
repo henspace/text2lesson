@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * text2lesson 1.0.8
+ * text2lesson 1.0.9
  * Text2Lesson: create quizzes and lessons from plain text files.
  * Copyright 2023 Steve Butler (henspace.com)
  * 
@@ -24,11 +24,11 @@
 
   const BuildInfo = {
       isBuilt: () => BuildInfo.getMode().indexOf("$") < 0,
-      getBuildDate: () => "2023-08-20 16:47:43Z",
+      getBuildDate: () => "2023-08-20 19:14:15Z",
       getBundleName: () => "text2lesson.js",
       getProductName: () => "Text2Lesson",
       getMode: () => "production",
-      getVersion: () => "1.0.8 "
+      getVersion: () => "1.0.9 "
     },
     blockReps = [{
       re: /(?:(.+)\n=+\n)/g,
@@ -375,9 +375,10 @@
       }
     }(localStorage),
     rootUrl = window.location.href.replace(/index\.html(\?.*)?$/, ""),
+    mdExtension = window.location.host.match(/^127\.0\.0\.1:808[0-2]/) ? "md" : "html",
     Urls = {
-      HELP: `${rootUrl}assets/docs/help.md`,
-      PRIVACY: `${rootUrl}assets/docs/privacy.md`
+      HELP: `${rootUrl}assets/docs/help.${mdExtension}`,
+      PRIVACY: `${rootUrl}assets/docs/privacy.${mdExtension}`
     };
   class LocalLibrary {
     static LOCAL_LIBRARY_KEY = "LOCAL_LIBRARY";
