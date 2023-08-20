@@ -1,5 +1,4 @@
-name: NodeJS with Grunt
-
+name: Build
 on:
   push:
     branches: [ "main" ]
