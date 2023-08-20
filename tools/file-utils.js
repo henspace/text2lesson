@@ -202,11 +202,9 @@ export class FileManager {
    * @returns Promise which resolves to undefined on success.
    */
   static cleanDir(path) {
-    return FileManager.removeDir(path)
-      .then(() => fsPromises.mkdir(path, { recursive: true }))
-      .catch((error) => {
-        console.error(error);
-      });
+    return FileManager.removeDir(path).then(() =>
+      fsPromises.mkdir(path, { recursive: true })
+    );
   }
 
   /**
@@ -257,9 +255,6 @@ export class FileManager {
       })
       .then(() => {
         return targetFilePath;
-      })
-      .catch((err) => {
-        console.error(`[ERROR] ${err}`);
       });
   }
 
@@ -304,8 +299,7 @@ export class FileManager {
           }
         }
         return Promise.all(promises);
-      })
-      .catch((err) => console.log(`[ERROR] ${err}`));
+      });
   }
 
   /**

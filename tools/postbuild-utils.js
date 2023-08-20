@@ -106,15 +106,10 @@ export function generateServiceWorker() {
     swDest: path.join(PROJECT_INFO.buildDistDir, 'sw.js'),
     globPatterns: ['**/*.{html,css,js}'],
     mode: PROJECT_INFO.buildMode,
-  })
-    .then(() => {
-      console.log('Service worker generated.');
-      return true;
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
+  }).then(() => {
+    console.log('Service worker generated.');
+    return true;
+  });
 }
 
 /**
