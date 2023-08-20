@@ -1,0 +1,24 @@
+
+
+.utils-menu-title {
+  text-align: right;
+}
+
+.utils-menu-content {
+  background-color: var(--background-base);
+  border: solid var(--background-highlight);
+  border-width: 0 var(--line-thickness) 0 0;
+  color: var(--background-contrast);
+  height: 100vh;
+  left: 0px;
+  min-width: 3em;
+  overflow-x: hidden;
+  position: absolute;
+  top: 0px;
+  transition: transform 1s;
+  transform: translateX(-100%);
+}
+
+.utils-menu-items hr {
+  margin: 0;
+}
