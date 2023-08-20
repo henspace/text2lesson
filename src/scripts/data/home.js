@@ -29,5 +29,6 @@
  */
 
 import { i18n } from '../utils/i18n/i18n.js';
+import { BuildInfo } from './constants.js';
 
-export const getHomeText = () => i18n`Welcome to $_PRODUCT_NAME_TXT_$.`;
+export const getHomeText = () => i18n`Welcome to ${BuildInfo.getProductName()}`;
