@@ -1,0 +1,131 @@
+/**
+ * Styles for utilities
+ */
+@import './utils-menu.css';
+@import './utils-controls.css';
+@import './utils-dialogs.css';
+
+button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/*
+* common selection styles for selectable elements
+* Buttons and inputs are automatically regarded as selectable without the addition
+* of the selectable class.
+*/
+
+button:not(.icon-only-button),
+.link-button {
+  min-width: 4em;
+  text-align: center;
+}
+
+.icon-only-button {
+  background-color: inherit;
+  border: none;
+  color: inherit;
+  font-size: 2rem;
+  padding: 0px;
+  text-align: center;
+  line-height: 2rem;
+}
+
+button,
+input,
+select,
+textarea,
+.selectable,
+.selectable-off {
+  background-color: var(--primary-base);
+  border: none;
+  border-radius: var(--line-thickness);
+  color: var(--primary-contrast);
+  cursor: pointer;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  list-style-position: inside;
+  margin: var(--margin);
+  min-width: 1rem;
+  min-height: 1rem;
+  outline-offset: var(--outline-offset);
+  outline-color: var(--primary-highlight);
+  outline-width: var(--line-thickness);
+  padding: var(--padding);
+  transition: outline 0.5s;
+}
+
+textarea,
+input[type='input'] {
+  border: var(--line-thickness) solid var(--background-contrast);
+  color: var(--background-contrast);
+  background-color: var(--background-base);
+}
+
+input[type='range'] {
+  accent-color: var(--primary-base);
+  padding-left: 0;
+  padding-right: 0;
+}
+input[type='checkbox'] {
+  accent-color: var(--primary-base);
+}
+
+.file-input-button input {
+  position: absolute;
+  visibility: hidden;
+  width: 1em;
+}
+
+form.button-wrapper {
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+  white-space: nowrap;
+}
+
+li.selectable,
+li.selectable-off {
+  background-color: var(--secondary-base);
+  color: var(--secondary-contrast);
+  outline-color: var(--secondary-highlight);
+}
+
+button:hover,
+input:hover,
+select:hover,
+.selectable:hover,
+textarea:hover {
+  outline-style: dotted;
+}
+
+button:focus,
+input:focus,
+select:focus,
+.selectable:focus,
+textarea:focus {
+  outline-style: dashed;
+}
+
+button:hover:focus,
+input:hover:focus,
+select:hover:focus,
+.selectable:hover:focus,
+textarea:hover:focus {
+  outline-style: solid;
+}
+
+button:disabled,
+button:disabled:hover,
+button:disabled:focus,
+button:disabled:hover:focus {
+  outline-style: none;
+  opacity: 50%;
+}
+
+.problem-answer p:first-of-type {
+  display: inline-block;
+  margin: 0;
+}

@@ -23,33 +23,50 @@
  */
 
 import { lessonManager } from '../lessonManager.js';
-import { Presenter } from './presenter.js';
-import { BookPresenter } from './bookPresenter.js';
-import { LessonPresenter } from './lessonPresenter.js';
+import { ListPresenter } from './listPresenter.js';
 
 /**
  * Class to present a chapter.
  * Presentation of a chapter involves displaying all of the lessons available in
  * the chapter.
+ * @extends module:lessons/presenters/listPresenter.ListPresenter
  */
-export class ChapterPresenter extends Presenter {
+export class ChapterPresenter extends ListPresenter {
   /**
    * Construct.
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
-  constructor() {
-    super('chapterPresenter', {
-      titles: lessonManager.lessonTitles,
-      itemClassName: 'lesson',
-      next: (index) => {
-        lessonManager.lessonIndex = index;
-        return Promise.resolve(new LessonPresenter(index));
-      },
-      previous: () => {
-        const currentLessonInfo = lessonManager.currentLessonInfo;
-        return Promise.resolve(
-          new BookPresenter(currentLessonInfo.indexes.book)
-        );
-      },
-    });
+  constructor(config) {
+    config.titles = lessonManager.lessonTitles;
+    config.itemClassName = 'lesson';
+    super(config);
+    this.#buildPreamble();
+    this.autoAddKeydownEvents();
+  }
+
+  /**
+   * Set up the preamble
+   */
+  #buildPreamble() {
+    if (lessonManager.usingLocalLibrary) {
+      this.addPreamble(
+        `<span class='library-title'>${lessonManager.libraryTitle}</span>`
+      );
+    } else {
+      this.addPreamble(
+        `<span class='library-title'>${lessonManager.libraryTitle}</span>
+        <span class='book-title'>${lessonManager.bookTitle}</span>
+        <span class='chapter-title'>${lessonManager.chapterTitle}</span>
+        `
+      );
+    }
+  }
+
+  /**
+   * @override
+   */
+  next(index) {
+    lessonManager.lessonIndex = index;
+    return super.next(index);
   }
 }

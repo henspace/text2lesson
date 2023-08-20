@@ -1,7 +1,7 @@
 /**
  * @file Presenter for books
  *
- * @module lessons/presenters/bookPresenter.js
+ * @module lessons/presenters/bookPresenter
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -23,27 +23,42 @@
  */
 
 import { lessonManager } from '../lessonManager.js';
-import { Presenter } from './presenter.js';
-import { ChapterPresenter } from './chapterPresenter.js';
-import { LibraryPresenter } from './libraryPresenter.js';
+import { ListPresenter } from './listPresenter.js';
+
 /**
  * Class to present a library.
  * Presentation of a library involves displaying all of the books available in
  * the library.
+ * @extends module:lessons/presenters/listPresenter.ListPresenter
  */
-export class BookPresenter extends Presenter {
+export class BookPresenter extends ListPresenter {
   /**
    * Construct.
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
-  constructor() {
-    super('bookPresenter', {
-      titles: lessonManager.chapterTitles,
-      itemClassName: 'chapter',
-      next: (index) => {
-        lessonManager.chapterIndex = index;
-        return Promise.resolve(new ChapterPresenter(index));
-      },
-      previous: () => Promise.resolve(new LibraryPresenter()),
-    });
+  constructor(config) {
+    config.titles = lessonManager.chapterTitles;
+    config.itemClassName = 'chapter';
+    super(config);
+    this.autoAddKeydownEvents();
+    this.#buildPreamble();
+  }
+  /**
+   * Set up the preamble
+   */
+  #buildPreamble() {
+    this.addPreamble(
+      `<span class='library-title'>${lessonManager.libraryTitle}</span>
+    <span class='book-title'>${lessonManager.bookTitle}</span>
+    `
+    );
+  }
+
+  /**
+   * @override
+   */
+  next(index) {
+    lessonManager.chapterIndex = index;
+    return super.next(index);
   }
 }

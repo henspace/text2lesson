@@ -1,0 +1,37 @@
+/**
+ * Styles for controls
+ */
+
+.utils-range-value {
+  background-color: var(--background-base);
+  border: solid 4px var(--primary-base);
+  border-radius: 4px;
+  color: var(--background-contrast);
+  padding: 4px;
+  position: absolute;
+  text-align: center;
+  transition: opacity 0.5s;
+}
+
+/* customised select */
+.utils-select {
+  font-size: inherit;
+  height: 2em;
+}
+
+.utils-options {
+  background: var(--secondary-base);
+  color: var(--secondary-contrast);
+  display: none;
+  left: 0;
+  padding: var(--line-thickness);
+  position: absolute;
+  top: 0;
+  z-index: 80;
+}
+
+.utils-options[data-open] {
+  display: flex;
+  flex-flow: column wrap;
+  margin: var(--margin);
+}

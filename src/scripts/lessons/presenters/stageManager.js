@@ -1,7 +1,7 @@
 /**
  * @file StageManager. Responsible for switching Presenters on the stage.
  *
- * @module lessons\presenters\stageManager
+ * @module lessons/presenters/stageManager
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -22,11 +22,15 @@
  *
  */
 
-import { ManagedElement } from '../../libs/utils/dom/managedElement.js';
+import { ManagedElement } from '../../utils/userIo/managedElement.js';
 
+/**
+ * Class to manage movement between Presenters.
+ */
 export class StageManager {
   /**
-   * @type {ManagedElement}
+   * Main stage element.
+   * @type {module:utils/userIo/managedElement.ManagedElement}
    */
   #stage;
 
@@ -41,16 +45,15 @@ export class StageManager {
   /**
    * Start the stage show using the provided presenter. If the presenter fulfils
    * to another presenter, the show continues.
-   * @param {Presenter} presenter - the presenter that starts the show.
-   * @returns {Promise}  fulfils to null. This indicates that the show is over.
+   * @param {module:lessons/presenters/presenter.Presenter} presenter - the presenter that starts the show.
+   * @returns {undefined}  The method returns when a presenter is null.
    */
   async startShow(presenter) {
     for (;;) {
-      this.#stage.removeChildren();
       presenter = await presenter.presentOnStage(this.#stage);
+      this.#stage.removeChildren();
       if (presenter === null) {
-        this.#stage.removeChildren();
-        return Promise.resolve(null);
+        return;
       }
     }
   }

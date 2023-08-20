@@ -1,6 +1,6 @@
 {
   "file header_gpl3": {
-    "prefix": "headgpl3-rapidqanda",
+    "prefix": "headgpl3-text2lesson",
     "body": [
       "/**",
       " * @file ${1:description}",

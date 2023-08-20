@@ -35,7 +35,7 @@ import { Problem } from './problem.js';
 import { Lesson } from './lesson.js';
 import { ProblemSource } from './problemSource.js';
 /**
- * Keys for splitting the problem source into parts
+ * Keys for splitting the problem source into parts. All keys are lowerCase.
  */
 export const ProblemItemKey = {
   INTRO: 'i',
@@ -43,6 +43,7 @@ export const ProblemItemKey = {
   RIGHT_ANSWER: '=',
   WRONG_ANSWER: 'x',
   EXPLANATION: '+',
+  QUESTION_BREAK: '#',
 };
 
 /**
@@ -117,11 +118,14 @@ export class LessonSource {
           currentItemKey,
           data
         );
-        currentItemKey = details.key;
+
         data = details.content ? `${details.content}\n` : '';
-        if (lessonSource.isNewProblem(details.key, problemSource)) {
+        if (
+          lessonSource.isNewProblem(currentItemKey, details.key, problemSource)
+        ) {
           problemSource = lessonSource.createProblemSource();
         }
+        currentItemKey = details.key;
       }
     });
     if (data) {
@@ -134,12 +138,17 @@ export class LessonSource {
    * Test to see if the key represents a new question block.
    * Keys for INTRO or QUESTION result in new question blocks if they've already
    * been fulfilled.
-   * @param {QuestionItemKey} key
-   * @param {ProblemSource} currentProblem
+   * If the last key was a QUESTION_BREAK, any key creates a new question.
+   * @param {QuestionItemKey} lastKey - last key that was in use/
+   * @param {QuestionItemKey} newKey - the new key.
+   * @param {ProblemSource} currentProblem - the current problem.
    * @returns {boolean}
    */
-  isNewProblem(key, currentProblem) {
-    switch (key) {
+  isNewProblem(lastKey, newKey, currentProblem) {
+    if (lastKey === ProblemItemKey.QUESTION_BREAK) {
+      return true;
+    }
+    switch (newKey) {
       case ProblemItemKey.INTRO:
         return !!currentProblem.introSource;
       case ProblemItemKey.QUESTION:
@@ -173,6 +182,8 @@ export class LessonSource {
       case ProblemItemKey.EXPLANATION:
         problem.explanationSource = data;
         break;
+      case ProblemItemKey.QUESTION_BREAK:
+        break;
       default:
         this.metaSource = data;
     }
@@ -201,15 +212,16 @@ export class LessonSource {
    * @returns {{key:QuestionItemKey, content:string}}
    */
   getLineDetails(line) {
-    const match = line.match(/^ {0,3}(?:\(+([i?=x+])\1*\)+)(.*)$/i);
+    const match = line.match(/^ {0,3}(?:\(+([i?=x+#])\1*\)+)(.*)$/i);
     if (!match) {
       return { key: undefined, content: line };
     }
-    return { key: match[1], content: match[2] ?? '' };
+    return { key: match[1].toLowerCase(), content: match[2] ?? '' };
   }
 
   /**
    * Converts the lesson source to a `Lesson`
+   * @returns {module:lessons/lesson.Lesson}
    */
   convertToLesson() {
     const lesson = new Lesson();

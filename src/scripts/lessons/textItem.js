@@ -4,7 +4,7 @@
  * @module lessons/textItem
  *
  * @license GPL-3.0-or-later
- * Rapid Q and ACreate quizzes and lessons from plain text files.
+ * Text2Lesson: create quizzes and lessons from plain text files.
  * Copyright 2023 Steve Butler (henspace.com)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,11 +22,11 @@
  *
  */
 
-import * as textProcessing from '../libs/utils/text/textProcessing.js';
-import * as obfuscator from '../libs/utils/text/obfuscator.js';
+import * as textProcessing from '../utils/text/textProcessing.js';
 import { getEmojiHtml } from './emojiParser.js';
-import { getErrorAttributeHtml } from '../libs/utils/errorHandling/errors.js';
-import { i18n } from '../libs/utils/i18n/i18n.js';
+import { getErrorAttributeHtml } from '../utils/errorHandling/errors.js';
+import { i18n } from '../utils/i18n/i18n.js';
+import { ManagedElement } from '../utils/userIo/managedElement.js';
 
 /**
  * Safe classes for items. This prevents users providing a class that might corrupt
@@ -99,7 +99,7 @@ class TrackedReplacements {
       },
       getItemReplacement('[.]{3}', (match, startChr, word) => {
         tracker.#missingWords.push(word);
-        return `${startChr}<span class="missing-word" data-missing-word="${obfuscator.obfuscate(
+        return `${startChr}<span class="missing-word" data-missing-word="${ManagedElement.encodeString(
           word
         )}"></span>`;
       }),
@@ -172,6 +172,17 @@ export class TextItem {
   }
 
   /**
+   * Get a plain text version
+   */
+  get plainText() {
+    const elidedHtml = this.#html.replace(
+      /<(?:[^>]*missing-word[^>]*)>/g,
+      '...'
+    );
+    return textProcessing.getPlainTextFromHtml(elidedHtml);
+  }
+
+  /**
    * Get the missing words.
    * @returns {string[]}
    * */
@@ -197,6 +208,21 @@ export class TextItem {
       textItem.#missingWords = tracker.missingWords;
     }
     return textItem;
+  }
+
+  /**
+   * Extract the first word from the item.
+   * @returns {string} empty string if no word found.
+   */
+  get firstWord() {
+    const match = this.#html?.match(
+      /^(?:\s*(?:<\/?[^\r\n\f\t]*?>)*\s*)*([^\s<]*)/
+    );
+    if (match) {
+      return match[1]; // get the first word
+    } else {
+      return '';
+    }
   }
 }
 

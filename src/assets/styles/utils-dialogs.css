@@ -1,0 +1,126 @@
+/** 
+ *Styles for dialogs.
+ */
+.utils-dialog {
+  background-color: var(--background-base);
+  color: var(--background-contrast);
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  min-height: 10vh;
+  max-height: 90vh;
+  position: absolute;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  transition: opacity 0.5s;
+}
+
+.utils-dialog label {
+  display: flex;
+  flex-flow: row wrap;
+
+  margin-top: var(--margin);
+  user-select: none;
+  width: 100%;
+}
+
+@media screen and (max-width: 450px) {
+  .utils-dialog label {
+    flex-flow: column;
+  }
+}
+
+.utils-dialog label:hover {
+  background-color: var(--background-highlight);
+}
+
+.utils-dialog label span:first-child {
+  margin-top: var(--margin);
+  flex: 1 0 auto;
+}
+
+.utils-dialog label::after {
+  content: var(--icon-warning);
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+  visibility: hidden;
+}
+
+.utils-dialog-content-frame {
+  display: flex;
+  flex-flow: row wrap;
+  max-height: calc(90vh - 2rlh - 2 * var(--margin) - 6 * var(--padding));
+  overflow: auto;
+}
+
+.utils-dialog-content {
+  flex: 1 1 auto;
+  padding: var(--content-padding);
+  overflow: auto;
+}
+
+.utils-dialog .utils-button-bar {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding: var(--padding);
+}
+
+.utils-dialog .utils-title-bar {
+  background-color: var(--primary-base);
+  color: var(--primary-contrast);
+}
+
+.utils-title-bar .utils-dialog-icon {
+  display: inline-block;
+  width: 1.5rem;
+}
+
+.utils-error {
+  border: var(--line-thickness) solid var(--error-base);
+}
+
+.utils-error label::after {
+  visibility: visible;
+}
+
+.utils-input-error-message {
+  background-color: var(--error-base);
+  color: var(--error-contrast);
+  display: none;
+}
+
+.utils-error .utils-input-error-message {
+  display: block;
+}
+
+.utils-separator {
+  display: flex;
+}
+
+.utils-separator .utils-hr {
+  flex: 1 0 auto;
+  display: inline-block;
+}
+
+/* toast styles */
+.utils-toast,
+.utils-toast.selectable {
+  background-color: var(--secondary-base);
+  border: solid var(--secondary-highlight) 4px;
+  border-radius: 4px;
+  color: var(--secondary-contrast);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  left: 50vw;
+  min-width: 30vw;
+  outline-offset: calc(-2 * var(--line-thickness));
+  outline-color: var(--secondary-contrast);
+  padding: var(--padding);
+  position: absolute;
+  top: 100vh;
+  transform: translateX(-50%);
+  transition: 2s;
+}

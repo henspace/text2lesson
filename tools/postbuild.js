@@ -29,8 +29,7 @@
 
 import * as postBuildUtils from './postbuild-utils.js';
 import * as i18n from './i18n-build-tools.js';
-import { FileManager } from './file-utils.js';
-import * as fsPromises from 'node:fs/promises';
+import { CSS_TRANSFORMER, FileManager } from './file-utils.js';
 import path from 'node:path';
 import { PROJECT_INFO, PROJECT_TRANSFORMER } from '../project-info.js';
 
@@ -47,8 +46,9 @@ const I18N_ASSETS_SOURCE_DIR = path.join(
  * Execute postbuild actions
  */
 
+postBuildUtils.copyHtmlFileToBuildRoot('./src/index.html');
 postBuildUtils
-  .copyHtmlFileToBuildRoot('./src/index.html')
+  .copyHtmlFileToBuildRoot('./src/session-data-builder.html')
   .then(() => FileManager.makeDir(PROJECT_INFO.buildReportDir))
   .then(() =>
     i18n.extractI18nLiterals(
@@ -64,7 +64,7 @@ postBuildUtils
     FileManager.copyFiles(
       path.join(PROJECT_INFO.sourceDir, PROJECT_INFO.assetsDirRelToSource),
       path.join(PROJECT_INFO.buildDistDir, PROJECT_INFO.assetsDirRelToSource),
-      { filterRe: /^((?!\.test\.).)*$/ }
+      { filterRe: /^((?!\.test\.).)*$/, transformer: CSS_TRANSFORMER }
     )
   )
   .then(() => {

@@ -24,21 +24,25 @@
 
 import { Presenter } from './presenter.js';
 import { QuestionType } from '../problem.js';
-import { ManagedElement } from '../../libs/utils/dom/managedElement.js';
-import { ModalDialog } from '../../libs/utils/userIo/modalDialog.js';
-import { shuffle } from '../../libs/utils/shuffle.js';
-import * as icons from '../../libs/utils/userIo/icons.js';
+import { ManagedElement } from '../../utils/userIo/managedElement.js';
+import { ModalDialog } from '../../utils/userIo/modalDialog.js';
+import { icons } from '../../utils/userIo/icons.js';
+import { MarkState } from '../itemMarker.js';
+import { celebrator, CelebrationType } from '../candy/celebrators.js';
+import { i18n } from '../../utils/i18n/i18n.js';
 
 /**
  * Class names
  * @enum {string}
  */
-const ClassNames = {
+export const ClassName = {
   ANSWER: 'problem-answer',
   ANSWERS: 'problem-answers',
-  BAD_ANSWER: 'bad-answer',
-  GOOD_ANSWER: 'good-answer',
+  EXPLANATION: 'problem-explanation',
+  INCORRECT_ANSWER: 'incorrect-answer',
+  CORRECT_ANSWER: 'correct-answer',
   MISSED_ANSWER: 'missed-answer',
+  AVOIDED_ANSWER: 'avoided-answer',
   QUESTION: 'problem-question',
   SELECTED_ANSWER: 'selected-answer',
 };
@@ -47,7 +51,7 @@ const ClassNames = {
  * Ids
  * @enum {string}
  */
-const Ids = {
+export const ElementId = {
   CLICKED_ANSWER: 'answer',
   CLICKED_SUBMIT: 'submit',
   CLICKED_NEXT: 'next',
@@ -57,152 +61,144 @@ const Ids = {
  * Attributes
  * @enum {string}
  */
-const Attributes = {
+export const Attribute = {
   RIGHT_OR_WRONG: 'data-code',
+};
+
+/**
+ * States for selected answers
+ * @enum {number}
+ */
+export const AnswerSelectionState = {
+  /** Undefined state */
+  UNDEFINED: 0,
+  /** Correct answer selected */
+  CORRECT: 1,
+  /** Incorrect answer selected */
+  INCORRECT: 2,
+  /** Correct answer not selected */
+  MISSED: 3,
+  /** Incorrect answer not selected */
+  AVOIDED: 4,
 };
 
 /**
  * Class to present a problem.
  * Presentation of a Problem provides the full problem and answer.
+ * @class
+ * @extends module:lessons/presenters/presenter.Presenter
  */
 export class ProblemPresenter extends Presenter {
-  /**
-   * @type {Lesson}
-   */
-  #lesson;
-  /** @type {number} */
-  #index;
   /** @type {Problem} */
   #problem;
-  /** @type {ManagedElement} */
+
+  /** @type {module:utils/userIo/managedElement.ManagedElement} */
+  #questionElement;
+
+  /** @type {module:utils/userIo/managedElement.ManagedElement} */
+  #answerElement;
+
+  /** @type {module:utils/userIo/managedElement.ManagedElement} */
+  #explanationElement;
+
+  /** @type {module:utils/userIo/controls.ManagedElement} */
   #submitButton;
-  /** @type {ManagedElement} */
-  #nextButton;
-  /** @type {ManagedElement} */
-  #explanation;
+
+  /** @type {boolean} */
+  #freezeAnswers;
 
   /**
    * Construct.
-   * @param {number} index - the problem index
-   * @param {lesson} lesson - the lesson containing the problem
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
-  constructor(index, lesson) {
-    super('problemPresenter', {
-      titles: [],
-      itemClassName: '',
-      next: (index) => {
-        return new ProblemPresenter(index, this.#lesson);
-      },
-    });
-    this.#index = index;
-    this.#lesson = lesson;
-    this.#problem = lesson.problems[index];
-    this.#buildCustomContent();
-  }
+  constructor(config) {
+    config.titles = [];
+    config.itemClassName = '';
+    super(config, 'div');
+    this.#problem = config.lesson.getNextProblem();
+    this.#questionElement = new ManagedElement('div', ClassName.QUESTION);
+    this.#questionElement.innerHTML = this.#problem.question.html;
 
-  /**
-   * Create the custom content for the problem
-   */
-  #buildCustomContent() {
-    switch (this.#problem.questionType) {
-      case QuestionType.ORDER:
-        break;
-      case QuestionType.FILL:
-        break;
-      case QuestionType.MULTI:
-        break;
-      case QuestionType.ACTIVITY:
-        break;
-      case QuestionType.SIMPLE:
-        this.#buildSimple();
-        break;
+    this.#answerElement = new ManagedElement('div', ClassName.ANSWERS);
+
+    this.#explanationElement = new ManagedElement('div', ClassName.EXPLANATION);
+    this.#explanationElement.innerHTML = this.#problem.explanation.html;
+    this.#explanationElement.hide();
+
+    this.presentation.appendChild(this.#questionElement);
+    this.presentation.appendChild(this.#answerElement);
+    this.presentation.appendChild(this.#explanationElement);
+    this.addButtons();
+
+    this.#submitButton.show();
+    this.#freezeAnswers = false;
+    if (!this.config.lessonInfo.managed) {
+      this.hideHomeButton();
     }
   }
 
-  /** Build a simple question. */
-  #buildSimple() {
-    this.#addQuestion();
-    this.#addAnswers();
+  /**
+   * @returns {module:lessons/problem.Problem} the underlying problem
+   */
+  get problem() {
+    return this.#problem;
+  }
+
+  /**
+   * @returns {module:utils/userIo/managedElement.ManagedElement}
+   */
+  get questionElement() {
+    return this.#questionElement;
+  }
+
+  /**
+   * @returns {module:utils/userIo/managedElement.ManagedElement}
+   */
+  get answerElement() {
+    return this.#answerElement;
+  }
+
+  /**
+   * @returns {module:utils/userIo/managedElement.ManagedElement}
+   */
+  get explanationElement() {
+    return this.#explanationElement;
+  }
+
+  /**
+   * @returns {module:utils/userIo/managedElement.ManagedElement}
+   */
+  get submitButton() {
+    return this.#submitButton;
+  }
+
+  /**
+   * Add button bar to the presenter.
+   */
+  addButtons() {
     this.#addSubmitButton();
-    this.#addHiddenExplanation();
-    this.#addHiddenNextButton();
   }
 
   /**
-   * Append the question.
+   * Append a submit button. In this context, submit means sending the selected
+   * answers for marking.
+   * @private
    */
-  #addQuestion() {
-    const questionElement = new ManagedElement('div', ClassNames.QUESTION);
-    questionElement.innerHTML = this.#problem.question.html;
-    this.appendChild(questionElement);
-  }
-
-  /**
-   * Append the answers
-   */
-  #addAnswers() {
-    const answerElement = new ManagedElement('div', ClassNames.ANSWERS);
-    const answers = [];
-    this.#pushAnswerElementsToArray(this.#problem.rightAnswers, answers, true);
-    this.#pushAnswerElementsToArray(this.#problem.wrongAnswers, answers, false);
-
-    shuffle(answers);
-
-    answers.forEach((element) => {
-      answerElement.appendChild(element);
-      this.listenToEventOn('click', element, Ids.CLICKED_ANSWER);
-    });
-    this.appendChild(answerElement);
-  }
-
-  /**
-   * Create Elements for the answers and adds to the array.
-   * The `Attributes.RIGHT_OR_WRONG` attribute is set to true or false to flag the answer status.
-   * @param {TextItem[]} answers - answers to create elements for
-   * @param {Element[]} destination - target array for push
-   * @param {boolean} areRight - true if these are correct answers.
-   */
-  #pushAnswerElementsToArray(answers, destination, areRight) {
-    answers.forEach((value) => {
-      const element = new ManagedElement('button', ClassNames.ANSWER);
-      element.innerHTML = value.html;
-      element.setSafeAttribute(Attributes.RIGHT_OR_WRONG, areRight);
-      destination.push(element);
-    });
-  }
-
   #addSubmitButton() {
-    this.#submitButton = new ManagedElement('button', ClassNames.ANSWER_SUBMIT);
-    icons.applyIconToElement(
-      icons.ICON_HTML.SUBMIT_ANSWER,
-      this.#submitButton.element
-    );
-    this.listenToEventOn('click', this.#submitButton, Ids.CLICKED_SUBMIT); // numeric handler means this will resolve the presenter.
-    this.appendChild(this.#submitButton);
-  }
-
-  #addHiddenExplanation() {
-    this.#explanation = new ManagedElement('div', ClassNames.EXPLANATION);
-    this.#explanation.innerHTML = this.#problem.explanation.html;
-    this.#explanation.hide();
-  }
-
-  #addHiddenNextButton() {
-    this.#nextButton = new ManagedElement('button', ClassNames.NEXT_PROBLEM);
-    icons.applyIconToElement(
-      icons.ICON_HTML.NEXT_PROBLEM,
-      this.#nextButton.element
-    );
-    this.listenToEventOn('click', this.#nextButton, Ids.CLICKED_NEXT);
-    this.appendChild(this.#nextButton);
-    this.#nextButton.hide();
+    this.#submitButton = new ManagedElement('button', ClassName.ANSWER_SUBMIT);
+    icons.applyIconToElement(icons.submitAnswer, this.#submitButton.element);
+    this.listenToEventOn('click', this.#submitButton, ElementId.CLICKED_SUBMIT); // numeric handler means this will resolve the presenter.
+    this.addButtonToBar(this.#submitButton);
   }
 
   /**
    * @override
    */
   presentOnStage(stage) {
-    if (this.#problem.intro.html !== '') {
+    if (
+      this.#problem.intro.html !== '' &&
+      this.#problem.questionType !== QuestionType.SLIDE
+    ) {
       return ModalDialog.showInfo(this.#problem.intro.html).then(() =>
         super.presentOnStage(stage)
       );
@@ -212,85 +208,70 @@ export class ProblemPresenter extends Presenter {
   }
 
   /**
-   * @override
    * Handle the answers. Any other event is passed on to the base Presenter's
    * handler.
    * @param {Event} event
    * @param {string} eventId
+   * @override
    */
   handleClickEvent(event, eventId) {
     switch (eventId) {
-      case Ids.CLICKED_ANSWER:
-        this.#processClickedAnswer(event.currentTarget);
-        break;
-      case Ids.CLICKED_SUBMIT:
-        this.#processClickedSubmit();
-        break;
-      case Ids.CLICKED_NEXT:
-        super.handleClickEvent(event, '0');
-        break;
-    }
-  }
-
-  /**
-   * Handle a clicked answer
-   * @param {Element} element
-   */
-  #processClickedAnswer(element) {
-    switch (this.#problem.questionType) {
-      case QuestionType.ORDER:
-        break;
-      case QuestionType.FILL:
-        break;
-      case QuestionType.MULTI:
-        element.classList.toggle(ClassNames.SELECTED_ANSWER);
-        break;
-      case QuestionType.ACTIVITY:
-        break;
-      case QuestionType.SIMPLE:
-        {
-          const selected = element.classList.contains(
-            ClassNames.SELECTED_ANSWER
-          );
-          this.#deselectAllAnswers();
-          if (!selected) {
-            element.classList.add(ClassNames.SELECTED_ANSWER);
-          }
+      case ElementId.CLICKED_ANSWER:
+        if (!this.#freezeAnswers) {
+          this.processClickedAnswer(event.currentTarget);
         }
         break;
+      case ElementId.CLICKED_SUBMIT:
+        this.#freezeAnswers = true;
+        this.#processClickedSubmit();
+        break;
+      default:
+        super.handleClickEvent(event, eventId);
     }
   }
 
   /**
-   * Deselect all of the answers.
+   * @override
    */
-  #deselectAllAnswers() {
-    const allAnswers = document.querySelectorAll(`.${ClassNames.ANSWER}`);
-    allAnswers.forEach((element) =>
-      element.classList.remove(ClassNames.SELECTED_ANSWER)
-    );
+  async allowNavigation(event, eventId) {
+    if (eventId === Presenter.HOME_ID || eventId === Presenter.PREVIOUS_ID) {
+      return this.askIfOkayToLeave(
+        i18n`Are you sure you want to quit the lesson?`
+      );
+    } else {
+      return true;
+    }
   }
 
   /**
-   * Mark the answer.
+   * Process a clicked answer. This should be overridden.
+   * @param {Element} target
+   */
+  processClickedAnswer(target) {
+    console.debug(`Process ${target.tagName}:${target.className}`);
+  }
+
+  /**
+   * Process a clicked answer.
+   * @param {Element} target
    */
   #processClickedSubmit() {
-    const allAnswers = document.querySelectorAll(`.${ClassNames.ANSWER}`);
-    allAnswers.forEach((element) => {
-      const isRight =
-        ManagedElement.getSafeAttribute(
-          element,
-          Attributes.RIGHT_OR_WRONG
-        ).toLowerCase() === 'true';
-      if (element.classList.contains(ClassNames.SELECTED_ANSWER)) {
-        element.classList.add(
-          isRight ? ClassNames.GOOD_ANSWER : ClassNames.BAD_ANSWER
-        );
-      } else if (isRight) {
-        element.classList.add(ClassNames.MISSED_ANSWER);
-      }
-    });
+    const correct = this.areAnswersCorrect();
+    this.config.lesson.markProblem(
+      this.#problem,
+      correct ? MarkState.CORRECT : MarkState.INCORRECT
+    );
     this.#submitButton.hide();
-    this.#nextButton.show();
+    this.showNextButton(true);
+    celebrator.celebrate(correct ? CelebrationType.HAPPY : CelebrationType.SAD);
+  }
+
+  /**
+   * Mark the answers. This should be overridden.
+   * @returns {boolean} true if all correct.
+   */
+  areAnswersCorrect() {
+    console.debug(`Override markAnswers should be overridden.`);
+    return false;
   }
 }

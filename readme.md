@@ -1,129 +1,89 @@
-# Rapid Q and A
+# Text2Lesson UNDER CONSTRUCTION
 
-Rapid Q and A is an application to simplify the creation of lessons and quizzes
+Text2Lesson is an application to simplify the creation of lessons and quizzes
 using a simple plain text file.
 
-## Build process
+# Lesson format
 
-The build process relies on [Rollup](https://rollupjs.org/) to bundle the
-JavaScript modules. Although there are a number of plugins available for Rollup,
-a decision has been made to minimise the number of plugins required for the
-build process. At the moment no Rollup plugins are in use.
+All lessons are created using plain text files.
 
-Google Workbox is used to create the service worker, but this is used in the
-_postbuild_ scripts rather than via a plugin.
+Lessons are written using a very simple, intuitive format. The file is then
+broken up into a number of problems. Each problem then comprises a number of
+items.
 
-Likewise, string replacements and compression, via _Terser_, take place in the
-_postbuild_ script.
+Before the problems, the file can contain meta data for the lesson. Any lines
+which precede the first problem are automatically assumed to form the meta data.
 
-Packages used for actions such as compressing code and linting are run via their
-command line commands or from within prebuild and postbuild scripts.
+With the exception of meta data, items are separated by a lines which start with
+a key character enclosed in () brackets. Any other characters following the
+brackets forms part of the data for the item.
 
-All other external packages used for the build process are managed by the
-following scripts:
+Item identifiers are as follows:
 
-- build-utilities/prebuild.js
-- build-utilities/postbuild.js
+- (i) introduction
+- (?) question
+- (=) right answer
+- (x) wrong answer
+- (+) explanation
 
-### String replacements
+The key character and opening and closing brackets can be repeated allowing more
+visually distinctive item separators to be created. The separator can also be
+preceded by up to three spaces. For example, the following lines are all valid
+separators for an introduction item:
 
-String replacements take place in _postbuild.js_. The placeholders which are
-replaced are given names wrapped between <span>$</span>\_ and \_<span>$</span>
-characters.
+- (i)
+- &nbsp;&nbsp;&nbsp;(i)
+- (i)optional data following key
+- (((((((((((i)))))))))))
+- (iiiiiiiiiiiiiiiiiiiii)
 
-String replacements are normally provided without quotes. These string
-replacements are given names ending with _TXT_ and should be quoted in the code.
-This allows code to be viewed before building. String replacements which are
-provided with quotes and which should be not enclosed in quotes in the code, are
-given names ending with _STR_. The following code snippets show how this
-convention is applied.
+These can appear in any order but normally introduction, question, right
+answers, wrong answers, and explanation would be the most logical.
 
-```
-var a = "__NAME_TXT__";
-var b = __NAME_STR__;
-```
+Each problem can only contain one introduction, question and explanation item. A
+new introduction, question or explanation item identifies the start of a new
+problem.
 
-At present, the following substitutions are available:
+Each problem can contain multiple right and wrong answers. The program uses the
+presence of multiple answers to determine the type of question that is being
+asked.
 
-- <span>$</span>\_APP\_VERSION\_TXT\_<span>$</span> - application version
-- <span>$</span>\_BUILD\_DATE\_TXT\_<span>$</span> - date of the build
-- <span>$</span>\_BUILD\_MODE\_TXT\_<span>$</span> - build mode: production or
-  developement.
-- <span>$</span>\_BUNDLE\_NAME\_TXT\_<span>$</span> - name of the final code
-  bundle
-- <span>$</span>\_BUILD\_YEAR\_<span>$</span> - year of the build. Numeric
-  replacement.
-- <span>$</span>\_PRODUCT\_NAME\_TXT\_<span>$</span> - year of the build.
-  Numeric replacement.
+# Metadata
 
-Build information is provided via _constants.js_.
+Metadata is additional information about the lesson that can be included later
+in your problems. See {@tutorial metadata} for more information.
 
-### Internationalisation
+# Question types
 
-Translations are controlled by using template literals with an _i18n_ tag
-function. During the build process, the final javascript bundle is processed and
-this strings are replace by template literals beginning with a hash of the
-original text. The extracted original definitions are extracted to the master
-language file. This can then be used to create translations. Refer to
-_tools\i18n-build-tools.js_ for more details.
+The program supports six question types. The type is automatically derived from
+the way the question is defined:
 
-Translation files are json files containing key and value entries. The _key_
-contains the hash of the original translation. The _value_ contains the
-translated value.
+- simple: a multiple choice question with just one correct answer.
+- multi: a multiple choice question where the user can select more than one
+  correct answer.
+- fill: a fill the blank question. Users have a selection of words which they
+  must select to fill in the blanks in the question. This type is created if the
+  question has an array of missing words which are not blank. Any wrong answers
+  are added as red herrings. Note that only the first word of any wrong answer
+  is used. If right answers have also been added, they are ignored. Note that if
+  the question has one missing word with no content at the end, this is taken as
+  the trigger to add an extra answer line at the end and this becomes an order
+  question.
+- order: a select the answers in the correct order question. Users have a
+  selection of words which they must select in the correct order. Any wrong
+  answers that have been defined are treated as red herrings. This is similar to
+  the fill question, but with the correct selections being added to a separate
+  answer line rather than being inserted into blanks in the question. This type
+  is created if there is a single missing word (...) at the end with no content.
+- slide: there is no question to answer. The user can just continue when ready.
+  This is the default if the question does not fall into any of the other
+  categories.
 
-Replacement values are inserted in the template at ocations marked with
-<span>$</span>{n}, where n is the index of the replacement provided in the
-values. If n is omitted or is not a number, the index used is derived from it's
-position in the template. So these are equivalent:
+# Markdown
 
-- 'This is my <span>$</span>{0} replacement <span>$</span>{1} string'
-- 'This is my <span>$</span>{} replacement <span>$</span>{} string'
-- 'This is my
-  <span>$</span>{BUILD-INFO.date()} replacement <span>$</span>{BUILD-INFO.mode()}
-  string'
+## Missing words
 
-This means it is only necessary to amend the original placeholders if it is
-necessary to rearrange the position of the strings.
-
-The location of files is controlled by following options in the _config_
-property of _package.json_.
-
-- "i18nMasterLanguage": "en",
-- "i18nAssetsDirRelToSource": "assets/i18n",
-
-The master file, will be created in the _i18nAssetsDirRelToSource_ folder.
-Translations should also be placed here.
-
-Reports about the status of translations will be created in the folder defined
-by _buildReportDir_ in _config_ property of _package.json_. These reports will
-identify and missing or unused translations contained in the translations.
-
-### Build information
-
-Information for the build is encapsulated by the _build-utilities/project-info_
-module. Where possible, all information used by scripts should be picked up from
-the _ProjectInfo_ object. The _ProjectInfo_ object is populated as far as
-possible from the _package.json_ file with addition information that is either
-not included as standard or not exposed in the _process.env_ object place in the
-_config_ property.
-
-In general, all build information should come from _package.json_ and then be
-accessed via _ProjectInfo_. This means that only the
-_build-utilities/project-info_ needs to worry about processing any variables.
-
-### A word on production and development modes
-
-The _production_ and _development_ build modes present a particular problem.
-Because the environment variable _process.env.NODE_ENV_ is commonly used by
-plugins and third-party packages, this needs to be set to the appropriate mode.
-
-To facilitate this, the script _./build-utilities/run-in-env.js_ can be used. In
-general, if you think the output from a script may depend on the build mode, you
-should create the npm script as a child and then invoke that using the
-_run-in-env.js_ script. An example is shown below:
-
-    "scripts": {
-      "buildDev": "node ./build-utilities/run-in-env.js -d buildChild",
-      "buildChild": "rollup -c",
-      ...
-    },
+Missing words are created by adding three points followed by the word that
+should be regarded as missing. So `...REMOVE` would not display the word
+`REMOVE` but would leave a gap. This is used for questions where the user must
+select the missing word from a number of options.

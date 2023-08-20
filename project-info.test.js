@@ -20,7 +20,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*global test, expect */
+/*global test, expect, Buffer */
 import { PROJECT_INFO, PROJECT_TRANSFORMER } from './project-info.js';
 import path from 'node:path';
 
@@ -51,7 +51,7 @@ expect.extend({
 });
 
 test('PROJECT_INFO properties should match standard build structure.', () => {
-  expect(PROJECT_INFO.appName).toBe('rapid-qanda');
+  expect(PROJECT_INFO.appName).toBe('text2lesson');
   expect(PROJECT_INFO.appVersion).toMatch(/\d+\.\d+\.\d+/);
   expect(PROJECT_INFO.assetsDirRelToSource).toBe('assets');
   expect(PROJECT_INFO.buildDate instanceof Date).toBe(true);
@@ -63,7 +63,7 @@ test('PROJECT_INFO properties should match standard build structure.', () => {
     `${PROJECT_INFO.appName}.js`
   );
   expect(PROJECT_INFO.bundleName).toBe(`${PROJECT_INFO.appName}.js`);
-  expect(PROJECT_INFO.cacheId).toMatch(/\w_/);
+  expect(PROJECT_INFO.cacheId).toMatch(/[a-zA-Z0-9_]/);
   expect(PROJECT_INFO.distributedLicencePath).toMatch(
     /\.\/licenses\/[a-zA-Z0-9-]+\.md/
   );

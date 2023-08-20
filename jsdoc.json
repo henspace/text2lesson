@@ -1,6 +1,6 @@
 {
   "plugins": ["plugins/markdown"],
-  "recurseDepth": 20,
+  "recurseDepth": 30,
   "source": {
     "include": ["src/scripts"],
     "includePattern": "\\.m?js$",
@@ -17,7 +17,6 @@
     "destination": "./jsdoc",
     "recurse": true,
     "readme": "./readme.md",
-    "sort": true,
     "tutorials": "./tutorials"
   },
   "markdown": {

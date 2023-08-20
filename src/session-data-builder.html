@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- 
+This file is intended to be embedded in a local file.
+It allows data to be passed in via a search parameter in the url.
+Data are accumulated in session storage, which then allows it to be picked up
+by another page later. This gets over the 2048 theoretical URL limit.
+The iframe containing this should be hidden while loading.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Embedded loader</title>
+  </head>
+  <body></body>
+  <script>
+    window.addEventListener('load', () => {
+      const searchParams = new URL(window.location.href).searchParams;
+      if (searchParams.size === 0) {
+        sessionStorage.clear();
+        return;
+      }
+      for (const [key, value] of searchParams) {
+        const decodedValue = decodeURI(value);
+        const existingData = sessionStorage.getItem(key) ?? '';
+        sessionStorage.setItem(key, existingData + value);
+      }
+    });
+  </script>
+</html>

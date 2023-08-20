@@ -21,16 +21,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { i18n } from '../libs/utils/i18n/i18n.js';
+import { i18n } from '../utils/i18n/i18n.js';
 import {
   setCssFromPalette,
   createPalette,
-} from '../libs/utils/color/colorPalettes.js';
+} from '../utils/color/colorPalettes.js';
 
 import { lessonManager } from '../lessons/lessonManager.js';
 
-import { getFromStorage } from '../libs/utils/userIo/settings.js';
-import * as cssVariables from '../libs/utils/color/cssVariables.js';
+import { persistentData } from '../utils/userIo/storage.js';
+import * as cssVariables from '../utils/color/cssVariables.js';
 
 const DEFAULT_HUE = 120;
 const DEFAULT_SATURATION = 50;
@@ -38,19 +38,24 @@ const DEFAULT_COLOR_SPREAD = 120;
 const DEFAULT_DARK_MODE = false;
 const DEFAULT_FONT_SIZE = 15;
 const DEFAULT_LIBRARY_KEY = 'EN';
+const DEFAULT_READING_SPEED = '180';
 
 /**
  * Create a palette.
  * @param {module:utils/color/colorPalettes~PaletteSettings} settings
  */
 function setPalette(settings) {
-  settings.hue = settings.hue ?? getFromStorage('hue', DEFAULT_HUE);
+  settings.hue =
+    settings.hue ?? persistentData.getFromStorage('hue', DEFAULT_HUE);
   settings.saturation =
-    settings.saturation ?? getFromStorage('saturation', DEFAULT_SATURATION);
+    settings.saturation ??
+    persistentData.getFromStorage('saturation', DEFAULT_SATURATION);
   settings.spread =
-    settings.spread ?? getFromStorage('spread', DEFAULT_COLOR_SPREAD);
+    settings.spread ??
+    persistentData.getFromStorage('spread', DEFAULT_COLOR_SPREAD);
   settings.dark =
-    settings.dark ?? getFromStorage('darkMode', DEFAULT_DARK_MODE);
+    settings.dark ??
+    persistentData.getFromStorage('darkMode', DEFAULT_DARK_MODE);
   setCssFromPalette(createPalette(settings));
 }
 
@@ -100,7 +105,7 @@ export function getSettingDefinitions() {
       },
     },
     darkMode: {
-      type: 'toggle',
+      type: 'checkbox',
       label: i18n`Dark mode`,
       defaultValue: DEFAULT_DARK_MODE,
       onupdate: (value) => {
@@ -117,18 +122,25 @@ export function getSettingDefinitions() {
         cssVariables.setProperty('--font-base-size', `${value}px`);
       },
     },
+    readingSpeed: {
+      type: 'range',
+      label: i18n`Reading speed (wpm)`,
+      defaultValue: DEFAULT_READING_SPEED,
+      min: 80,
+      max: 1000,
+    },
     lessonInfo: {
       type: 'separator',
       label: i18n`Lesson settings`,
     },
     library: {
       type: 'select',
-      label: i18n`Library`,
+      label: i18n`Remote library`,
       defaultValue: DEFAULT_LIBRARY_KEY,
       onupdate: (value) => {
-        lessonManager.libraryKey = value;
+        lessonManager.remoteLibraryKey = value;
       },
-      options: () => lessonManager.libraryTitles,
+      options: () => lessonManager.remoteLibraryTitles,
       reloadIfChanged: true,
     },
   };

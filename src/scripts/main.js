@@ -22,22 +22,22 @@
  *
  */
 
-import { BUILD_INFO } from './data/constants.js';
+import { BuildInfo } from './data/constants.js';
 import { getSettingDefinitions } from './data/settingDefinitions.js';
 import { getMainMenuItems } from './data/menuItems.js';
-import { WELCOME } from './data/welcome.js';
 import { lessonManager } from './lessons/lessonManager.js';
 
-import { setMenuItems } from './libs/utils/userIo/menu.js';
-import { ModalDialog } from './libs/utils/userIo/modalDialog.js';
-import { registerServiceWorker } from './libs/utils/serviceWorkers/serviceWorkersUtilities.js';
-import { resolveLanguages } from './libs/utils/i18n/i18FileResolver.js';
-import { loadSettingDefinitions } from './libs/utils/userIo/settings.js';
-import { setStorageKeyPrefix } from './libs/utils/userIo/settings.js';
-import { i18n } from './libs/utils/i18n/i18n.js';
-import { ManagedElement } from './libs/utils/dom/managedElement.js';
-import { LibraryPresenter } from './lessons/presenters/libraryPresenter.js';
-
+import { ModalDialog } from './utils/userIo/modalDialog.js';
+import { registerServiceWorker } from './utils/serviceWorkers/serviceWorkersUtilities.js';
+import { resolveLanguages } from './utils/i18n/i18FileResolver.js';
+import { loadSettingDefinitions } from './utils/userIo/settings.js';
+import { persistentData } from './utils/userIo/storage.js';
+import { i18n } from './utils/i18n/i18n.js';
+import { StageManager } from './lessons/presenters/stageManager.js';
+import { PresenterFactory } from './lessons/presenters/presenterFactory.js';
+import { setTitleBarAndFooter } from './setTitleBarAndFooter.js';
+import './utils/userIo/modalMask.js';
+import './utils/userIo/screenSizer.js';
 /**
  * Get the language files required for the application.
  * If the application has not been build, the application just returns a fulfilled
@@ -45,15 +45,15 @@ import { LibraryPresenter } from './lessons/presenters/libraryPresenter.js';
  * @returns {Promise} Fulfils to undefined.
  */
 function getLanguages() {
-  if (!BUILD_INFO.isBuilt()) {
+  if (!BuildInfo.isBuilt()) {
     return Promise.resolve(undefined);
   }
   return resolveLanguages('./languages.json')
     .then(() => {
       console.info(
         `Build information: ${
-          BUILD_INFO.bundleName
-        } ${BUILD_INFO.version()} ${BUILD_INFO.mode()}`
+          BuildInfo.getBundleName
+        } ${BuildInfo.getVersion()} ${BuildInfo.getMode()}`
       );
       return;
     })
@@ -69,14 +69,16 @@ function getLanguages() {
     });
 }
 
-if (BUILD_INFO.isBuilt()) {
-  registerServiceWorker(BUILD_INFO.mode());
+if (BuildInfo.isBuilt()) {
+  registerServiceWorker(BuildInfo.getMode());
 }
 
 window.addEventListener('load', () => {
-  setStorageKeyPrefix(`LR_${BUILD_INFO.bundleName().replace('.', '_')}`);
-  getLanguages()
-    .then(() => lessonManager.loadLibraries('assets/lessons/libraries.json'))
+  persistentData.setStorageKeyPrefix(
+    `LR_${BuildInfo.getBundleName().replace('.', '_')}`
+  );
+  return getLanguages()
+    .then(() => lessonManager.loadAllLibraries('assets/lessons/libraries.json'))
     .then(() => loadSettingDefinitions(getSettingDefinitions()))
     .then(() => {
       const language = i18n`language::`;
@@ -86,28 +88,20 @@ window.addEventListener('load', () => {
       }
       return true;
     })
-    .then(() => setMenuItems(getMainMenuItems()))
+    .then(() => setTitleBarAndFooter(getMainMenuItems()))
+    .then(() => lessonManager.loadAllLibraryContent())
     .then(() => {
-      return ModalDialog.showInfo(WELCOME);
+      const stage = document.getElementById('stage');
+      return new StageManager(stage).startShow(PresenterFactory.getInitial());
     })
-    .then(() => lessonManager.loadCurrentLibrary())
     .then(() => {
-      return runPresentationLoop();
+      console.warn('Did not expect to get here.');
+      ModalDialog.showInfo(
+        i18n`The application has finished. It will now start again.`
+      ).then(() => window.location.reload());
     })
     .catch((error) => {
       console.error(error);
       ModalDialog.showFatal(error).then(() => window.location.reload());
     });
 });
-
-/**
- * The main pesentation loop.
- */
-async function runPresentationLoop() {
-  const stage = new ManagedElement(document.getElementById('stage'));
-  let presenter = new LibraryPresenter();
-  for (;;) {
-    presenter = await presenter.presentOnStage(stage);
-    stage.removeChildren();
-  }
-}

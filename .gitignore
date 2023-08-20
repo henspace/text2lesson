@@ -1,8 +1,9 @@
-# rapid-qanda build and documentation
+# text2lesson build and documentation
 build/
 jsdoc/
 jsdoc-tools/
-
+scratchpad/
+src/assets/i18n/en.json
 # Logs
 logs
 *.log

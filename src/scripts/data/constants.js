@@ -25,16 +25,17 @@
 /**
  * Build information. All values are provided via functions to allow the
  * application to be viewed with a server on the source *index.html* file
- * prior to build. The use of functions prevents tree-shaking by Rollup.
+ * prior to build. The use of functions prevents constant replacements during build process.
  * @property {function():boolean} isBuilt - has the code been built.
  * This distinguishes versions which are being viewed directly from the source.
  * @property {function():string} mode - production or development
  * @property {function():string} version - build version
  * @property {function():string} bundleName - final bundle name including the extension
  */
-export const BUILD_INFO = {
-  isBuilt: () => BUILD_INFO.mode().indexOf('$') < 0,
-  mode: () => '$_BUILD_MODE_TXT_$',
-  version: () => '$_APP_VERSION_TXT_$ ',
-  bundleName: () => '$_BUNDLE_NAME_TXT_$',
+export const BuildInfo = {
+  isBuilt: () => BuildInfo.getMode().indexOf('$') < 0,
+  getBuildDate: () => '$_BUILD_DATE_TXT_$',
+  getMode: () => '$_BUILD_MODE_TXT_$',
+  getVersion: () => '$_APP_VERSION_TXT_$ ',
+  getBundleName: () => '$_BUNDLE_NAME_TXT_$',
 };

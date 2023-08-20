@@ -19,20 +19,25 @@
     />
   </head>
   <body>
-    <h1 class="title">$_PRODUCT_NAME_TXT_$</h1>
-    <noscript>
+    <div id="modal-mask"></div>
+    <div id="title-bar"></div>
+    <div id="content" class="container">
+      <div id="stage"></div>
+    </div>
+    <div id="footer" class="container"></div>
+    <script type="module" src="scripts/main.js"></script>
+    <noscript class="always-on-top">
       <p>
         Your browser does not support scripts and so this application cannot
         run. If you've disabled scripts, you will need to enable them to
         proceed. Sorry.
       </p>
     </noscript>
-    <div id="header">The header.</div>
-    <div id="content">
-      <div id="stage"></div>
+    <div id="browser-not-supported">
+      <p>
+        Sorry, but your browser does not support the features necessary to run
+        this application. Try upgrading your browser to the latest version.
+      </p>
     </div>
-    <div id="footer">The footer.</div>
-
-    <script type="module" src="scripts/main.js"></script>
   </body>
 </html>

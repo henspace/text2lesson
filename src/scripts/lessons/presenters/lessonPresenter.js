@@ -1,7 +1,7 @@
 /**
  * @file Lesson Presenter
  *
- * @module lessons\presenters\lessonPresenter
+ * @module lessons/presenters/lessonPresenter
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -23,43 +23,110 @@
  */
 
 import { Presenter } from './presenter.js';
-import { ProblemPresenter } from './problemPresenter.js';
-import { ChapterPresenter } from './chapterPresenter.js';
 import { lessonManager } from '../lessonManager.js';
 import { LessonSource } from '../lessonSource.js';
+import { i18n } from '../../utils/i18n/i18n.js';
+import { icons } from '../../utils/userIo/icons.js';
+import { ManagedElement } from '../../utils/userIo/managedElement.js';
 
 /**
  * Class to present a Lesson.
  * Presentation of a Lesson involves displaying the lesson summary.
+ * @extends module:lessons/presenters/presenter.Presenter
  */
 export class LessonPresenter extends Presenter {
   /**
-   * Construct.
+   * @type {string}
    */
-  constructor() {
-    const lessonInfo = lessonManager.currentLessonInfo;
-    super('lessonPresenter', {
-      titles: [
-        lessonInfo.titles.library,
-        lessonInfo.titles.book,
-        lessonInfo.titles.chapter,
-        lessonInfo.titles.lesson,
-      ],
-      itemClassName: 'lessonTitle',
-      next: (indexIgnored) => {
-        return lessonManager.loadCurrentLesson().then((cachedLesson) => {
-          const lessonSource = LessonSource.createFromSource(
-            cachedLesson.content
-          );
-          return new ProblemPresenter(0, lessonSource.convertToLesson());
-        });
-      },
-      previous: () => {
-        const currentLessonInfo = lessonManager.currentLessonInfo;
-        return Promise.resolve(
-          new ChapterPresenter(currentLessonInfo.indexes.chapter)
+  static EDIT_EVENT_ID = 'EDIT_LESSON';
+
+  /**
+   * Construct.
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+   */
+  constructor(config) {
+    config.titles = ['placeholder']; // this will be replaced later.
+    config.itemClassName = 'lesson-summary';
+    super(config);
+    this.config.lessonInfo = lessonManager.currentLessonInfo;
+    this.#buildCustomContent();
+    this.autoAddKeydownEvents();
+    if (this.config?.factory?.hasPrevious(this)) {
+      this.showBackButton();
+    }
+  }
+
+  /**
+   * Build custom content for the lesson.
+   */
+  #buildCustomContent() {
+    this.presentation.createAndAppendChild('h2', null, i18n`Selected lesson:`);
+    const summaryBlock = this.presentation.createAndAppendChild(
+      'div',
+      'lesson-summary'
+    );
+    summaryBlock.createAndAppendChild(
+      'span',
+      'lesson-title',
+      this.config.lessonInfo.titles.lesson
+    );
+    summaryBlock.createAndAppendChild('p', null, i18n`taken from`);
+    summaryBlock.createAndAppendChild(
+      'span',
+      'library-title',
+      this.config.lessonInfo.titles.library
+    );
+    if (!lessonManager.usingLocalLibrary) {
+      summaryBlock.createAndAppendChild(
+        'span',
+        'book-title',
+        this.config.lessonInfo.titles.book
+      );
+      summaryBlock.createAndAppendChild(
+        'span',
+        'chapter-title',
+        this.config.lessonInfo.titles.chapter
+      );
+    }
+
+    this.presentation.appendChild(summaryBlock);
+    this.applyIconToNextButton(icons.playLesson);
+    this.showNextButton();
+    this.#addEditButtonIfLocal();
+  }
+
+  /**
+   * Add the edit button
+   */
+  #addEditButtonIfLocal() {
+    if (this.config.lessonInfo.usingLocalLibrary) {
+      const editButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.edit, editButton);
+      this.addButtonToBar(editButton);
+      this.listenToEventOn('click', editButton, LessonPresenter.EDIT_EVENT_ID);
+    }
+  }
+
+  /**
+   * @override
+   */
+  next(eventId) {
+    if (eventId === LessonPresenter.EDIT_EVENT_ID) {
+      return this.config.factory.getEditor(this, this.config);
+    } else {
+      return lessonManager.loadCurrentLesson().then((cachedLesson) => {
+        const lessonSource = LessonSource.createFromSource(
+          cachedLesson.content
         );
-      },
-    });
+        this.config.lesson = lessonSource.convertToLesson();
+        return this.config.factory.getNext(this, this.config);
+      });
+    }
+  }
+  /**
+   * @override
+   */
+  previous() {
+    return this.config.factory.getPrevious(this, this.config);
   }
 }

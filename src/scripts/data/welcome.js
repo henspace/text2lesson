@@ -21,11 +21,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { i18n } from '../libs/utils/i18n/i18n.js';
+import { i18n } from '../utils/i18n/i18n.js';
 
-export const WELCOME = i18n`#Welcome
+/**
+ * Implemented as function to prevent it being computed if module load
+ * occurs before languages have been resolved.
+ * @returns {string} Text for welcome message.
+ */
+export const getWelcome = () => i18n`
 Hi! Welcome to $_PRODUCT_NAME_TXT_$.
 This is the fun way to learn coding. This is intend to take you from absolutely
 no knowledge to being able to write code in HTML, CSS and JavaScript. What!
-I don't know what those are! Don't worry, you soon will.
+you don't know what those are! Don't worry, you soon will.
 Let's get started.`;

@@ -21,10 +21,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { PRIVACY } from './privacy.js';
-import { i18n } from '../libs/utils/i18n/i18n.js';
-import { showAllSettings } from '../libs/utils/userIo/settings.js';
-import { ModalDialog } from '../libs/utils/userIo/modalDialog.js';
+import { showAllSettings } from '../utils/userIo/settings.js';
+import { icons } from '../utils/userIo/icons.js';
+import { Urls } from './urls.js';
 
 /**
  * Get the main menu items.
@@ -32,11 +31,16 @@ import { ModalDialog } from '../libs/utils/userIo/modalDialog.js';
  */
 export function getMainMenuItems() {
   return [
-    { text: i18n`Settings`, command: { execute: () => showAllSettings() } },
-    { text: '', command: null },
     {
-      text: i18n`Privacy`,
-      command: { execute: () => ModalDialog.showInfo(PRIVACY) },
+      iconDetails: icons.settings,
+      command: { execute: () => showAllSettings() },
+    },
+    { iconDetails: null, command: null },
+    {
+      iconDetails: icons.privacy,
+      command: {
+        execute: () => window.open(Urls.PRIVACY, '_blank'),
+      },
     },
   ];
 }

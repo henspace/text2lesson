@@ -31,7 +31,7 @@ export const QuestionType = {
   MULTI: 'multi',
   FILL: 'fill',
   ORDER: 'order',
-  ACTIVITY: 'activity',
+  SLIDE: 'slide',
 };
 
 /**
@@ -66,7 +66,7 @@ export class Problem {
   /**
    * @type {QuestionType}
    */
-  #questionType = QuestionType.ACTIVITY;
+  #questionType = QuestionType.SLIDE;
 
   /**
    * Construct `Problem`.
@@ -148,6 +148,34 @@ export class Problem {
   }
 
   /**
+   * Get the first words from the wrong answers.
+   * @returns {string[]}
+   */
+  get firstWordsOfWrongAnswers() {
+    return this.#extractFirstWords(this.wrongAnswers);
+  }
+  /**
+   * Get the first words from the wrong answers.
+   * @returns {string[]}
+   */
+  get firstWordsOfRightAnswers() {
+    return this.#extractFirstWords(this.rightAnswers);
+  }
+
+  /**
+   * Extract the first word from
+   * @param {module:lessons/textItem-parser~TextItem} data
+   * @returns {string[]}
+   */
+  #extractFirstWords(data) {
+    const words = [];
+    data.forEach((textItem) => {
+      words.push(textItem.firstWord);
+    });
+    return words;
+  }
+
+  /**
    * Set the wrongAnswers
    * @param {module:lessons/textItem-parser~TextItem[]} value
    */
@@ -187,13 +215,13 @@ export class Problem {
    * separate answer line rather than being inserted into blanks in the
    * question. This type is created if there is a single missing word (...) at
    * the end with no content.
-   * +activity: there is no question to answer. The user can just continue when
+   * +slide: there is no question to answer. The user can just continue when
    * ready. This is the default if the question does not fall into any of the
    * other categories.
    */
   #deriveQuestionType() {
     if (!this.#question?.html) {
-      return QuestionType.ACTIVITY;
+      return QuestionType.SLIDE;
     }
     if (this.#isOrderQuestion()) {
       this.#questionType = QuestionType.ORDER;
@@ -204,7 +232,7 @@ export class Problem {
     } else if (this.#isSimpleQuestion()) {
       this.#questionType = QuestionType.SIMPLE;
     } else {
-      this.#questionType = QuestionType.ACTIVITY;
+      this.#questionType = QuestionType.SLIDE;
     }
   }
 

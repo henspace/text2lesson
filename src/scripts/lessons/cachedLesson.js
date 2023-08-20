@@ -57,7 +57,7 @@ export class CachedLesson {
   }
 
   /**
-   * @returns {module: lessons/lessonManager~LessonInfo} the info
+   * @returns {module:lessons/lessonManager~LessonInfo} the info
    */
   get info() {
     return this.#info;

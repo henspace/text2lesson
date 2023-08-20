@@ -81,7 +81,7 @@ const HEADERS = {
   mpeg: [{ name: 'Content-Type', value: 'video/mpeg' }],
   png: [{ name: 'Content-Type', value: 'image/png' }],
   svg: [{ name: 'Content-Type', value: 'image/svg+xml' }],
-  tff: [{ name: 'Content-Type', value: 'font/tff' }],
+  ttf: [{ name: 'Content-Type', value: 'font/ttf' }],
   txt: [{ name: 'Content-Type', value: 'text/plain' }],
   woff: [{ name: 'Content-Type', value: 'font/woff' }],
   woff2: [{ name: 'Content-Type', value: 'font/woff2' }],

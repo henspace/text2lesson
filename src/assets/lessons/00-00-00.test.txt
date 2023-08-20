@@ -1,12 +1,60 @@
 # EN test 00-00-00
 AUTHOR: John Doe
 
-(i) Welcome to this lesson written by meta:AUTHOR.
-This is just test file for the UI.
-It contains some *markdown* purely for testing purposes.
+(i)This is a lesson which you need to create. See [How to write lessons](https://www.markdownguide.org/basic-syntax/).
 
+(?) Which of these is a way of writing quickly?
+= Tee-line
+x scribble
+x pitbull shorthand
 
 (?) What is the capital of the UK?
 (=) London
 (x) New York
 (x) Paris
+
+(########################################)
+
+(i) Welcome to this lesson written by meta:AUTHOR.
+This is just a test file for the UI.
+It contains some *markdown* purely for testing purposes.
+This tests a simple multiple choice question with one answer.
+
+
+And more 
+
+
+And more
+
+
+And this should be card 4.
+
+(?)
+
+(?) What is the capital of the UK?
+(=) London
+(x) New York
+(x) Paris
+
+(?)Which of these countries speak English?
+(=) America
+(=) Australia
+(x) France
+(x) Spain
+
+(?) Fill in the three blank words. The number ...six is bigger than ...three which is bigger than the even number ...two.
+(x) one
+
+(?)Put the words in the right order ...
+(=) one
+(=) two
+(=) three
+(x) red-herring
+(x) garbage
+
+
+
+
+
+
+

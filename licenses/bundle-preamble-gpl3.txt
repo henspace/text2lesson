@@ -1,4 +1,4 @@
-$_PRODUCT_NAME_TXT_$Create quizzes and lessons from plain text files.
+$_PRODUCT_NAME_TXT_$: create quizzes and lessons from plain text files.
 Copyright $_BUILD_YEAR_$ Steve Butler (henspace.com)
 
 This program is free software: you can redistribute it and/or modify
