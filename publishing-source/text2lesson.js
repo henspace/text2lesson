@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * text2lesson 1.0.5
+ * text2lesson 1.0.6
  * Text2Lesson: create quizzes and lessons from plain text files.
  * Copyright 2023 Steve Butler (henspace.com)
  * 
@@ -24,10 +24,11 @@
 
   const BuildInfo = {
       isBuilt: () => BuildInfo.getMode().indexOf("$") < 0,
-      getBuildDate: () => "2023-08-20 13:46:32Z",
+      getBuildDate: () => "2023-08-20 15:45:29Z",
+      getBundleName: () => "text2lesson.js",
+      getProductName: () => "Text2Lesson",
       getMode: () => "production",
-      getVersion: () => "1.0.5 ",
-      getBundleName: () => "text2lesson.js"
+      getVersion: () => "1.0.6 "
     },
     blockReps = [{
       re: /(?:(.+)\n=+\n)/g,
@@ -2238,16 +2239,7 @@
         overrideText: i18n`adc4c5f402b068fae17cc33ecf648d5d::`
       }), this.presentation.appendChild(button), this.listenToEventOn("click", button, HomePresenter.REMOTE_LIBRARY_ID), button = new ManagedElement("button"), icons.applyIconToElement(icons.library, button, {
         overrideText: i18n`38e69d0f533dbbdcb17089ef96094b43::`
-      }), this.presentation.appendChild(button), this.listenToEventOn("click", button, HomePresenter.LOCAL_LIBRARY_ID), button = new FileInputButton(i18n`9148a8aa9f535484f03b98ae018a76b6::`), this.presentation.appendChild(button), this.listenToEventOn(FileInputButton.DATA_AVAILABLE_EVENT_NAME, button, HomePresenter.FILE_LIBRARY_ID), this.addPreamble(parseMarkdown(i18n`
-Hi! Welcome to Text2Lesson.
-This is the fun way to learn coding. This is intend to take you from absolutely
-no knowledge to being able to write code in HTML, CSS and JavaScript. What!
-you don't know what those are! Don't worry, you soon will.
-Let's get started.
-
-Click continue to access the lesson library and see what is available.
-
-`));
+      }), this.presentation.appendChild(button), this.listenToEventOn("click", button, HomePresenter.LOCAL_LIBRARY_ID), button = new FileInputButton(i18n`9148a8aa9f535484f03b98ae018a76b6::`), this.presentation.appendChild(button), this.listenToEventOn(FileInputButton.DATA_AVAILABLE_EVENT_NAME, button, HomePresenter.FILE_LIBRARY_ID), this.addPreamble(parseMarkdown(i18n`24da209ec1ce0c22dfbb77f943a1f940::`));
     }
     handleDataAvailableEvent(event, eventIdIgnored) {
       const importer = new LessonImporter();
@@ -3149,7 +3141,7 @@ Click continue to access the lesson library and see what is available.
       if (footerElement.children?.length > 0) return void console.error("Second attempt made to setup footer ignored.");
       const footerTextContainer = document.createElement("span"),
         devTag = "PRODUCTION" !== BuildInfo.getMode().toUpperCase() ? `[${BuildInfo.getMode()}]` : "";
-      footerTextContainer.innerHTML = `${BuildInfo.getBundleName()} ${BuildInfo.getVersion()}${devTag} ${BuildInfo.getBuildDate()}`, footerElement.appendChild(footerTextContainer);
+      footerTextContainer.innerHTML = `${BuildInfo.getProductName()} ${BuildInfo.getVersion()}${devTag} ${BuildInfo.getBuildDate()}`, footerElement.appendChild(footerTextContainer);
     }();
   }
   let throttleTimer = null;
