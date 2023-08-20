@@ -1,7 +1,7 @@
 # Text2Lesson
 
-Text2Lesson has been designed to make the creation of lessons quick and simple
-using just plain text.
+**Text2Lesson** has been designed to make the creation of lessons quick and
+simple using just plain text.
 
 # Lesson format
 
