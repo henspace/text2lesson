@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * text2lesson 1.0.7
+ * text2lesson 1.0.8
  * Text2Lesson: create quizzes and lessons from plain text files.
  * Copyright 2023 Steve Butler (henspace.com)
  * 
@@ -24,11 +24,11 @@
 
   const BuildInfo = {
       isBuilt: () => BuildInfo.getMode().indexOf("$") < 0,
-      getBuildDate: () => "2023-08-20 16:25:07Z",
+      getBuildDate: () => "2023-08-20 16:47:43Z",
       getBundleName: () => "text2lesson.js",
       getProductName: () => "Text2Lesson",
       getMode: () => "production",
-      getVersion: () => "1.0.7 "
+      getVersion: () => "1.0.8 "
     },
     blockReps = [{
       re: /(?:(.+)\n=+\n)/g,
@@ -2239,7 +2239,7 @@
         overrideText: i18n`adc4c5f402b068fae17cc33ecf648d5d::`
       }), this.presentation.appendChild(button), this.listenToEventOn("click", button, HomePresenter.REMOTE_LIBRARY_ID), button = new ManagedElement("button"), icons.applyIconToElement(icons.library, button, {
         overrideText: i18n`38e69d0f533dbbdcb17089ef96094b43::`
-      }), this.presentation.appendChild(button), this.listenToEventOn("click", button, HomePresenter.LOCAL_LIBRARY_ID), button = new FileInputButton(i18n`9148a8aa9f535484f03b98ae018a76b6::`), this.presentation.appendChild(button), this.listenToEventOn(FileInputButton.DATA_AVAILABLE_EVENT_NAME, button, HomePresenter.FILE_LIBRARY_ID), this.addPreamble(parseMarkdown(i18n`24da209ec1ce0c22dfbb77f943a1f940::`));
+      }), this.presentation.appendChild(button), this.listenToEventOn("click", button, HomePresenter.LOCAL_LIBRARY_ID), button = new FileInputButton(i18n`9148a8aa9f535484f03b98ae018a76b6::`), this.presentation.appendChild(button), this.listenToEventOn(FileInputButton.DATA_AVAILABLE_EVENT_NAME, button, HomePresenter.FILE_LIBRARY_ID), this.addPreamble(parseMarkdown(i18n`5a62ae5db3f4f824aa6f41465bab07da::${BuildInfo.getProductName()}`));
     }
     handleDataAvailableEvent(event, eventIdIgnored) {
       const importer = new LessonImporter();

@@ -59,7 +59,7 @@
   "3c5d22824f5b26b56b4edfc952f083f7": "The following settings have changed:",
   "5da57f8cd9336099a601a9cb7b512982": "Cannot find emoji ${originalDefinition}",
   "20f59a970faebddc0d41220837f3b4ad": "Cannot find metadata ${word}",
-  "24da209ec1ce0c22dfbb77f943a1f940": "Welcome to $_PRODUCT_NAME_TXT_$.",
+  "5a62ae5db3f4f824aa6f41465bab07da": "Welcome to ${BuildInfo.getProductName()}",
   "b68686a697ec08b09db6d729aed81c71": "Select type of export",
   "5ae903bf09202faef9d5fcedbf21cf14": "Select the type of export required. AutoRun files provide an easy way for users to run a lesson.",
   "d63e17b8da99189aff04b37070c61c8e": "Open local library",
