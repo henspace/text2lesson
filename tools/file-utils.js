@@ -203,7 +203,7 @@ export class FileManager {
    */
   static cleanDir(path) {
     return FileManager.removeDir(path)
-      .then(() => fsPromises.mkdir(path))
+      .then(() => fsPromises.mkdir(path, { recursive: true }))
       .catch((error) => {
         console.error(error);
       });
