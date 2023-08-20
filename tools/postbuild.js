@@ -70,6 +70,12 @@ postBuildUtils
   .then(() => {
     FileManager.copyFile(
       PROJECT_INFO.distributedLicencePath,
+      path.join(PROJECT_INFO.buildDistDir, '_config.yml')
+    );
+  })
+  .then(() => {
+    FileManager.copyFile(
+      PROJECT_INFO.distributedLicencePath,
       path.join(
         PROJECT_INFO.buildDistDir,
         FileManager.getBasename(PROJECT_INFO.distributedLicencePath)

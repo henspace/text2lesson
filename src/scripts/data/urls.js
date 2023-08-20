@@ -23,10 +23,15 @@
  */
 
 const rootUrl = window.location.href.replace(/index\.html(\?.*)?$/, '');
+// allow for the fact that markdown files are available as html files on GitHub pages.
+const mdExtension = window.location.host.match(/^127\.0\.0\.1:808[0-2]/)
+  ? 'md'
+  : 'html';
+
 /**
  * @enum {string}
  */
 export const Urls = {
-  HELP: `${rootUrl}assets/docs/help.md`,
-  PRIVACY: `${rootUrl}assets/docs/privacy.md`,
+  HELP: `${rootUrl}assets/docs/help.${mdExtension}`,
+  PRIVACY: `${rootUrl}assets/docs/privacy.${mdExtension}`,
 };
