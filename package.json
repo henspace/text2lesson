@@ -9,7 +9,7 @@
     "appName": "text2lesson",
     "assetsDirRelToSource": "assets",
     "buildDevDir": "./build/development",
-    "buildPublishDir": "./gh_pages",
+    "buildPublishDir": "./docs",
     "buildReportDir": "./build/reports",
     "bundlePreamble": "./licenses/bundle-preamble-gpl3.txt",
     "distributedLicencePath": "./licenses/license.md",
@@ -33,7 +33,7 @@
     "publish": "npm run check && npm run commit && npm version patch && npm run buildProd && npm run commit",
     "serveSource": "node ./tools/server/server.js ./src 8080",
     "serveDev": "node ./tools/server/server.js ./build/development 8081",
-    "serveSite": "node ./tools/server/server.js ./gh-pages 8082",
+    "serveSite": "node ./tools/server/server.js ./docs 8082",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ./src",
     "testAll": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
