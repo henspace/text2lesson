@@ -30,13 +30,4 @@
 
 import { i18n } from '../utils/i18n/i18n.js';
 
-export const getHomeText = () => i18n`
-Hi! Welcome to $_PRODUCT_NAME_TXT_$.
-This is the fun way to learn coding. This is intend to take you from absolutely
-no knowledge to being able to write code in HTML, CSS and JavaScript. What!
-you don't know what those are! Don't worry, you soon will.
-Let's get started.
-
-Click continue to access the lesson library and see what is available.
-
-`;
+export const getHomeText = () => i18n`Welcome to $_PRODUCT_NAME_TXT_$.`;

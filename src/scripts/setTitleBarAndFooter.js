@@ -74,7 +74,7 @@ function setUpFooter() {
       ? `[${BuildInfo.getMode()}]`
       : '';
 
-  footerTextContainer.innerHTML = `${BuildInfo.getBundleName()} ${BuildInfo.getVersion()}${devTag} ${BuildInfo.getBuildDate()}`;
+  footerTextContainer.innerHTML = `${BuildInfo.getProductName()} ${BuildInfo.getVersion()}${devTag} ${BuildInfo.getBuildDate()}`;
 
   footerElement.appendChild(footerTextContainer);
 }

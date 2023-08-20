@@ -317,6 +317,7 @@ function fileManagerCopyFileMkdirTest() {
   const FILENAME_OUT = 'testOut.txt';
   const FILE_PATH_IN = `${DIR_IN}/${FILENAME_IN}`;
   const FILE_PATH_OUT = `${DIR_OUT}/${FILENAME_OUT}`;
+  readFile.mockResolvedValueOnce(Buffer.from('dummy data'));
   return FileManager.copyFile(FILE_PATH_IN, FILE_PATH_OUT).then(() => {
     expect(mkdir).toHaveBeenCalledWith(DIR_OUT, { recursive: true });
   });

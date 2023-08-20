@@ -34,7 +34,7 @@ test('createPreamble - check output', () => {
 
   expect(lines[0]).toBe('/**');
   expect(lines[1]).toMatch(/^ \* (.){2,} \d+\.\d+\.\d$/);
-  expect(lines[2]).toMatch(/^ \* Lesson Runner.*$/);
+  expect(lines[2]).toMatch(/^ \* Text2Lesson.*$/);
   expect(lines[3]).toMatch(/^ \* Copyright \d{4} .*$/);
   expect(lines[6]).toMatch(/^ \* .*GNU General Public License.*$/);
   expect(lines[lines.length - 1]).toBe(' */');

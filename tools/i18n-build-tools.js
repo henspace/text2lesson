@@ -47,7 +47,7 @@ export function extractPlaceholders(template) {
 /**
  * Wrapper for StringTransformer. This replaces template literals which have an
  * i18n tag function. The contents of the replacement template literal is a
- * template literal containing a hash of the originla followed by placeholders
+ * template literal containing a hash of the original followed by placeholders
  * from the original literal. So
  *
  * `i18n\`this is a test ${varA} of literal ${varB}\``
@@ -60,8 +60,11 @@ export function extractPlaceholders(template) {
  * provided in the constructor.
  *
  * The I18n strings must be be template literals with an i18n tag function.
- * a keyword version. @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals | template literals}
- * for more details
+ * a keyword version.
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals | template literals}
+ * for more details.
+ *
+ * The text must be on a single line.
  * @implements {BufferTransformer}
  */
 export class I18nTransformer {

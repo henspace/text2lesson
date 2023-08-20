@@ -35,7 +35,8 @@
 export const BuildInfo = {
   isBuilt: () => BuildInfo.getMode().indexOf('$') < 0,
   getBuildDate: () => '$_BUILD_DATE_TXT_$',
+  getBundleName: () => '$_BUNDLE_NAME_TXT_$',
+  getProductName: () => '$_PRODUCT_NAME_TXT_$',
   getMode: () => '$_BUILD_MODE_TXT_$',
   getVersion: () => '$_APP_VERSION_TXT_$ ',
-  getBundleName: () => '$_BUNDLE_NAME_TXT_$',
 };

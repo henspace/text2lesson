@@ -1,0 +1,216 @@
+@import './utils-icons.css';
+@import './utils.css';
+@import './lessons.css';
+
+@media print {
+  html:has(.MarksPresenter),
+  html:has(.MarksPresenter) div {
+    color: black !important;
+    background-color: white !important;
+  }
+  button,
+  button:focus,
+  button:disabled,
+  html:has(.MarksPresenter) #title-bar,
+  html:has(.MarksPresenter) #header,
+  html:has(.MarksPresenter) #footer {
+    display: none !important;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+#browser-not-supported {
+  display: none;
+}
+
+@supports not ((display: flex) and (transform: translate(50%, 50%))) {
+  #content {
+    display: none !important;
+  }
+  #browser-not-supported {
+    display: block !important;
+  }
+}
+
+
+:root {
+  --primary-base: hsl(120, 50, 50);
+  --primary-contrast: hsl(0, 0, 0);
+  --primary-highlight: hsl(120, 50, 60);
+
+  --secondary-base: hsl(180, 50, 50);
+  --secondary-contrast: hsl(0, 0, 0);
+  --secondary-highlight: hsl(180, 50, 60);
+
+  --tertiary-base: hsl(240, 50, 50);
+  --tertiary-contrast: hsl(0, 0, 0);
+  --tertiary-highlight: hsl(240, 50, 60);
+
+  --background-base: hsl(60, 50, 50);
+  --background-contrast: hsl(0, 0, 0);
+  --background-highlight: hsl(60, 50, 60);
+
+  --error-base: hsl(0, 50, 50);
+  --error-contrast: hsl(0, 50, 100);
+  --error-highlight: hsl(0, 50, 60);
+
+  --window-base: hsl(0, 50, 50);
+  --window-contrast: hsl(0, 50, 100);
+  --window-highlight: hsl(0, 50, 60);
+
+  --padding: 0.4rem;
+  --font-base-size: 15px;
+  --line-thickness: max(2px, 0.2rem);
+  --outline-offset: calc(0.5 * var(--line-thickness));
+  --panel-border: solid var(--line-thickness);
+  --margin: calc(var(--outline-offset) + var(--line-thickness));
+  --vh: 1vh;
+}
+
+noscript {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+
+.always-on-top {
+  z-index: 100;
+}
+
+.on-top {
+  z-index: 10;
+}
+
+.modal {
+  z-index: 5;
+}
+
+#modal-mask {
+  z-index: 4;
+}
+
+html {
+  background-color: var(--window-base);
+  color: var(--window-contrast);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: calc(var(--font-base-size) + 0.390625vw);
+  margin: 0;
+  overflow-x: hidden;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  hyphens: auto;
+  margin: 0;
+  max-height: calc(var(--vh, 1vh) * 100);
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+  width: 100%;
+}
+
+body > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+h2 {
+  font-size: 1.2rem;
+}
+h3 {
+  font-size: 1.1rem;
+}
+
+.container {
+  margin: 0;
+  padding: var(--padding);
+}
+
+.framed {
+  border: solid var(--line-thickness) var(--primary-base);
+}
+
+#title-bar {
+  align-items: center;
+  background-color: var(--background-base);
+  color: var(--background-contrast);
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid var(--line-thickness) var(--tertiary-base);
+}
+
+#title-bar #action-buttons-left {
+  flex: 0 0 auto;
+}
+#title-bar h1 {
+  flex: 0 1 auto;
+  margin: 0;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+#content {
+  background-color: var(--background-base);
+  color: var(--background-contrast);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+#stage {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0;
+}
+
+#stage:has(.SlideProblemPresenter) {
+  overflow-y: hidden;
+}
+
+#footer {
+  background-color: var(--tertiary-base);
+  color: var(--tertiary-contrast);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+#modal-mask {
+  background-color: var(--window-base);
+  visibility: hidden;
+  height: 100%;
+  left: 0px;
+  opacity: 80%;
+  padding: 0px;
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  transition: opacity 1s;
+}
+
+p {
+  margin: var(--margin) 0 var(--margin) 0;
+}
+
+a,
+a:visited,
+a:active {
+  background-color: inherit;
+  color: inherit;
+}

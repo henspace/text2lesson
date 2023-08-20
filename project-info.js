@@ -61,7 +61,12 @@ function getBuildMode() {
 }
 
 const appName = getPackageProperty('config.appName');
-const buildDistDir = getPackageProperty('config.buildDistDir');
+let buildDistDir;
+if (getBuildMode() === 'production') {
+  buildDistDir = getPackageProperty('config.buildPublishDir');
+} else {
+  buildDistDir = getPackageProperty('config.buildDevDir');
+}
 const bundleName = `${appName}.js`;
 const bundleFilePath = path.join(buildDistDir, bundleName);
 const buildDate = new Date();

@@ -2,5 +2,6 @@
   "EN": {
     "title": "English Library",
     "url": "assets/lessons/library-en.json"
-  }
+  },
+  "FR": { "title": "French Library", "url": "assets/lessons/library-fr.json" }
 }

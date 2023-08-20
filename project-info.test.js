@@ -55,7 +55,7 @@ test('PROJECT_INFO properties should match standard build structure.', () => {
   expect(PROJECT_INFO.appVersion).toMatch(/\d+\.\d+\.\d+/);
   expect(PROJECT_INFO.assetsDirRelToSource).toBe('assets');
   expect(PROJECT_INFO.buildDate instanceof Date).toBe(true);
-  expect(PROJECT_INFO.buildDistDir).toMatchPath('./build/dist');
+  expect(PROJECT_INFO.buildDistDir).toMatchPath('./build/development');
   expect(PROJECT_INFO.buildMode).toMatch(/(production|development)/);
   expect(PROJECT_INFO.buildReportDir).toMatchPath('./build/reports');
   expect(PROJECT_INFO.bundleFilePath).toMatchPath(
@@ -73,7 +73,7 @@ test('PROJECT_INFO properties should match standard build structure.', () => {
   );
   expect(PROJECT_INFO.i18nMasterLanguage).toBe('en');
   expect(PROJECT_INFO.i18nAssetsDirRelToSource).toBe('assets/i18n');
-  expect(PROJECT_INFO.productName).toBe('Lesson Runner');
+  expect(PROJECT_INFO.productName).toBe('Text2Lesson');
   expect(PROJECT_INFO.sourceDir).toBe('./src');
 });
 
