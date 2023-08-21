@@ -23,7 +23,7 @@
  */
 
 import { base64ToString, stringToBase64 } from '../utils/text/base64.js';
-import { getAutoRunHtml } from '../data/templates/autorunHtml.js';
+import { getAutorunHtml } from '../data/templates/autorunHtml.js';
 import { ModalDialog } from '../utils/userIo/modalDialog.js';
 import { icons } from '../utils/userIo/icons.js';
 import { i18n } from '../utils/i18n/i18n.js';
@@ -61,7 +61,7 @@ export class LessonExporter {
    * Get a uri for the data.
    * @param {string} data
    */
-  getDataUri(data) {
+  #getDataUri(data) {
     return `data:text/plain;charset=utf-8,${encodeURIComponent(data)}`;
   }
 
@@ -69,7 +69,7 @@ export class LessonExporter {
    * Get a string version of the lesson.
    * @returns {string}
    */
-  get lessonAsString() {
+  get #lessonAsString() {
     return JSON.stringify({
       title: this.#title,
       content: this.#content,
@@ -81,7 +81,7 @@ export class LessonExporter {
    * @param {string} extension - do not include the leading period.
    * @return {string}
    */
-  getFilename(extension) {
+  #getFilename(extension) {
     const safename = this.#title
       .replace(/[^A-Za-z0-9_-]/g, '_')
       .substring(0, 32);
@@ -102,9 +102,9 @@ export class LessonExporter {
       }
     ).then((index) => {
       if (index === 0) {
-        return this.exportPlainLesson();
+        return this.exportBase64Lesson();
       } else {
-        return this.exportAutoRunLesson();
+        return this.exportAutorunLesson();
       }
     });
   }
@@ -112,17 +112,17 @@ export class LessonExporter {
   /**
    * Export the lesson by creating a temporary anchor and clicking it.
    */
-  exportPlainLesson() {
-    this.saveDataToFile(stringToBase64(this.lessonAsString), 'txt');
+  exportBase64Lesson() {
+    this.saveDataToFile(stringToBase64(this.#lessonAsString), 'txt');
   }
 
   /**
    * Export an autorun lesson.
    */
-  exportAutoRunLesson() {
+  exportAutorunLesson() {
     const b64Title = stringToBase64(this.#title);
     const b64Data = stringToBase64(this.#content);
-    const html = getAutoRunHtml(b64Title, b64Data);
+    const html = getAutorunHtml(b64Title, b64Data);
     this.saveDataToFile(html, 'html');
   }
 
@@ -133,8 +133,8 @@ export class LessonExporter {
    */
   saveDataToFile(data, extension) {
     const tempA = document.createElement('a');
-    tempA.setAttribute('href', this.getDataUri(data));
-    tempA.setAttribute('download', this.getFilename(extension));
+    tempA.setAttribute('href', this.#getDataUri(data));
+    tempA.setAttribute('download', this.#getFilename(extension));
     tempA.addEventListener('click', () => {
       document.body.removeChild(tempA);
     });
@@ -155,25 +155,70 @@ export class LessonImporter {
    * @returns {LessonImportExportSummary} null if fails.
    */
   convert(exportedData) {
-    if (this.isDataPlainText(exportedData)) {
-      return {
-        title: '',
-        content: exportedData,
-      };
+    let result = this.#getSummaryFromBase64File(exportedData);
+    if (result) {
+      return result;
     }
-    try {
-      return JSON.parse(base64ToString(exportedData));
-    } catch (error) {
-      console.error(error);
-      return null;
+
+    result = this.#getSummaryFromAutorunFile(exportedData);
+    if (result) {
+      return result;
     }
+    return this.#getSummaryFromPlainTextFile(exportedData);
   }
+
+  /**
+   * Try to decode data using base64.
+   * @param {string} data
+   * @returns {LessonImportExportSummary} null if not decoded.
+   */
+  #getSummaryFromBase64File(data) {
+    const match = data.match(/^[a-zA-Z0-9+/=]+$/);
+    if (match) {
+      try {
+        return JSON.parse(base64ToString(data));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Try to decode data assuming its an autorun file.
+   * @param {string} data
+   * @returns {LessonImportExportSummary} null if not decoded.
+   */
+  #getSummaryFromAutorunFile(data) {
+    const match = data.match(
+      /const LESSON_TITLE_B64\s*=\s*['"]([a-zA-Z0-9+/=]+)['"];\s*const LESSON_SOURCE_B64\s*=\s*['"]([a-zA-Z0-9+/=]+)['"];/
+    );
+    if (match) {
+      try {
+        return {
+          title: base64ToString(match[1]),
+          content: base64ToString(match[2]),
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    return null;
+  }
+
   /**
    * Simple check to see if the data is plain text.
    * @param {string} data
    * @returns {boolean} true if plain text file.
    */
-  isDataPlainText(data) {
-    return !!data.match(/^ {0,3}(?:\(+([i?])\1*\)+)(.*)$/m);
+  #getSummaryFromPlainTextFile(data) {
+    if (data.match(/^ {0,3}(?:\(+([i?])\1*\)+)(.*)$/m)) {
+      return {
+        title: '',
+        content: data,
+      };
+    } else {
+      return null;
+    }
   }
 }

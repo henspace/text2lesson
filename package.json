@@ -30,7 +30,7 @@
     "lint": "npx eslint ./src/**/*.js",
     "postbuildChild": "node ./tools/postbuild.js",
     "prebuildChild": "node ./tools/prebuild.js",
-    "publish": "npm run check && npm run commit && npm version patch && npm run buildProd && npm run commit",
+    "publish": "npm run check && npm run commit && npm version patch && npm run buildProd && npm run commit --reuse-message=HEAD",
     "serveSource": "node ./tools/server/server.js ./src 8080",
     "serveDev": "node ./tools/server/server.js ./build/development 8081",
     "serveSite": "node ./tools/server/server.js ./docs 8082",

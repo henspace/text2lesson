@@ -36,8 +36,10 @@ import { i18n } from './utils/i18n/i18n.js';
 import { StageManager } from './lessons/presenters/stageManager.js';
 import { PresenterFactory } from './lessons/presenters/presenterFactory.js';
 import { setTitleBarAndFooter } from './setTitleBarAndFooter.js';
+import { showFirstUseMessageIfAppropriate } from './data/firstTimeMessage.js';
 import './utils/userIo/modalMask.js';
 import './utils/userIo/screenSizer.js';
+
 /**
  * Get the language files required for the application.
  * If the application has not been build, the application just returns a fulfilled
@@ -90,6 +92,7 @@ window.addEventListener('load', () => {
     })
     .then(() => setTitleBarAndFooter(getMainMenuItems()))
     .then(() => lessonManager.loadAllLibraryContent())
+    .then(() => showFirstUseMessageIfAppropriate())
     .then(() => {
       const stage = document.getElementById('stage');
       return new StageManager(stage).startShow(PresenterFactory.getInitial());

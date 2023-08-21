@@ -22,7 +22,7 @@
  *
  */
 
-export function getAutoRunHtml(b64Title, b64LessonData) {
+export function getAutorunHtml(b64Title, b64LessonData) {
   const rootUrl = window.location.href.replace(/index\.html(\?.*)?$/, '');
   const loaderUrl = `${rootUrl}session-data-builder.html`;
   const appUrl = `${rootUrl}index.html`;

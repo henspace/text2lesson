@@ -143,5 +143,10 @@ export function getSettingDefinitions() {
       options: () => lessonManager.remoteLibraryTitles,
       reloadIfChanged: true,
     },
+    showFirstUseMessage: {
+      type: 'checkbox',
+      label: i18n`Show first use message`,
+      defaultValue: true,
+    },
   };
 }

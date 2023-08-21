@@ -69,7 +69,7 @@ postBuildUtils
   )
   .then(() => {
     FileManager.copyFile(
-      PROJECT_INFO.distributedLicencePath,
+      './src/_config.yml',
       path.join(PROJECT_INFO.buildDistDir, '_config.yml')
     );
   })
