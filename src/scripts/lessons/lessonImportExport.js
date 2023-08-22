@@ -208,11 +208,12 @@ export class LessonImporter {
 
   /**
    * Simple check to see if the data is plain text.
+   * Looks for a question or introduction line.
    * @param {string} data
    * @returns {boolean} true if plain text file.
    */
   #getSummaryFromPlainTextFile(data) {
-    if (data.match(/^ {0,3}(?:\(+([i?])\1*\)+)(.*)$/m)) {
+    if (data.match(/^ {0,3}(?:\(*([i?])\1*[) ]+)(.*)$/m)) {
       return {
         title: '',
         content: data,

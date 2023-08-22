@@ -98,7 +98,7 @@ test('QuestionSource details extracted with content', () => {
 
 test('ExplanationSource details extracted with content', () => {
   const lesson = LessonSource.createFromSource(' ');
-  expect(lesson.getLineDetails('(+)this is the data')).toStrictEqual({
+  expect(lesson.getLineDetails('(&)this is the data')).toStrictEqual({
     key: ProblemItemKey.EXPLANATION,
     content: 'this is the data',
   });
@@ -124,7 +124,7 @@ containing multiple lines
 of text.
 (x)And another incorrect answer.
 (x)And one more incorrect answer.
-(+)This is the explanation
+(&)This is the explanation
 containing multiple lines
 of text.`;
   const lesson = LessonSource.createFromSource(source);
@@ -209,28 +209,28 @@ test('converts to Lesson successfully', () => {
 (=)correct answer1.2
 (x)incorrect answer1.1
 (x)incorrect answer1.2
-(+)explanation1
+(&)explanation1
 (i)intro2
 (?)question2
 (=)correct answer2.1
 (=)correct answer2.2
 (x)incorrect answer2.1
 (x)incorrect answer2.2
-(+)explanation2
+(&)explanation2
 (i)intro3
 (?)question3
 (=)correct answer3.1
 (=)correct answer3.2
 (x)incorrect answer3.1
 (x)incorrect answer3.2
-(+)explanation3
+(&)explanation3
 (i)intro4
 (?)question4
 (=)correct answer4.1
 (=)correct answer4.2
 (x)incorrect answer4.1
 (x)incorrect answer4.2
-(+)explanation4`;
+(&)explanation4`;
   const lessonSource = LessonSource.createFromSource(source);
   const lesson = lessonSource.convertToLesson();
   expect(lesson.metadata).toStrictEqual(
