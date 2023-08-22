@@ -1,5 +1,5 @@
 /**
- * @file Imlementation of local libraries.
+ * @file Implementation of local libraries.
  *
  * @module lessons/localLibrary
  *
@@ -49,11 +49,24 @@ export class LocalLibrary {
    * @const
    */
   static LOCAL_LIBRARY_KEY = 'LOCAL_LIBRARY';
+
+  /**
+   * @type {string}
+   * @const
+   */
+  static LOCAL_LIBRARY_INDEX_KEY = 'LOCAL_LIBRARY_INDEX';
+
+  /**
+   * @type {string}
+   * @const
+   */
+  static LOCAL_LESSON_KEY_PREFIX = 'LocalLesson_';
+
   /**
    * @type {number}
    * @const
    */
-  static NUMBER_OF_LESSONS = 4;
+  static NUMBER_OF_INITIAL_LESSONS = 4;
   /**
    * @type {string}
    */
@@ -97,6 +110,43 @@ export class LocalLibrary {
   }
 
   /**
+   * Get the default lesson keys
+   * @returns {number[]}
+   */
+  #getDefaultLessonKeys() {
+    const indexes = [];
+    for (
+      let index = 0;
+      index < LocalLibrary.NUMBER_OF_INITIAL_LESSONS;
+      index++
+    ) {
+      indexes.push(index);
+    }
+    return indexes;
+  }
+
+  /**
+   * Get the current local library lesson keys. These are all the books stored
+   * in local storage.
+   * @returns {numbers[]}
+   */
+  #getLessonKeys() {
+    return persistentData.getFromStorage(
+      LocalLibrary.LOCAL_LIBRARY_INDEX_KEY,
+      this.#getDefaultLessonKeys()
+    );
+  }
+
+  /**
+   * Save the local library lesson keys. These are all the lessons stored
+   * in local storage.
+   * @param {number[]} keys
+   */
+  #saveLessonKeys(keys) {
+    persistentData.saveToStorage(LocalLibrary.LOCAL_LIBRARY_INDEX_KEY, keys);
+  }
+
+  /**
    * Gets an object representing the local library content.
    * @returns {module:lessons/lessonManager~LibraryContent}
    */
@@ -106,35 +156,39 @@ export class LocalLibrary {
       location: '',
       chapters: [{ title: i18n`Chapter 1`, lessons: [] }],
     };
-    for (let index = 0; index < LocalLibrary.NUMBER_OF_LESSONS; index++) {
-      const localLesson = this.#loadLocalLesson(index);
+
+    const lessonKeys = this.#getLessonKeys();
+    lessonKeys.forEach((key) => {
+      const localLesson = this.#loadLocalLesson(key);
       book.chapters[0].lessons.push({
         title: localLesson.title,
         contentLoader: () => localLesson.content,
       });
-    }
+    });
     return [book];
   }
 
   /**
-   * Get the storage key for a particular index.
+   * Get the storage key for a particular book's key.
+   * @param {number} key
    */
-  #getStorageKeyForIndex(index) {
-    return `LocalLesson_${index}`;
+  #getStorageKeyForLessonKey(key) {
+    return `${LocalLibrary.LOCAL_LESSON_KEY_PREFIX}${key}`;
   }
+
   /**
    * Load a local lesson from storage.
-   * @param {number} index
+   * @param {number} key
    * @returns {LocalLesson}
    */
-  #loadLocalLesson(index) {
+  #loadLocalLesson(key) {
     const lessonHelpLink = `[How to write lessons](${Urls.HELP})`;
     const defaultLesson = {
-      title: i18n`Lesson ${index}`,
+      title: i18n`Untitled lesson`,
       content: i18n`(i)This is a lesson which you need to create. See ${lessonHelpLink}`,
     };
     return persistentData.getFromStorage(
-      this.#getStorageKeyForIndex(index),
+      this.#getStorageKeyForLessonKey(key),
       defaultLesson
     );
   }
@@ -144,10 +198,55 @@ export class LocalLibrary {
    * @param {number} index
    * @param {LocalLesson} localLesson
    */
-  saveLocalLesson(index, localLesson) {
+  saveLocalLessonAtIndex(index, localLesson) {
+    const keys = this.#getLessonKeys();
+    if (index < 0 || index >= keys.length) {
+      console.error(`Attempt to store to index ${index} ignored.`);
+      return;
+    }
+    const key = keys[index];
     persistentData.saveToStorage(
-      this.#getStorageKeyForIndex(index),
+      this.#getStorageKeyForLessonKey(key),
       localLesson
     );
+  }
+
+  /**
+   * Get a free key. Searches through all the indexes to find any gaps.
+   * @returns {number}
+   */
+  #getFreeKey() {
+    const indexes = this.#getLessonKeys();
+    indexes.sort();
+    for (let n = 0; n < indexes.length - 1; n++) {
+      if (indexes[n + 1] - indexes[n] > 1) {
+        return indexes[n] + 1;
+      }
+    }
+    return indexes[indexes.length - 1] + 1;
+  }
+
+  /**
+   * Add a new lesson slot.
+   */
+  addNewLessonSlot() {
+    const key = this.#getFreeKey();
+    const keys = this.#getLessonKeys();
+    keys.push(key);
+    this.#saveLessonKeys(keys);
+  }
+
+  /**
+   * Delete a lesson slot.
+   */
+  deleteLessonAtIndex(index) {
+    const keys = this.#getLessonKeys();
+    const key = keys[index];
+    if (key != undefined) {
+      console.debug(`Removing lesson storage index: ${index}; key:${key}`);
+      persistentData.removeFromStorage(this.#getStorageKeyForLessonKey(key));
+      keys.splice(index, 1);
+      this.#saveLessonKeys(keys);
+    }
   }
 }

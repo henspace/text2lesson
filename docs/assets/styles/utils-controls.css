@@ -1,5 +1,3 @@
-
-
 .utils-range-value {
   background-color: var(--background-base);
   border: solid 4px var(--primary-base);
@@ -10,7 +8,6 @@
   text-align: center;
   transition: opacity 0.5s;
 }
-
 
 .utils-select {
   font-size: inherit;
@@ -31,5 +28,5 @@
 .utils-options[data-open] {
   display: flex;
   flex-flow: column wrap;
-  margin: var(--margin);
+  margin: var(--margin-thickness);
 }

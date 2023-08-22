@@ -20,7 +20,7 @@
   display: flex;
   flex-flow: row wrap;
 
-  margin-top: var(--margin);
+  margin-top: var(--margin-thickness);
   user-select: none;
   width: 100%;
 }
@@ -36,7 +36,7 @@
 }
 
 .utils-dialog label span:first-child {
-  margin-top: var(--margin);
+  margin-top: var(--margin-thickness);
   flex: 1 0 auto;
 }
 
@@ -50,7 +50,9 @@
 .utils-dialog-content-frame {
   display: flex;
   flex-flow: row wrap;
-  max-height: calc(90vh - 2rlh - 2 * var(--margin) - 6 * var(--padding));
+  max-height: calc(
+    90vh - 2rlh - 2 * var(--margin-thickness) - 6 * var(--padding-thickness)
+  );
   overflow: auto;
 }
 
@@ -64,7 +66,7 @@
   display: flex;
   gap: 1rem;
   justify-content: center;
-  padding: var(--padding);
+  padding: var(--padding-thickness);
 }
 
 .utils-dialog .utils-title-bar {
@@ -118,7 +120,7 @@
   min-width: 30vw;
   outline-offset: calc(-2 * var(--line-thickness));
   outline-color: var(--secondary-contrast);
-  padding: var(--padding);
+  padding: var(--padding-thickness);
   position: absolute;
   top: 100vh;
   transform: translateX(-50%);

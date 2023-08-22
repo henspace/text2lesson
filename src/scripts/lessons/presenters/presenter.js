@@ -30,6 +30,7 @@ import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { focusManager } from '../../utils/userIo/focusManager.js';
 import { ArrayIndexer } from '../../utils/arrayIndexer.js';
+import { footer } from '../../headerAndFooter.js';
 
 /**
  * @typedef {Object} Navigator
@@ -131,6 +132,7 @@ export class Presenter extends ManagedElement {
     super('div');
     this.#addClassNames();
     this.config = config;
+    footer.buttonBar.removeChildren();
     this.#buildContent(presentationTagName);
   }
 
@@ -152,11 +154,11 @@ export class Presenter extends ManagedElement {
       presentationTagName,
       'presentation'
     );
-    this.#buttonBar = new ManagedElement('div', 'button-bar');
+    this.#buttonBar = footer.buttonBar; // new ManagedElement('div', 'button-bar');
     this.#addNavigationButtons();
     this.appendChild(this.#preamble);
     this.appendChild(this.#presentation);
-    this.appendChild(this.#buttonBar);
+    //this.appendChild(this.#buttonBar);
   }
 
   /**

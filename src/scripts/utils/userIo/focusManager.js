@@ -56,28 +56,24 @@ class FocusManager {
         return true;
       }
     }
-    console.error(
-      `Failed to focus within ${element?.tagName}:${element?.className}`
+    console.debug(
+      `Couldn't find anything to focus on within ${element?.tagName}:${element?.className}`
     );
     return false;
   }
 
   /** Best effort to restore focus */
   findBestFocus() {
-    console.debug('Finding best focus');
     let element = document.querySelector('.selectable.always-on-top');
     if (element) {
-      console.debug(`Focus on ${element.tagName}: ${element.className}`);
       element.focus();
       return;
     }
     element = document.querySelector('.modal');
     if (element) {
-      console.debug(`Focus within ${element.tagName}: ${element.className}`);
       this.focusWithin(element);
     } else {
       element = document.querySelector('#content');
-      console.debug(`Focus within ${element.tagName}: ${element.className}`);
       this.focusWithin(element);
     }
   }

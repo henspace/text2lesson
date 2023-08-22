@@ -41,11 +41,35 @@ const HTML_SEMANTIC_ROLES = {
  */
 
 /**
+ * @typedef {Object} IconConfig
+ * @property {boolean} hideText - if true, the text is hidden. If not set, the system setting is used.
+ * @property {string} overrideText - if set, this overrides the button's normal label*
+ * @property {string} role - the aria role.
+ */
+
+/**
  * icons. Note that getter functions are used to prevent module imports
  * resolving i18n strings prior to the resolution of languages.
  */
 class IconGenerator {
   #cache = new Map();
+  #hideText;
+
+  /**
+   * Get whether text should be hidden
+   * @returns {boolean}
+   */
+  get hideText() {
+    return this.#hideText;
+  }
+
+  /**
+   * Set whether text should be hidden
+   * @param {boolean} value
+   */
+  set hideText(value) {
+    this.#hideText = value;
+  }
 
   /**
    * Get the icon key from css
@@ -60,11 +84,17 @@ class IconGenerator {
     }
     return this.#cache.get(key) ?? '!?';
   }
-
+  /** @returns {IconDetails} information for icon */
+  get addLesson() {
+    return {
+      content: this.#getIconHtml('--icon-add-lesson-html'),
+      accessibleName: i18n`Add lesson`,
+    };
+  }
   /** @returns {IconDetails} information for icon */
   get back() {
     return {
-      content: this.#getIconHtml('--icon-back-nav-html'), // '<i class="fa-solid fa-left-long"></i>',
+      content: this.#getIconHtml('--icon-back-nav-html'),
       accessibleName: i18n`Back`,
     };
   }
@@ -87,6 +117,13 @@ class IconGenerator {
     return {
       content: this.#getIconHtml('--icon-close-menu-html'),
       accessibleName: i18n`Close menu`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
+  get delete() {
+    return {
+      content: this.#getIconHtml('--icon-delete-html'),
+      accessibleName: i18n`Delete`,
     };
   }
   /** @returns {IconDetails} information for icon */
@@ -347,18 +384,19 @@ class IconGenerator {
    * aria-label will still be added.
    * @param {IconDetails} icon
    * @param {Element | module:utils/userIo/managedElement.ManagedElement} item - element or ManagedElement to which the icon is added.
-   * @param {Object} options
-   * @param {boolean} options.hideText - if true, the text is hidden.
-   * @param {string} [options.role] - the aria role.
-   * @param {string} [options.overrideText] - if set, this overrides the button's normal label
+   * @param {IconConfig} options
+
    */
   applyIconToElement(icon, item, options = {}) {
+    const hideText = options.hideText ?? this.#hideText;
     const label = options.overrideText ?? icon.accessibleName;
     const element = ManagedElement.getElement(item);
     const role = options.role?.toLowerCase();
     element.innerHTML = icon.content;
-    if (icon.accessibleName && !options.hideText) {
+    if (icon.accessibleName && !hideText) {
       element.innerHTML += `&nbsp;${label}`;
+    } else {
+      element.title = label;
     }
 
     if (this.semanticsAddressRole(element, role)) {

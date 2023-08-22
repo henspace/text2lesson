@@ -22,8 +22,9 @@
  *
  */
 
-import { jest, beforeEach, test, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, test, expect } from '@jest/globals';
 import { LessonSource } from '../lessonSource.js';
+import { footer } from '../../headerAndFooter.js';
 
 const currentLessonInfo = {
   libraryKey: 'key',
@@ -85,6 +86,13 @@ jest.unstable_mockModule('./presenterFactory.js', () => {
 const { presenterFactory } = await import('./presenterFactory');
 await import('../lessonManager.js');
 const { ProblemPresenter } = await import('./problemPresenter.js');
+
+beforeAll(() => {
+  const footerElement = document.createElement('div');
+  footerElement.id = 'footer';
+  document.body.appendChild(footerElement);
+  footer.setup();
+});
 
 beforeEach(() => {
   presenterFactory.getNext.mockClear();

@@ -101,6 +101,16 @@ export class DataStoreManager {
 
     return;
   }
+
+  /**
+   * Remove setting from storage
+   * @param {string} key
+   */
+  removeFromStorage(key) {
+    key = this.createStorageKey(key);
+    this.#storage.removeItem(key);
+  }
+
   /**
    * Set the prefix for the storage key. This is primarily used to stop apps
    * from the the same domain sharing the same storage values.

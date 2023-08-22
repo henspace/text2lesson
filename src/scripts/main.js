@@ -35,8 +35,9 @@ import { persistentData } from './utils/userIo/storage.js';
 import { i18n } from './utils/i18n/i18n.js';
 import { StageManager } from './lessons/presenters/stageManager.js';
 import { PresenterFactory } from './lessons/presenters/presenterFactory.js';
-import { setTitleBarAndFooter } from './setTitleBarAndFooter.js';
+import { setHeaderAndFooter } from './headerAndFooter.js';
 import { showFirstUseMessageIfAppropriate } from './data/firstTimeMessage.js';
+import { toast } from './utils/userIo/toast.js';
 import './utils/userIo/modalMask.js';
 import './utils/userIo/screenSizer.js';
 
@@ -90,8 +91,16 @@ window.addEventListener('load', () => {
       }
       return true;
     })
-    .then(() => setTitleBarAndFooter(getMainMenuItems()))
+    .then(() => setHeaderAndFooter(getMainMenuItems()))
     .then(() => lessonManager.loadAllLibraryContent())
+    .then(() =>
+      toast(
+        '<span style="font-size:3rem;">&#x1F631;</span>' +
+          'This application is work in progress and not released yet. ' +
+          'Things may change and things may break. Documentation may not be correct.',
+        true
+      )
+    )
     .then(() => showFirstUseMessageIfAppropriate())
     .then(() => {
       const stage = document.getElementById('stage');

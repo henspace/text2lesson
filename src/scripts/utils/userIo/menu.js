@@ -30,6 +30,7 @@ import { icons } from './icons.js';
 import { focusManager } from './focusManager.js';
 import { ArrayIndexer } from '../arrayIndexer.js';
 import * as modalMask from './modalMask.js';
+import { Urls } from '../../data/urls.js';
 
 /**
  * Definition of a menu item.
@@ -200,9 +201,13 @@ class MenuItems extends ManagedElement {
       'utils-menu-icon-close',
       'icon-only-button'
     );
-    document
-      .querySelector('.utils-menu-title')
-      .appendChild(this.#menuIconClose.element);
+
+    const logo = new ManagedElement('img');
+    logo.setAttribute('src', Urls.LOGO);
+
+    const title = document.querySelector('.utils-menu-title');
+    title.appendChild(logo.element);
+    title.appendChild(this.#menuIconClose.element);
     this.listenToEventOn(
       'click',
       this.#menuIconClose,

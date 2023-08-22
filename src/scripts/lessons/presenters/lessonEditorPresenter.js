@@ -38,6 +38,7 @@ export class LessonEditorPresenter extends Presenter {
   static SAVE_EVENT_ID = 'SAVE';
   static EXPORT_EVENT_ID = 'EXPORT';
   static IMPORT_EVENT_ID = 'IMPORT';
+  static DELETE_EVENT_ID = 'DELETE';
 
   #lessonTitleElement;
   #lessonTitleValue;
@@ -59,6 +60,7 @@ export class LessonEditorPresenter extends Presenter {
     this.#addSaveButton();
     this.#addImportButton();
     this.#addExportButton();
+    this.#addDeleteButton();
     this.expandPresentation();
     this.#setEditorAsClean();
     this.applyIconToNextButton(icons.closeEditor);
@@ -152,6 +154,19 @@ export class LessonEditorPresenter extends Presenter {
   }
 
   /**
+   * Add a delete button
+   */
+  #addDeleteButton() {
+    const deleteButton = new ManagedElement('button');
+    icons.applyIconToElement(icons.delete, deleteButton);
+    this.listenToEventOn(
+      'click',
+      deleteButton,
+      LessonEditorPresenter.DELETE_EVENT_ID
+    );
+    this.addButtonToBar(deleteButton);
+  }
+  /**
    * Handle file input.
    * @param {*} event
    * @param {*} eventId
@@ -203,15 +218,59 @@ export class LessonEditorPresenter extends Presenter {
   /**
    * @override
    */
-  handleClickEvent(event, eventId) {
+  async handleClickEvent(event, eventId) {
     switch (eventId) {
+      case LessonEditorPresenter.DELETE_EVENT_ID:
+        {
+          const deleted = await this.#deleteLessonIfConfirmed();
+          if (!deleted) {
+            return;
+          }
+        }
+        break;
       case LessonEditorPresenter.SAVE_EVENT_ID:
         return this.#saveLessonLocally();
       case LessonEditorPresenter.EXPORT_EVENT_ID:
         return this.#exportLesson();
-      default:
-        return super.handleClickEvent(event, eventId);
     }
+    return super.handleClickEvent(event, eventId);
+  }
+
+  /**
+   * @override
+   * @param {string} eventId
+   */
+  next(eventId) {
+    if (eventId === LessonEditorPresenter.DELETE_EVENT_ID) {
+      return this.config.factory.getLibraryPresenter(this, this.config);
+    } else {
+      return super.next(eventId);
+    }
+  }
+
+  /**
+   * Delete the lesson if the user confirms the action.
+   * @returns {Promise} fulfils to true if deleted.
+   */
+  #deleteLessonIfConfirmed() {
+    return ModalDialog.showConfirm(
+      i18n`Are you sure you want to delete this lesson?`,
+      i18n`Confirm deletion`
+    ).then((response) => {
+      if (response === ModalDialog.DialogIndex.CONFIRM_YES) {
+        return this.#deleteLesson();
+      } else {
+        return false;
+      }
+    });
+  }
+
+  /**
+   * Delete the lesson without waiting for confirmation.
+   * @returns {Promise} fulfils to true;
+   */
+  #deleteLesson() {
+    return lessonManager.deleteLocalLibraryCurrentLesson().then(() => true);
   }
 
   /**

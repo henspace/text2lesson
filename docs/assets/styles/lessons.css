@@ -30,7 +30,7 @@ a.problem {
   border-radius: var(--line-thickness);
   color: var(--tertiary-contrast);
   font-size: 1rem;
-  margin: var(--margin);
+  margin: var(--margin-thickness);
   padding: var(--padding);
 }
 .lesson-summary span {
@@ -110,7 +110,6 @@ a.problem {
   text-decoration: none;
 }
 
-
 li.library::marker {
   content: var(--icon-library) ' ';
   font-family: var(--icon-font-family);
@@ -159,12 +158,11 @@ li.problem::marker {
   font-weight: var(--icon-font-weight);
 }
 
-
 span.library-title,
 span.book-title,
 span.chapter-title,
 span.lesson-title {
-  margin-right: var(--margin);
+  margin-right: var(--margin-thickness);
 }
 
 .library-title::before,
@@ -189,7 +187,6 @@ span.lesson-title {
 .lesson-title::before {
   content: var(--icon-lesson);
 }
-
 
 ul.presentation,
 .problem-answers ul {
@@ -231,9 +228,8 @@ ul.presentation,
   flex: 1;
 }
 
-
 .MarksPresenter {
-  margin: calc(2 * var(--margin));
+  margin: calc(2 * var(--margin-thickness));
   padding: var(--padding);
   border: double var(--line-thickness);
 }
@@ -241,7 +237,7 @@ ul.presentation,
 .MarksPresenter h1,
 .MarksPresenter h2,
 .MarksPresenter h3 {
-  margin-top: var(--margin);
+  margin-top: var(--margin-thickness);
   text-align: center;
 }
 

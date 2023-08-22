@@ -71,12 +71,12 @@
   --window-contrast: hsl(0, 50, 100);
   --window-highlight: hsl(0, 50, 60);
 
-  --padding: 0.4rem;
+  --padding-thickness: 0.25rem;
   --font-base-size: 15px;
   --line-thickness: max(2px, 0.2rem);
   --outline-offset: calc(0.5 * var(--line-thickness));
   --panel-border: solid var(--line-thickness);
-  --margin: calc(var(--outline-offset) + var(--line-thickness));
+  --margin-thickness: calc(var(--outline-offset) + var(--line-thickness));
   --vh: 1vh;
 }
 
@@ -145,7 +145,7 @@ h3 {
 */
 .container {
   margin: 0;
-  padding: var(--padding);
+  padding: var(--padding-thickness);
 }
 
 .framed {
@@ -197,7 +197,23 @@ h3 {
 #footer {
   background-color: var(--tertiary-base);
   color: var(--tertiary-contrast);
-  font-size: 0.8rem;
+  font-size: 0.5rem;
+  padding: 0;
+  text-align: center;
+}
+
+#footer .button-bar {
+  background-color: var(--background-base);
+  border-top: solid var(--line-thickness) var(--tertiary-base);
+  color: var(--background-contrast);
+  text-align: center;
+}
+#footer .footer-text {
+  background-color: var(--tertiary-base);
+  border-top: solid var(--line-thickness) var(--tertiary-base);
+  color: var(--tertiary-contrast);
+  padding: 0 var(--padding-thickness) var(--padding-thickness)
+    var(--padding-thickness);
   text-align: center;
 }
 
@@ -215,7 +231,7 @@ h3 {
 }
 
 p {
-  margin: var(--margin) 0 var(--margin) 0;
+  margin: var(--margin-thickness) 0 var(--margin-thickness) 0;
 }
 
 a,

@@ -66,6 +66,7 @@ export class HomePresenter extends Presenter {
     let button = new ManagedElement('button');
     icons.applyIconToElement(icons.library, button, {
       overrideText: i18n`Open remote library`,
+      hideText: false,
     });
     this.presentation.appendChild(button);
     this.listenToEventOn('click', button, HomePresenter.REMOTE_LIBRARY_ID);
@@ -73,11 +74,15 @@ export class HomePresenter extends Presenter {
     button = new ManagedElement('button');
     icons.applyIconToElement(icons.library, button, {
       overrideText: i18n`Open internal library`,
+      hideText: false,
     });
     this.presentation.appendChild(button);
     this.listenToEventOn('click', button, HomePresenter.LOCAL_LIBRARY_ID);
 
-    button = new FileInputButton(i18n`Open lesson from file system`);
+    button = new FileInputButton({
+      overrideText: i18n`Open lesson from file system`,
+      hideText: false,
+    });
     this.presentation.appendChild(button);
     this.listenToEventOn(
       FileInputButton.DATA_AVAILABLE_EVENT_NAME,

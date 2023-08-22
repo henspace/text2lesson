@@ -94,10 +94,11 @@ class Toast extends ManagedElement {
 
 /**
  * Pop up a message.
- * @param {string} message - can include HTML.
+ * @param {string} message.
+ * @param {boolean} rawHtml True if raw html can be provided.
  */
 export function toast(message) {
-  const toast = new Toast(message);
+  const toast = new Toast(message, true);
   document.body.appendChild(toast.element);
   setTimeout(() => {
     toast.style.top = '45vh';

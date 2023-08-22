@@ -340,6 +340,7 @@ class LessonManager {
   get currentLessonInfo() {
     return this.#buildCurrentLessonInfo();
   }
+
   /**
    * Get unmanaged lesson information.
    * The lesson info is undefined except for the managed flag which is false and
@@ -611,11 +612,39 @@ class LessonManager {
     if (!this.#usingLocalLibrary) {
       throw new Error('Attempt made to update a remote library.');
     }
-    new LocalLibrary().saveLocalLesson(this.#currentLessonIndex, {
+    new LocalLibrary().saveLocalLessonAtIndex(this.#currentLessonIndex, {
       title: title,
       content: content,
     });
     return this.#loadLibraryContent(LocalLibrary.LOCAL_LIBRARY_KEY, true);
+  }
+
+  /**
+   * Add lesson to local library.
+   * @returns {Promise} fulfils to undefined
+   */
+  addLessonToLocalLibrary() {
+    const localLibrary = new LocalLibrary();
+    localLibrary.addNewLessonSlot();
+    this.#libraries.set(localLibrary.key, localLibrary.info);
+    return this.#loadLibraryContent(localLibrary.key, true);
+  }
+
+  /**
+   * Delete the current local library slot.
+   * @returns {Promise} fulfils to undefined
+   */
+  deleteLocalLibraryCurrentLesson() {
+    if (!this.#usingLocalLibrary) {
+      console.error(
+        'Ignored attempt to delete local library when it is not the active library.'
+      );
+      return Promise.resolve();
+    }
+    const localLibrary = new LocalLibrary();
+    localLibrary.deleteLessonAtIndex(this.#currentLessonIndex);
+    this.#libraries.set(localLibrary.key, localLibrary.info);
+    return this.#loadLibraryContent(localLibrary.key, true);
   }
 }
 

@@ -31,6 +31,7 @@ import { lessonManager } from '../lessons/lessonManager.js';
 
 import { persistentData } from '../utils/userIo/storage.js';
 import * as cssVariables from '../utils/color/cssVariables.js';
+import { icons } from '../utils/userIo/icons.js';
 
 const DEFAULT_HUE = 120;
 const DEFAULT_SATURATION = 50;
@@ -120,6 +121,14 @@ export function getSettingDefinitions() {
       max: 22,
       onupdate: (value) => {
         cssVariables.setProperty('--font-base-size', `${value}px`);
+      },
+    },
+    hideButtonText: {
+      type: 'checkbox',
+      label: i18n`Hide button labels`,
+      defaultValue: false,
+      onupdate: (value) => {
+        icons.hideText = value;
       },
     },
     readingSpeed: {

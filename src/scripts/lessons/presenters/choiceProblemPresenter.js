@@ -264,6 +264,7 @@ export class ChoiceProblemPresenter extends ProblemPresenter {
       switch (event.key) {
         case ' ':
         case 'Enter':
+          event.stopPropagation();
           this.handleClickEvent(event, eventId);
           break;
       }

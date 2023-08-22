@@ -21,9 +21,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-import { jest, beforeEach, test, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, test, expect } from '@jest/globals';
 import { ItemMarker } from '../itemMarker.js';
 import { LessonOrigin } from '../lessonManager.js';
+import { footer } from '../../headerAndFooter.js';
 
 const mockedLessonManager = {
   libraryTitle: '',
@@ -143,6 +144,13 @@ const TEST_DATA = [
     next: SlideProblemPresenter,
   },
 ];
+
+beforeAll(() => {
+  const footerElement = document.createElement('div');
+  footerElement.id = 'footer';
+  document.body.appendChild(footerElement);
+  footer.setup();
+});
 
 beforeEach(() => {
   jest.clearAllMocks();
