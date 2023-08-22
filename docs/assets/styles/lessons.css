@@ -15,6 +15,10 @@ a.problem {
   text-align: center;
 }
 
+.Presenter .presentation {
+  overflow: hidden auto;
+}
+
 .HomePresenter .presentation {
   display: flex;
   flex-direction: column;
@@ -31,7 +35,7 @@ a.problem {
   color: var(--tertiary-contrast);
   font-size: 1rem;
   margin: var(--margin-thickness);
-  padding: var(--padding);
+  padding: var(--padding-thickness);
 }
 .lesson-summary span {
   display: block;
@@ -90,7 +94,7 @@ a.problem {
 
 .missing-word.correct-answer,
 .missing-word.incorrect-answer {
-  padding: 0 var(--padding) 0 var(--padding);
+  padding: 0 var(--padding-thickness) 0 var(--padding-thickness);
   text-decoration: underline solid var(--line-thickness) var(--secondary-base);
 }
 
@@ -109,6 +113,7 @@ a.problem {
   margin-left: 0.2em;
   text-decoration: none;
 }
+
 
 li.library::marker {
   content: var(--icon-library) ' ';
@@ -158,6 +163,7 @@ li.problem::marker {
   font-weight: var(--icon-font-weight);
 }
 
+
 span.library-title,
 span.book-title,
 span.chapter-title,
@@ -187,6 +193,7 @@ span.lesson-title {
 .lesson-title::before {
   content: var(--icon-lesson);
 }
+
 
 ul.presentation,
 .problem-answers ul {
@@ -228,9 +235,10 @@ ul.presentation,
   flex: 1;
 }
 
+
 .MarksPresenter {
   margin: calc(2 * var(--margin-thickness));
-  padding: var(--padding);
+  padding: var(--padding-thickness);
   border: double var(--line-thickness);
 }
 
