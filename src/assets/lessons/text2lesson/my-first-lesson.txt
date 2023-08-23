@@ -1,4 +1,4 @@
-(i)This will be a bit of a longer lesson. We're going to look at how we create our
+(i) This will be a bit of a longer lesson. We're going to look at how we create our
 own lesson combined with a quiz.
 
 First, a bit of terminology so we're all on the same page.

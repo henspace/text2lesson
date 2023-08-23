@@ -77,10 +77,14 @@ class IconGenerator {
    */
   #getIconHtml(key) {
     if (!this.#cache.has(key)) {
-      const cssValue = getComputedStyle(
+      let cssValue = getComputedStyle(
         document.documentElement
       ).getPropertyValue(key);
-      this.#cache.set(key, cssValue.substring(1, cssValue.length - 1));
+      cssValue = cssValue.trim(); //iPhone includes leading whitespace
+      this.#cache.set(
+        key,
+        cssValue.substring(1, cssValue.length - 1).replace(/\\"/g, `"`)
+      );
     }
     return this.#cache.get(key) ?? '!?';
   }
@@ -398,7 +402,6 @@ class IconGenerator {
     } else {
       element.title = label;
     }
-
     if (this.semanticsAddressRole(element, role)) {
       // semantics match role but still add aria-label if text hidden.
       if (options.hideText) {

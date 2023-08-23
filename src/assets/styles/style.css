@@ -18,13 +18,20 @@
   }
 }
 
+@media (max-width: 480px) {
+  body {
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-#browser-not-supported {
+#browser-css-not-supported {
   display: none;
 }
 
@@ -32,7 +39,7 @@
   #content {
     display: none !important;
   }
-  #browser-not-supported {
+  #browser-css-not-supported {
     display: block !important;
   }
 }
@@ -118,11 +125,10 @@ body {
   flex-direction: column;
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
-  hyphens: auto;
   margin: 0;
   max-height: calc(var(--vh, 1vh) * 100);
   overflow-x: hidden;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
   width: 100%;
 }
 

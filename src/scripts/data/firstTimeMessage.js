@@ -57,9 +57,9 @@ export function showFirstUseMessageIfAppropriate() {
       i18n`When a user tries to launch one of those files, they will be given the option to run the lesson automatically.`,
       i18n`That process requires the lesson to be transmitted to the server.`,
       i18n`The user will always be given the option to skip the autorun feature and load the lesson manually.`,
-      i18n`\n\n`,
+      i18n``,
       i18n`- The application is hosted by GitHub, which does log your IP address for security purposes.`,
-      i18n`\n\n`,
+      i18n``,
       i18n`For more details please check out the ${privacyLink} information.`,
     ].join('\n');
     return ModalDialog.showInfo(parseMarkdown(message), i18n`Welcome`).then(

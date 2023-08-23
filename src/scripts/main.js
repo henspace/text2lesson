@@ -21,7 +21,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-
+import './utils/polyfills/string.js';
 import { BuildInfo } from './data/constants.js';
 import { getSettingDefinitions } from './data/settingDefinitions.js';
 import { getMainMenuItems } from './data/menuItems.js';
@@ -72,11 +72,33 @@ function getLanguages() {
     });
 }
 
-if (BuildInfo.isBuilt()) {
-  registerServiceWorker(BuildInfo.getMode());
+/**
+ * Display a fatal error.
+ * This is shown in the console, written to the page's content. Nothing else is
+ * used as it may not be safe to call complex functions such as ModalDialog
+ * routines.
+ * @param {Error} error
+ */
+function showFatalError(error) {
+  const html = `<h1>Whoops!</h1>
+  <p>An error has occured from which I can't recover on my own.</p>
+  <ul>
+  <li>Name: ${error.name}</li>
+  <li>Cause: ${error.cause}</li>
+  <li>Message: ${error.message}</li>
+  </ul>
+  <p>Try reloading the application.</p>
+  `;
+  console.error(error);
+  document.getElementById('content').innerHTML = html; // in case dialog cannot be shown.
 }
 
-window.addEventListener('load', () => {
+/**
+ * Load the application
+ * @returns {Promise} fulfils to undefined.
+ */
+function loadApplication() {
+  console.info('Launching application.');
   persistentData.setStorageKeyPrefix(
     `LR_${BuildInfo.getBundleName().replace('.', '_')}`
   );
@@ -113,7 +135,29 @@ window.addEventListener('load', () => {
       ).then(() => window.location.reload());
     })
     .catch((error) => {
-      console.error(error);
+      showFatalError(error);
       ModalDialog.showFatal(error).then(() => window.location.reload());
     });
+}
+
+/**
+ * Register the service worker if the application has been built. If running
+ * directly from source, no service worker is registered.
+ */
+function registerServiceWorkerIfBuilt() {
+  if (BuildInfo.isBuilt()) {
+    registerServiceWorker(BuildInfo.getMode());
+  }
+}
+
+/**
+ * Once the page has loaded, launch the application.
+ */
+window.addEventListener('load', () => {
+  try {
+    registerServiceWorkerIfBuilt();
+    return loadApplication();
+  } catch (error) {
+    showFatalError(error);
+  }
 });

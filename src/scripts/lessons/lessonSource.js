@@ -213,7 +213,7 @@ export class LessonSource {
    */
   getLineDetails(line) {
     // @ToDo remove comment.  const match = line.match(/^ {0,3}(?:\(+([i?=x+#])\1*\)+)(.*)$/i);
-    const match = line.match(/^ {0,3}(?:\(*([i?=x&/])\1*[) ]*)(.*)$/);
+    const match = line.match(/^ {0,3}(?:\(*([i?=xX&/])\1*[/) ]+)(.*)$/);
 
     if (!match) {
       return { key: undefined, content: line };

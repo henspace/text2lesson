@@ -19,6 +19,10 @@ a.problem {
   overflow: hidden auto;
 }
 
+.SlideProblemPresenter.Presenter .presentation {
+  overflow: hidden;
+}
+
 .HomePresenter .presentation {
   display: flex;
   flex-direction: column;
