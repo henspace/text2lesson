@@ -185,6 +185,16 @@ export class PresenterFactory {
   }
 
   /**
+   * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
+   * @returns {Presenter} Presenter or null.
+   */
+  getLibraryPresenter(callerIgnored, config) {
+    const klass = this.#skipUnnecessaryListPresenters(LibraryPresenter);
+    return new klass(config);
+  }
+
+  /**
    * For list presenters, skip to next if it only has one entry.
    * @param {Class} presenterClass
    * @returns {Class}

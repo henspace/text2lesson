@@ -555,7 +555,10 @@ export class ManagedElement {
       child.remove();
     });
     this.#managedChildren = [];
-    this.#element.replaceChildren();
+    while (this.#element.firstChild) {
+      this.#element.removeChild(this.#element.lastChild);
+    }
+    /** @Todo Remove code: this.#element.replaceChildren(); */
   }
 
   /**

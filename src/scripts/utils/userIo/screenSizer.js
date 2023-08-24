@@ -42,7 +42,7 @@ window.addEventListener('resize', () => {
   throttleTimer = window.setTimeout(() => {
     throttleTimer = null;
     setVhCssVariable();
-  }, 1000);
+  }, 200);
 });
 
 setVhCssVariable();

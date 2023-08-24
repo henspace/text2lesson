@@ -21,6 +21,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+import { i18n } from '../i18n/i18n.js';
+import { toast } from './toast.js';
 
 /**
  * Storage manager. This manages storage that conforms the the WebApi Storage interface.
@@ -91,9 +93,24 @@ export class DataStoreManager {
    */
   saveToStorage(key, value) {
     key = this.createStorageKey(key);
-    this.#storage.setItem(key, JSON.stringify(value));
+    try {
+      this.#storage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      toast(i18n`Unable to save data. ${error.message}`);
+    }
+
     return;
   }
+
+  /**
+   * Remove setting from storage
+   * @param {string} key
+   */
+  removeFromStorage(key) {
+    key = this.createStorageKey(key);
+    this.#storage.removeItem(key);
+  }
+
   /**
    * Set the prefix for the storage key. This is primarily used to stop apps
    * from the the same domain sharing the same storage values.

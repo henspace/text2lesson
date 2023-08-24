@@ -21,7 +21,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-import { jest, beforeEach, test, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, test, expect } from '@jest/globals';
+import { footer } from '../../headerAndFooter.js';
 
 const currentLessonInfo = {
   libraryKey: 'key',
@@ -100,6 +101,13 @@ jest.unstable_mockModule('./presenterFactory.js', () => {
 const { presenterFactory } = await import('./presenterFactory');
 const { LessonSource } = await import('../lessonSource.js');
 const { LessonPresenter } = await import('./lessonPresenter.js');
+
+beforeAll(() => {
+  const footerElement = document.createElement('div');
+  footerElement.id = 'footer';
+  document.body.appendChild(footerElement);
+  footer.setup();
+});
 
 beforeEach(() => {
   jest.clearAllMocks();

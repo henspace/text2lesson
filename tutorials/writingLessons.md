@@ -15,8 +15,8 @@ Before the problems, the file can contain meta data for the lesson. Any lines
 which precede the first problem are automatically assumed to form the meta data.
 
 With the exception of meta data, items are separated by a lines which start with
-a key character enclosed in () brackets. Any other characters following the
-brackets forms part of the data for the item.
+a key character brackets. This can be enclosed in brackets if preferred. Any
+other characters following the identifiers forms part of the data for the item.
 
 Item identifiers are as follows:
 
@@ -24,18 +24,21 @@ Item identifiers are as follows:
 - (?) question
 - (=) right answer
 - (x) wrong answer
-- (+) explanation
+- (&) explanation
+- (/) question separator
 
-The key character and opening and closing brackets can be repeated allowing more
-visually distinctive item separators to be created. The separator can also be
-preceded by up to three spaces. For example, the following lines are all valid
-separators for an introduction item:
+The key character and opening and closing brackets, if present can be repeated
+allowing more visually distinctive item separators to be created. The separator
+can also be preceded by up to three spaces. For example, the following lines are
+all valid separators for an introduction item:
 
 - (i)
 - &nbsp;&nbsp;&nbsp;(i)
-- (i)optional data following key
+- (i)optional data following the key
+- i optional data following the key
 - (((((((((((i)))))))))))
 - (iiiiiiiiiiiiiiiiiiiii)
+- iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 
 These can appear in any order but normally introduction, question, right
 answers, wrong answers, and explanation would be the most logical.

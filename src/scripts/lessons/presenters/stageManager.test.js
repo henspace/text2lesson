@@ -25,6 +25,7 @@
 import { StageManager } from './stageManager.js';
 import { Presenter } from './presenter.js';
 import { jest, test, expect, beforeAll, beforeEach } from '@jest/globals';
+import { footer } from '../../headerAndFooter.js';
 
 /**
  * @type {Element}
@@ -34,6 +35,10 @@ let stageElement;
 beforeAll(() => {
   stageElement = document.createElement('div');
   document.body.appendChild(stageElement);
+  const footerElement = document.createElement('div');
+  footerElement.id = 'footer';
+  document.body.appendChild(footerElement);
+  footer.setup();
 });
 
 beforeEach(() => {

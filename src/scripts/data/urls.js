@@ -32,6 +32,7 @@ const mdExtension = window.location.host.match(/^127\.0\.0\.1:808[0-2]/)
  * @enum {string}
  */
 export const Urls = {
+  LOGO: 'assets/images/logo.png',
   HELP: `${rootUrl}assets/docs/help.${mdExtension}`,
   PRIVACY: `${rootUrl}assets/docs/privacy.${mdExtension}`,
 };

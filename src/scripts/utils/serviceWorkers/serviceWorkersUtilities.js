@@ -22,10 +22,10 @@
  */
 
 /**
- * Register the service worker if in production mode.
+ * Perform the actual registration.
  * @param {string} buildMode - production or development.
  */
-export function registerServiceWorker(buildMode) {
+function performRegistrationIfPossible(buildMode) {
   if (buildMode === 'production' && 'serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
@@ -39,5 +39,17 @@ export function registerServiceWorker(buildMode) {
           console.error('SW registration failed: ', registrationError);
         });
     });
+  }
+}
+
+/**
+ * Register the service worker if in production mode.
+ * @param {string} buildMode - production or development.
+ */
+export function registerServiceWorker(buildMode) {
+  try {
+    performRegistrationIfPossible(buildMode);
+  } catch (error) {
+    console.error('Error during service worker registration', error);
   }
 }

@@ -23,6 +23,7 @@
  */
 import { Presenter } from './presenter.js';
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
+import { footer } from '../../headerAndFooter.js';
 
 import { jest, test, expect, beforeEach, beforeAll } from '@jest/globals';
 
@@ -58,6 +59,10 @@ let stage;
 beforeAll(() => {
   stage = new ManagedElement('div', 'stage');
   stage.appendTo(document.body);
+  const footerElement = document.createElement('div');
+  footerElement.id = 'footer';
+  document.body.appendChild(footerElement);
+  footer.setup();
 });
 
 beforeEach(() => {
@@ -88,7 +93,7 @@ test('constructor creates ManagedElement with class name base on interitance', (
   expect(presenter.classList.contains('Presenter')).toBe(true);
 });
 
-test('presentOnStage creates preamble, presentation and button-bar elements.', () => {
+test('presentOnStage creates preamble and presentation elements.', () => {
   const config = {
     className: 'presenter',
     titles: ['title1', 'title2'],
@@ -103,14 +108,11 @@ test('presentOnStage creates preamble, presentation and button-bar elements.', (
   expect(stage.managedChildren[0]).toBe(presenter);
 
   const rootElement = presenter.element;
-  expect(rootElement.children).toHaveLength(3);
+  expect(rootElement.children).toHaveLength(2);
   expect(rootElement.children.item(0).classList.contains('preamble')).toBe(
     true
   );
   expect(rootElement.children.item(1).classList.contains('presentation')).toBe(
-    true
-  );
-  expect(rootElement.children.item(2).classList.contains('button-bar')).toBe(
     true
   );
 

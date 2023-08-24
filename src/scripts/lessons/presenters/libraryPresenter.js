@@ -51,6 +51,7 @@ export class LibraryPresenter extends ListPresenter {
       `<span class='library-title'>${lessonManager.libraryTitle}</span>`
     );
   }
+
   /**
    * @override
    */

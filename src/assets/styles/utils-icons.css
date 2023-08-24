@@ -13,6 +13,9 @@
   --icon-open-folder: '\f07c';
   --icon-open-folder-html: '<i class="fa-solid fa-folder-open"></i>';
 
+  --icon-add-lesson: '\f022 \002b';
+  --icon-add-lesson-html: '<i class="fa-solid fa-rectangle-list"></i><i class="fa-solid fa-plus"></i>';
+
   /* navigation */
   --icon-back-nav: '\f30a';
   --icon-back-nav-html: '<i class="fa-solid fa-left-long"></i>';
@@ -62,9 +65,12 @@
   --icon-yes-html: '<i class="fa-solid fa-thumbs-up"></i>';
 
   --icon-reset-to-factory: '\f30b  \f275';
-  --icon-reset-to-factory-html: '<i class="fa-solid fa-right-long"></i> <i class="fa-solid fa-industry"/></i>';
+  --icon-reset-to-factory-html: '<i class="fa-solid fa-right-long"></i> <i class="fa-solid fa-industry"></i>';
 
   /* editor */
+  --icon-delete: '\f2ed';
+  --icon-delete-html: '<i class="fa-solid fa-trash-can"></i>';
+
   --icon-edit: '\f31c';
   --icon-edit-html: '<i class="fa-solid fa-file-pen"></i>';
 

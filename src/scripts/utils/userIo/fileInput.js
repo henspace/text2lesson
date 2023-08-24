@@ -35,16 +35,14 @@ export class FileInputButton extends ManagedElement {
   #input;
   /**
    * Create a file input button.
-   * @param {?string} overrideText - text to override the default label
+   * @param {module:utils/userIo/icons~IconConfig} options - options to override the default presentation.
    */
-  constructor(overrideText) {
+  constructor(options) {
     super('label', 'file-input-button');
     this.classList.add('selectable');
     this.#input = new ManagedElement('input');
     this.#input.setAttribute('type', 'file');
-    icons.applyIconToElement(icons.import, this, {
-      overrideText: overrideText,
-    });
+    icons.applyIconToElement(icons.import, this, options);
     this.#input.style.visibility = 'hidden';
     this.#input.style.height = '1em';
     this.appendChild(this.#input);

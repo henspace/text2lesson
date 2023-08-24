@@ -14,36 +14,46 @@ items.
 Before the problems, the file can contain meta data for the lesson. Any lines
 which precede the first problem are automatically assumed to form the meta data.
 
-With the exception of meta data, items are separated by a lines which start with
-a key character enclosed in () brackets. Any other characters following the
-brackets forms part of the data for the item.
+With the exception of meta data, different items are identified by a lines which
+start with a key character. Any other characters following the key character
+form part of the data for the item.
 
 Item identifiers are as follows:
 
-- (i) introduction
-- (?) question
-- (=) right answer
-- (x) wrong answer
-- (+) explanation
-- (#) problem separator
+- i introduction
+- ? question
+- = right answer
+- x wrong answer
+- & explanation
+- / problem separator
 
-The key character and opening and closing brackets can be repeated allowing more
-visually distinctive item separators to be created. The separator can also be
-preceded by up to three spaces. For example, the following lines are all valid
-separators for an introduction item:
+If preferred, the key character can be enclosed between brackets. In addition,
+the key character and opening and closing brackets, if present, can be repeated
+allowing for more visually distinctive item separators to be created. Brackets
+will be necessary if the text following the indentifier starts with one of the
+identification characters.
 
-- (i)
-- &nbsp;&nbsp;&nbsp;(i)
-- (i)optional data following key
+The separator can also be preceded by up to three spaces. For example, the
+following lines are all valid ways of identifing the start of an introduction
+item:
+
+- i
+- &nbsp;&nbsp;&nbsp;i
+- i optional data following the key
+- (i)optional data following the key
+- iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 - (((((((((((i)))))))))))
 - (iiiiiiiiiiiiiiiiiiiii)
 
-These can appear in any order but normally introduction, question, right
+The items can appear in any order but normally introduction, question, right
 answers, wrong answers, and explanation would be the most logical.
 
 Each problem can only contain one introduction, question and explanation item. A
-new introduction, question or explanation item identifies the start of a new
-problem.
+second introduction or question item identifies the start of a new problem. You
+can make the separation between problems clearer by using a separator item,
+which is the underscore, like this:
+
+- //////////////////////////////////////
 
 Each problem can contain multiple right and wrong answers. The program uses the
 presence of multiple answers to determine the type of question that is being

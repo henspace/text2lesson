@@ -1,7 +1,9 @@
 
 
 .utils-menu-title {
-  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .utils-menu-content {

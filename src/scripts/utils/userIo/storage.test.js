@@ -76,7 +76,7 @@ test('getFromStorage provides default in local storage does not contain value', 
 test('saveToStorage saves stringified data to local storage using key prefixed by the storageKey', () => {
   const key = 'A_KEY';
   const value = 'A random value';
-  manager.saveToStorage(`${key}`, value);
+  manager.saveToStorage(key, value);
   expect(inMemoryStorage.getItem(`${TEST_KEY}${key}`)).toBe(
     JSON.stringify(value)
   );
@@ -85,4 +85,15 @@ test('saveToStorage saves stringified data to local storage using key prefixed b
 
 test('setStorageKeyPrefix alters key prefix used for local storage', () => {
   console.log('Tested by beforeAll');
+});
+
+test('removeFromStorage removes item from storage', () => {
+  const key = 'A_KEY';
+  const value = 'A random value';
+  manager.saveToStorage(key, value);
+  expect(inMemoryStorage.getItem(`${TEST_KEY}${key}`)).toBe(
+    JSON.stringify(value)
+  );
+  manager.removeFromStorage(key);
+  expect(inMemoryStorage.getItem(`${TEST_KEY}${key}`)).toBeNull();
 });

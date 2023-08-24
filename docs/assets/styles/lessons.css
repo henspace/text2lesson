@@ -15,6 +15,14 @@ a.problem {
   text-align: center;
 }
 
+.Presenter .presentation {
+  overflow: hidden auto;
+}
+
+.SlideProblemPresenter.Presenter .presentation {
+  overflow: hidden;
+}
+
 .HomePresenter .presentation {
   display: flex;
   flex-direction: column;
@@ -30,8 +38,8 @@ a.problem {
   border-radius: var(--line-thickness);
   color: var(--tertiary-contrast);
   font-size: 1rem;
-  margin: var(--margin);
-  padding: var(--padding);
+  margin: var(--margin-thickness);
+  padding: var(--padding-thickness);
 }
 .lesson-summary span {
   display: block;
@@ -90,7 +98,7 @@ a.problem {
 
 .missing-word.correct-answer,
 .missing-word.incorrect-answer {
-  padding: 0 var(--padding) 0 var(--padding);
+  padding: 0 var(--padding-thickness) 0 var(--padding-thickness);
   text-decoration: underline solid var(--line-thickness) var(--secondary-base);
 }
 
@@ -164,7 +172,7 @@ span.library-title,
 span.book-title,
 span.chapter-title,
 span.lesson-title {
-  margin-right: var(--margin);
+  margin-right: var(--margin-thickness);
 }
 
 .library-title::before,
@@ -233,15 +241,15 @@ ul.presentation,
 
 
 .MarksPresenter {
-  margin: calc(2 * var(--margin));
-  padding: var(--padding);
+  margin: calc(2 * var(--margin-thickness));
+  padding: var(--padding-thickness);
   border: double var(--line-thickness);
 }
 
 .MarksPresenter h1,
 .MarksPresenter h2,
 .MarksPresenter h3 {
-  margin-top: var(--margin);
+  margin-top: var(--margin-thickness);
   text-align: center;
 }
 

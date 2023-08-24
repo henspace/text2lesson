@@ -18,13 +18,20 @@
   }
 }
 
+@media (max-width: 480px) {
+  body {
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-#browser-not-supported {
+#browser-css-not-supported {
   display: none;
 }
 
@@ -32,7 +39,7 @@
   #content {
     display: none !important;
   }
-  #browser-not-supported {
+  #browser-css-not-supported {
     display: block !important;
   }
 }
@@ -63,12 +70,12 @@
   --window-contrast: hsl(0, 50, 100);
   --window-highlight: hsl(0, 50, 60);
 
-  --padding: 0.4rem;
+  --padding-thickness: 0.25rem;
   --font-base-size: 15px;
   --line-thickness: max(2px, 0.2rem);
   --outline-offset: calc(0.5 * var(--line-thickness));
   --panel-border: solid var(--line-thickness);
-  --margin: calc(var(--outline-offset) + var(--line-thickness));
+  --margin-thickness: calc(var(--outline-offset) + var(--line-thickness));
   --vh: 1vh;
 }
 
@@ -110,11 +117,10 @@ body {
   flex-direction: column;
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
-  hyphens: auto;
   margin: 0;
   max-height: calc(var(--vh, 1vh) * 100);
   overflow-x: hidden;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
   width: 100%;
 }
 
@@ -135,7 +141,7 @@ h3 {
 
 .container {
   margin: 0;
-  padding: var(--padding);
+  padding: var(--padding-thickness);
 }
 
 .framed {
@@ -187,7 +193,23 @@ h3 {
 #footer {
   background-color: var(--tertiary-base);
   color: var(--tertiary-contrast);
-  font-size: 0.8rem;
+  font-size: 0.5rem;
+  padding: 0;
+  text-align: center;
+}
+
+#footer .button-bar {
+  background-color: var(--background-base);
+  border-top: solid var(--line-thickness) var(--tertiary-base);
+  color: var(--background-contrast);
+  text-align: center;
+}
+#footer .footer-text {
+  background-color: var(--tertiary-base);
+  border-top: solid var(--line-thickness) var(--tertiary-base);
+  color: var(--tertiary-contrast);
+  padding: 0 var(--padding-thickness) var(--padding-thickness)
+    var(--padding-thickness);
   text-align: center;
 }
 
@@ -205,7 +227,7 @@ h3 {
 }
 
 p {
-  margin: var(--margin) 0 var(--margin) 0;
+  margin: var(--margin-thickness) 0 var(--margin-thickness) 0;
 }
 
 a,

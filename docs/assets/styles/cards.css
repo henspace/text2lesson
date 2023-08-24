@@ -24,7 +24,8 @@
 }
 
 .display-card {
-  box-shadow: var(--margin) var(--margin) rgba(128, 128, 128, 0.5);
+  box-shadow: var(--margin-thickness) var(--margin-thickness)
+    rgba(128, 128, 128, 0.5);
   background-color: var(--secondary-base);
   clip-path: polygon(2% 2%, 100% 0, 100% 97%, 0 100%);
   color: var(--secondary-contrast);

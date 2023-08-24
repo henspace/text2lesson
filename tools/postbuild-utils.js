@@ -21,6 +21,7 @@
  */
 
 /*global process */
+
 import { PROJECT_INFO, PROJECT_TRANSFORMER } from '../project-info.js';
 import { generateSW } from 'workbox-build';
 import { minify } from 'terser';
@@ -55,7 +56,7 @@ export function compress(filePath, transformer) {
       )
     );
   }
-  console.log(`Compressing ${filePath}`);
+  console.log(`Compressing ${filePath} in ${PROJECT_INFO.buildMode} mode.`);
   const options = {
     format: {
       preamble: createCommentBlock(PROJECT_INFO.bundlePreamble),
@@ -68,12 +69,6 @@ export function compress(filePath, transformer) {
     },
     mangle: false,
   };
-
-  if (PROJECT_INFO.buildMode !== 'production') {
-    options.format = {
-      beautify: true,
-    };
-  }
 
   fsPromises
     .readFile(filePath)

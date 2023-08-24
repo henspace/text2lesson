@@ -56,10 +56,10 @@ postBuildUtils
       path.join(I18N_ASSETS_SOURCE_DIR, MASTER_TRANSLATION_JSON_NAME)
     )
   )
+  .then(() => postBuildUtils.transpile(PROJECT_INFO.bundleFilePath))
   .then(() =>
     postBuildUtils.compress(PROJECT_INFO.bundleFilePath, PROJECT_TRANSFORMER)
   )
-  .then(() => postBuildUtils.transpile(PROJECT_INFO.bundleFilePath))
   .then(() =>
     FileManager.copyFiles(
       path.join(PROJECT_INFO.sourceDir, PROJECT_INFO.assetsDirRelToSource),
@@ -69,7 +69,7 @@ postBuildUtils
   )
   .then(() => {
     FileManager.copyFile(
-      PROJECT_INFO.distributedLicencePath,
+      './src/_config.yml',
       path.join(PROJECT_INFO.buildDistDir, '_config.yml')
     );
   })

@@ -21,10 +21,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-
+import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { lessonManager } from '../lessonManager.js';
 import { ListPresenter } from './listPresenter.js';
-
+import { icons } from '../../utils/userIo/icons.js';
 /**
  * Class to present a chapter.
  * Presentation of a chapter involves displaying all of the lessons available in
@@ -32,6 +32,7 @@ import { ListPresenter } from './listPresenter.js';
  * @extends module:lessons/presenters/listPresenter.ListPresenter
  */
 export class ChapterPresenter extends ListPresenter {
+  ADD_LESSON_EVENT_ID = 'add-lesson';
   /**
    * Construct.
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
@@ -41,6 +42,9 @@ export class ChapterPresenter extends ListPresenter {
     config.itemClassName = 'lesson';
     super(config);
     this.#buildPreamble();
+    if (lessonManager.usingLocalLibrary) {
+      this.#addNewSlotButton();
+    }
     this.autoAddKeydownEvents();
   }
 
@@ -62,11 +66,33 @@ export class ChapterPresenter extends ListPresenter {
     }
   }
 
+  #addNewSlotButton() {
+    const button = new ManagedElement('button');
+    icons.applyIconToElement(icons.addLesson, button);
+    this.listenToEventOn('click', button, this.ADD_LESSON_EVENT_ID);
+    this.addButtonToBar(button);
+  }
+  /**
+   *
+   * @override
+   */
+  handleClickEvent(event, eventId) {
+    if (eventId === this.ADD_LESSON_EVENT_ID) {
+      return lessonManager.addLessonToLocalLibrary().then(() => {
+        super.handleClickEvent(event, eventId);
+      });
+    }
+    super.handleClickEvent(event, eventId);
+  }
   /**
    * @override
    */
   next(index) {
-    lessonManager.lessonIndex = index;
-    return super.next(index);
+    if (index === this.ADD_LESSON_EVENT_ID) {
+      return new ChapterPresenter(this.config);
+    } else {
+      lessonManager.lessonIndex = index;
+      return super.next(index);
+    }
   }
 }

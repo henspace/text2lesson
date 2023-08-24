@@ -31,5 +31,5 @@
 .utils-options[data-open] {
   display: flex;
   flex-flow: column wrap;
-  margin: var(--margin);
+  margin: var(--margin-thickness);
 }

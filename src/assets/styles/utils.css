@@ -47,13 +47,13 @@ textarea,
   font-size: 1rem;
   font-weight: normal;
   list-style-position: inside;
-  margin: var(--margin);
+  margin: var(--margin-thickness);
   min-width: 1rem;
   min-height: 1rem;
   outline-offset: var(--outline-offset);
   outline-color: var(--primary-highlight);
   outline-width: var(--line-thickness);
-  padding: var(--padding);
+  padding: var(--padding-thickness);
   transition: outline 0.5s;
 }
 
