@@ -60,13 +60,16 @@ export function compress(filePath, transformer) {
   const options = {
     format: {
       preamble: createCommentBlock(PROJECT_INFO.bundlePreamble),
-      comments: false,
+      comments: PROJECT_INFO.buildMode === 'production' ? false : true,
       max_line_len: PROJECT_INFO.buildMode === 'production' ? false : 80,
     },
-    compress: {
-      defaults: true,
-      keep_classnames: true,
-    },
+    compress:
+      PROJECT_INFO.buildMode !== 'production'
+        ? false
+        : {
+            defaults: true,
+            keep_classnames: true,
+          },
     mangle: false,
   };
 
@@ -199,10 +202,14 @@ export function extractHeader(content) {
 /**
  * Transpile the code using Babel. Configuration options are picked up from
  * 'babel.config.json' file by Babel.
+ * If the build mode is not production, no transpiling takes place.
  * @param {string} filepath
  * @returns {Promise} fulfils to undefined.
  */
 export function transpile(filepath) {
+  if (PROJECT_INFO.buildMode !== 'production') {
+    return Promise.resolve();
+  }
   return babel
     .transformFileAsync(filepath)
     .then((result) => fsPromises.writeFile(filepath, result.code, 'utf-8'));

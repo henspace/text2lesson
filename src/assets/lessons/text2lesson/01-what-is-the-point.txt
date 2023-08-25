@@ -1,8 +1,8 @@
-(i) _Text2Lesson_ has been designed to create lessons and quizzes quickly and 
+# (i) _Text2Lesson_ has been designed to create lessons and quizzes quickly and 
 painlessly just using plain text. 
 
 There are a lot of online quiz generators out there, such as Quizziz and Kahoot,
-so what is the point of something else.
+so what is the point of something else?
 
 Good question.
 
@@ -14,19 +14,19 @@ will need yet another online account.
 The guide you are currently watching has been created using _Text2Lesson_. Let's
 use it to ask some questions.
 
-If you find the speed at which these slides automatically advance, you can
-increase the reading speed by clicking on those three bars at the top left, add
+If you find the speed at which these slides automatically advance too slow, you can
+increase the reading speed by clicking on those three bars at the top left, and
 selecting settings.
 
-//////////////////////////////////////////////////////////////////
-? Which of these allows you to create a quiz without an account?
-= Text2Lesson
-x Kahoot
-x Quizziz
-x Slido
+___
+## ? Which of these allows you to create a quiz without an account?
+* = Text2Lesson
+* x Kahoot
+* x Quizziz
+* x Slido
 
-//////////////////////////////////////////////////////////////////
-(i) Okay. That was a very, very short lesson — we're just looking at some of the 
+___
+# (i) Okay. That was a very, very short lesson — we're just looking at some of the 
 things _Text2Lesson_ can do.
 
 This will automatically move on to your certificate for this quiz. You can then

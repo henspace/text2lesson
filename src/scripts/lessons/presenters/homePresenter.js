@@ -26,7 +26,8 @@ import { Presenter } from './presenter.js';
 import { getHomeText } from '../../data/home.js';
 import { parseMarkdown } from '../../utils/text/textProcessing.js';
 import { i18n } from '../../utils/i18n/i18n.js';
-import { LessonOrigin, lessonManager } from '../lessonManager.js';
+import { lessonManager } from '../lessonManager.js';
+import { LessonOrigin } from '../lessonOrigins.js';
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { FileInputButton } from '../../utils/userIo/fileInput.js';
@@ -55,7 +56,7 @@ export class HomePresenter extends Presenter {
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
-    config.titles = [i18n`Open library`, i18n`Open local library`];
+    config.titles = [];
     config.itemClassName = 'library';
     super(config);
     this.#buildContent();
@@ -73,7 +74,7 @@ export class HomePresenter extends Presenter {
 
     button = new ManagedElement('button');
     icons.applyIconToElement(icons.library, button, {
-      overrideText: i18n`Open internal library`,
+      overrideText: i18n`Open local library`,
       hideText: false,
     });
     this.presentation.appendChild(button);

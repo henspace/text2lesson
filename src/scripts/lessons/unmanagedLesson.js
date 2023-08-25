@@ -23,19 +23,11 @@
  */
 
 import { LessonSource } from './lessonSource.js';
-import { lessonManager } from './lessonManager.js';
 import { escapeHtml } from '../utils/text/textProcessing.js';
 
 /** Class to handle lesson provided via the a system outside of the normal
  * lesson manager approach. */
 export class UnmanagedLesson {
-  /**
-   * @type {string}
-   * @const
-   */
-  static DATA_KEY = 'data';
-  static TITLE_KEY = 'title';
-
   /**
    * @type {string}
    */
@@ -97,9 +89,35 @@ export class UnmanagedLesson {
    * Get the lesson info
    */
   get lessonInfo() {
-    return lessonManager.getUnmanagedLessonInfo(
-      escapeHtml(this.#title),
-      this.#origin
-    );
+    return this.#getUnmanagedLessonInfo(escapeHtml(this.#title), this.#origin);
+  }
+
+  /**
+   * Get unmanaged lesson information.
+   * The lesson info is undefined except for the managed flag which is false and
+   * the lesson title.
+   * @param {string} lessonTitle
+   * @param {LessonOrigin} origin - this should be EMBEDDED or FILE_SYSTEM if unmanaged
+   * @returns {LessonInfo}
+   */
+  #getUnmanagedLessonInfo(lessonTitle, origin) {
+    return {
+      origin: origin,
+      usingLocalLibrary: false,
+      libraryKey: undefined,
+      file: undefined,
+      url: undefined,
+      indexes: {
+        book: 0,
+        chapter: 0,
+        lesson: 0,
+      },
+      titles: {
+        library: '',
+        book: '',
+        chapter: '',
+        lesson: lessonTitle,
+      },
+    };
   }
 }

@@ -319,7 +319,7 @@ class IconGenerator {
   get save() {
     return {
       content: this.#getIconHtml('--icon-save-html'),
-      accessibleName: i18n`Save file`,
+      accessibleName: i18n`Save`,
     };
   }
   /** @returns {IconDetails} information for icon */

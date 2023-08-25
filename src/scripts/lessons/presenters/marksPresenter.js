@@ -28,7 +28,7 @@ import { MarkState } from '../itemMarker.js';
 import { i18n } from '../../utils/i18n/i18n.js';
 import { lessonManager } from '../lessonManager.js';
 import { icons } from '../../utils/userIo/icons.js';
-import { LessonOrigin } from '../lessonManager.js';
+import { LessonOrigin } from '../lessonOrigins.js';
 
 /**
  * Classes used for styling medals.
@@ -93,7 +93,7 @@ export class MarksPresenter extends Presenter {
    */
   #adjustButtonsForOrigin() {
     switch (this.config.lessonInfo.origin) {
-      case LessonOrigin.SESSION:
+      case LessonOrigin.EMBEDDED:
         this.hideHomeButton();
         this.applyIconToNextButton(icons.exit);
         this.showNextButton();
