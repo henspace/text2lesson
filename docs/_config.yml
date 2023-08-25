@@ -3,4 +3,4 @@ description:
   Create lessons and quizzes using just plain text — quick and simple.
 show_downloads: false
 google_analytics:
-theme: cayman
+theme: jekyll-theme-cayman
