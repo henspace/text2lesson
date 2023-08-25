@@ -1,4 +1,5 @@
 # text2lesson build and documentation
+_testJekyll/
 build/
 jsdoc/
 jsdoc-tools/

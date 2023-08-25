@@ -66,12 +66,6 @@ postBuildUtils
       { filterRe: /^((?!\.test\.).)*$/, transformer: CSS_TRANSFORMER }
     )
   )
-  .then(() =>
-    FileManager.copyFiles(
-      './src/_includes',
-      path.join(PROJECT_INFO.buildDistDir, '_includes')
-    )
-  )
   .then(() => {
     FileManager.copyFile(
       './src/_config.yml',
@@ -104,6 +98,12 @@ postBuildUtils
     );
   })
   .then(() => postBuildUtils.generateServiceWorker())
+  .then(() =>
+    FileManager.copyFiles(
+      './src/_includes',
+      path.join(PROJECT_INFO.buildDistDir, '_includes')
+    )
+  )
   .then(() =>
     i18n.validateAllJsonFiles(
       path.join(
