@@ -29,6 +29,7 @@ import { i18n } from '../../utils/i18n/i18n.js';
 import { lessonManager } from '../lessonManager.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { LessonOrigin } from '../lessonOrigins.js';
+import { embeddedLesson } from '../embeddedLesson.js';
 
 /**
  * Classes used for styling medals.
@@ -224,9 +225,8 @@ export class MarksPresenter extends Presenter {
       case MarksPresenter.RETRY_LESSON_ID:
         return this.config.factory.getProblemAgain(this, this.config);
       case Presenter.NEXT_ID:
-        if (this.config.lessonInfo.origin === LessonOrigin.SESSION) {
-          sessionStorage.clear();
-          window.top.location.replace(window.location.href); // escape the iframe
+        if (this.config.lessonInfo.origin === LessonOrigin.EMBEDDED) {
+          window.top.location.replace(embeddedLesson.rootUrl);
           return;
         }
     }
