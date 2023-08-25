@@ -22,7 +22,7 @@ You have three ways to create your own lessons.
 
 1. Create a lesson using your preferred text editor.
 1. Make sure you include a title at the top of the file. This should be written
-   using the title [metatdata](./metatdata.md) like this: `title:my title here`.
+   using the title [metadata](./metadata.md) like this: `title:my title here`.
 1. Save it to your local file system.
 1. From the home page, select `Open lesson from file system`.
 1. Browse to select the required lesson.

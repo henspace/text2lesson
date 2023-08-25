@@ -19,15 +19,15 @@ The application automatically determines the problem type using the following
 rules.
 
 1. If the problem only contains a introduction element, a
-   [Slideshow problem](##slideshow-problem) is generated.
-1. If the question contains [Missing Words](##missing-words) a
-   [Fill Problem](##fill-problem) is generated.
+   [Slideshow problem](#slideshow-problem) is generated.
+1. If the question contains [Missing Words](#missing-words) a
+   [Fill Problem](#fill-problem) is generated.
 1. If the question contains just one missing word at the end with no definition
-   of the missing word, an [Order problem](##order-problem) is generated.
+   of the missing word, an [Order problem](#order-problem) is generated.
 1. If the problem contains a question with just one right answer element
-   defined, a [Simple problem](##simple-problem) is generated.
+   defined, a [Simple problem](#simple-problem) is generated.
 1. If the problem contains a question with more than one right answer element
-   defined, a [Multi problem](##multi-problem) is generated.
+   defined, a [Multi problem](#multi-problem) is generated.
 
 ### Missing words
 
