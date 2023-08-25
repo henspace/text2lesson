@@ -1,12 +1,11 @@
-title: Text2Lesson: plain and simple
+title: Text2Lesson
 author:
-  name: GitHub User
-  email: your-email@domain.com
+  name: henspace
 
 # The `>` after `description:` means to ignore line-breaks until next key.
 # If you want to omit the line-break after the end of text, use `>-` instead.
 description: >
-  Text2Lesson: create lessons and quizzes using just plain text — quick and simple.
+  Create lessons and quizzes using just plain text — quick and simple.
 
 # Build settings
 
@@ -22,7 +21,7 @@ minima:
   # Minima date format.
   # Refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this.
   #
-  date_format: "%Y-%m-%d"
+  date_format: '%Y-%m-%d'
 
   # Generate social links in footer.
   #
@@ -42,7 +41,6 @@ minima:
   #   - { platform: telegram,       user_url: "https://t.me/jekyll" }
   #   - { platform: twitter,        user_url: "https://twitter.com/jekyllrb" }
   #   - { platform: youtube,        user_url: "https://www.youtube.com/jekyll" }
-
 # If you want to link only specific pages in your header, uncomment this and add the path to the pages in
 # order as they should show up.
 #
