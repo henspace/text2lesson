@@ -23,7 +23,7 @@
  */
 import { jest, beforeAll, beforeEach, test, expect } from '@jest/globals';
 import { ItemMarker } from '../itemMarker.js';
-import { LessonOrigin } from '../lessonManager.js';
+import { LessonOrigin } from '../lessonOrigins.js';
 import { footer } from '../../headerAndFooter.js';
 
 const mockedLessonManager = {
@@ -55,7 +55,7 @@ jest.unstable_mockModule('../lessonManager.js', () => {
     LessonOrigin: {
       REMOTE: 'remote',
       LOCAL: 'local',
-      SESSION: 'session',
+      EMBEDDED: 'embedded',
       FILE_SYSTEM: 'file_system',
     },
   };

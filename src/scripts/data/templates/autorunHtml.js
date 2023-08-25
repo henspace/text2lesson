@@ -22,95 +22,96 @@
  *
  */
 
-export function getAutorunHtml(b64Title, b64LessonData) {
-  const rootUrl = window.location.href.replace(/index\.html(\?.*)?$/, '');
-  const loaderUrl = `${rootUrl}session-data-builder.html`;
-  const appUrl = `${rootUrl}index.html`;
-
+/**
+ * Get the HTML for the autorun file.
+ * @param {Object} data
+ * @param {string} data.b64Title - lesson title in base64
+ * @param {string} data.b64LessonData - lesson definition text in base64
+ * @param {string} data.b64Translations - translations from i18 in base64
+ */
+export function getAutorunHtml(data) {
+  let rootUrl = window.location.href.replace(/index\.html(\?.*)?$/, '');
+  if (!rootUrl.endsWith('/')) {
+    // should be an unnecessary check but defensive.
+    rootUrl += '/';
+  }
   return `<!DOCTYPE html>
-<!-- 
-Text2Lesson loader.
--->
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>$_PRODUCT_NAME_TXT_$: Embedded lesson runner</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-      }
-      html {
-        height: -webkit-fill-available; 
-      }
-      body {
-        overflow: hidden;
-      }
-      noscript {
-        left: 0;
-        position: absolute;
-        top: 0;
-      }
-      #progress {
-        padding: 1em;
-        position: absolute;
-        width: 60vw;
-        margin-top: 50vh;
-        left: 0;
-        top: 0;
-        z-index: 10;
-      }
-      iframe {
-        border: 0;
-        width: 100vw;
-        height: 100vh;
-      }
-    </style>
-  </head>
-  <body>
-    <iframe id="data-loader"></iframe>
-    <div id="progress"></div>
-    <noscript class="always-on-top">
-      <p>
-        Your browser does not support scripts and so this application cannot
-        run. If you've disabled scripts, you will need to enable them to
-        proceed. Sorry.
-      </p>
-    </noscript>
-  </body>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Text2Lesson</title>
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="48x48"
+        href="${rootUrl}assets/images/favicon.appiconset/favicon_48.png"
+      />
+      <link
+        rel="apple-touch-icon"
+        type="image/png"
+        sizes="167x167"
+        href="${rootUrl}assets/images/favicon.appiconset/favicon_167.png"
+      />
+      <link
+        rel="apple-touch-icon"
+        type="image/png"
+        sizes="180x180"
+        href="${rootUrl}assets/images/favicon.appiconset/favicon_180.png"
+      />
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="${rootUrl}assets/images/favicon.appiconset/favicon_192.png"
+      />
+  
+      <link rel="stylesheet" href="${rootUrl}assets/styles/style.css" />
+      <link
+        href="${rootUrl}assets/third-party/font-awesome/css/fontawesome.min.css"
+        rel="stylesheet"
+      />
+      <link
+        href="${rootUrl}assets/third-party/font-awesome/css/brands.min.css"
+        rel="stylesheet"
+      />
+      <link
+        href="${rootUrl}assets/third-party/font-awesome/css/solid.min.css"
+        rel="stylesheet"
+      />
+    </head>
   <script>
-    const LESSON_TITLE_B64 = "${b64Title}";
-    const LESSON_SOURCE_B64 = "${b64LessonData}";
-
-    const LOADER_URL = '${loaderUrl}';
-    const APPLICATION_URL = '${appUrl}';
-    const loader = document.getElementById('data-loader');
-    const progress = document.getElementById('progress');
-    const dataChunks = LESSON_SOURCE_B64.match(/.{1,1800}/g);
-    progress.innerHTML = 'Loading: ';
-    let index = -1;
-    loaded = false;
-    const eventListener = loader.addEventListener('load', () => {
-      if (loaded) {
-        return;
-      }
-      progress.innerHTML += ' .';
-      if (index < dataChunks.length) {
-        if (index < 0) {
-          loader.src = \`\${LOADER_URL}?title=\${encodeURI(LESSON_TITLE_B64)}\`;
-          index++;
-        } else {
-          loader.src = \`\${LOADER_URL}?data=\${encodeURI(dataChunks[index++])}\`;
-        }
-      } else {
-        window.location.replace(APPLICATION_URL);
-        loaded = true;
-        progress.style.display = 'none';
-      }
-    });
-    loader.src = \`\${LOADER_URL}\`;
+      window.text2LessonEmbeddedData = {
+        title: "${data.b64Title}",
+        source: "${data.b64LessonData}",
+        translations: "${data.b64Translations}",
+        rootUrl: "${rootUrl}",
+      }    
   </script>
-</html>
-`;
+    <body>
+      <div id="modal-mask"></div>
+      <div id="title-bar"></div>
+      <div id="content" class="container">
+        <div id="stage">
+          <p>The application is loading. Please wait a few moments.</p>
+        </div>
+      </div>
+      <div id="footer" class="container"></div>
+      <script type="module" src="${rootUrl}text2lesson.js"></script>
+      <noscript class="always-on-top">
+        <p>
+          Your browser does not support scripts and so this application cannot
+          run. If you've disabled scripts, you will need to enable them to
+          proceed. Sorry.
+        </p>
+      </noscript>
+      <div id="browser-css-not-supported">
+        <p>
+          Sorry, but your browser does not support the features necessary to run
+          this application. Try upgrading your browser to the latest version.
+        </p>
+      </div>
+    </body>
+  </html>
+  `;
 }

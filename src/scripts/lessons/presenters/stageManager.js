@@ -49,6 +49,7 @@ export class StageManager {
    * @returns {undefined}  The method returns when a presenter is null.
    */
   async startShow(presenter) {
+    this.#stage.removeChildren();
     for (;;) {
       presenter = await presenter.presentOnStage(this.#stage);
       this.#stage.removeChildren();

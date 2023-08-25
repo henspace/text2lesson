@@ -21,7 +21,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-import { sessionLesson } from '../sessionDataLesson.js';
+import { embeddedLesson } from '../embeddedLesson.js';
 import { HomePresenter } from './homePresenter.js';
 import { LibraryPresenter } from './libraryPresenter.js';
 import { BookPresenter } from './bookPresenter.js';
@@ -245,9 +245,9 @@ export class PresenterFactory {
    */
   static getInitial() {
     const config = { factory: new PresenterFactory() };
-    if (sessionLesson.hasLesson) {
-      config.lesson = sessionLesson.lesson;
-      config.lessonInfo = sessionLesson.lessonInfo;
+    if (embeddedLesson.hasLesson) {
+      config.lesson = embeddedLesson.lesson;
+      config.lessonInfo = embeddedLesson.lessonInfo;
       if (config.lesson.hasMoreProblems) {
         return config.factory.getSuitableProblemPresenter(config);
       } else {

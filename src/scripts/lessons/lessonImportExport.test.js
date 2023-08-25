@@ -52,12 +52,8 @@ test('exporter exports an Autorun lesson', () => {
   exporter.exportAutorunLesson();
   const data = spy.mock.calls[0][0];
   expect(data).toMatch(/^<!DOCTYPE html>/);
-  const titleB64 = data.match(
-    /const LESSON_TITLE_B64 = "([A-Za-z0-9/+=]+)";/
-  )[1];
-  const contentB64 = data.match(
-    /const LESSON_SOURCE_B64 = "([A-Za-z0-9/+=]+)";/
-  )[1];
+  const titleB64 = data.match(/title: "([A-Za-z0-9/+=]+)"/)[1];
+  const contentB64 = data.match(/source: "([A-Za-z0-9/+=]+)"/)[1];
   const exportedTitle = base64ToString(titleB64);
   const exportedContent = base64ToString(contentB64);
   expect(exportedTitle).toBe(title);

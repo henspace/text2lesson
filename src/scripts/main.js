@@ -29,10 +29,10 @@ import { lessonManager } from './lessons/lessonManager.js';
 
 import { ModalDialog } from './utils/userIo/modalDialog.js';
 import { registerServiceWorker } from './utils/serviceWorkers/serviceWorkersUtilities.js';
-import { resolveLanguages } from './utils/i18n/i18FileResolver.js';
 import { loadSettingDefinitions } from './utils/userIo/settings.js';
 import { persistentData } from './utils/userIo/storage.js';
 import { i18n } from './utils/i18n/i18n.js';
+import { getLanguages } from './utils/i18n/languageLoader.js';
 import { StageManager } from './lessons/presenters/stageManager.js';
 import { PresenterFactory } from './lessons/presenters/presenterFactory.js';
 import { setHeaderAndFooter } from './headerAndFooter.js';
@@ -40,37 +40,7 @@ import { showFirstUseMessageIfAppropriate } from './data/firstTimeMessage.js';
 import { toast } from './utils/userIo/toast.js';
 import './utils/userIo/modalMask.js';
 import './utils/userIo/screenSizer.js';
-
-/**
- * Get the language files required for the application.
- * If the application has not been build, the application just returns a fulfilled
- * Promise.
- * @returns {Promise} Fulfils to undefined.
- */
-function getLanguages() {
-  if (!BuildInfo.isBuilt()) {
-    return Promise.resolve(undefined);
-  }
-  return resolveLanguages('./languages.json')
-    .then(() => {
-      console.info(
-        `Build information: ${
-          BuildInfo.getBundleName
-        } ${BuildInfo.getVersion()} ${BuildInfo.getMode()}`
-      );
-      return;
-    })
-    .catch((error) => {
-      const fetchSummary = error.fetchSummary;
-      if (fetchSummary && fetchSummary.length > 0 && fetchSummary[0].read) {
-        console.error(`${error}\nUsing translation ${fetchSummary[0].url}`);
-      } else {
-        console.error(error.message);
-        return Promise.reject(error);
-      }
-      return;
-    });
-}
+import { embeddedLesson } from './lessons/embeddedLesson.js';
 
 /**
  * Display a fatal error.
@@ -102,7 +72,8 @@ function loadApplication() {
   persistentData.setStorageKeyPrefix(
     `LR_${BuildInfo.getBundleName().replace('.', '_')}`
   );
-  return getLanguages()
+
+  return getLanguages(embeddedLesson.translations)
     .then(() => lessonManager.loadAllLibraries('assets/lessons/libraries.json'))
     .then(() => loadSettingDefinitions(getSettingDefinitions()))
     .then(() => {

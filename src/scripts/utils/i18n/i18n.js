@@ -22,6 +22,8 @@
  */
 
 import { escapeHtml } from '../text/textProcessing.js';
+import { stringToBase64 } from '../text/base64.js';
+
 /**
  * @typedef {Object<string, string>} Translations - key: value pair. The key is
  * a unique identification for the translation.
@@ -257,4 +259,17 @@ export function getBestLanguageFile(
     });
   });
   return bestMatch.file;
+}
+
+/**
+ * Get the translations. This is primarily for exporting.
+ * @returns {{active: Translations, fallback: Translations}}
+ */
+export function getBase64Translations() {
+  return stringToBase64(
+    JSON.stringify({
+      active: activeTranslations,
+      fallback: fallbackTranslations,
+    })
+  );
 }

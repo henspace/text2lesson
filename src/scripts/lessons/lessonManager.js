@@ -40,6 +40,8 @@ import { fetchText, fetchJson } from '../utils/jsonUtils/json.js';
 import { CachedLesson } from './cachedLesson.js';
 import { LocalLibrary } from './localLibrary.js';
 import { escapeHtml } from '../utils/text/textProcessing.js';
+import { embeddedLesson } from './embeddedLesson.js';
+import { LessonOrigin } from './lessonOrigins.js';
 
 /**
  * @typedef {Map<string, LibraryInfo>} Libraries - object containing
@@ -116,18 +118,6 @@ import { escapeHtml } from '../utils/text/textProcessing.js';
  * @property {string} titles.chapter - title of the chapter
  * @property {string} titles.lesson - title of the lesson
  */
-
-/**
- * Possible origins for lessons.
- * @const
- * @enum {string}
- */
-export const LessonOrigin = {
-  REMOTE: 'remote',
-  LOCAL: 'local',
-  SESSION: 'session',
-  FILE_SYSTEM: 'file_system',
-};
 
 class LessonManager {
   /**
@@ -342,36 +332,6 @@ class LessonManager {
   }
 
   /**
-   * Get unmanaged lesson information.
-   * The lesson info is undefined except for the managed flag which is false and
-   * the lesson title.
-   * @param {string} lessonTitle
-   * @param {LessonOrigin} origin - this should be SESSION or FILE_SYSTEM if unmanaged
-   * @returns {LessonInfo}
-   */
-
-  getUnmanagedLessonInfo(lessonTitle, origin) {
-    return {
-      origin: origin,
-      usingLocalLibrary: false,
-      libraryKey: undefined,
-      file: undefined,
-      url: undefined,
-      indexes: {
-        book: 0,
-        chapter: 0,
-        lesson: 0,
-      },
-      titles: {
-        library: '',
-        book: '',
-        chapter: '',
-        lesson: lessonTitle,
-      },
-    };
-  }
-
-  /**
    * Build the current lesson information.
    * @param {string} url - the url for the lesson. This is used as its unique key.
    * @returns {LessonInfo}
@@ -479,13 +439,16 @@ class LessonManager {
    * Set the available libraries. The `librariesFileLocation` should be the path
    * to a JSON representation of a `libraries` object.
    * Note that all titles are escaped.
-   * @param {string} librariesFileLocation
+   * @param {string} librariesFileLocation - if null or empty, just local libraries are loaded.
    * @returns {Promise} fufils to number of libraries.
    */
   loadAllLibraries(librariesFileLocation) {
     this.#libraries = new Map();
     const localLibrary = new LocalLibrary();
     this.#libraries.set(localLibrary.key, localLibrary.info);
+    if (!librariesFileLocation) {
+      return Promise.resolve(this.#libraries.size);
+    }
     return fetchJson(librariesFileLocation).then((entries) => {
       for (const key in entries) {
         const entry = entries[key];
@@ -648,4 +611,23 @@ class LessonManager {
   }
 }
 
-export const lessonManager = new LessonManager();
+/**
+ * Lesson Manager for embedded lessons. These don't have access to JSON and therefore
+ * There is no remote access.
+ */
+class EmbeddedLessonManager {
+  loadAllLibraries(librariesFileLocation) {
+    console.debug(
+      `Embedded lesson manager ignore attempt to load ${librariesFileLocation}`
+    );
+  }
+  loadAllLibraryContent() {
+    console.debug(
+      `Embedded lesson manager ignored attempt to load all library content`
+    );
+  }
+}
+
+export const lessonManager = embeddedLesson.hasLesson
+  ? new EmbeddedLessonManager()
+  : new LessonManager();

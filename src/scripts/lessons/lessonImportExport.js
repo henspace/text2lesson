@@ -26,7 +26,7 @@ import { base64ToString, stringToBase64 } from '../utils/text/base64.js';
 import { getAutorunHtml } from '../data/templates/autorunHtml.js';
 import { ModalDialog } from '../utils/userIo/modalDialog.js';
 import { icons } from '../utils/userIo/icons.js';
-import { i18n } from '../utils/i18n/i18n.js';
+import { i18n, getBase64Translations } from '../utils/i18n/i18n.js';
 
 /**
  * @typedef {Object} LessonImportExportSummary
@@ -122,7 +122,11 @@ export class LessonExporter {
   exportAutorunLesson() {
     const b64Title = stringToBase64(this.#title);
     const b64Data = stringToBase64(this.#content);
-    const html = getAutorunHtml(b64Title, b64Data);
+    const html = getAutorunHtml({
+      b64Title: b64Title,
+      b64LessonData: b64Data,
+      b64Translations: getBase64Translations(),
+    });
     this.saveDataToFile(html, 'html');
   }
 
@@ -162,6 +166,7 @@ export class LessonImporter {
 
     result = this.#getSummaryFromAutorunFile(exportedData);
     if (result) {
+      console.log(result.languages);
       return result;
     }
     return this.#getSummaryFromPlainTextFile(exportedData);
@@ -191,7 +196,7 @@ export class LessonImporter {
    */
   #getSummaryFromAutorunFile(data) {
     const match = data.match(
-      /const LESSON_TITLE_B64\s*=\s*['"]([a-zA-Z0-9+/=]+)['"];\s*const LESSON_SOURCE_B64\s*=\s*['"]([a-zA-Z0-9+/=]+)['"];/
+      /title:\s*['"]([a-zA-Z0-9+/=]+)['"]\s*,\s*source:\s*['"]([a-zA-Z0-9+/=]+)['"]/
     );
     if (match) {
       try {
@@ -213,7 +218,7 @@ export class LessonImporter {
    * @returns {boolean} true if plain text file.
    */
   #getSummaryFromPlainTextFile(data) {
-    if (data.match(/^ {0,3}(?:\(*([i?])\1*[) ]+)(.*)$/m)) {
+    if (data.match(/^[-#_* ]{0,3}(?:\(*([i?=xX&_])\1*[_) ]+)(.*)$/m)) {
       return {
         title: '',
         content: data,

@@ -94,9 +94,10 @@ export class Lesson {
   }
 
   /**
-   * Reset the problem index
+   * Reset the problem index and marker.
    */
   restart() {
+    this.#marker.reset();
     this.#problemIndex = 0;
   }
 

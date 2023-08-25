@@ -1,7 +1,7 @@
 /**
- * @file Collection of urls.
+ * @file Origins for lessons
  *
- * @module data/urls
+ * @module lessons/lessonOrigins
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -22,25 +22,14 @@
  *
  */
 
-import { embeddedLesson } from '../lessons/embeddedLesson.js';
-
-let rootUrl = embeddedLesson.hasLesson
-  ? embeddedLesson.rootUrl
-  : window.location.href.replace(/index\.html(\?.*)?$/, '');
-if (!rootUrl.endsWith('/')) {
-  rootUrl += '/'; // defensive
-}
-
-// allow for the fact that markdown files are available as html files on GitHub pages.
-const mdExtension = window.location.host.match(/^127\.0\.0\.1:808[0-2]/)
-  ? 'md'
-  : 'html';
-
 /**
+ * Possible origins for lessons.
+ * @const
  * @enum {string}
  */
-export const Urls = {
-  LOGO: `${rootUrl}assets/images/logo.png`,
-  HELP: `${rootUrl}assets/docs/help.${mdExtension}`,
-  PRIVACY: `${rootUrl}assets/docs/privacy.${mdExtension}`,
+export const LessonOrigin = {
+  REMOTE: 'remote',
+  LOCAL: 'local',
+  EMBEDDED: 'embedded',
+  FILE_SYSTEM: 'file_system',
 };

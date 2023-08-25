@@ -43,7 +43,7 @@ export const ProblemItemKey = {
   RIGHT_ANSWER: '=',
   WRONG_ANSWER: 'x',
   EXPLANATION: '&',
-  QUESTION_BREAK: '/',
+  QUESTION_BREAK: '_',
 };
 
 /**
@@ -203,8 +203,8 @@ export class LessonSource {
    * Get the key and content that follows the key for the line.
    * If there is no key found, the entire line is returned in the content and
    * key is undefined.
-   * A key line can be preceded by upto 3 spaces. It then comprises the
-   * key character, i?=x or +, optionallycontained within () brackets. The brackets can
+   * A key line can be preceded by up to 3 -, #, _ or space characters. It then comprises the
+   * key character, i?=x+& or _, optionallycontained within () brackets. The brackets can
    * be repeated and the key character can be repeated. This allows the author
    * to use more visually prominent key lines if preferred.
    * The content does not include the line terminator.
@@ -213,7 +213,7 @@ export class LessonSource {
    */
   getLineDetails(line) {
     // @ToDo remove comment.  const match = line.match(/^ {0,3}(?:\(+([i?=x+#])\1*\)+)(.*)$/i);
-    const match = line.match(/^ {0,3}(?:\(*([i?=xX&/])\1*[/) ]+)(.*)$/);
+    const match = line.match(/^[-#_* ]{0,3}(?:\(*([i?=xX&_])\1*[_) ]+)(.*)$/);
 
     if (!match) {
       return { key: undefined, content: line };

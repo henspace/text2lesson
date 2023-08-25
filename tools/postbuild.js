@@ -46,9 +46,8 @@ const I18N_ASSETS_SOURCE_DIR = path.join(
  * Execute postbuild actions
  */
 
-postBuildUtils.copyHtmlFileToBuildRoot('./src/index.html');
 postBuildUtils
-  .copyHtmlFileToBuildRoot('./src/session-data-builder.html')
+  .copyHtmlFileToBuildRoot('./src/index.html')
   .then(() => FileManager.makeDir(PROJECT_INFO.buildReportDir))
   .then(() =>
     i18n.extractI18nLiterals(
