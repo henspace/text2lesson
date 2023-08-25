@@ -15,4 +15,3 @@ used:
 - to create lessons to share with students, quickly and simply and without the
   students needing to create accounts or provide any personal information.
 
-More information is provided in [Help](./src/assets/docs/help.md) documentation.
