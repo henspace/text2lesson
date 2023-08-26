@@ -26,7 +26,7 @@ import { embeddedLesson } from '../lessons/embeddedLesson.js';
 
 let rootUrl = embeddedLesson.hasLesson
   ? embeddedLesson.rootUrl
-  : window.location.href.replace(/index\.html(\?.*)?$/, '');
+  : window.location.href.replace(/launch\.html(\?.*)?$/, '');
 if (!rootUrl.endsWith('/')) {
   rootUrl += '/'; // defensive
 }
@@ -40,7 +40,8 @@ const mdExtension = window.location.host.match(/^127\.0\.0\.1:808[0-2]/)
  * @enum {string}
  */
 export const Urls = {
+  ROOT: `${rootUrl}`,
   LOGO: `${rootUrl}assets/images/logo.png`,
-  HELP: `${rootUrl}assets/docs/help.${mdExtension}`,
+  HELP: `${rootUrl}assets/docs/about.${mdExtension}`,
   PRIVACY: `${rootUrl}assets/docs/privacy.${mdExtension}`,
 };

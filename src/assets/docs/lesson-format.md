@@ -1,4 +1,6 @@
-# Lesson format
+---
+title: "Lesson format"
+---
 
 All lessons are created using plain text files.
 
@@ -12,7 +14,7 @@ Before the problems, the file can contain meta data for the lesson. Any lines
 which precede the first problem are automatically assumed to form the meta data.
 The _metadata_ is an advanced feature, so we'll ignore that for the moment.
 
-## The basic problem elements
+# The basic problem elements
 
 The different problem _elements_ are identified by a lines which start with an
 _element&nbsp;identifier_. Any other characters following the identifier form
@@ -99,9 +101,9 @@ those leading characters shown above, make your lesson easier to visualise.
 If you're familiar with Markdown, this probably all makes sense. If you're not,
 don't worry about it for now. It's an advanced feature that you don't need to
 know about to get started. If you're interested and want to know more, check out
-[Markdown light](./markdown-light.md).
+[Markdown light](./markdown-light).
 
-## Multiple lines
+# Multiple lines
 
 In the examples above, the text for each element has been included on the same
 line as the _element&nbsp;identifier_, but this is not necessary. You can
@@ -121,7 +123,7 @@ x Prague
 & Paris is the capital of France.
 ```
 
-## Separating problems
+# Separating problems
 
 Each problem must contain either an introduction or question element. It can of
 course contain both.
@@ -184,4 +186,6 @@ The separator, which uses the underscore _element&nbsp;identifier_, will tell
 You might be wondering why it might be important to have an introduction on its
 own. That is because of the different problem types supported by the
 application. Perhaps now is the time to check out
-[Problem Types](./problem-types.md)
+[Problem Types](./problem-types/md)
+
+[Home](./about.md)

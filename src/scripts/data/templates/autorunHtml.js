@@ -21,6 +21,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+import { Urls } from '../urls.js';
 
 /**
  * Get the HTML for the autorun file.
@@ -30,11 +31,7 @@
  * @param {string} data.b64Translations - translations from i18 in base64
  */
 export function getAutorunHtml(data) {
-  let rootUrl = window.location.href.replace(/index\.html(\?.*)?$/, '');
-  if (!rootUrl.endsWith('/')) {
-    // should be an unnecessary check but defensive.
-    rootUrl += '/';
-  }
+  let rootUrl = Urls.ROOT;
   return `<!DOCTYPE html>
   <html lang="en">
     <head>

@@ -47,7 +47,8 @@ const I18N_ASSETS_SOURCE_DIR = path.join(
  */
 
 postBuildUtils
-  .copyHtmlFileToBuildRoot('./src/index.html')
+  .copyHtmlFileToBuildRoot('./src/launch.html')
+  .then(() => postBuildUtils.copyHtmlFileToBuildRoot('./src/index.md'))
   .then(() => FileManager.makeDir(PROJECT_INFO.buildReportDir))
   .then(() =>
     i18n.extractI18nLiterals(

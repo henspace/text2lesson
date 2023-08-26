@@ -1,6 +1,8 @@
 title: Text2Lesson
 description:
-  Create lessons and quizzes using just plain text — quick and simple.
+  Text2Lesson — the fastest way to create your lessons from plain old text.
 show_downloads: false
 google_analytics:
 theme: jekyll-theme-cayman
+github:
+  is_project_page: false

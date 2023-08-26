@@ -66,6 +66,6 @@ system:
 
 ### Playing an autorun file
 
-An _autorun_ file is a `html` file that has been exported from **Text2Lesson**
-to make it easier to play lessons. To play this lesson, simply open it in your
+An _autorun_ file is a `html` file that has been exported from _Text2Lesson_ to
+make it easier to play lessons. To play this lesson, simply open it in your
 browser. The lesson will start playing automatically.

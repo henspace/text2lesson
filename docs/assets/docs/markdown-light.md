@@ -17,11 +17,11 @@ definition of problems. The following limitations apply:
 ### Unexpected automatic link behaviour
 
 Automatic links in Markdown are created by enclosing the link between `<` and
-`>` characters. As a byproduct of the fact that, unlike Markdown,
-**Text2Lesson** escapes all HTML, if you were to enclose text between `&lt;` and
-`>` text, that would also be interpreted as an automatic link. You can prevent
-this by using `&gt;` for the closing greater than character. This behaviour is
-summarised below:
+`>` characters. As a byproduct of the fact that, unlike Markdown, _Text2Lesson_
+escapes all HTML, if you were to enclose text between `&lt;` and `>` text, that
+would also be interpreted as an automatic link. You can prevent this by using
+`&gt;` for the closing greater than character. This behaviour is summarised
+below:
 
 - `<https://henspace.com>` creates an automatic link.
 - `&lt;https://henspace.com>` creates an automatic link.

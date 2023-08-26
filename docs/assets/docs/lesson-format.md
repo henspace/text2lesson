@@ -126,7 +126,7 @@ x Prague
 Each problem must contain either an introduction or question element. It can of
 course contain both.
 
-**Text2Lesson** uses the following rules to detects new problem :
+_Text2Lesson_ uses the following rules to detects new problem :
 
 1. A new introduction element is identified. As a problem can only contain one
    introduction element, the application knows that another introduction must be
@@ -179,7 +179,7 @@ x 4
 ```
 
 The separator, which uses the underscore _element&nbsp;identifier_, will tell
-**Text2Lesson** to create two problems.
+_Text2Lesson_ to create two problems.
 
 You might be wondering why it might be important to have an introduction on its
 own. That is because of the different problem types supported by the
