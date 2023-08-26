@@ -39,7 +39,10 @@ export function getMainMenuItems() {
     {
       iconDetails: icons.privacy,
       command: {
-        execute: () => window.open(Urls.PRIVACY, '_blank'),
+        execute: () => {
+          window.open(Urls.PRIVACY, '_blank');
+          return Promise.resolve();
+        },
       },
     },
   ];

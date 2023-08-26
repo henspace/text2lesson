@@ -28,6 +28,7 @@ import { DisplayCards } from './displayCards.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { persistentData } from '../../utils/userIo/storage.js';
 import { Presenter } from './presenter.js';
+import { Gesture } from '../../utils/userIo/gestures.js';
 
 const MediaClass = {
   PAUSE: 'pause',
@@ -122,6 +123,8 @@ export class SlideProblemPresenter extends ProblemPresenter {
       this.problem.intro.html || this.problem.question.html
     );
     this.#visualCard = new ManagedElement('div', 'display-card');
+    this.managedChildren.push(new Gesture(this.#visualCard.element));
+    this.listenToEventOn('gesture', this.#visualCard);
     this.listenToEventOn('animationend', this.#visualCard);
     this.questionElement.removeChildren();
     this.questionElement.appendChild(this.#visualCard);
@@ -171,21 +174,61 @@ export class SlideProblemPresenter extends ProblemPresenter {
   /**
    * Set the card state adjusting css classes as required.
    * @param {CardState} cardState
+   * @param {Gesture.Direction} [direction=Gesture.Direction.RIGHT]
    */
-  #setCardState(cardState) {
+  #setCardState(cardState, direction) {
     switch (cardState) {
       case CardState.ARRIVING:
-        this.#visualCard.classList.remove('card-offscreen');
+        this.#removeAllExitClasses();
         this.#visualCard.classList.add('card-onscreen');
         break;
       case CardState.LEAVING:
         this.#visualCard.classList.remove('card-onscreen');
-        this.#visualCard.classList.add('card-offscreen');
+        this.#visualCard.classList.add(
+          this.#getExitClassForDirection(direction)
+        );
         break;
     }
     this.#cardState = cardState;
   }
 
+  /**
+   * Remove all exit classes from card
+   */
+  #removeAllExitClasses() {
+    this.#visualCard.classList.remove(
+      this.#getExitClassForDirection(Gesture.Direction.UP)
+    );
+    this.#visualCard.classList.remove(
+      this.#getExitClassForDirection(Gesture.Direction.LEFT)
+    );
+    this.#visualCard.classList.remove(
+      this.#getExitClassForDirection(Gesture.Direction.DOWN)
+    );
+    this.#visualCard.classList.remove(
+      this.#getExitClassForDirection(Gesture.Direction.RIGHT)
+    );
+  }
+
+  /**
+   * Get the appropriate class name for the card exit.
+   * @param {Gesture.Direction} direction
+   * @returns {string}
+   */
+  #getExitClassForDirection(direction) {
+    const rootClass = 'card-offscreen';
+    switch (direction) {
+      case Gesture.Direction.UP:
+        return `${rootClass}-up`;
+      case Gesture.Direction.LEFT:
+        return `${rootClass}-left`;
+      case Gesture.Direction.DOWN:
+        return `${rootClass}-down`;
+      case Gesture.Direction.RIGHT:
+      default:
+        return `${rootClass}-right`;
+    }
+  }
   /**
    * Show the next card.
    */
@@ -228,9 +271,10 @@ export class SlideProblemPresenter extends ProblemPresenter {
 
   /**
    * Remove the card
+   * @param {?Gesture.Direction} direction
    */
-  #removeCard() {
-    this.#setCardState(CardState.LEAVING);
+  #removeCard(direction) {
+    this.#setCardState(CardState.LEAVING, direction);
   }
 
   /**
@@ -271,18 +315,26 @@ export class SlideProblemPresenter extends ProblemPresenter {
         this.#paused = false;
         return;
       case MediaID.SKIP:
-        clearTimeout(this.#readTimerId);
-        this.#showMediaButtons(true);
-        if (
-          this.#cardState === CardState.ARRIVING ||
-          this.#cardState === CardState.READING
-        ) {
-          this.#removeCard();
-        }
-        this.#paused = false;
+        this.#skip();
         return;
     }
     super.handleClickEvent(event, eventId);
+  }
+
+  /**
+   * Perform the skip action.
+   * @param {?Gesture.Direction} direction
+   */
+  #skip(direction) {
+    clearTimeout(this.#readTimerId);
+    this.#showMediaButtons(true);
+    if (
+      this.#cardState === CardState.ARRIVING ||
+      this.#cardState === CardState.READING
+    ) {
+      this.#removeCard(direction);
+    }
+    this.#paused = false;
   }
 
   /**
@@ -321,5 +373,15 @@ export class SlideProblemPresenter extends ProblemPresenter {
       this.#skipButton.hide();
       this.#playButton.focus();
     }
+  }
+
+  /**
+   * Handle the gesture.
+   * @param {CustomEvent} event
+   * @param {*} eventIdIgnored
+   */
+  handleGestureEvent(event, eventIdIgnored) {
+    console.debug(`Gesture direction ${event.detail}`);
+    this.#skip(event.detail);
   }
 }
