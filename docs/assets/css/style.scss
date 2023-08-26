@@ -1,0 +1,48 @@
+---
+---
+
+@import '{{ site.theme }}';
+
+.page-header {
+  background-image: url(../../testdocs/logo-mainly-black.png);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 64px;
+}
+
+.main-content blockquote {
+  color: inherit;
+}
+
+.main-content h1,
+.main-content h2,
+.main-content h3,
+.main-content h4,
+.main-content h5,
+.main-content h6 {
+  color: #0f7743;
+}
+
+body {
+  color: #505a5e;
+}
+
+.highlight .c1 {
+  color: #707064;
+}
+
+.main-content pre {
+  color: #526e7b;
+}
+
+.main-content pre > code {
+  color: #526e7b;
+}
+
+.highlight .no {
+  color: #005d5d;
+}
+
+.site-footer-credits {
+  color: #5b656a;
+}

@@ -1,0 +1,107 @@
+
+
+@keyframes slidein {
+  from {
+    transform: translateY(100vh) rotate(0);
+  }
+
+  50% {
+    transform: rotate(10deg);
+  }
+
+  to {
+    transform: translateY(0) rotate(0);
+  }
+}
+
+@keyframes slideout-right {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes slideout-left {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100vw);
+  }
+}
+
+@keyframes slideout-up {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-100vh);
+  }
+}
+
+@keyframes slideout-down {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+.display-card {
+  box-shadow: var(--margin-thickness) var(--margin-thickness)
+    rgba(128, 128, 128, 0.5);
+  background-color: var(--secondary-base);
+  clip-path: polygon(2% 2%, 100% 0, 100% 97%, 0 100%);
+  color: var(--secondary-contrast);
+  min-height: 10vh;
+  max-height: 50vh;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: auto;
+  padding: 1rem;
+  position: relative;
+  width: 90%;
+  visibility: hidden;
+}
+
+.display-card.card-offscreen-right {
+  animation-name: slideout-right;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  visibility: visible;
+}
+
+.display-card.card-offscreen-left {
+  animation-name: slideout-left;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  visibility: visible;
+}
+
+.display-card.card-offscreen-up {
+  animation-name: slideout-up;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  visibility: visible;
+}
+
+.display-card.card-offscreen-down {
+  animation-name: slideout-down;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  visibility: visible;
+}
+
+.display-card.card-onscreen {
+  animation-name: slidein;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  visibility: visible;
+}
