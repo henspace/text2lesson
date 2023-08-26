@@ -26,15 +26,12 @@ import { embeddedLesson } from '../lessons/embeddedLesson.js';
 
 let rootUrl = embeddedLesson.hasLesson
   ? embeddedLesson.rootUrl
-  : window.location.href.replace(/launch\.html(\?.*)?$/, '');
+  : window.location.href.replace(/index\.html(\?.*)?$/, '');
 if (!rootUrl.endsWith('/')) {
   rootUrl += '/'; // defensive
 }
 
-// allow for the fact that markdown files are available as html files on GitHub pages.
-const mdExtension = window.location.host.match(/^127\.0\.0\.1:808[0-2]/)
-  ? 'md'
-  : 'html';
+const DOCS_ROOT_URL = 'https://henspace.com/text2lesson-docs/';
 
 /**
  * @enum {string}
@@ -42,6 +39,6 @@ const mdExtension = window.location.host.match(/^127\.0\.0\.1:808[0-2]/)
 export const Urls = {
   ROOT: `${rootUrl}`,
   LOGO: `${rootUrl}assets/images/logo.png`,
-  HELP: `${rootUrl}assets/docs/about.${mdExtension}`,
-  PRIVACY: `${rootUrl}assets/docs/privacy.${mdExtension}`,
+  HELP: `${DOCS_ROOT_URL}about.html`,
+  PRIVACY: `${DOCS_ROOT_URL}privacy.html`,
 };

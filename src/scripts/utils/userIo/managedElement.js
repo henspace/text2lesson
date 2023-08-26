@@ -476,9 +476,11 @@ export class ManagedElement {
    * is provide, this is the id that will be returned to event handlers.
    * This is done by adding a data-event-id attribute to the element. If it is
    * a function, then that function will be called.
+   * @param {?Object | boolean} options - boolean flag for useCapture or object primarily
+   * for use with the passive flag for touch events.
    */
-  listenToOwnEvent(eventType, eventIdOrHandler) {
-    this.listenToEventOn(eventType, this, eventIdOrHandler);
+  listenToOwnEvent(eventType, eventIdOrHandler, options) {
+    this.listenToEventOn(eventType, this, eventIdOrHandler, options);
   }
   /**
    * Add event listener to the target element.
@@ -490,8 +492,10 @@ export class ManagedElement {
    * is provide, this is the id that will be returned to event handlers.
    * This is done by adding a data-event-id attribute to the element. If it is
    * a function, then that function will be called.
+   * @param {?Object | boolean} options - boolean flag for useCapture or object primarily
+   * for use with the passive flag for touch events.
    */
-  listenToEventOn(eventType, target, eventIdOrHandler) {
+  listenToEventOn(eventType, target, eventIdOrHandler, options) {
     if (!(target instanceof ManagedElement)) {
       throw new Error('Expect ManagedElement');
     }
@@ -499,15 +503,16 @@ export class ManagedElement {
     this.#listeningTargets.push({
       managedElement: target,
       eventType: eventType,
+      options: options,
     });
 
     if (eventIdOrHandler instanceof Function) {
-      target.$.addEventListener(eventType, eventIdOrHandler);
+      target.$.addEventListener(eventType, eventIdOrHandler, options);
     } else {
       if (eventIdOrHandler !== null && eventIdOrHandler !== undefined) {
         target.setAttribute('data-event-id', eventIdOrHandler);
       }
-      target.$.addEventListener(eventType, this);
+      target.$.addEventListener(eventType, this, options);
     }
   }
 
@@ -567,7 +572,7 @@ export class ManagedElement {
   removeListeners() {
     this.#listeningTargets.forEach((target) => {
       const element = target.managedElement.element;
-      element.removeEventListener(target.eventType, this);
+      element.removeEventListener(target.eventType, this, target.options);
     });
     this.#managedChildren.forEach((child) => {
       child.removeListeners();

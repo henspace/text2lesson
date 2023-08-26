@@ -252,7 +252,23 @@ test('Remove removes all listeners', () => {
   parent.remove();
   for (let n = 0; n < 5; n++) {
     expect(spies[n]).toBeCalledTimes(1);
-    expect(spies[n]).toHaveBeenCalledWith(`someevent${n}`, parent);
+    expect(spies[n]).toHaveBeenCalledWith(`someevent${n}`, parent, undefined);
+  }
+});
+
+test('Remove removes all listeners providing option as well', () => {
+  const parent = new ManagedElement('div', 'parent');
+  const useCapture = true;
+  const spies = [];
+  for (let n = 0; n < 5; n++) {
+    const child = new ManagedElement('div', `child${n}`);
+    parent.listenToEventOn(`someevent${n}`, child, 'someId', useCapture);
+    spies.push(jest.spyOn(child.element, 'removeEventListener'));
+  }
+  parent.remove();
+  for (let n = 0; n < 5; n++) {
+    expect(spies[n]).toBeCalledTimes(1);
+    expect(spies[n]).toHaveBeenCalledWith(`someevent${n}`, parent, useCapture);
   }
 });
 
@@ -269,7 +285,7 @@ test('Remove removes all listeners even if provided with handlers', () => {
   parent.remove();
   for (let n = 0; n < 5; n++) {
     expect(spies[n]).toBeCalledTimes(1);
-    expect(spies[n]).toHaveBeenCalledWith(`someevent${n}`, parent);
+    expect(spies[n]).toHaveBeenCalledWith(`someevent${n}`, parent, undefined);
   }
 });
 
