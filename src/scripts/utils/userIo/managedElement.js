@@ -563,7 +563,6 @@ export class ManagedElement {
     while (this.#element.firstChild) {
       this.#element.removeChild(this.#element.lastChild);
     }
-    /** @Todo Remove code: this.#element.replaceChildren(); */
   }
 
   /**
