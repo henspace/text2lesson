@@ -1,9 +1,0 @@
-{
-  "meta": {
-    "master": "en.json"
-  },
-  "location": "assets/i18n/",
-  "files": [
-    "en.json"
-  ]
-}

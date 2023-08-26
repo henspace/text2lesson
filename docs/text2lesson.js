@@ -1,20 +1,11721 @@
-/**
- * text2lesson 1.0.18
- * Text2Lesson: create quizzes and lessons from plain text files.
- * Copyright 2023 Steve Butler (henspace.com)
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- * 
- */
-"use strict";function _typeof(obj){return _typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(obj){return typeof obj}:function(obj){return obj&&"function"==typeof Symbol&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj},_typeof(obj)}var _templateObject,_templateObject2,_templateObject3,_templateObject4,_templateObject5,_templateObject6,_templateObject7,_templateObject8,_templateObject9,_templateObject10,_templateObject11,_templateObject12,_templateObject13,_templateObject14,_templateObject15,_templateObject16,_templateObject17,_templateObject18,_templateObject19,_templateObject20,_templateObject21,_templateObject22,_templateObject23,_templateObject24,_templateObject25,_templateObject26,_templateObject27,_templateObject28,_templateObject29,_templateObject30,_templateObject31,_templateObject32,_templateObject33,_templateObject34,_templateObject35,_templateObject36,_templateObject37,_templateObject38,_templateObject39,_templateObject40,_templateObject41,_templateObject42,_templateObject43,_templateObject44,_templateObject45,_templateObject46,_templateObject47,_templateObject48,_templateObject49,_templateObject50,_templateObject51,_templateObject52,_templateObject53,_templateObject54,_templateObject55,_templateObject56,_templateObject57,_templateObject58,_templateObject59,_templateObject60,_templateObject61,_templateObject62,_templateObject63,_templateObject64,_templateObject65,_templateObject66,_templateObject67,_templateObject68,_templateObject69,_templateObject70,_templateObject71,_templateObject72,_templateObject73,_templateObject74,_templateObject75,_templateObject76,_templateObject77,_templateObject78,_templateObject79,_templateObject80,_templateObject81,_templateObject82,_templateObject83,_templateObject84,_templateObject85,_templateObject86,_templateObject87,_templateObject88,_templateObject89,_templateObject90,_templateObject91,_templateObject92,_templateObject93,_templateObject94,_templateObject95,_templateObject96,_templateObject97,_templateObject98,_templateObject99,_templateObject100,_templateObject101;function _get(){return _get="undefined"!=typeof Reflect&&Reflect.get?Reflect.get.bind():function(target,property,receiver){var base=_superPropBase(target,property);if(base){var desc=Object.getOwnPropertyDescriptor(base,property);return desc.get?desc.get.call(arguments.length<3?target:receiver):desc.value}},_get.apply(this,arguments)}function _superPropBase(object,property){for(;!Object.prototype.hasOwnProperty.call(object,property)&&null!==(object=_getPrototypeOf(object)););return object}function _regeneratorRuntime(){_regeneratorRuntime=function(){return exports};var exports={},Op=Object.prototype,hasOwn=Op.hasOwnProperty,defineProperty=Object.defineProperty||function(obj,key,desc){obj[key]=desc.value},$Symbol="function"==typeof Symbol?Symbol:{},iteratorSymbol=$Symbol.iterator||"@@iterator",asyncIteratorSymbol=$Symbol.asyncIterator||"@@asyncIterator",toStringTagSymbol=$Symbol.toStringTag||"@@toStringTag";function define(obj,key,value){return Object.defineProperty(obj,key,{value:value,enumerable:!0,configurable:!0,writable:!0}),obj[key]}try{define({},"")}catch(err){define=function(obj,key,value){return obj[key]=value}}function wrap(innerFn,outerFn,self,tryLocsList){var protoGenerator=outerFn&&outerFn.prototype instanceof Generator?outerFn:Generator,generator=Object.create(protoGenerator.prototype),context=new Context(tryLocsList||[]);return defineProperty(generator,"_invoke",{value:makeInvokeMethod(innerFn,self,context)}),generator}function tryCatch(fn,obj,arg){try{return{type:"normal",arg:fn.call(obj,arg)}}catch(err){return{type:"throw",arg:err}}}exports.wrap=wrap;var ContinueSentinel={};function Generator(){}function GeneratorFunction(){}function GeneratorFunctionPrototype(){}var IteratorPrototype={};define(IteratorPrototype,iteratorSymbol,(function(){return this}));var getProto=Object.getPrototypeOf,NativeIteratorPrototype=getProto&&getProto(getProto(values([])));NativeIteratorPrototype&&NativeIteratorPrototype!==Op&&hasOwn.call(NativeIteratorPrototype,iteratorSymbol)&&(IteratorPrototype=NativeIteratorPrototype);var Gp=GeneratorFunctionPrototype.prototype=Generator.prototype=Object.create(IteratorPrototype);function defineIteratorMethods(prototype){["next","throw","return"].forEach((function(method){define(prototype,method,(function(arg){return this._invoke(method,arg)}))}))}function AsyncIterator(generator,PromiseImpl){function invoke(method,arg,resolve,reject){var record=tryCatch(generator[method],generator,arg);if("throw"!==record.type){var result=record.arg,value=result.value;return value&&"object"==_typeof(value)&&hasOwn.call(value,"__await")?PromiseImpl.resolve(value.__await).then((function(value){invoke("next",value,resolve,reject)}),(function(err){invoke("throw",err,resolve,reject)})):PromiseImpl.resolve(value).then((function(unwrapped){result.value=unwrapped,resolve(result)}),(function(error){return invoke("throw",error,resolve,reject)}))}reject(record.arg)}var previousPromise;defineProperty(this,"_invoke",{value:function(method,arg){function callInvokeWithMethodAndArg(){return new PromiseImpl((function(resolve,reject){invoke(method,arg,resolve,reject)}))}return previousPromise=previousPromise?previousPromise.then(callInvokeWithMethodAndArg,callInvokeWithMethodAndArg):callInvokeWithMethodAndArg()}})}function makeInvokeMethod(innerFn,self,context){var state="suspendedStart";return function(method,arg){if("executing"===state)throw new Error("Generator is already running");if("completed"===state){if("throw"===method)throw arg;return doneResult()}for(context.method=method,context.arg=arg;;){var delegate=context.delegate;if(delegate){var delegateResult=maybeInvokeDelegate(delegate,context);if(delegateResult){if(delegateResult===ContinueSentinel)continue;return delegateResult}}if("next"===context.method)context.sent=context._sent=context.arg;else if("throw"===context.method){if("suspendedStart"===state)throw state="completed",context.arg;context.dispatchException(context.arg)}else"return"===context.method&&context.abrupt("return",context.arg);state="executing";var record=tryCatch(innerFn,self,context);if("normal"===record.type){if(state=context.done?"completed":"suspendedYield",record.arg===ContinueSentinel)continue;return{value:record.arg,done:context.done}}"throw"===record.type&&(state="completed",context.method="throw",context.arg=record.arg)}}}function maybeInvokeDelegate(delegate,context){var methodName=context.method,method=delegate.iterator[methodName];if(void 0===method)return context.delegate=null,"throw"===methodName&&delegate.iterator.return&&(context.method="return",context.arg=void 0,maybeInvokeDelegate(delegate,context),"throw"===context.method)||"return"!==methodName&&(context.method="throw",context.arg=new TypeError("The iterator does not provide a '"+methodName+"' method")),ContinueSentinel;var record=tryCatch(method,delegate.iterator,context.arg);if("throw"===record.type)return context.method="throw",context.arg=record.arg,context.delegate=null,ContinueSentinel;var info=record.arg;return info?info.done?(context[delegate.resultName]=info.value,context.next=delegate.nextLoc,"return"!==context.method&&(context.method="next",context.arg=void 0),context.delegate=null,ContinueSentinel):info:(context.method="throw",context.arg=new TypeError("iterator result is not an object"),context.delegate=null,ContinueSentinel)}function pushTryEntry(locs){var entry={tryLoc:locs[0]};1 in locs&&(entry.catchLoc=locs[1]),2 in locs&&(entry.finallyLoc=locs[2],entry.afterLoc=locs[3]),this.tryEntries.push(entry)}function resetTryEntry(entry){var record=entry.completion||{};record.type="normal",delete record.arg,entry.completion=record}function Context(tryLocsList){this.tryEntries=[{tryLoc:"root"}],tryLocsList.forEach(pushTryEntry,this),this.reset(!0)}function values(iterable){if(iterable){var iteratorMethod=iterable[iteratorSymbol];if(iteratorMethod)return iteratorMethod.call(iterable);if("function"==typeof iterable.next)return iterable;if(!isNaN(iterable.length)){var i=-1,next=function next(){for(;++i<iterable.length;)if(hasOwn.call(iterable,i))return next.value=iterable[i],next.done=!1,next;return next.value=void 0,next.done=!0,next};return next.next=next}}return{next:doneResult}}function doneResult(){return{value:void 0,done:!0}}return GeneratorFunction.prototype=GeneratorFunctionPrototype,defineProperty(Gp,"constructor",{value:GeneratorFunctionPrototype,configurable:!0}),defineProperty(GeneratorFunctionPrototype,"constructor",{value:GeneratorFunction,configurable:!0}),GeneratorFunction.displayName=define(GeneratorFunctionPrototype,toStringTagSymbol,"GeneratorFunction"),exports.isGeneratorFunction=function(genFun){var ctor="function"==typeof genFun&&genFun.constructor;return!!ctor&&(ctor===GeneratorFunction||"GeneratorFunction"===(ctor.displayName||ctor.name))},exports.mark=function(genFun){return Object.setPrototypeOf?Object.setPrototypeOf(genFun,GeneratorFunctionPrototype):(genFun.__proto__=GeneratorFunctionPrototype,define(genFun,toStringTagSymbol,"GeneratorFunction")),genFun.prototype=Object.create(Gp),genFun},exports.awrap=function(arg){return{__await:arg}},defineIteratorMethods(AsyncIterator.prototype),define(AsyncIterator.prototype,asyncIteratorSymbol,(function(){return this})),exports.AsyncIterator=AsyncIterator,exports.async=function(innerFn,outerFn,self,tryLocsList,PromiseImpl){void 0===PromiseImpl&&(PromiseImpl=Promise);var iter=new AsyncIterator(wrap(innerFn,outerFn,self,tryLocsList),PromiseImpl);return exports.isGeneratorFunction(outerFn)?iter:iter.next().then((function(result){return result.done?result.value:iter.next()}))},defineIteratorMethods(Gp),define(Gp,toStringTagSymbol,"Generator"),define(Gp,iteratorSymbol,(function(){return this})),define(Gp,"toString",(function(){return"[object Generator]"})),exports.keys=function(val){var object=Object(val),keys=[];for(var key in object)keys.push(key);return keys.reverse(),function next(){for(;keys.length;){var key=keys.pop();if(key in object)return next.value=key,next.done=!1,next}return next.done=!0,next}},exports.values=values,Context.prototype={constructor:Context,reset:function(skipTempReset){if(this.prev=0,this.next=0,this.sent=this._sent=void 0,this.done=!1,this.delegate=null,this.method="next",this.arg=void 0,this.tryEntries.forEach(resetTryEntry),!skipTempReset)for(var name in this)"t"===name.charAt(0)&&hasOwn.call(this,name)&&!isNaN(+name.slice(1))&&(this[name]=void 0)},stop:function(){this.done=!0;var rootRecord=this.tryEntries[0].completion;if("throw"===rootRecord.type)throw rootRecord.arg;return this.rval},dispatchException:function(exception){if(this.done)throw exception;var context=this;function handle(loc,caught){return record.type="throw",record.arg=exception,context.next=loc,caught&&(context.method="next",context.arg=void 0),!!caught}for(var i=this.tryEntries.length-1;i>=0;--i){var entry=this.tryEntries[i],record=entry.completion;if("root"===entry.tryLoc)return handle("end");if(entry.tryLoc<=this.prev){var hasCatch=hasOwn.call(entry,"catchLoc"),hasFinally=hasOwn.call(entry,"finallyLoc");if(hasCatch&&hasFinally){if(this.prev<entry.catchLoc)return handle(entry.catchLoc,!0);if(this.prev<entry.finallyLoc)return handle(entry.finallyLoc)}else if(hasCatch){if(this.prev<entry.catchLoc)return handle(entry.catchLoc,!0)}else{if(!hasFinally)throw new Error("try statement without catch or finally");if(this.prev<entry.finallyLoc)return handle(entry.finallyLoc)}}}},abrupt:function(type,arg){for(var i=this.tryEntries.length-1;i>=0;--i){var entry=this.tryEntries[i];if(entry.tryLoc<=this.prev&&hasOwn.call(entry,"finallyLoc")&&this.prev<entry.finallyLoc){var finallyEntry=entry;break}}finallyEntry&&("break"===type||"continue"===type)&&finallyEntry.tryLoc<=arg&&arg<=finallyEntry.finallyLoc&&(finallyEntry=null);var record=finallyEntry?finallyEntry.completion:{};return record.type=type,record.arg=arg,finallyEntry?(this.method="next",this.next=finallyEntry.finallyLoc,ContinueSentinel):this.complete(record)},complete:function(record,afterLoc){if("throw"===record.type)throw record.arg;return"break"===record.type||"continue"===record.type?this.next=record.arg:"return"===record.type?(this.rval=this.arg=record.arg,this.method="return",this.next="end"):"normal"===record.type&&afterLoc&&(this.next=afterLoc),ContinueSentinel},finish:function(finallyLoc){for(var i=this.tryEntries.length-1;i>=0;--i){var entry=this.tryEntries[i];if(entry.finallyLoc===finallyLoc)return this.complete(entry.completion,entry.afterLoc),resetTryEntry(entry),ContinueSentinel}},catch:function(tryLoc){for(var i=this.tryEntries.length-1;i>=0;--i){var entry=this.tryEntries[i];if(entry.tryLoc===tryLoc){var record=entry.completion;if("throw"===record.type){var thrown=record.arg;resetTryEntry(entry)}return thrown}}throw new Error("illegal catch attempt")},delegateYield:function(iterable,resultName,nextLoc){return this.delegate={iterator:values(iterable),resultName:resultName,nextLoc:nextLoc},"next"===this.method&&(this.arg=void 0),ContinueSentinel}},exports}function asyncGeneratorStep(gen,resolve,reject,_next,_throw,key,arg){try{var info=gen[key](arg),value=info.value}catch(error){return void reject(error)}info.done?resolve(value):Promise.resolve(value).then(_next,_throw)}function _asyncToGenerator(fn){return function(){var self=this,args=arguments;return new Promise((function(resolve,reject){var gen=fn.apply(self,args);function _next(value){asyncGeneratorStep(gen,resolve,reject,_next,_throw,"next",value)}function _throw(err){asyncGeneratorStep(gen,resolve,reject,_next,_throw,"throw",err)}_next(void 0)}))}}function _wrapNativeSuper(Class){var _cache="function"==typeof Map?new Map:void 0;return _wrapNativeSuper=function(Class){if(null===Class||!_isNativeFunction(Class))return Class;if("function"!=typeof Class)throw new TypeError("Super expression must either be null or a function");if(void 0!==_cache){if(_cache.has(Class))return _cache.get(Class);_cache.set(Class,Wrapper)}function Wrapper(){return _construct(Class,arguments,_getPrototypeOf(this).constructor)}return Wrapper.prototype=Object.create(Class.prototype,{constructor:{value:Wrapper,enumerable:!1,writable:!0,configurable:!0}}),_setPrototypeOf(Wrapper,Class)},_wrapNativeSuper(Class)}function _construct(Parent,args,Class){return _construct=_isNativeReflectConstruct()?Reflect.construct.bind():function(Parent,args,Class){var a=[null];a.push.apply(a,args);var instance=new(Function.bind.apply(Parent,a));return Class&&_setPrototypeOf(instance,Class.prototype),instance},_construct.apply(null,arguments)}function _isNativeFunction(fn){return-1!==Function.toString.call(fn).indexOf("[native code]")}function _classStaticPrivateMethodGet(receiver,classConstructor,method){return _classCheckPrivateStaticAccess(receiver,classConstructor),method}function _classStaticPrivateFieldSpecSet(receiver,classConstructor,descriptor,value){return _classCheckPrivateStaticAccess(receiver,classConstructor),_classCheckPrivateStaticFieldDescriptor(descriptor,"set"),_classApplyDescriptorSet(receiver,descriptor,value),value}function _classStaticPrivateFieldSpecGet(receiver,classConstructor,descriptor){return _classCheckPrivateStaticAccess(receiver,classConstructor),_classCheckPrivateStaticFieldDescriptor(descriptor,"get"),_classApplyDescriptorGet(receiver,descriptor)}function _classCheckPrivateStaticFieldDescriptor(descriptor,action){if(void 0===descriptor)throw new TypeError("attempted to "+action+" private static field before its declaration")}function _classCheckPrivateStaticAccess(receiver,classConstructor){if(receiver!==classConstructor)throw new TypeError("Private static access of wrong provenance")}function _toConsumableArray(arr){return _arrayWithoutHoles(arr)||_iterableToArray(arr)||_unsupportedIterableToArray(arr)||_nonIterableSpread()}function _nonIterableSpread(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}function _iterableToArray(iter){if("undefined"!=typeof Symbol&&null!=iter[Symbol.iterator]||null!=iter["@@iterator"])return Array.from(iter)}function _arrayWithoutHoles(arr){if(Array.isArray(arr))return _arrayLikeToArray(arr)}function _inherits(subClass,superClass){if("function"!=typeof superClass&&null!==superClass)throw new TypeError("Super expression must either be null or a function");subClass.prototype=Object.create(superClass&&superClass.prototype,{constructor:{value:subClass,writable:!0,configurable:!0}}),Object.defineProperty(subClass,"prototype",{writable:!1}),superClass&&_setPrototypeOf(subClass,superClass)}function _setPrototypeOf(o,p){return _setPrototypeOf=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(o,p){return o.__proto__=p,o},_setPrototypeOf(o,p)}function _createSuper(Derived){var hasNativeReflectConstruct=_isNativeReflectConstruct();return function(){var result,Super=_getPrototypeOf(Derived);if(hasNativeReflectConstruct){var NewTarget=_getPrototypeOf(this).constructor;result=Reflect.construct(Super,arguments,NewTarget)}else result=Super.apply(this,arguments);return _possibleConstructorReturn(this,result)}}function _possibleConstructorReturn(self,call){if(call&&("object"===_typeof(call)||"function"==typeof call))return call;if(void 0!==call)throw new TypeError("Derived constructors may only return object or undefined");return _assertThisInitialized(self)}function _assertThisInitialized(self){if(void 0===self)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return self}function _isNativeReflectConstruct(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Boolean.prototype.valueOf.call(Reflect.construct(Boolean,[],(function(){}))),!0}catch(e){return!1}}function _getPrototypeOf(o){return _getPrototypeOf=Object.setPrototypeOf?Object.getPrototypeOf.bind():function(o){return o.__proto__||Object.getPrototypeOf(o)},_getPrototypeOf(o)}function _taggedTemplateLiteral(strings,raw){return raw||(raw=strings.slice(0)),Object.freeze(Object.defineProperties(strings,{raw:{value:Object.freeze(raw)}}))}function _classPrivateMethodInitSpec(obj,privateSet){_checkPrivateRedeclaration(obj,privateSet),privateSet.add(obj)}function _classPrivateMethodGet(receiver,privateSet,fn){if(!privateSet.has(receiver))throw new TypeError("attempted to get private field on non-instance");return fn}function ownKeys(object,enumerableOnly){var keys=Object.keys(object);if(Object.getOwnPropertySymbols){var symbols=Object.getOwnPropertySymbols(object);enumerableOnly&&(symbols=symbols.filter((function(sym){return Object.getOwnPropertyDescriptor(object,sym).enumerable}))),keys.push.apply(keys,symbols)}return keys}function _objectSpread(target){for(var i=1;i<arguments.length;i++){var source=null!=arguments[i]?arguments[i]:{};i%2?ownKeys(Object(source),!0).forEach((function(key){_defineProperty(target,key,source[key])})):Object.getOwnPropertyDescriptors?Object.defineProperties(target,Object.getOwnPropertyDescriptors(source)):ownKeys(Object(source)).forEach((function(key){Object.defineProperty(target,key,Object.getOwnPropertyDescriptor(source,key))}))}return target}function _defineProperty(obj,key,value){return(key=_toPropertyKey(key))in obj?Object.defineProperty(obj,key,{value:value,enumerable:!0,configurable:!0,writable:!0}):obj[key]=value,obj}function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}function _defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,_toPropertyKey(descriptor.key),descriptor)}}function _createClass(Constructor,protoProps,staticProps){return protoProps&&_defineProperties(Constructor.prototype,protoProps),staticProps&&_defineProperties(Constructor,staticProps),Object.defineProperty(Constructor,"prototype",{writable:!1}),Constructor}function _toPropertyKey(arg){var key=_toPrimitive(arg,"string");return"symbol"===_typeof(key)?key:String(key)}function _toPrimitive(input,hint){if("object"!==_typeof(input)||null===input)return input;var prim=input[Symbol.toPrimitive];if(void 0!==prim){var res=prim.call(input,hint||"default");if("object"!==_typeof(res))return res;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===hint?String:Number)(input)}function _classPrivateFieldInitSpec(obj,privateMap,value){_checkPrivateRedeclaration(obj,privateMap),privateMap.set(obj,value)}function _checkPrivateRedeclaration(obj,privateCollection){if(privateCollection.has(obj))throw new TypeError("Cannot initialize the same private elements twice on an object")}function _classPrivateFieldGet(receiver,privateMap){return _classApplyDescriptorGet(receiver,_classExtractFieldDescriptor(receiver,privateMap,"get"))}function _classApplyDescriptorGet(receiver,descriptor){return descriptor.get?descriptor.get.call(receiver):descriptor.value}function _classPrivateFieldSet(receiver,privateMap,value){return _classApplyDescriptorSet(receiver,_classExtractFieldDescriptor(receiver,privateMap,"set"),value),value}function _classExtractFieldDescriptor(receiver,privateMap,action){if(!privateMap.has(receiver))throw new TypeError("attempted to "+action+" private field on non-instance");return privateMap.get(receiver)}function _classApplyDescriptorSet(receiver,descriptor,value){if(descriptor.set)descriptor.set.call(receiver,value);else{if(!descriptor.writable)throw new TypeError("attempted to set read only private field");descriptor.value=value}}function _createForOfIteratorHelper(o,allowArrayLike){var it="undefined"!=typeof Symbol&&o[Symbol.iterator]||o["@@iterator"];if(!it){if(Array.isArray(o)||(it=_unsupportedIterableToArray(o))||allowArrayLike&&o&&"number"==typeof o.length){it&&(o=it);var i=0,F=function(){};return{s:F,n:function(){return i>=o.length?{done:!0}:{done:!1,value:o[i++]}},e:function(_e){throw _e},f:F}}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}var err,normalCompletion=!0,didErr=!1;return{s:function(){it=it.call(o)},n:function(){var step=it.next();return normalCompletion=step.done,step},e:function(_e2){didErr=!0,err=_e2},f:function(){try{normalCompletion||null==it.return||it.return()}finally{if(didErr)throw err}}}}function _unsupportedIterableToArray(o,minLen){if(o){if("string"==typeof o)return _arrayLikeToArray(o,minLen);var n=Object.prototype.toString.call(o).slice(8,-1);return"Object"===n&&o.constructor&&(n=o.constructor.name),"Map"===n||"Set"===n?Array.from(o):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?_arrayLikeToArray(o,minLen):void 0}}function _arrayLikeToArray(arr,len){(null==len||len>arr.length)&&(len=arr.length);for(var i=0,arr2=new Array(len);i<len;i++)arr2[i]=arr[i];return arr2}!function(){String.prototype.replaceAll||(String.prototype.replaceAll=function(pattern,replacement){if(pattern instanceof RegExp){if(pattern.flags.indexOf("g")<0)throw new TypeError("String.prototype.replaceAll called with a non-global RegExp argument");return this.replace(pattern,replacement)}return this.replace(new RegExp(pattern,"g"),replacement)});var BuildInfo={isBuilt:function(){return BuildInfo.getMode().indexOf("$")<0},getBuildDate:function(){return"2023-08-26 11:38:05Z"},getBundleName:function(){return"text2lesson.js"},getProductName:function(){return"Text2Lesson"},getMode:function(){return"production"},getVersion:function(){return"1.0.18 "}},blockReps=[{re:/(?:(.+)\n=+\n)/g,rep:"\n\n<h1>$1</h1>\n\n"},{re:/(?:(.+)\n-+\n)/g,rep:"\n\n<h2>$1</h2>\n\n"},{re:/^(#+)(?: *)(.+?)(?:#*)[ \t]*$/gm,rep:function(matched,hashes,txt){var level=Math.min(hashes.length,6);return"\n\n<h".concat(level,">").concat(txt.trim(),"</h").concat(level,">\n")}},reAllLinesStartWith(">[ \t]*",{blockPrefix:"<blockquote>",blockSuffix:"</blockquote>"}),reAllLinesStartWith("(?: {4}|\t)",{blockPrefix:"<pre><code>",blockSuffix:"</code></pre>"}),{re:/^(?:[*_-] *){3,}\s*$/gm,rep:"\n\n<hr>\n\n"},reAllLinesStartWith(" {0,3}[*+-][ \t]*",{blockPrefix:"<ul>",blockSuffix:"</ul>",linePrefix:"<li>",lineSuffix:"</li>"}),reAllLinesStartWith(" {0,3}\\d+\\.[ \t]*",{blockPrefix:"<ol>",blockSuffix:"</ol>",linePrefix:"<li>",lineSuffix:"</li>"}),{re:/(?:(?:^|\n{2,})(?!<\w+>))((?:.(?:\n(?!\n))?)+)/g,rep:"\n\n<p>$1</p>\n\n"},{re:/\n{2,}/g,rep:"\n\n"}],spanReps=[{re:/!\[(.*)\]\((https?:\/\/[-\w@:%.+~#=/]+)(?: +"(.*)")?\)/gm,rep:'<img alt="$1" src="$2" title="$3"/>'},{re:/\[(.*)\]\((https?:\/\/[-\w@:%.+~#=/]+)(?: +"(.*)")?\)/gm,rep:'<a target="_blank" href="$2" title="$3">$1</a>'},{re:/(?:&lt;|<)(https?:\/\/[-\w@:%.+~#=/]+)>/gm,rep:'<a target="_blank" href="$1">$1</a>'},{re:/(?:&lt;|<)(\w+(?:[.-]?\w+)*@\w+(?:[.-]?\w+)*(?:\.\w{2,4})+)>/gm,rep:function(match,address){var encoded=function(data){var _step,result="",_iterator=_createForOfIteratorHelper(data);try{for(_iterator.s();!(_step=_iterator.n()).done;){result+=encodeCharToEntity(_step.value)}}catch(err){_iterator.e(err)}finally{_iterator.f()}return result}(address);return'<a href="'.concat(encoded,'">').concat(encoded,"</a>")}},{re:/(?:`{2,}(.*?)`{2,}|`(.*?)`)/gm,rep:function(match,codeA,codeB){return"<code>".concat(null!=codeA?codeA:codeB,"</code>")}},{re:/\*\*([^\s])(.*?)([^\s])\*\*/gm,rep:"<strong>$1$2$3</strong>"},{re:/__([^\s])(.*?)([^\s])__/gm,rep:"<strong>$1$2$3</strong>"},{re:/\*([^\s])(.*?)([^\s])\*/gm,rep:"<em>$1$2$3</em>"},{re:/_([^\s])(.*?)([^\s])_/gm,rep:"<em>$1$2$3</em>"}],markdownEscReps=[{re:/\\([\\`*_{}[\]()#+.!-])/g,rep:function(match,chr){return encodeCharToEntity(chr)}}],securityReps=[{re:"\0",rep:"�"}],htmlEscIgnoringBrReps=[{re:/&(?![\w#]+?;)/gm,rep:"&amp;"},{re:/<(?!br>)/gim,rep:"&lt;"}],htmlEscAllReps=[{re:/&(?![\w#]+?;)/gm,rep:"&amp;"},{re:/</gim,rep:"&lt;"}],htmlCleanUpReps=[{re:/^\s*$/gm,rep:""},{re:/<(?:p|div)>\s*?<\/(?:p|div)>/gim,rep:""}];function processReplacements(data,replacements){return data?(replacements.forEach((function(sub){data=data.replaceAll(sub.re,sub.rep)})),data):data}function reAllLinesStartWith(reStart,options){var _options$linePrefix,_options$lineSuffix,reBlockSearchRe=new RegExp("(?:^|\\n)".concat(reStart,"(?:.|\\n)*?(?:(\\n(?!").concat(reStart,"))|$)"),"g"),lineReplacementRe=new RegExp("^".concat(reStart,"(\\s*.*)$"),"gm"),lineReplacement="".concat(null!==(_options$linePrefix=null==options?void 0:options.linePrefix)&&void 0!==_options$linePrefix?_options$linePrefix:"","$1").concat(null!==(_options$lineSuffix=null==options?void 0:options.lineSuffix)&&void 0!==_options$lineSuffix?_options$lineSuffix:"");return{re:reBlockSearchRe,rep:function(match){var _options$blockPrefix,_options$blockSuffix;return"\n\n".concat(null!==(_options$blockPrefix=null==options?void 0:options.blockPrefix)&&void 0!==_options$blockPrefix?_options$blockPrefix:"").concat(match.replaceAll(lineReplacementRe,lineReplacement)).concat(null!==(_options$blockSuffix=null==options?void 0:options.blockSuffix)&&void 0!==_options$blockSuffix?_options$blockSuffix:"","\n\n")}}}function encodeCharToEntity(chr){return"&#".concat(chr.charCodeAt(0).toString(),";")}function parseMarkdown(data,options){var result=data.replaceAll(/\r/g,"");return result=processReplacements(result,securityReps),null!=options&&options.pre&&(result=processReplacements(result,options.pre)),result=processReplacements(result,htmlEscIgnoringBrReps),result=processReplacements(result,markdownEscReps),result=processReplacements(result,blockReps),result=processReplacements(result,spanReps),result=processReplacements(result,htmlCleanUpReps),null!=options&&options.post&&(result=processReplacements(result,options.post)),result}function escapeHtml(data){return data=processReplacements(data,securityReps),processReplacements(data,htmlEscAllReps)}function getPlainTextFromHtml(html){return html.replace(/<[^>]*>/g,"").replace(/\s+/g," ")}function stringToBase64(str){return window.btoa(encodeURIComponent(str))}function base64ToString(base64){return decodeURIComponent(window.atob(base64))}var activeTranslations=null,fallbackTranslations=null;function setActiveTranslations(translations){!function(translations){for(var key in translations)translations[key]=escapeHtml(translations[key])}(translations),activeTranslations&&(fallbackTranslations=activeTranslations),activeTranslations=translations}function i18n(strings){var keyMatch=strings[0].match(/(\w+?)::(.*)/),keyword="",result=[];keyMatch?(keyword=keyMatch[1],result.push(keyMatch[2])):result.push(strings[0]);var output,template=activeTranslations?activeTranslations[keyword]:null;template||(template=fallbackTranslations?fallbackTranslations[keyword]:null);for(var _len=arguments.length,values=new Array(_len>1?_len-1:0),_key=1;_key<_len;_key++)values[_key-1]=arguments[_key];return template?output=function(template,values){var defaultIndex=0;return template.replace(/\${(.*?)}/g,(function(match,index){return index=parseInt(index),isNaN(index)&&(index=defaultIndex++),index<values.length?values[index]:(console.error("Cannot find {".concat(index,'} for "').concat(template,'"')),"${?}")}))}(template,values):(values.forEach((function(value,i){result.push(value),result.push(strings[i+1])})),output=result.join("")),output}function extractLanguageSubTags(languageTag){var language="",extlang="",script="",region="",matches=(languageTag=languageTag.toLowerCase()).match(/^([a-z]{2,3})(-[a-z]{3}(?:-[a-z]{3}){0,2})?(-[a-z]{4})?(-(?:[a-z]{2}|[0-9]{3}))?([-].{5,})?$/);return matches&&(language=matches[1],extlang=matches[2]?matches[2].substring(1):"",script=matches[3]?matches[3].substring(1):"",region=matches[4]?matches[4].substring(1):""),{language:language,extlang:extlang,script:script,region:region}}function RGB(red,green,blue){this.red=red,this.green=green,this.blue=blue}function HSL(hue,saturation,luminance){this.hue=hue,this.saturation=saturation,this.luminance=luminance}function relativeLuminance(rgbColor){var RsRGB=rgbColor.red/255,GsRGB=rgbColor.green/255,BsRGB=rgbColor.blue/255;return 100*(.2126*(RsRGB<=.03928?RsRGB/12.92:Math.pow((RsRGB+.055)/1.055,2.4))+.7152*(GsRGB<=.03928?GsRGB/12.92:Math.pow((GsRGB+.055)/1.055,2.4))+.0722*(BsRGB<=.03928?BsRGB/12.92:Math.pow((BsRGB+.055)/1.055,2.4)))}function isDark(rgbColor){return relativeLuminance(rgbColor)<50}function rgbToHsl(rgbValue){var RsRGB=rgbValue.red/255,GsRGB=rgbValue.green/255,BsRGB=rgbValue.blue/255,minChannelValue=Math.min(RsRGB,GsRGB,BsRGB),maxChannelValue=Math.max(RsRGB,GsRGB,BsRGB),channelRange=maxChannelValue-minChannelValue,luminance=(minChannelValue+maxChannelValue)/2;if(Math.abs(channelRange)<.001)return{hue:0,saturation:0,luminance:Math.round(100*luminance)};var saturation=0;saturation=luminance<=.5?channelRange/(minChannelValue+maxChannelValue):channelRange/(2-maxChannelValue-minChannelValue);var hue=0;return 0!==channelRange&&(hue=Math.abs(maxChannelValue-RsRGB)<.001?(GsRGB-BsRGB)/channelRange:Math.abs(maxChannelValue-GsRGB)<.001?2+(BsRGB-RsRGB)/channelRange:4+(RsRGB-GsRGB)/channelRange),(hue*=60)<0&&(hue+=360),{hue:Math.round(hue),saturation:Math.round(100*saturation),luminance:Math.round(100*luminance)}}function hslToRgb(hslValue){var S=hslValue.saturation/100,L=hslValue.luminance/100,C=(1-Math.abs(2*L-1))*S,Htick=hslValue.hue/60,X=C*(1-Math.abs(Htick%2-1)),RGBtick={};RGBtick=0<=Htick&&Htick<1?{red:C,green:X,blue:0}:Htick<2?{red:X,green:C,blue:0}:Htick<3?{red:0,green:C,blue:X}:Htick<4?{red:0,green:X,blue:C}:Htick<5?{red:X,green:0,blue:C}:{red:C,green:0,blue:X};var m=L-C/2;return new RGB(Math.round(255*(RGBtick.red+m)),Math.round(255*(RGBtick.green+m)),Math.round(255*(RGBtick.blue+m)))}function getDarker(rgbColor,delta){var hslColor=rgbToHsl(rgbColor);return hslColor.luminance-=delta,hslColor.luminance=Math.max(hslColor.luminance,0),hslToRgb(hslColor)}function getLighter(rgbColor,delta){var hslColor=rgbToHsl(rgbColor);return hslColor.luminance+=delta,hslColor.luminance=Math.min(hslColor.luminance,100),hslToRgb(hslColor)}function shiftHue(rgbValue,degrees){var hsl=rgbToHsl(rgbValue);return hsl.hue,hsl.hue+=degrees,hsl.hue%=360,hsl.hue<0&&(hsl.hue+=360),hslToRgb(hsl)}var root=document.querySelector(":root");function setProperty(propertyName,propertyValue){root.style.setProperty(propertyName,propertyValue)}function PaletteEntry(base,contrast,highlight){this.base=base,this.contrast=contrast,this.highlight=highlight}function Palette(config){this.primary=config.primary,this.secondary=config.secondary,this.tertiary=config.tertiary,this.background=config.background,this.window=config.window,this.error=config.error}function getPaletteEntry(rgbColor){var highlight;highlight=isDark(rgbColor)?getLighter(rgbColor,10):getDarker(rgbColor,10);var contrastColor=function(rgbColor){return isDark(rgbColor)?{red:255,green:255,blue:255}:{red:0,green:0,blue:0}}(rgbColor);return new PaletteEntry(rgbColor=function(rgbColor,rgbColorReference,minContrast){for(var rgbColorB,contrast,refIsDark=isDark(rgbColorReference),loopLimit=Math.floor(20);loopLimit--&&(rgbColorB=rgbColorReference,contrast=void 0,((contrast=(relativeLuminance(rgbColor)/100+.05)/(relativeLuminance(rgbColorB)/100+.05))<1?1/contrast:contrast)<minContrast);)rgbColor=refIsDark?getLighter(rgbColor,5):getDarker(rgbColor,5);return rgbColor}(rgbColor,contrastColor,7.5),contrastColor,highlight)}function setCssFromPaletteEntry(key,paletteEntry){for(var subkey in paletteEntry)relativeLuminance(paletteEntry.base),relativeLuminance(paletteEntry.contrast),setProperty("--".concat(key,"-").concat(subkey),(rgbColor=paletteEntry[subkey],"rgb(".concat(rgbColor.red,", ").concat(rgbColor.green,", ").concat(rgbColor.blue,")")));var rgbColor}function fetchJson(url){return fetchFile(url,"json")}function fetchFile(url,responseType){return console.debug("Fetch ".concat(url)),fetch(url).then((function(response){return response.ok?"json"===responseType.toLocaleLowerCase()?response.json():response.text():Promise.reject(new Error("".concat(response.status,": ").concat(response.statusText,"; ").concat(url)))}))}var _info=new WeakMap,_content=new WeakMap,CachedLesson=function(){function CachedLesson(info,content){_classCallCheck(this,CachedLesson),_classPrivateFieldInitSpec(this,_info,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_content,{writable:!0,value:void 0}),_classPrivateFieldSet(this,_info,info),_classPrivateFieldSet(this,_content,content)}return _createClass(CachedLesson,[{key:"content",get:function(){return _classPrivateFieldGet(this,_content)},set:function(content){_classPrivateFieldSet(this,_content,content)}},{key:"info",get:function(){return _classPrivateFieldGet(this,_info)}}],[{key:"clone",value:function(other){var cloned=new CachedLesson(null);return _classPrivateFieldSet(cloned,_info,_objectSpread({},other.info)),_classPrivateFieldSet(cloned,_content,other.content),cloned}}]),CachedLesson}(),_element=new WeakMap,_listeningTargets=new WeakMap,_managedChildren=new WeakMap,_elementRemovable=new WeakMap,ManagedElement=function(){function ManagedElement(tagOrElement,className){_classCallCheck(this,ManagedElement),_classPrivateFieldInitSpec(this,_element,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_listeningTargets,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_managedChildren,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_elementRemovable,{writable:!0,value:void 0}),tagOrElement instanceof Element?(_classPrivateFieldSet(this,_element,tagOrElement),_classPrivateFieldSet(this,_elementRemovable,!1)):(_classPrivateFieldSet(this,_element,document.createElement(tagOrElement)),_classPrivateFieldSet(this,_elementRemovable,!0)),className&&(_classPrivateFieldGet(this,_element).className=className),_classPrivateFieldSet(this,_listeningTargets,[]),_classPrivateFieldSet(this,_managedChildren,[])}return _createClass(ManagedElement,[{key:"element",get:function(){return _classPrivateFieldGet(this,_element)}},{key:"$",get:function(){return _classPrivateFieldGet(this,_element)}},{key:"disabled",get:function(){return _classPrivateFieldGet(this,_element).disabled},set:function(value){_classPrivateFieldGet(this,_element).disabled=value}},{key:"id",get:function(){return _classPrivateFieldGet(this,_element).id},set:function(value){_classPrivateFieldGet(this,_element).id=value}},{key:"managedChildren",get:function(){return _classPrivateFieldGet(this,_managedChildren)}},{key:"classList",get:function(){return _classPrivateFieldGet(this,_element).classList}},{key:"className",get:function(){return _classPrivateFieldGet(this,_element).className},set:function(value){_classPrivateFieldGet(this,_element).className=value}},{key:"checked",get:function(){return _classPrivateFieldGet(this,_element).checked},set:function(state){_classPrivateFieldGet(this,_element).checked=state}},{key:"children",get:function(){return _classPrivateFieldGet(this,_element).children}},{key:"innerHTML",get:function(){return _classPrivateFieldGet(this,_element).innerHTML},set:function(data){_classPrivateFieldGet(this,_element).innerHTML=data}},{key:"lastElementChild",get:function(){return _classPrivateFieldGet(this,_element).lastElementChild}},{key:"offsetHeight",get:function(){return _classPrivateFieldGet(this,_element).offsetHeight}},{key:"offsetWidth",get:function(){return _classPrivateFieldGet(this,_element).offsetWidth}},{key:"parentElement",get:function(){return _classPrivateFieldGet(this,_element).parentElement}},{key:"style",get:function(){return _classPrivateFieldGet(this,_element).style}},{key:"tagName",get:function(){return _classPrivateFieldGet(this,_element).tagName}},{key:"textContent",get:function(){return _classPrivateFieldGet(this,_element).textContent},set:function(data){_classPrivateFieldGet(this,_element).textContent=data}},{key:"value",get:function(){return _classPrivateFieldGet(this,_element).value},set:function(data){_classPrivateFieldGet(this,_element).value=data}},{key:"appendChild",value:function(managedElement){return _classPrivateFieldGet(this,_element).appendChild(managedElement.element),_classPrivateFieldGet(this,_managedChildren).push(managedElement),managedElement}},{key:"appendChildTo",value:function(managedElement,parent){var _managedElement$eleme;parent.appendChild(null!==(_managedElement$eleme=managedElement.element)&&void 0!==_managedElement$eleme?_managedElement$eleme:managedElement),_classPrivateFieldGet(this,_managedChildren).push(managedElement)}},{key:"appendTo",value:function(parent){parent.appendChild(_classPrivateFieldGet(this,_element))}},{key:"createAndAppendChild",value:function(tagName,cssClass,html){var managedElement=new ManagedElement(tagName);return cssClass&&managedElement.classList.add(cssClass),html&&(managedElement.innerHTML=html),this.appendChild(managedElement),managedElement}},{key:"dispatchEvent",value:function(event){return _classPrivateFieldGet(this,_element).dispatchEvent(event)}},{key:"fadeOut",value:function(){_classPrivateFieldGet(this,_element).classList.remove("fade-in"),_classPrivateFieldGet(this,_element).classList.add("fade-out")}},{key:"fadeIn",value:function(){_classPrivateFieldGet(this,_element).classList.remove("fade-out"),_classPrivateFieldGet(this,_element).classList.add("fade-in")}},{key:"focus",value:function(){_classPrivateFieldGet(this,_element).focus()}},{key:"getBoundingClientRect",value:function(){return _classPrivateFieldGet(this,_element).getBoundingClientRect()}},{key:"handleEvent",value:function(event){var _this$handlerName;console.debug("Event ".concat(event.type," fired on <").concat(event.currentTarget.tagName,">: class ").concat(event.target.className,"."));var handlerName="handle"+event.type.charAt(0).toUpperCase()+event.type.substring(1)+"Event",eventId=event.currentTarget.getAttribute("data-event-id");null===(_this$handlerName=this[handlerName])||void 0===_this$handlerName||_this$handlerName.call(this,event,eventId)}},{key:"hide",value:function(){_classPrivateFieldGet(this,_element).style.display="none"}},{key:"insertChildAtTop",value:function(managedElement){var _managedElement$eleme2;return _classPrivateFieldGet(this,_element).insertBefore(null!==(_managedElement$eleme2=managedElement.element)&&void 0!==_managedElement$eleme2?_managedElement$eleme2:managedElement,_classPrivateFieldGet(this,_element).firstChild),_classPrivateFieldGet(this,_managedChildren).push(managedElement),managedElement}},{key:"listenToOwnEvent",value:function(eventType,eventIdOrHandler){this.listenToEventOn(eventType,this,eventIdOrHandler)}},{key:"listenToEventOn",value:function(eventType,target,eventIdOrHandler){if(!(target instanceof ManagedElement))throw new Error("Expect ManagedElement");_classPrivateFieldGet(this,_listeningTargets).push({managedElement:target,eventType:eventType}),eventIdOrHandler instanceof Function?target.$.addEventListener(eventType,eventIdOrHandler):(null!=eventIdOrHandler&&target.setAttribute("data-event-id",eventIdOrHandler),target.$.addEventListener(eventType,this))}},{key:"querySelector",value:function(selectors){return _classPrivateFieldGet(this,_element).querySelector(selectors)}},{key:"querySelectorAll",value:function(selectors){return _classPrivateFieldGet(this,_element).querySelectorAll(selectors)}},{key:"remove",value:function(){this.removeListeners(),this.removeChildren(),_classPrivateFieldGet(this,_elementRemovable)&&_classPrivateFieldGet(this,_element).remove()}},{key:"removeChildren",value:function(){for(_classPrivateFieldGet(this,_managedChildren).forEach((function(child){child.remove()})),_classPrivateFieldSet(this,_managedChildren,[]);_classPrivateFieldGet(this,_element).firstChild;)_classPrivateFieldGet(this,_element).removeChild(_classPrivateFieldGet(this,_element).lastChild)}},{key:"removeListeners",value:function(){var _this=this;_classPrivateFieldGet(this,_listeningTargets).forEach((function(target){target.managedElement.element.removeEventListener(target.eventType,_this)})),_classPrivateFieldGet(this,_managedChildren).forEach((function(child){child.removeListeners()})),_classPrivateFieldSet(this,_listeningTargets,[])}},{key:"setSafeAttribute",value:function(name,value){_classPrivateFieldGet(this,_element).setAttribute(name,ManagedElement.encodeString(value))}},{key:"setAttribute",value:function(name,value){return _classPrivateFieldGet(this,_element).setAttribute(name,value)}},{key:"show",value:function(){_classPrivateFieldGet(this,_element).style.display="unset"}},{key:"getSafeAttribute",value:function(name){return ManagedElement.decodeString(_classPrivateFieldGet(this,_element).getAttribute(name))}},{key:"setAttributes",value:function(attributes){for(var key in attributes){var value=attributes[key];null!=value&&null!=value&&""!==value&&_classPrivateFieldGet(this,_element).setAttribute(key,value)}}}],[{key:"getElement",value:function(item){return item instanceof ManagedElement?item.element:item}},{key:"$",value:function(item){return item instanceof ManagedElement?item.element:item}},{key:"decodeString",value:function(value){return base64ToString(value)}},{key:"encodeString",value:function(value){return stringToBase64(value)}},{key:"getSafeAttribute",value:function(element,name){return ManagedElement.decodeString(element.getAttribute(name))}}]),ManagedElement}(),HTML_SEMANTIC_ROLES={A:"link",BUTTON:"button"},_cache=new WeakMap,_hideText=new WeakMap,_getIconHtml=new WeakSet,IconGenerator=function(){function IconGenerator(){_classCallCheck(this,IconGenerator),_classPrivateMethodInitSpec(this,_getIconHtml),_classPrivateFieldInitSpec(this,_cache,{writable:!0,value:new Map}),_classPrivateFieldInitSpec(this,_hideText,{writable:!0,value:void 0})}return _createClass(IconGenerator,[{key:"hideText",get:function(){return _classPrivateFieldGet(this,_hideText)},set:function(value){_classPrivateFieldSet(this,_hideText,value)}},{key:"addLesson",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-add-lesson-html"),accessibleName:i18n(_templateObject||(_templateObject=_taggedTemplateLiteral(["d6e44bc735e33192ee2ddce4af2f2be6::"])))}}},{key:"back",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-back-nav-html"),accessibleName:i18n(_templateObject2||(_templateObject2=_taggedTemplateLiteral(["0557fa923dcee4d0f86b1409f5c2167f::"])))}}},{key:"cancel",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-cancel-html"),accessibleName:i18n(_templateObject3||(_templateObject3=_taggedTemplateLiteral(["ea4788705e6873b424c65e91c2846b19::"])))}}},{key:"closeEditor",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-close-editor-html"),accessibleName:i18n(_templateObject4||(_templateObject4=_taggedTemplateLiteral(["218ed7e6bf7ff30555652c87feff7cd7::"])))}}},{key:"closeMenu",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-close-menu-html"),accessibleName:i18n(_templateObject5||(_templateObject5=_taggedTemplateLiteral(["68f18f6b55f955ad05e4a174341bf3f1::"])))}}},{key:"delete",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-delete-html"),accessibleName:i18n(_templateObject6||(_templateObject6=_taggedTemplateLiteral(["f2a6c498fb90ee345d997f888fce3b18::"])))}}},{key:"edit",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-edit-html"),accessibleName:i18n(_templateObject7||(_templateObject7=_taggedTemplateLiteral(["7dce122004969d56ae2e0245cb754d35::"])))}}},{key:"error",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-error-html"),accessibleName:i18n(_templateObject8||(_templateObject8=_taggedTemplateLiteral(["64d2cc43035360eddf790efbef5ddb30::"])))}}},{key:"exit",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-exit-html"),accessibleName:i18n(_templateObject9||(_templateObject9=_taggedTemplateLiteral(["cfce38c3725a96fb69d437d1f6af351c::"])))}}},{key:"export",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-export-html"),accessibleName:i18n(_templateObject10||(_templateObject10=_taggedTemplateLiteral(["3a7ff7e7931df81408c4e1465364c699::"])))}}},{key:"exportAutoRun",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-export-autorun-html"),accessibleName:i18n(_templateObject11||(_templateObject11=_taggedTemplateLiteral(["65b03512ff197b6b8899ba755db630f9::"])))}}},{key:"fatal",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-fatal-html"),accessibleName:i18n(_templateObject12||(_templateObject12=_taggedTemplateLiteral(["64d2cc43035360eddf790efbef5ddb30::"])))}}},{key:"flag",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-flagged-html"),accessibleName:i18n(_templateObject13||(_templateObject13=_taggedTemplateLiteral(["c5836008c1649301e29351a55db8f65c::"])))}}},{key:"openFolder",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-open-folder-html"),accessibleName:i18n(_templateObject14||(_templateObject14=_taggedTemplateLiteral(["a6e75eb31dc77e8d077fb6f92909e191::"])))}}},{key:"forward",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-forward-nav-html"),accessibleName:i18n(_templateObject15||(_templateObject15=_taggedTemplateLiteral(["67d2f6740a8eaebf4d5c6f79be8da481::"])))}}},{key:"help",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-help-html"),accessibleName:i18n(_templateObject16||(_templateObject16=_taggedTemplateLiteral(["6a26f548831e6a8c26bfbbd9f6ec61e0::"])))}}},{key:"home",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-home-html"),accessibleName:i18n(_templateObject17||(_templateObject17=_taggedTemplateLiteral(["8cf04a9734132302f96da8e113e80ce5::"])))}}},{key:"import",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-import-html"),accessibleName:i18n(_templateObject18||(_templateObject18=_taggedTemplateLiteral(["28dd16bcceda4431550c96dfc257dd22::"])))}}},{key:"info",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-info-html"),accessibleName:i18n(_templateObject19||(_templateObject19=_taggedTemplateLiteral(["c5836008c1649301e29351a55db8f65c::"])))}}},{key:"selectLesson",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-lesson-html"),accessibleName:i18n(_templateObject20||(_templateObject20=_taggedTemplateLiteral(["666258634f2ea689eac1e01b184a3cea::"])))}}},{key:"library",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-library-html"),accessibleName:i18n(_templateObject21||(_templateObject21=_taggedTemplateLiteral(["d6e5c296474cad126efdfa515a47f1f8::"])))}}},{key:"load",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-load-html"),accessibleName:i18n(_templateObject22||(_templateObject22=_taggedTemplateLiteral(["74540c79e377bea903e1023a46df5574::"])))}}},{key:"nextProblem",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-next-problem-html"),accessibleName:i18n(_templateObject23||(_templateObject23=_taggedTemplateLiteral(["a0bfb8e59e6c13fc8d990781f77694fe::"])))}}},{key:"no",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-no-html"),accessibleName:i18n(_templateObject24||(_templateObject24=_taggedTemplateLiteral(["bafd7322c6e97d25b6299b5d6fe8920b::"])))}}},{key:"ok",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-ok-html"),accessibleName:i18n(_templateObject25||(_templateObject25=_taggedTemplateLiteral(["e0aa021e21dddbd6d8cecec71e9cf564::"])))}}},{key:"pause",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-pause-html"),accessibleName:i18n(_templateObject26||(_templateObject26=_taggedTemplateLiteral(["105b296a83f9c105355403f3332af50f::"])))}}},{key:"play",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-play-html"),accessibleName:i18n(_templateObject27||(_templateObject27=_taggedTemplateLiteral(["de3c731be5633838089a07179d301d7b::"])))}}},{key:"playLesson",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-play-html"),accessibleName:i18n(_templateObject28||(_templateObject28=_taggedTemplateLiteral(["afd061e2316f7ab6f934ef5b43f994b6::"])))}}},{key:"privacy",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-privacy-html"),accessibleName:i18n(_templateObject29||(_templateObject29=_taggedTemplateLiteral(["c5f29bb36f9158d2e00f5d4dc213a0ff::"])))}}},{key:"question",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-question-html"),accessibleName:i18n(_templateObject30||(_templateObject30=_taggedTemplateLiteral(["c5836008c1649301e29351a55db8f65c::"])))}}},{key:"repeatLesson",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-repeat-lesson-html"),accessibleName:i18n(_templateObject31||(_templateObject31=_taggedTemplateLiteral(["87a0a633db4ae5246df7ebf3e417a805::"])))}}},{key:"resetToFactory",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-reset-to-factory-html"),accessibleName:i18n(_templateObject32||(_templateObject32=_taggedTemplateLiteral(["5dcd7aaf263cdf5f7d1de6aa2264e29f::"])))}}},{key:"save",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-save-html"),accessibleName:i18n(_templateObject33||(_templateObject33=_taggedTemplateLiteral(["c9cc8cce247e49bae79f15173ce97354::"])))}}},{key:"settings",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-settings-html"),accessibleName:i18n(_templateObject34||(_templateObject34=_taggedTemplateLiteral(["f4f70727dc34561dfde1a3c529b6205c::"])))}}},{key:"skip",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-skip-html"),accessibleName:i18n(_templateObject35||(_templateObject35=_taggedTemplateLiteral(["72ef2b9b6965d078e3c7f95487a82d1c::"])))}}},{key:"submitAnswer",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-submit-answer-html"),accessibleName:i18n(_templateObject36||(_templateObject36=_taggedTemplateLiteral(["4e095ee5de137300bfa0042a6b442b0e::"])))}}},{key:"openMenu",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-open-menu-html"),accessibleName:i18n(_templateObject37||(_templateObject37=_taggedTemplateLiteral(["64d2cc43035360eddf790efbef5ddb30::"])))}}},{key:"warning",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-warning-html"),accessibleName:i18n(_templateObject38||(_templateObject38=_taggedTemplateLiteral(["64d2cc43035360eddf790efbef5ddb30::"])))}}},{key:"yes",get:function(){return{content:_classPrivateMethodGet(this,_getIconHtml,_getIconHtml2).call(this,"--icon-yes-html"),accessibleName:i18n(_templateObject39||(_templateObject39=_taggedTemplateLiteral(["93cba07454f06a4a960172bbd6e2a435::"])))}}},{key:"semanticsAddressRole",value:function(element,role){return!role||HTML_SEMANTIC_ROLES[element.tagName][element.tagName]==role}},{key:"applyIconToElement",value:function(icon,item){var _options$hideText,_options$overrideText,_options$role,options=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},hideText=null!==(_options$hideText=options.hideText)&&void 0!==_options$hideText?_options$hideText:_classPrivateFieldGet(this,_hideText),label=null!==(_options$overrideText=options.overrideText)&&void 0!==_options$overrideText?_options$overrideText:icon.accessibleName,element=ManagedElement.getElement(item),role=null===(_options$role=options.role)||void 0===_options$role?void 0:_options$role.toLowerCase();element.innerHTML=icon.content,icon.accessibleName&&!hideText?element.innerHTML+="&nbsp;".concat(label):element.title=label,this.semanticsAddressRole(element,role)?options.hideText&&element.setAttribute("aria-label",label):(element.setAttribute("role",role),element.setAttribute("aria-label",label))}}]),IconGenerator}();function _getIconHtml2(key){var _classPrivateFieldGet6;if(!_classPrivateFieldGet(this,_cache).has(key)){var cssValue=getComputedStyle(document.documentElement).getPropertyValue(key);cssValue=cssValue.trim(),_classPrivateFieldGet(this,_cache).set(key,cssValue.substring(1,cssValue.length-1).replace(/\\"/g,'"'))}return null!==(_classPrivateFieldGet6=_classPrivateFieldGet(this,_cache).get(key))&&void 0!==_classPrivateFieldGet6?_classPrivateFieldGet6:"!?"}var icons=new IconGenerator,FocusManager=function(){function FocusManager(){var _this2=this;_classCallCheck(this,FocusManager),window.addEventListener("focus",(function(event){console.debug("Window has focus. Restore focus to active element. Active element ".concat(document.activeElement.tagName," ").concat(document.activeElement.className),document.activeElement,event.relatedTarget),document.activeElement!==document.body?document.activeElement.focus():_this2.findBestFocus()}))}return _createClass(FocusManager,[{key:"focusWithin",value:function(){var _containingElement$el,_step2,containingElement=arguments.length>0&&void 0!==arguments[0]?arguments[0]:document.body,element=null!==(_containingElement$el=containingElement.element)&&void 0!==_containingElement$el?_containingElement$el:containingElement,_iterator2=_createForOfIteratorHelper(element.querySelectorAll("button,select,input,.selectable").values());try{for(_iterator2.s();!(_step2=_iterator2.n()).done;){var candidate=_step2.value;if("none"!==candidate.style.display&&"hidden"!==candidate.style.visibility)return candidate.focus(),!0}}catch(err){_iterator2.e(err)}finally{_iterator2.f()}return console.debug("Couldn't find anything to focus on within ".concat(null==element?void 0:element.tagName,":").concat(null==element?void 0:element.className)),!1}},{key:"findBestFocus",value:function(){var element=document.querySelector(".selectable.always-on-top");element?element.focus():((element=document.querySelector(".modal"))||(element=document.querySelector("#content")),this.focusWithin(element))}},{key:"setFocus",value:function(element){return element.focus(),document.activeElement===element}}]),FocusManager}(),focusManager=new FocusManager,_dismiss=new WeakSet,Toast=function(_ManagedElement){_inherits(Toast,_ManagedElement);var _super=_createSuper(Toast);function Toast(message,rawHtml){var _this3;_classCallCheck(this,Toast),_classPrivateMethodInitSpec(_assertThisInitialized(_this3=_super.call(this,"div","utils-toast")),_dismiss),_this3.classList.add("selectable","always-on-top"),_this3.setAttributes({"aria-role":"alert",tabindex:"0"});var content=new ManagedElement("div","container"),icon=new ManagedElement("div");return icons.applyIconToElement(icons.closeMenu,icon.element,{hideText:!0}),_this3.appendChild(content),_this3.appendChild(icon),rawHtml?content.innerHTML=message:content.textContent=message,_this3.listenToOwnEvent("click",""),_this3.listenToOwnEvent("keydown",""),_this3}return _createClass(Toast,[{key:"handleClickEvent",value:function(eventIgnored){_classPrivateMethodGet(this,_dismiss,_dismiss2).call(this)}},{key:"handleKeydownEvent",value:function(event){console.debug("Key ".concat(event.key)),"Escape"!==event.key&&" "!==event.key&&"Enter"!==event.key||_classPrivateMethodGet(this,_dismiss,_dismiss2).call(this)}}]),Toast}(ManagedElement);function _dismiss2(){this.style.opacity=0,this.remove(),focusManager.findBestFocus()}function toast(message){var toast=new Toast(message,!0);document.body.appendChild(toast.element),setTimeout((function(){toast.style.top="45vh",toast.focus()}))}var _storage=new WeakMap,_keyPrefix=new WeakMap,persistentData=new(function(){function DataStoreManager(storage){_classCallCheck(this,DataStoreManager),_classPrivateFieldInitSpec(this,_storage,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_keyPrefix,{writable:!0,value:"app"}),_classPrivateFieldSet(this,_storage,storage)}return _createClass(DataStoreManager,[{key:"createStorageKey",value:function(key){return"".concat(_classPrivateFieldGet(this,_keyPrefix)).concat(key)}},{key:"getFromStorage",value:function(key,defaultValue){key=this.createStorageKey(key);var value=_classPrivateFieldGet(this,_storage).getItem(key);if(value)try{var parsedValue=JSON.parse(value);return null==parsedValue?defaultValue:parsedValue}catch(error){console.error(error)}return defaultValue}},{key:"saveToStorage",value:function(key,value){key=this.createStorageKey(key);try{_classPrivateFieldGet(this,_storage).setItem(key,JSON.stringify(value))}catch(error){toast(i18n(_templateObject40||(_templateObject40=_taggedTemplateLiteral(["e6b3e01861eefd23bb3caa9acd6d0c42::",""])),error.message))}}},{key:"removeFromStorage",value:function(key){key=this.createStorageKey(key),_classPrivateFieldGet(this,_storage).removeItem(key)}},{key:"setStorageKeyPrefix",value:function(prefix){_classPrivateFieldSet(this,_keyPrefix,prefix)}}]),DataStoreManager}())(localStorage);function getErrorAttributeHtml(message){return'data-error="'.concat(stringToBase64(message),'"')}var PREDEFINED_EMOJIS={GRINNING:"&#x1F600;",")":"@GRINNING","-)":"@GRINNING",SMILEY:"@GRINNING",SMILING:"@GRINNING",HAPPY:"@GRINNING",WORRIED:"&#x1F61F;",SAD:"@WORRIED",LAUGHING:"&#x1F602;",LAUGH:"@LAUGHING",CRYING:"&#x1F622;",TEAR:"@CRYING",FROWNING:"&#x1F641;","(":"@FROWNING","-(":"@FROWNING",NEUTRAL:"&#x1F610;",ANGRY:"&#x1F620;",GRUMPY:"@ANGRY",WINK:"&#x1F609;",WINKY:"@WINK",WINKING:"@WINK",WARNING:"&#x26A0;&#xFE0F;",ALERT:"@WARNING",ERROR:"@WARNING","WHITE-QUESTION-MARK":"&#x2754;"};var SAFE_CLASSES=["big","bigger","biggest","small","smaller","smallest"];var _missingWords=new WeakMap,_replacements=new WeakMap,TrackedReplacements=function(){function TrackedReplacements(metadata){_classCallCheck(this,TrackedReplacements),_classPrivateFieldInitSpec(this,_missingWords,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_replacements,{writable:!0,value:void 0}),_classPrivateFieldSet(this,_missingWords,[]);var tracker=this;_classPrivateFieldSet(this,_replacements,[{re:/\\>/g,rep:"&gt;"},getItemReplacement("[.]{3}",(function(match,startChr,word){return _classPrivateFieldGet(tracker,_missingWords).push(word),"".concat(startChr,'<span class="missing-word" data-missing-word="').concat(ManagedElement.encodeString(word),'"></span>')})),getItemReplacement("emoji:",(function(match,startChr,word,emojiClass){var requiredClasses="emoji";return(emojiClass=function(requestedClass){if(!requestedClass)return"";var index=SAFE_CLASSES.indexOf(requestedClass.toLowerCase());return index<0?"":SAFE_CLASSES[index]}(emojiClass))&&(requiredClasses="".concat(requiredClasses," ").concat(emojiClass)),"".concat(startChr,'<span class="').concat(requiredClasses,'">').concat(function(originalDefinition){if(!originalDefinition)return" ";var definition=originalDefinition.toUpperCase();if(definition.startsWith("U+"))return definition.replaceAll(/U\+([A-F0-9]+)/g,"&#x$1;");var _code,code=PREDEFINED_EMOJIS[definition];if(null!==(_code=code)&&void 0!==_code&&_code.startsWith("@")&&(code=PREDEFINED_EMOJIS[code.substring(1)]),!code){var errorAttribute=getErrorAttributeHtml(i18n(_templateObject41||(_templateObject41=_taggedTemplateLiteral(["5da57f8cd9336099a601a9cb7b512982::",""])),originalDefinition));return"<span ".concat(errorAttribute,">").concat(PREDEFINED_EMOJIS["WHITE-QUESTION-MARK"],"</span>")}return code}(word),"</span>")})),getItemReplacement("meta:",(function(match,startChr,word){var metavalue=null==metadata?void 0:metadata.getValue(word);if(!metavalue){var errorAttribute=getErrorAttributeHtml(i18n(_templateObject42||(_templateObject42=_taggedTemplateLiteral(["20f59a970faebddc0d41220837f3b4ad::",""])),word));return"".concat(startChr,"<span ").concat(errorAttribute,">").concat(word,"</span>")}return"".concat(startChr).concat(metavalue)}))])}return _createClass(TrackedReplacements,[{key:"missingWords",get:function(){return _toConsumableArray(_classPrivateFieldGet(this,_missingWords))}},{key:"replacements",get:function(){return _classPrivateFieldGet(this,_replacements)}}]),TrackedReplacements}(),_html=new WeakMap,_missingWords2=new WeakMap,_metadata=new WeakMap,TextItem=function(){function TextItem(metadata){if(_classCallCheck(this,TextItem),_classPrivateFieldInitSpec(this,_html,{writable:!0,value:""}),_classPrivateFieldInitSpec(this,_missingWords2,{writable:!0,value:[]}),_classPrivateFieldInitSpec(this,_metadata,{writable:!0,value:void 0}),!_classStaticPrivateFieldSpecGet(TextItem,TextItem,_isConstructing))throw new Error("Private constructor. Use createTextItem");_classPrivateFieldSet(this,_metadata,metadata)}return _createClass(TextItem,[{key:"html",get:function(){return _classPrivateFieldGet(this,_html)}},{key:"plainText",get:function(){return getPlainTextFromHtml(_classPrivateFieldGet(this,_html).replace(/<(?:[^>]*missing-word[^>]*)>/g,"..."))}},{key:"missingWords",get:function(){return _classPrivateFieldGet(this,_missingWords2)}},{key:"firstWord",get:function(){var _classPrivateFieldGet2,match=null===(_classPrivateFieldGet2=_classPrivateFieldGet(this,_html))||void 0===_classPrivateFieldGet2?void 0:_classPrivateFieldGet2.match(/^(?:\s*(?:<\/?[^\r\n\f\t]*?>)*\s*)*([^\s<]*)/);return match?match[1]:""}}],[{key:"createFromSource",value:function(source,metadata){_classStaticPrivateFieldSpecSet(TextItem,TextItem,_isConstructing,!0);var textItem=new TextItem;if(_classStaticPrivateFieldSpecSet(TextItem,TextItem,_isConstructing,!1),source){var tracker=new TrackedReplacements(metadata);_classPrivateFieldSet(textItem,_html,parseMarkdown(source,{post:tracker.replacements})),_classPrivateFieldSet(textItem,_missingWords2,tracker.missingWords)}return textItem}}]),TextItem}(),_isConstructing={writable:!0,value:!1};function getItemReplacement(prefix,replace){return{re:new RegExp("".concat("(^|[ >])").concat(prefix).concat("((?:&#?[a-zA-Z0-9]+?;|[^\\s<>])+?)?").concat("(?:>([a-zA_Z]*))?").concat("(?=[\\s,;:.?!]|$|</.+?>)"),"gmi"),rep:replace}}var _map=new WeakMap,Metadata=function(){function Metadata(){if(_classCallCheck(this,Metadata),_classPrivateFieldInitSpec(this,_map,{writable:!0,value:new Map}),!_classStaticPrivateFieldSpecGet(Metadata,Metadata,_isConstructing2))throw new Error("Private constructor. Use createMetaData")}return _createClass(Metadata,[{key:"getValue",value:function(key,defaultValue){var value=_classPrivateFieldGet(this,_map).get(key.toUpperCase());return null!=value?value:defaultValue}}],[{key:"createFromSource",value:function(source){_classStaticPrivateFieldSpecSet(Metadata,Metadata,_isConstructing2,!0);var metadata=new Metadata;return _classStaticPrivateFieldSpecSet(Metadata,Metadata,_isConstructing2,!1),source.split("\n").forEach((function(element){var match=element.match(/^\s*(\w+)\s*[:;.]-?\s*(.*?)\s*$/);match&&_classPrivateFieldGet(metadata,_map).set(match[1].toUpperCase(),escapeHtml(match[2]))})),metadata}}]),Metadata}(),_isConstructing2={writable:!0,value:!1},QuestionType={SIMPLE:"simple",MULTI:"multi",FILL:"fill",ORDER:"order",SLIDE:"slide"},_intro=new WeakMap,_question=new WeakMap,_explanation=new WeakMap,_rightAnswers=new WeakMap,_wrongAnswers=new WeakMap,_questionType=new WeakMap,_extractFirstWords=new WeakSet,_deriveQuestionType=new WeakSet,_isSimpleQuestion=new WeakSet,_isMultiQuestion=new WeakSet,_isFillQuestion=new WeakSet,_isOrderQuestion=new WeakSet,Problem=function(){function Problem(){_classCallCheck(this,Problem),_classPrivateMethodInitSpec(this,_isOrderQuestion),_classPrivateMethodInitSpec(this,_isFillQuestion),_classPrivateMethodInitSpec(this,_isMultiQuestion),_classPrivateMethodInitSpec(this,_isSimpleQuestion),_classPrivateMethodInitSpec(this,_deriveQuestionType),_classPrivateMethodInitSpec(this,_extractFirstWords),_classPrivateFieldInitSpec(this,_intro,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_question,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_explanation,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_rightAnswers,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_wrongAnswers,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_questionType,{writable:!0,value:QuestionType.SLIDE})}return _createClass(Problem,[{key:"intro",get:function(){return _classPrivateFieldGet(this,_intro)},set:function(value){_classPrivateFieldSet(this,_intro,value)}},{key:"question",get:function(){return _classPrivateFieldGet(this,_question)},set:function(value){_classPrivateFieldSet(this,_question,value),_classPrivateMethodGet(this,_deriveQuestionType,_deriveQuestionType2).call(this)}},{key:"explanation",get:function(){return _classPrivateFieldGet(this,_explanation)},set:function(value){_classPrivateFieldSet(this,_explanation,value)}},{key:"rightAnswers",get:function(){return _classPrivateFieldGet(this,_rightAnswers)},set:function(value){_classPrivateFieldSet(this,_rightAnswers,value),_classPrivateMethodGet(this,_deriveQuestionType,_deriveQuestionType2).call(this)}},{key:"wrongAnswers",get:function(){return _classPrivateFieldGet(this,_wrongAnswers)},set:function(value){_classPrivateFieldSet(this,_wrongAnswers,value),_classPrivateMethodGet(this,_deriveQuestionType,_deriveQuestionType2).call(this)}},{key:"firstWordsOfWrongAnswers",get:function(){return _classPrivateMethodGet(this,_extractFirstWords,_extractFirstWords2).call(this,this.wrongAnswers)}},{key:"firstWordsOfRightAnswers",get:function(){return _classPrivateMethodGet(this,_extractFirstWords,_extractFirstWords2).call(this,this.rightAnswers)}},{key:"questionType",get:function(){return _classPrivateFieldGet(this,_questionType)}}]),Problem}();function _extractFirstWords2(data){var words=[];return data.forEach((function(textItem){words.push(textItem.firstWord)})),words}function _deriveQuestionType2(){var _classPrivateFieldGet7;if(null===(_classPrivateFieldGet7=_classPrivateFieldGet(this,_question))||void 0===_classPrivateFieldGet7||!_classPrivateFieldGet7.html)return QuestionType.SLIDE;_classPrivateMethodGet(this,_isOrderQuestion,_isOrderQuestion2).call(this)?_classPrivateFieldSet(this,_questionType,QuestionType.ORDER):_classPrivateMethodGet(this,_isFillQuestion,_isFillQuestion2).call(this)?_classPrivateFieldSet(this,_questionType,QuestionType.FILL):_classPrivateMethodGet(this,_isMultiQuestion,_isMultiQuestion2).call(this)?_classPrivateFieldSet(this,_questionType,QuestionType.MULTI):_classPrivateMethodGet(this,_isSimpleQuestion,_isSimpleQuestion2).call(this)?_classPrivateFieldSet(this,_questionType,QuestionType.SIMPLE):_classPrivateFieldSet(this,_questionType,QuestionType.SLIDE)}function _isSimpleQuestion2(){return!!_classPrivateFieldGet(this,_rightAnswers)&&1===_classPrivateFieldGet(this,_rightAnswers).length}function _isMultiQuestion2(){return!!_classPrivateFieldGet(this,_rightAnswers)&&_classPrivateFieldGet(this,_rightAnswers).length>1}function _isFillQuestion2(){if(0===_classPrivateFieldGet(this,_question).missingWords.length)return!1;var _step3,_iterator3=_createForOfIteratorHelper(_classPrivateFieldGet(this,_question).missingWords);try{for(_iterator3.s();!(_step3=_iterator3.n()).done;){if(!_step3.value)return!1}}catch(err){_iterator3.e(err)}finally{_iterator3.f()}return!0}function _isOrderQuestion2(){return _classPrivateFieldGet(this,_question).html.match(/<span +class *= *"missing-word".*?><\/span>(?:\s*<\/p>\s*)*$/)&&1===_classPrivateFieldGet(this,_question).missingWords.length&&!_classPrivateFieldGet(this,_question).missingWords[0]}var MarkState={UNDEFINED:-1,CORRECT:0,INCORRECT:1,SKIPPED:2},_markedItems=new WeakMap,ItemMarker=function(){function ItemMarker(){_classCallCheck(this,ItemMarker),_classPrivateFieldInitSpec(this,_markedItems,{writable:!0,value:void 0}),this.reset()}return _createClass(ItemMarker,[{key:"reset",value:function(){_classPrivateFieldSet(this,_markedItems,[])}},{key:"marks",get:function(){var marks={correct:0,incorrect:0,skipped:0,markedItems:_classPrivateFieldGet(this,_markedItems)};return _classPrivateFieldGet(this,_markedItems).forEach((function(markedItem){switch(markedItem.state){case MarkState.CORRECT:marks.correct++;break;case MarkState.INCORRECT:marks.incorrect++;break;case MarkState.SKIPPED:marks.skipped++}})),marks}},{key:"markItem",value:function(item,state){_classPrivateFieldGet(this,_markedItems).push({item:item,state:state})}}]),ItemMarker}(),_metadata2=new WeakMap,_problems=new WeakMap,_problemIndex=new WeakMap,_marker=new WeakMap,Lesson=function(){function Lesson(){_classCallCheck(this,Lesson),_classPrivateFieldInitSpec(this,_metadata2,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_problems,{writable:!0,value:[]}),_classPrivateFieldInitSpec(this,_problemIndex,{writable:!0,value:0}),_classPrivateFieldInitSpec(this,_marker,{writable:!0,value:new ItemMarker}),_classPrivateFieldGet(this,_marker).reset()}return _createClass(Lesson,[{key:"metadata",get:function(){return _classPrivateFieldGet(this,_metadata2)},set:function(value){_classPrivateFieldSet(this,_metadata2,value)}},{key:"problems",get:function(){return _classPrivateFieldGet(this,_problems)}},{key:"marks",get:function(){return _classPrivateFieldGet(this,_marker).marks}},{key:"addProblem",value:function(problem){_classPrivateFieldGet(this,_problems).push(problem)}},{key:"restart",value:function(){_classPrivateFieldGet(this,_marker).reset(),_classPrivateFieldSet(this,_problemIndex,0)}},{key:"hasMoreProblems",get:function(){return _classPrivateFieldGet(this,_problemIndex)<_classPrivateFieldGet(this,_problems).length}},{key:"getNextProblem",value:function(){var _this$problemIndex,_this$problemIndex2;return _classPrivateFieldGet(this,_problemIndex)<_classPrivateFieldGet(this,_problems).length?_classPrivateFieldGet(this,_problems)[(_classPrivateFieldSet(this,_problemIndex,(_this$problemIndex=_classPrivateFieldGet(this,_problemIndex),_this$problemIndex2=_this$problemIndex++,_this$problemIndex)),_this$problemIndex2)]:null}},{key:"peekAtNextProblem",value:function(){return _classPrivateFieldGet(this,_problemIndex)<_classPrivateFieldGet(this,_problems).length?_classPrivateFieldGet(this,_problems)[_classPrivateFieldGet(this,_problemIndex)]:null}},{key:"markProblem",value:function(problem,state){_classPrivateFieldGet(this,_marker).markItem(problem,state)}}]),Lesson}(),_introSource=new WeakMap,_questionSource=new WeakMap,_rightAnswerSources=new WeakMap,_wrongAnswerSources=new WeakMap,_explanationSource=new WeakMap,ProblemSource=function(){function ProblemSource(){_classCallCheck(this,ProblemSource),_classPrivateFieldInitSpec(this,_introSource,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_questionSource,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_rightAnswerSources,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_wrongAnswerSources,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_explanationSource,{writable:!0,value:void 0}),_classPrivateFieldSet(this,_introSource,""),_classPrivateFieldSet(this,_questionSource,""),_classPrivateFieldSet(this,_rightAnswerSources,[]),_classPrivateFieldSet(this,_wrongAnswerSources,[]),_classPrivateFieldSet(this,_explanationSource,"")}return _createClass(ProblemSource,[{key:"introSource",get:function(){return _classPrivateFieldGet(this,_introSource)},set:function(data){_classPrivateFieldSet(this,_introSource,data)}},{key:"questionSource",get:function(){return _classPrivateFieldGet(this,_questionSource)},set:function(data){_classPrivateFieldSet(this,_questionSource,data)}},{key:"explanationSource",get:function(){return _classPrivateFieldGet(this,_explanationSource)},set:function(data){_classPrivateFieldSet(this,_explanationSource,data)}},{key:"rightAnswerSources",get:function(){return _classPrivateFieldGet(this,_rightAnswerSources)}},{key:"wrongAnswerSources",get:function(){return _classPrivateFieldGet(this,_wrongAnswerSources)}},{key:"addRightAnswerSource",value:function(data){_classPrivateFieldGet(this,_rightAnswerSources).push(data)}},{key:"addWrongAnswerSource",value:function(data){_classPrivateFieldGet(this,_wrongAnswerSources).push(data)}}]),ProblemSource}(),ProblemItemKey_INTRO="i",ProblemItemKey_QUESTION="?",ProblemItemKey_RIGHT_ANSWER="=",ProblemItemKey_WRONG_ANSWER="x",ProblemItemKey_EXPLANATION="&",ProblemItemKey_QUESTION_BREAK="_",_metaSource=new WeakMap,_problemSources=new WeakMap,LessonSource=function(){function LessonSource(){if(_classCallCheck(this,LessonSource),_classPrivateFieldInitSpec(this,_metaSource,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_problemSources,{writable:!0,value:void 0}),!_classStaticPrivateFieldSpecGet(LessonSource,LessonSource,_isConstructing3))throw new Error("Private constructor. Use createFromSource");_classPrivateFieldSet(this,_problemSources,[])}return _createClass(LessonSource,[{key:"metaSource",get:function(){return _classPrivateFieldGet(this,_metaSource)},set:function(value){_classPrivateFieldSet(this,_metaSource,value)}},{key:"problemSources",get:function(){return _classPrivateFieldGet(this,_problemSources)}},{key:"isNewProblem",value:function(lastKey,newKey,currentProblem){if(lastKey===ProblemItemKey_QUESTION_BREAK)return!0;switch(newKey){case ProblemItemKey_INTRO:return!!currentProblem.introSource;case ProblemItemKey_QUESTION:return!!currentProblem.questionSource}return!1}},{key:"addDataToProblemSource",value:function(problem,itemType,data){switch(itemType){case ProblemItemKey_INTRO:problem.introSource=data;break;case ProblemItemKey_QUESTION:problem.questionSource=data;break;case ProblemItemKey_RIGHT_ANSWER:problem.addRightAnswerSource(data);break;case ProblemItemKey_WRONG_ANSWER:problem.addWrongAnswerSource(data);break;case ProblemItemKey_EXPLANATION:problem.explanationSource=data;break;case ProblemItemKey_QUESTION_BREAK:break;default:this.metaSource=data}}},{key:"createProblemSource",value:function(){var block=new ProblemSource;return this.problemSources.push(block),block}},{key:"getLineDetails",value:function(line){var _match$,match=line.match(/^[-#_* ]{0,3}(?:\(*([i?=xX&_])\1*[_) ]+)(.*)$/);return match?{key:match[1].toLowerCase(),content:null!==(_match$=match[2])&&void 0!==_match$?_match$:""}:{key:void 0,content:line}}},{key:"convertToLesson",value:function(){var lesson=new Lesson;return lesson.metadata=Metadata.createFromSource(this.metaSource),this.problemSources.forEach((function(problemSource){var problem=new Problem;problem.intro=TextItem.createFromSource(problemSource.introSource,lesson.metadata),problem.question=TextItem.createFromSource(problemSource.questionSource,lesson.metadata),problem.explanation=TextItem.createFromSource(problemSource.explanationSource,lesson.metadata),problem.rightAnswers=problemSource.rightAnswerSources.map((function(source){return TextItem.createFromSource(source,lesson.metadata)})),problem.wrongAnswers=problemSource.wrongAnswerSources.map((function(source){return TextItem.createFromSource(source,lesson.metadata)})),lesson.addProblem(problem)})),lesson}}],[{key:"createFromSource",value:function(source){_classStaticPrivateFieldSpecSet(LessonSource,LessonSource,_isConstructing3,!0);var lessonSource=new LessonSource;_classStaticPrivateFieldSpecSet(LessonSource,LessonSource,_isConstructing3,!1);var lines=source.split(/\r\n|\n/),currentItemKey=null,problemSource=lessonSource.createProblemSource(),data="";return lines.forEach((function(line){var details=lessonSource.getLineDetails(line);details.key?(lessonSource.addDataToProblemSource(problemSource,currentItemKey,data),data=details.content?"".concat(details.content,"\n"):"",lessonSource.isNewProblem(currentItemKey,details.key,problemSource)&&(problemSource=lessonSource.createProblemSource()),currentItemKey=details.key):data+="".concat(details.content,"\n")})),data&&lessonSource.addDataToProblemSource(problemSource,currentItemKey,data),lessonSource}}]),LessonSource}(),_isConstructing3={writable:!0,value:!1},_data=new WeakMap,_title=new WeakMap,_lesson=new WeakMap,_origin=new WeakMap,_convertDataToLesson=new WeakSet,_getUnmanagedLessonInfo=new WeakSet,UnmanagedLesson=function(){function UnmanagedLesson(title,_data2,_origin2){_classCallCheck(this,UnmanagedLesson),_classPrivateMethodInitSpec(this,_getUnmanagedLessonInfo),_classPrivateMethodInitSpec(this,_convertDataToLesson),_classPrivateFieldInitSpec(this,_data,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_title,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_lesson,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_origin,{writable:!0,value:void 0}),_classPrivateFieldSet(this,_title,title),_data2&&_classPrivateFieldSet(this,_lesson,_classPrivateMethodGet(this,_convertDataToLesson,_convertDataToLesson2).call(this,_data2)),_classPrivateFieldSet(this,_origin,_origin2)}return _createClass(UnmanagedLesson,[{key:"hasLesson",get:function(){return!!_classPrivateFieldGet(this,_lesson)}},{key:"lesson",get:function(){return _classPrivateFieldGet(this,_lesson)}},{key:"lessonInfo",get:function(){return _classPrivateMethodGet(this,_getUnmanagedLessonInfo,_getUnmanagedLessonInfo2).call(this,escapeHtml(_classPrivateFieldGet(this,_title)),_classPrivateFieldGet(this,_origin))}}]),UnmanagedLesson}();function _convertDataToLesson2(data){return LessonSource.createFromSource(data).convertToLesson()}function _getUnmanagedLessonInfo2(lessonTitle,origin){return{origin:origin,usingLocalLibrary:!1,libraryKey:void 0,file:void 0,url:void 0,indexes:{book:0,chapter:0,lesson:0},titles:{library:"",book:"",chapter:"",lesson:lessonTitle}}}var LessonOrigin={REMOTE:"remote",LOCAL:"local",EMBEDDED:"embedded",FILE_SYSTEM:"file_system"};function _getEmbeddedItem(name,data){if(data)try{return base64ToString(data)}catch(error){console.error("Could not decoded embedded variable ".concat(name,". Data: ").concat(data," "))}return null}var embeddedLesson=new(function(_UnmanagedLesson){_inherits(EmbeddedLesson,_UnmanagedLesson);var _super2=_createSuper(EmbeddedLesson);function EmbeddedLesson(){var _window$text2LessonEm,_window$text2LessonEm2;return _classCallCheck(this,EmbeddedLesson),_super2.call(this,_classStaticPrivateMethodGet(EmbeddedLesson,EmbeddedLesson,_getEmbeddedItem).call(EmbeddedLesson,"Embedded title",null===(_window$text2LessonEm=window.text2LessonEmbeddedData)||void 0===_window$text2LessonEm?void 0:_window$text2LessonEm.title),_classStaticPrivateMethodGet(EmbeddedLesson,EmbeddedLesson,_getEmbeddedItem).call(EmbeddedLesson,"Embedded source",null===(_window$text2LessonEm2=window.text2LessonEmbeddedData)||void 0===_window$text2LessonEm2?void 0:_window$text2LessonEm2.source),LessonOrigin.EMBEDDED)}return _createClass(EmbeddedLesson,[{key:"rootUrl",get:function(){var _window$text2LessonEm3;return null===(_window$text2LessonEm3=window.text2LessonEmbeddedData)||void 0===_window$text2LessonEm3?void 0:_window$text2LessonEm3.rootUrl}},{key:"translations",get:function(){var _window$text2LessonEm4;return null===(_window$text2LessonEm4=window.text2LessonEmbeddedData)||void 0===_window$text2LessonEm4?void 0:_window$text2LessonEm4.translations}}]),EmbeddedLesson}(UnmanagedLesson)),rootUrl=embeddedLesson.hasLesson?embeddedLesson.rootUrl:window.location.href.replace(/launch\.html(\?.*)?$/,"");rootUrl.endsWith("/")||(rootUrl+="/");var mdExtension=window.location.host.match(/^127\.0\.0\.1:808[0-2]/)?"md":"html",Urls={ROOT:"".concat(rootUrl),LOGO:"".concat(rootUrl,"assets/images/logo.png"),HELP:"".concat(rootUrl,"assets/docs/about.").concat(mdExtension),PRIVACY:"".concat(rootUrl,"assets/docs/privacy.").concat(mdExtension)},_key2=new WeakMap,_title2=new WeakMap,_contentLoader=new WeakMap,_getDefaultLessonKeys=new WeakSet,_getLessonKeys=new WeakSet,_saveLessonKeys=new WeakSet,_getLibraryContent=new WeakSet,_getStorageKeyForLessonKey=new WeakSet,_loadLocalLesson=new WeakSet,_getFreeKey=new WeakSet,LocalLibrary=function(){function LocalLibrary(){var _this4=this;_classCallCheck(this,LocalLibrary),_classPrivateMethodInitSpec(this,_getFreeKey),_classPrivateMethodInitSpec(this,_loadLocalLesson),_classPrivateMethodInitSpec(this,_getStorageKeyForLessonKey),_classPrivateMethodInitSpec(this,_getLibraryContent),_classPrivateMethodInitSpec(this,_saveLessonKeys),_classPrivateMethodInitSpec(this,_getLessonKeys),_classPrivateMethodInitSpec(this,_getDefaultLessonKeys),_classPrivateFieldInitSpec(this,_key2,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_title2,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_contentLoader,{writable:!0,value:void 0}),_classPrivateFieldSet(this,_key2,LocalLibrary.LOCAL_LIBRARY_KEY),_classPrivateFieldSet(this,_title2,i18n(_templateObject43||(_templateObject43=_taggedTemplateLiteral(["72393b3cb338d9556ecd072e26907479::"])))),_classPrivateFieldSet(this,_contentLoader,(function(){return _classPrivateMethodGet(_this4,_getLibraryContent,_getLibraryContent2).call(_this4)}))}return _createClass(LocalLibrary,[{key:"key",get:function(){return _classPrivateFieldGet(this,_key2)}},{key:"info",get:function(){return{title:_classPrivateFieldGet(this,_title2),contentLoader:_classPrivateFieldGet(this,_contentLoader)}}},{key:"saveLocalLessonAtIndex",value:function(index,localLesson){var keys=_classPrivateMethodGet(this,_getLessonKeys,_getLessonKeys2).call(this);if(index<0||index>=keys.length)console.error("Attempt to store to index ".concat(index," ignored."));else{var key=keys[index];persistentData.saveToStorage(_classPrivateMethodGet(this,_getStorageKeyForLessonKey,_getStorageKeyForLessonKey2).call(this,key),localLesson)}}},{key:"addNewLessonSlot",value:function(){var key=_classPrivateMethodGet(this,_getFreeKey,_getFreeKey2).call(this),keys=_classPrivateMethodGet(this,_getLessonKeys,_getLessonKeys2).call(this);keys.push(key),_classPrivateMethodGet(this,_saveLessonKeys,_saveLessonKeys2).call(this,keys)}},{key:"deleteLessonAtIndex",value:function(index){var keys=_classPrivateMethodGet(this,_getLessonKeys,_getLessonKeys2).call(this),key=keys[index];null!=key&&(console.debug("Removing lesson storage index: ".concat(index,"; key:").concat(key)),persistentData.removeFromStorage(_classPrivateMethodGet(this,_getStorageKeyForLessonKey,_getStorageKeyForLessonKey2).call(this,key)),keys.splice(index,1),_classPrivateMethodGet(this,_saveLessonKeys,_saveLessonKeys2).call(this,keys))}}]),LocalLibrary}();function _getDefaultLessonKeys2(){for(var indexes=[],index=0;index<LocalLibrary.NUMBER_OF_INITIAL_LESSONS;index++)indexes.push(index);return indexes}function _getLessonKeys2(){return persistentData.getFromStorage(LocalLibrary.LOCAL_LIBRARY_INDEX_KEY,_classPrivateMethodGet(this,_getDefaultLessonKeys,_getDefaultLessonKeys2).call(this))}function _saveLessonKeys2(keys){persistentData.saveToStorage(LocalLibrary.LOCAL_LIBRARY_INDEX_KEY,keys)}function _getLibraryContent2(){var _this49=this,book={title:i18n(_templateObject84||(_templateObject84=_taggedTemplateLiteral(["c025e43a825a053fc668cef35cfa9ef5::"]))),location:"",chapters:[{title:i18n(_templateObject85||(_templateObject85=_taggedTemplateLiteral(["8fe1f2e455ff223c81a6441733982773::"]))),lessons:[]}]};return _classPrivateMethodGet(this,_getLessonKeys,_getLessonKeys2).call(this).forEach((function(key){var localLesson=_classPrivateMethodGet(_this49,_loadLocalLesson,_loadLocalLesson2).call(_this49,key);book.chapters[0].lessons.push({title:localLesson.title,contentLoader:function(){return localLesson.content}})})),[book]}function _getStorageKeyForLessonKey2(key){return"".concat(LocalLibrary.LOCAL_LESSON_KEY_PREFIX).concat(key)}function _loadLocalLesson2(key){var lessonHelpLink="[How to write lessons](".concat(Urls.HELP,")"),defaultLesson={title:i18n(_templateObject86||(_templateObject86=_taggedTemplateLiteral(["3e485231bbe46dac20bd0ed40c513dd7::"]))),content:i18n(_templateObject87||(_templateObject87=_taggedTemplateLiteral(["0c61e973e1e23347be794197b57f91ab::",""])),lessonHelpLink)};return persistentData.getFromStorage(_classPrivateMethodGet(this,_getStorageKeyForLessonKey,_getStorageKeyForLessonKey2).call(this,key),defaultLesson)}function _getFreeKey2(){var indexes=_classPrivateMethodGet(this,_getLessonKeys,_getLessonKeys2).call(this);indexes.sort();for(var n=0;n<indexes.length-1;n++)if(indexes[n+1]-indexes[n]>1)return indexes[n]+1;return indexes[indexes.length-1]+1}_defineProperty(LocalLibrary,"LOCAL_LIBRARY_KEY","LOCAL_LIBRARY"),_defineProperty(LocalLibrary,"LOCAL_LIBRARY_INDEX_KEY","LOCAL_LIBRARY_INDEX"),_defineProperty(LocalLibrary,"LOCAL_LESSON_KEY_PREFIX","LocalLesson_"),_defineProperty(LocalLibrary,"NUMBER_OF_INITIAL_LESSONS",4);var _usingLocalLibrary=new WeakMap,_libraries=new WeakMap,_remoteLibraryKey=new WeakMap,_currentLibraryKey=new WeakMap,_currentBookIndex=new WeakMap,_currentChapterIndex=new WeakMap,_currentLessonIndex=new WeakMap,_cachedLesson=new WeakMap,_buildCurrentLessonInfo=new WeakSet,_ensurePositiveInt=new WeakSet,_ensureIndexesValid=new WeakSet,_indexInvalid=new WeakSet,_getCurrentBook=new WeakSet,_loadLibraryContent=new WeakSet,_escapeAllTitles=new WeakSet,_loadLessonUsingContentLoader=new WeakSet,_loadRemoteLesson=new WeakSet,LessonManager=function(){function LessonManager(){_classCallCheck(this,LessonManager),_classPrivateMethodInitSpec(this,_loadRemoteLesson),_classPrivateMethodInitSpec(this,_loadLessonUsingContentLoader),_classPrivateMethodInitSpec(this,_escapeAllTitles),_classPrivateMethodInitSpec(this,_loadLibraryContent),_classPrivateMethodInitSpec(this,_getCurrentBook),_classPrivateMethodInitSpec(this,_indexInvalid),_classPrivateMethodInitSpec(this,_ensureIndexesValid),_classPrivateMethodInitSpec(this,_ensurePositiveInt),_classPrivateMethodInitSpec(this,_buildCurrentLessonInfo),_classPrivateFieldInitSpec(this,_usingLocalLibrary,{writable:!0,value:!1}),_classPrivateFieldInitSpec(this,_libraries,{writable:!0,value:new Map}),_classPrivateFieldInitSpec(this,_remoteLibraryKey,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_currentLibraryKey,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_currentBookIndex,{writable:!0,value:0}),_classPrivateFieldInitSpec(this,_currentChapterIndex,{writable:!0,value:0}),_classPrivateFieldInitSpec(this,_currentLessonIndex,{writable:!0,value:0}),_classPrivateFieldInitSpec(this,_cachedLesson,{writable:!0,value:void 0})}return _createClass(LessonManager,[{key:"remoteLibraryKey",set:function(key){if(!_classPrivateFieldGet(this,_libraries).has(key))return console.error("Ignored attempt to set remote invalid remote library key ".concat(key,".")),void _classPrivateFieldSet(this,_usingLocalLibrary,!0);_classPrivateFieldSet(this,_remoteLibraryKey,key),_classPrivateFieldGet(this,_usingLocalLibrary)||_classPrivateFieldSet(this,_currentLibraryKey,_classPrivateFieldGet(this,_remoteLibraryKey))}},{key:"usingLocalLibrary",get:function(){return _classPrivateFieldGet(this,_usingLocalLibrary)},set:function(value){_classPrivateFieldSet(this,_usingLocalLibrary,value),_classPrivateFieldSet(this,_currentLibraryKey,_classPrivateFieldGet(this,_usingLocalLibrary)?LocalLibrary.LOCAL_LIBRARY_KEY:_classPrivateFieldGet(this,_remoteLibraryKey))}},{key:"bookIndex",set:function(index){_classPrivateFieldGet(this,_libraries).get(_classPrivateFieldGet(this,_currentLibraryKey))?_classPrivateFieldSet(this,_currentBookIndex,_classPrivateMethodGet(this,_ensurePositiveInt,_ensurePositiveInt2).call(this,index)):_classPrivateFieldSet(this,_currentBookIndex,0)}},{key:"chapterIndex",set:function(index){_classPrivateFieldSet(this,_currentChapterIndex,_classPrivateMethodGet(this,_ensurePositiveInt,_ensurePositiveInt2).call(this,index))}},{key:"lessonIndex",set:function(index){_classPrivateFieldSet(this,_currentLessonIndex,_classPrivateMethodGet(this,_ensurePositiveInt,_ensurePositiveInt2).call(this,index))}},{key:"libraryTitle",get:function(){var _classPrivateFieldGet3,title=null===(_classPrivateFieldGet3=_classPrivateFieldGet(this,_libraries).get(_classPrivateFieldGet(this,_currentLibraryKey)))||void 0===_classPrivateFieldGet3?void 0:_classPrivateFieldGet3.title;return null!=title?title:""}},{key:"libraryTitles",get:function(){var options=new Map;return _classPrivateFieldGet(this,_libraries).forEach((function(value,key){options.set(key,value.title)})),options}},{key:"remoteLibraryTitles",get:function(){var options=new Map;return _classPrivateFieldGet(this,_libraries).forEach((function(value,key){key!==LocalLibrary.LOCAL_LIBRARY_KEY&&options.set(key,value.title)})),options}},{key:"bookTitle",get:function(){var _classPrivateMethodGe,title=null===(_classPrivateMethodGe=_classPrivateMethodGet(this,_getCurrentBook,_getCurrentBook2).call(this))||void 0===_classPrivateMethodGe?void 0:_classPrivateMethodGe.title;return null!=title?title:""}},{key:"bookTitles",get:function(){var _classPrivateFieldGet4,titles=[];return null===(_classPrivateFieldGet4=_classPrivateFieldGet(this,_libraries).get(_classPrivateFieldGet(this,_currentLibraryKey)))||void 0===_classPrivateFieldGet4||_classPrivateFieldGet4.books.forEach((function(value){titles.push(value.title)})),titles}},{key:"chapterTitle",get:function(){var _classPrivateMethodGe2,title=null===(_classPrivateMethodGe2=_classPrivateMethodGet(this,_getCurrentBook,_getCurrentBook2).call(this))||void 0===_classPrivateMethodGe2||null===(_classPrivateMethodGe2=_classPrivateMethodGe2.chapters[_classPrivateFieldGet(this,_currentChapterIndex)])||void 0===_classPrivateMethodGe2?void 0:_classPrivateMethodGe2.title;return null!=title?title:""}},{key:"chapterTitles",get:function(){var titles=[];return _classPrivateMethodGet(this,_getCurrentBook,_getCurrentBook2).call(this).chapters.forEach((function(value){titles.push(value.title)})),titles}},{key:"lessonTitle",get:function(){var _classPrivateMethodGe3,title=null===(_classPrivateMethodGe3=_classPrivateMethodGet(this,_getCurrentBook,_getCurrentBook2).call(this))||void 0===_classPrivateMethodGe3||null===(_classPrivateMethodGe3=_classPrivateMethodGe3.chapters[_classPrivateFieldGet(this,_currentChapterIndex)])||void 0===_classPrivateMethodGe3||null===(_classPrivateMethodGe3=_classPrivateMethodGe3.lessons[_classPrivateFieldGet(this,_currentLessonIndex)])||void 0===_classPrivateMethodGe3?void 0:_classPrivateMethodGe3.title;return null!=title?title:""}},{key:"lessonTitles",get:function(){var titles=[];return _classPrivateMethodGet(this,_getCurrentBook,_getCurrentBook2).call(this).chapters[_classPrivateFieldGet(this,_currentChapterIndex)].lessons.forEach((function(value){titles.push(value.title)})),titles}},{key:"currentLessonInfo",get:function(){return _classPrivateMethodGet(this,_buildCurrentLessonInfo,_buildCurrentLessonInfo2).call(this)}},{key:"formUrlForLesson",value:function(){var books=_classPrivateFieldGet(this,_libraries).get(_classPrivateFieldGet(this,_currentLibraryKey)).books,fileLocation=books[_classPrivateFieldGet(this,_currentBookIndex)].location,fileName=books[_classPrivateFieldGet(this,_currentBookIndex)].chapters[_classPrivateFieldGet(this,_currentChapterIndex)].lessons[_classPrivateFieldGet(this,_currentLessonIndex)].file;return"".concat(fileLocation).concat(fileName)}},{key:"loadAllLibraries",value:function(librariesFileLocation){var _this5=this;_classPrivateFieldSet(this,_libraries,new Map);var localLibrary=new LocalLibrary;return _classPrivateFieldGet(this,_libraries).set(localLibrary.key,localLibrary.info),librariesFileLocation?fetchJson(librariesFileLocation).then((function(entries){for(var key in entries){var entry=entries[key];entry.title=escapeHtml(entry.title),_classPrivateFieldGet(_this5,_libraries).set(key,entries[key]),_classPrivateFieldGet(_this5,_libraries).get(key).books=[]}return _classPrivateFieldGet(_this5,_libraries).size})):Promise.resolve(_classPrivateFieldGet(this,_libraries).size)}},{key:"loadAllLibraryContent",value:function(){var _this6=this;return _classPrivateMethodGet(this,_loadLibraryContent,_loadLibraryContent2).call(this,LocalLibrary.LOCAL_LIBRARY_KEY).then((function(){return _classPrivateMethodGet(_this6,_loadLibraryContent,_loadLibraryContent2).call(_this6,_classPrivateFieldGet(_this6,_remoteLibraryKey))}))}},{key:"loadCurrentLesson",value:function(){_classPrivateMethodGet(this,_ensureIndexesValid,_ensureIndexesValid2).call(this);var contentLoader=_classPrivateMethodGet(this,_getCurrentBook,_getCurrentBook2).call(this).chapters[_classPrivateFieldGet(this,_currentChapterIndex)].lessons[_classPrivateFieldGet(this,_currentLessonIndex)].contentLoader;return contentLoader?_classPrivateMethodGet(this,_loadLessonUsingContentLoader,_loadLessonUsingContentLoader2).call(this,contentLoader):_classPrivateMethodGet(this,_loadRemoteLesson,_loadRemoteLesson2).call(this)}},{key:"updateCurrentLessonContent",value:function(title,content){if(!_classPrivateFieldGet(this,_usingLocalLibrary))throw new Error("Attempt made to update a remote library.");return(new LocalLibrary).saveLocalLessonAtIndex(_classPrivateFieldGet(this,_currentLessonIndex),{title:title,content:content}),_classPrivateMethodGet(this,_loadLibraryContent,_loadLibraryContent2).call(this,LocalLibrary.LOCAL_LIBRARY_KEY,!0)}},{key:"addLessonToLocalLibrary",value:function(){var localLibrary=new LocalLibrary;return localLibrary.addNewLessonSlot(),_classPrivateFieldGet(this,_libraries).set(localLibrary.key,localLibrary.info),_classPrivateMethodGet(this,_loadLibraryContent,_loadLibraryContent2).call(this,localLibrary.key,!0)}},{key:"deleteLocalLibraryCurrentLesson",value:function(){if(!_classPrivateFieldGet(this,_usingLocalLibrary))return console.error("Ignored attempt to delete local library when it is not the active library."),Promise.resolve();var localLibrary=new LocalLibrary;return localLibrary.deleteLessonAtIndex(_classPrivateFieldGet(this,_currentLessonIndex)),_classPrivateFieldGet(this,_libraries).set(localLibrary.key,localLibrary.info),_classPrivateMethodGet(this,_loadLibraryContent,_loadLibraryContent2).call(this,localLibrary.key,!0)}}]),LessonManager}();function _buildCurrentLessonInfo2(url){var _book$chapters$_class,_classPrivateFieldGet8,_book$chapters$_class2,_book$chapters$_class3;_classPrivateMethodGet(this,_ensureIndexesValid,_ensureIndexesValid2).call(this);var book=_classPrivateMethodGet(this,_getCurrentBook,_getCurrentBook2).call(this);return{origin:_classPrivateFieldGet(this,_usingLocalLibrary)?LessonOrigin.LOCAL:LessonOrigin.REMOTE,usingLocalLibrary:_classPrivateFieldGet(this,_usingLocalLibrary),libraryKey:_classPrivateFieldGet(this,_currentLibraryKey),file:null==book||null===(_book$chapters$_class=book.chapters[_classPrivateFieldGet(this,_currentChapterIndex)])||void 0===_book$chapters$_class||null===(_book$chapters$_class=_book$chapters$_class.lessons[_classPrivateFieldGet(this,_currentLessonIndex)])||void 0===_book$chapters$_class?void 0:_book$chapters$_class.file,url:url,indexes:{book:_classPrivateFieldGet(this,_currentBookIndex),chapter:_classPrivateFieldGet(this,_currentChapterIndex),lesson:_classPrivateFieldGet(this,_currentLessonIndex)},titles:{library:null===(_classPrivateFieldGet8=_classPrivateFieldGet(this,_libraries).get(_classPrivateFieldGet(this,_currentLibraryKey)))||void 0===_classPrivateFieldGet8?void 0:_classPrivateFieldGet8.title,book:null==book?void 0:book.title,chapter:null==book||null===(_book$chapters$_class2=book.chapters[_classPrivateFieldGet(this,_currentChapterIndex)])||void 0===_book$chapters$_class2?void 0:_book$chapters$_class2.title,lesson:null==book||null===(_book$chapters$_class3=book.chapters[_classPrivateFieldGet(this,_currentChapterIndex)])||void 0===_book$chapters$_class3||null===(_book$chapters$_class3=_book$chapters$_class3.lessons[_classPrivateFieldGet(this,_currentLessonIndex)])||void 0===_book$chapters$_class3?void 0:_book$chapters$_class3.title}}}function _ensurePositiveInt2(index){return index=parseInt(index),isNaN(index)||index<0?0:index}function _ensureIndexesValid2(){var library=_classPrivateFieldGet(this,_libraries).get(_classPrivateFieldGet(this,_currentLibraryKey));_classPrivateMethodGet(this,_indexInvalid,_indexInvalid2).call(this,_classPrivateFieldGet(this,_currentBookIndex),null==library?void 0:library.books)&&_classPrivateFieldSet(this,_currentBookIndex,0);var book=null==library?void 0:library.books[_classPrivateFieldGet(this,_currentBookIndex)];_classPrivateMethodGet(this,_indexInvalid,_indexInvalid2).call(this,_classPrivateFieldGet(this,_currentChapterIndex),null==book?void 0:book.chapters)&&_classPrivateFieldSet(this,_currentChapterIndex,0);var chapter=null==book?void 0:book.chapters[_classPrivateFieldGet(this,_currentChapterIndex)];_classPrivateMethodGet(this,_indexInvalid,_indexInvalid2).call(this,_classPrivateFieldGet(this,_currentLessonIndex),null==chapter?void 0:chapter.lessons.length)&&_classPrivateFieldSet(this,_currentLessonIndex,0)}function _indexInvalid2(index,arrayData){return null!=arrayData&&(isNaN(index)||index<0||index>=arrayData.length)}function _getCurrentBook2(){return _classPrivateFieldGet(this,_libraries).get(_classPrivateFieldGet(this,_currentLibraryKey)).books[_classPrivateFieldGet(this,_currentBookIndex)]}function _loadLibraryContent2(key,force){var _library$books,_this50=this,library=_classPrivateFieldGet(this,_libraries).get(key);return(null===(_library$books=library.books)||void 0===_library$books?void 0:_library$books.length)>0&&!force?Promise.resolve():library.contentLoader?(library.books=library.contentLoader(),_classPrivateMethodGet(this,_escapeAllTitles,_escapeAllTitles2).call(this,library.books),_classPrivateMethodGet(this,_ensureIndexesValid,_ensureIndexesValid2).call(this),Promise.resolve()):fetchJson(library.url).then((function(value){library.books=value,_classPrivateMethodGet(_this50,_escapeAllTitles,_escapeAllTitles2).call(_this50,library.books),_classPrivateMethodGet(_this50,_ensureIndexesValid,_ensureIndexesValid2).call(_this50)}))}function _escapeAllTitles2(books){books.forEach((function(book){book.title=escapeHtml(book.title),book.chapters.forEach((function(chapter){chapter.title=escapeHtml(chapter.title),chapter.lessons.forEach((function(lesson){lesson.title=escapeHtml(lesson.title)}))}))}))}function _loadLessonUsingContentLoader2(contentLoader){return Promise.resolve(new CachedLesson(_classPrivateMethodGet(this,_buildCurrentLessonInfo,_buildCurrentLessonInfo2).call(this,""),contentLoader()))}function _loadRemoteLesson2(){var _classPrivateFieldGet9,_this51=this,url=this.formUrlForLesson();return(null===(_classPrivateFieldGet9=_classPrivateFieldGet(this,_cachedLesson))||void 0===_classPrivateFieldGet9?void 0:_classPrivateFieldGet9.info.url)===url?(console.info("Using cached version of lesson: ".concat(url)),Promise.resolve(CachedLesson.clone(_classPrivateFieldGet(this,_cachedLesson)))):(_classPrivateFieldSet(this,_cachedLesson,new CachedLesson(_classPrivateMethodGet(this,_buildCurrentLessonInfo,_buildCurrentLessonInfo2).call(this,url))),function(url){return fetchFile(url,"text")}(url).then((function(text){return console.info("Loaded lesson: ".concat(url)),_classPrivateFieldGet(_this51,_cachedLesson).content=text,CachedLesson.clone(_classPrivateFieldGet(_this51,_cachedLesson))})))}var EmbeddedLessonManager=function(){function EmbeddedLessonManager(){_classCallCheck(this,EmbeddedLessonManager)}return _createClass(EmbeddedLessonManager,[{key:"loadAllLibraries",value:function(librariesFileLocation){console.debug("Embedded lesson manager ignore attempt to load ".concat(librariesFileLocation))}},{key:"loadAllLibraryContent",value:function(){console.debug("Embedded lesson manager ignored attempt to load all library content")}}]),EmbeddedLessonManager}(),lessonManager=embeddedLesson.hasLesson?new EmbeddedLessonManager:new LessonManager,DEFAULT_HUE=120,DEFAULT_SATURATION=50,DEFAULT_COLOR_SPREAD=120,DEFAULT_DARK_MODE=!1,DEFAULT_FONT_SIZE=15,DEFAULT_LIBRARY_KEY="EN",DEFAULT_READING_SPEED="180";function setPalette(settings){var _settings$hue,_settings$saturation,_settings$spread,_settings$dark;settings.hue=null!==(_settings$hue=settings.hue)&&void 0!==_settings$hue?_settings$hue:persistentData.getFromStorage("hue",DEFAULT_HUE),settings.saturation=null!==(_settings$saturation=settings.saturation)&&void 0!==_settings$saturation?_settings$saturation:persistentData.getFromStorage("saturation",DEFAULT_SATURATION),settings.spread=null!==(_settings$spread=settings.spread)&&void 0!==_settings$spread?_settings$spread:persistentData.getFromStorage("spread",DEFAULT_COLOR_SPREAD),settings.dark=null!==(_settings$dark=settings.dark)&&void 0!==_settings$dark?_settings$dark:persistentData.getFromStorage("darkMode",DEFAULT_DARK_MODE),function(palette){for(var entryKey in palette)setCssFromPaletteEntry(entryKey,palette[entryKey])}(function(settings){var primaryRgb=hslToRgb(new HSL(settings.hue,settings.saturation,settings.dark?70:30)),colors=[primaryRgb],complementA=shiftHue(primaryRgb,settings.spread),complementB=shiftHue(primaryRgb,-settings.spread);colors.push(complementA,complementB),colors.sort((function(a,b){var relLuminanceA=relativeLuminance(a),relLuminanceB=relativeLuminance(b);return relLuminanceA>relLuminanceB?1:relLuminanceA<relLuminanceB?-1:0})),colors[0]=getDarker(colors[0],5),colors[2]=getLighter(colors[0],5);var errorHsl=new HSL(0,settings.saturation,50),backgroundHsl=new HSL(settings.hue,0,settings.dark?5:95),windowHsl=new HSL(settings.hue,0,settings.dark?0:100);return new Palette({primary:getPaletteEntry(primaryRgb),secondary:getPaletteEntry(complementA),tertiary:getPaletteEntry(complementB),background:getPaletteEntry(hslToRgb(backgroundHsl)),window:getPaletteEntry(hslToRgb(windowHsl)),error:getPaletteEntry(hslToRgb(errorHsl))})}(settings))}var BarButton=function(_ManagedElement2){_inherits(BarButton,_ManagedElement2);var _super3=_createSuper(BarButton);function BarButton(detail){var _this7;return _classCallCheck(this,BarButton),_this7=_super3.call(this,"button"),detail.content?icons.applyIconToElement(detail,_this7.element):_this7.innerHTML=detail,_this7}return _createClass(BarButton)}(ManagedElement),ButtonBar=function(_ManagedElement3){_inherits(ButtonBar,_ManagedElement3);var _super4=_createSuper(ButtonBar);function ButtonBar(){return _classCallCheck(this,ButtonBar),_super4.call(this,"div","utils-button-bar")}return _createClass(ButtonBar,[{key:"showButtons",value:function(buttons){var _buttons,_this8=this;null!==(_buttons=buttons)&&void 0!==_buttons&&_buttons.length||(buttons=[icons.ok]),this.resolutionFunction=null;var promise=new Promise((function(resolve){_this8.resolutionFunction=resolve}));return buttons.forEach((function(value,index){var button=new BarButton(value);button.setAttribute("data-index",index),_this8.appendChild(button,index),_this8.listenToEventOn("click",button,index)})),focusManager.findBestFocus(),promise}},{key:"handleClickEvent",value:function(eventIgnored,eventId){var index=parseInt(eventId);this.resolutionFunction(index)}}]),ButtonBar}(ManagedElement),mask=document.getElementById("modal-mask"),standardSelectionIds=["title-bar","content","footer"],referenceCount=0,itemsToRestore=[];function deactivateItems(){standardSelectionIds.forEach((function(id){document.getElementById(id).querySelectorAll("button,.selectable,input,textarea").forEach((function(element){!function(element){console.debug("Deactivating ".concat(element.tagName,": ").concat(element.className));var elementDetails={element:element,"aria-hidden":element.getAttribute("aria-hidden"),disabled:element.disabled,tabIndex:element.tabIndex};itemsToRestore.push(elementDetails),element.setAttribute("aria-hidden",!0),void 0!==element.disabled&&(element.disabled=!0),element.tabIndex=-1}(element)}))}))}function showMask(){mask.style.visibility="visible",0===referenceCount?deactivateItems():console.debug("Reference count ".concat(referenceCount," is > 0 so mask already in place.")),referenceCount++}function hideMask(){--referenceCount>0?console.debug("Reference count ".concat(referenceCount," is > 0 so leave mask in place.")):(itemsToRestore.forEach((function(item){item.ariaHidden?item.element.setAttribute("aria-hidden",item.ariaHidden):item.element.removeAttribute("aria-hidden"),void 0!==item.disabled&&(item.element.disabled=item.disabled),void 0!==item.tabIndex&&(item.element.tabIndex=item.tabIndex)})),itemsToRestore=[],mask.style.visibility="hidden")}function getIconDetailsForType(dialogType){switch(dialogType){case ModalDialog.DialogType.WARNING:return icons.warning;case ModalDialog.DialogType.ERROR:return icons.error;case ModalDialog.DialogType.FATAL:return icons.fatal;case ModalDialog.DialogType.QUESTION:return icons.question;case ModalDialog.DialogType.SETTINGS:return icons.settings;case ModalDialog.DialogType.INFO:default:return icons.info}}var _dialog=new WeakMap,_titleText=new WeakMap,_icon=new WeakMap,_content2=new WeakMap,_buttonBar=new WeakMap,_createHtml=new WeakSet,_showDialogDefinition=new WeakSet,_hideDialog=new WeakSet,ModalDialog=function(){function ModalDialog(){if(_classCallCheck(this,ModalDialog),_classPrivateMethodInitSpec(this,_hideDialog),_classPrivateMethodInitSpec(this,_showDialogDefinition),_classPrivateMethodInitSpec(this,_createHtml),_classPrivateFieldInitSpec(this,_dialog,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_titleText,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_icon,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_content2,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_buttonBar,{writable:!0,value:void 0}),!_classStaticPrivateFieldSpecGet(ModalDialog,ModalDialog,_isConstructing4))throw new Error("ModalDialog should be instantiated via factory method.");_classPrivateMethodGet(this,_createHtml,_createHtml2).call(this)}return _createClass(ModalDialog,null,[{key:"showDialog",value:function(title,content,options){var dialog=_classStaticPrivateMethodGet(ModalDialog,ModalDialog,_constructDialog).call(ModalDialog);(null==options?void 0:options.dialogType)===ModalDialog.DialogType.FATAL&&(content=_classStaticPrivateMethodGet(ModalDialog,ModalDialog,_addReloadWarning).call(ModalDialog,content));var iconDetails=getIconDetailsForType(null==options?void 0:options.dialogType),dialogDefinition={title:title&&title.length>0?title:":",buttons:null==options?void 0:options.buttons,content:content,dialogType:null==options?void 0:options.dialogType,iconDetails:iconDetails};return _classPrivateMethodGet(dialog,_showDialogDefinition,_showDialogDefinition2).call(dialog,dialogDefinition)}},{key:"showSettingsDialog",value:function(content){var options={dialogType:ModalDialog.DialogType.SETTINGS,buttons:[icons.ok,icons.resetToFactory]};return ModalDialog.showDialog(i18n(_templateObject55||(_templateObject55=_taggedTemplateLiteral(["f4f70727dc34561dfde1a3c529b6205c::"]))),content,options)}},{key:"showWarning",value:function(content,title){return ModalDialog.showDialog(null!=title?title:i18n(_templateObject56||(_templateObject56=_taggedTemplateLiteral(["0eaadb4fcb48a0a0ed7bc9868be9fbaa::"]))),content,{dialogType:ModalDialog.DialogType.WARNING})}},{key:"showError",value:function(content,title){return ModalDialog.showDialog(null!=title?title:i18n(_templateObject57||(_templateObject57=_taggedTemplateLiteral(["902b0d55fddef6f8d651fe1035b7d4bd::"]))),content,{dialogType:ModalDialog.DialogType.ERROR})}},{key:"showInfo",value:function(content,title){return ModalDialog.showDialog(null!=title?title:i18n(_templateObject58||(_templateObject58=_taggedTemplateLiteral(["a82be0f551b8708bc08eb33cd9ded0cf::"]))),content,{dialogType:ModalDialog.DialogType.INFO})}},{key:"showConfirm",value:function(content,title){return ModalDialog.showDialog(null!=title?title:i18n(_templateObject59||(_templateObject59=_taggedTemplateLiteral(["a97ea56b0e00b2379736ae60869ff66a::"]))),content,{dialogType:ModalDialog.DialogType.QUESTION,buttons:[icons.yes,icons.no]})}},{key:"showFatal",value:function(content,title){return ModalDialog.showDialog(null!=title?title:i18n(_templateObject60||(_templateObject60=_taggedTemplateLiteral(["355f26b47eff3302c93a1c49676f078e::"]))),content,{dialogType:ModalDialog.DialogType.FATAL})}}]),ModalDialog}();function _constructDialog(){_classStaticPrivateFieldSpecSet(ModalDialog,ModalDialog,_isConstructing4,!0);var dialog=new ModalDialog;return _classStaticPrivateFieldSpecSet(ModalDialog,ModalDialog,_isConstructing4,!1),dialog}function _createHtml2(){_classPrivateFieldSet(this,_dialog,new ManagedElement("div","utils-dialog")),_classPrivateFieldGet(this,_dialog).classList.add("framed","modal");var titleBar=new ManagedElement("div","utils-title-bar");titleBar.classList.add("container"),_classPrivateFieldSet(this,_icon,new ManagedElement("span","utils-dialog-icon")),titleBar.appendChild(_classPrivateFieldGet(this,_icon)),_classPrivateFieldSet(this,_titleText,new ManagedElement("span")),titleBar.appendChild(_classPrivateFieldGet(this,_titleText));var contentFrame=new ManagedElement("div","utils-dialog-content-frame");contentFrame.classList.add("container"),_classPrivateFieldSet(this,_content2,new ManagedElement("div","utils-dialog-content")),contentFrame.appendChild(_classPrivateFieldGet(this,_content2)),_classPrivateFieldSet(this,_buttonBar,new ButtonBar),_classPrivateFieldGet(this,_dialog).appendChild(titleBar),_classPrivateFieldGet(this,_dialog).appendChild(contentFrame),_classPrivateFieldGet(this,_dialog).appendChild(_classPrivateFieldGet(this,_buttonBar)),_classPrivateFieldGet(this,_dialog).appendTo(document.body)}function _showDialogDefinition2(dialogDefinition){var _this52=this;return _classPrivateFieldGet(this,_titleText).textContent=dialogDefinition.title,dialogDefinition.content instanceof Element||dialogDefinition.content instanceof ManagedElement?(_classPrivateFieldGet(this,_content2).textContent="",_classPrivateFieldGet(this,_content2).appendChild(dialogDefinition.content)):_classPrivateFieldGet(this,_content2).innerHTML=dialogDefinition.content,icons.applyIconToElement(dialogDefinition.iconDetails,_classPrivateFieldGet(this,_icon),{hideText:!0}),showMask(),_classPrivateFieldGet(this,_buttonBar).showButtons(dialogDefinition.buttons).then((function(index){return _classPrivateMethodGet(_this52,_hideDialog,_hideDialog2).call(_this52),focusManager.findBestFocus(),index}))}function _hideDialog2(){hideMask(),_classPrivateFieldGet(this,_dialog).remove()}function _addReloadWarning(content){var reloadText=i18n(_templateObject88||(_templateObject88=_taggedTemplateLiteral(["b33bb0b4617140c80c80b10436a0dbb2::"])));if(""===reloadText&&(reloadText="A serious error has occurred and languages cannot be loaded. Wait a few minutes and then close this dialog to try to reload the application."),content instanceof Element){var para=document.createElement("p");return para.textContent=reloadText,content.appendChild(para),content}return"".concat(content,"<p>").concat(reloadText,"</p>")}_defineProperty(ModalDialog,"DialogType",{ERROR:"error",FATAL:"fatal",INFO:"info",QUESTION:"question",SETTINGS:"settings",WARNING:"warning"}),_defineProperty(ModalDialog,"DialogIndex",{SETTINGS_OK:0,SETTINGS_RESET:1,CONFIRM_YES:0,CONFIRM_NO:1});var _isConstructing4={writable:!0,value:!1},_reloadRequired=new WeakMap,_reason=new WeakMap,reloader=new(function(){function Reloader(){_classCallCheck(this,Reloader),_classPrivateFieldInitSpec(this,_reloadRequired,{writable:!0,value:!1}),_classPrivateFieldInitSpec(this,_reason,{writable:!0,value:""})}return _createClass(Reloader,[{key:"flagAsRequired",value:function(reason){_classPrivateFieldSet(this,_reason,reason),_classPrivateFieldSet(this,_reloadRequired,!0)}},{key:"reloadIfRequired",value:function(){if(_classPrivateFieldGet(this,_reloadRequired)){var warning=i18n(_templateObject61||(_templateObject61=_taggedTemplateLiteral(["5a1ee4a311c51fa4b76d3c7edd6bdda6::"])));return ModalDialog.showWarning("<p>".concat(warning,"</p><p>").concat(_classPrivateFieldGet(this,_reason),"</p>")).then((function(){window.location.reload()}))}return Promise.resolve()}}]),Reloader}()),_storedValues=new WeakMap,SettingsValueCache=function(){function SettingsValueCache(definitions){for(var key in _classCallCheck(this,SettingsValueCache),_classPrivateFieldInitSpec(this,_storedValues,{writable:!0,value:new Map}),definitions)if(definitions[key].reloadIfChanged){var cachedValue={value:persistentData.getFromStorage(key),label:definitions[key].label};_classPrivateFieldGet(this,_storedValues).set(key,cachedValue)}}return _createClass(SettingsValueCache,[{key:"changes",get:function(){var labels=[];return _classPrivateFieldGet(this,_storedValues).forEach((function(cachedValue,key){persistentData.getFromStorage(key)!==cachedValue.value&&labels.push(cachedValue.label)})),labels.join(", ")}}]),SettingsValueCache}(),RangeIndicator=function(_ManagedElement4){_inherits(RangeIndicator,_ManagedElement4);var _super5=_createSuper(RangeIndicator);function RangeIndicator(control){var _this9;return _classCallCheck(this,RangeIndicator),(_this9=_super5.call(this,"div","utils-range-value")).classList.add("on-top"),_this9.control=control,_this9.listenToEventOn("input",_this9.control,""),_this9.hide(),_this9}return _createClass(RangeIndicator,[{key:"handleInputEvent",value:function(event){var _controlEl$min,_controlEl$max,_this10=this;this.timerId||(this.timerId=setTimeout((function(){_this10.hide(),_this10.timerId=null}),500));var controlEl=this.control.element,minValue=parseFloat(null!==(_controlEl$min=controlEl.min)&&void 0!==_controlEl$min?_controlEl$min:0),maxValue=parseFloat(null!==(_controlEl$max=controlEl.max)&&void 0!==_controlEl$max?_controlEl$max:100),proportion=(parseFloat(controlEl.value)-minValue)/(maxValue-minValue);this.textContent=event.target.value,this.style.opacity=100;var top=controlEl.offsetTop-this.offsetHeight,left=controlEl.offsetLeft+controlEl.offsetWidth*proportion-this.offsetWidth/2;left=Math.max(controlEl.offsetLeft,left),left=Math.min(controlEl.offsetLeft+controlEl.offsetWidth-this.offsetWidth,left),this.style.left="".concat(left,"px"),this.style.top="".concat(top,"px"),this.show()}},{key:"hide",value:function(){this.style.opacity=0,this.style.visibility="hidden"}},{key:"show",value:function(){this.style.visibility="visible",this.style.opacity=100}}]),RangeIndicator}(ManagedElement),SeparatorControl=function(_ManagedElement5){_inherits(SeparatorControl,_ManagedElement5);var _super6=_createSuper(SeparatorControl);function SeparatorControl(key,definition){var _this11;return _classCallCheck(this,SeparatorControl),(_this11=_super6.call(this,"div","utils-separator")).innerHTML='<span class="utils-hr"><hr></span>'+"<span> ".concat(escapeHtml(definition.label)," </span>")+'<span class="utils-hr"><hr></span>',_this11}return _createClass(SeparatorControl)}(ManagedElement),InputControl=function(_ManagedElement6){_inherits(InputControl,_ManagedElement6);var _super7=_createSuper(InputControl);function InputControl(key,definition){var _this12;return _classCallCheck(this,InputControl),(_this12=_super7.call(this,"input")).type=definition.type,_this12.setAttribute("type",definition.type),_this12.setAttribute("min",definition.min),_this12.setAttribute("max",definition.max),_this12.className=definition.type,_this12}return _createClass(InputControl,[{key:"setValue",value:function(value){"checkbox"!==this.type?this.value=value:this.checked=value}},{key:"getValue",value:function(){switch(this.type){case"checkbox":return this.checked;case"range":return parseFloat(this.value);default:return this.value}}}]),InputControl}(ManagedElement),_addOptions=new WeakSet,SelectControl=function(_ManagedElement7){_inherits(SelectControl,_ManagedElement7);var _super8=_createSuper(SelectControl);function SelectControl(_key3,definition){var _this13;return _classCallCheck(this,SelectControl),_classPrivateMethodInitSpec(_assertThisInitialized(_this13=_super8.call(this,"select")),_addOptions),_this13.definition=definition,definition.type&&(_this13.className=definition.type),_classPrivateMethodGet(_assertThisInitialized(_this13),_addOptions,_addOptions2).call(_assertThisInitialized(_this13)),_this13}return _createClass(SelectControl,[{key:"setValue",value:function(value){console.log(value);var index=_toConsumableArray(this.$.options).findIndex((function(option){return option.value===value}));index>=0?this.$.selectedIndex=index:console.warn("Could not set select control to value of ".concat(value))}},{key:"getValue",value:function(){return this.$.selectedOptions[0].value}},{key:"getText",value:function(){return this.$.selectedOptions[0].text}},{key:"reloadOptions",value:function(){if(this.options=this.definition.options,"function"==typeof this.definition.options)for(var n=this.$.length;n-- >0;)this.$.remove(0);_classPrivateMethodGet(this,_addOptions,_addOptions2).call(this)}}]),SelectControl}(ManagedElement);function _addOptions2(){var _this$options,_this53=this;this.options=this.definition.options,"function"==typeof this.options&&(this.options=this.options.call(this)),"function"==typeof this.options&&(this.options=this.options.call(this)),null===(_this$options=this.options)||void 0===_this$options||_this$options.forEach((function(value,key){var option=new Option(value,key);_this53.$.add(option)}))}var _managedControls=new WeakMap,LabeledControlManager=function(){function LabeledControlManager(){_classCallCheck(this,LabeledControlManager),_classPrivateFieldInitSpec(this,_managedControls,{writable:!0,value:[]})}return _createClass(LabeledControlManager,[{key:"createLabeledControl",value:function(key,definition,storage){var control=new LabeledControl(key,definition,{storage:storage,manager:this});return _classPrivateFieldGet(this,_managedControls).push(control),control}},{key:"removeControls",value:function(){_classPrivateFieldGet(this,_managedControls).forEach((function(control){control.remove()}))}},{key:"reloadSelectOptions",value:function(keys){var _this14=this;null==keys||keys.forEach((function(value){var dependentControl=_classPrivateFieldGet(_this14,_managedControls).find((function(control){return control.key===value}));dependentControl&&(dependentControl.control instanceof SelectControl?dependentControl.control.reloadOptions():console.log("Ignoring dependent ".concat(value," as it is not a select type.")))}))}}]),LabeledControlManager}(),_storage2=new WeakMap,_manager=new WeakMap,LabeledControl=function(_ManagedElement8){_inherits(LabeledControl,_ManagedElement8);var _super9=_createSuper(LabeledControl);function LabeledControl(key,definition,options){var _this15;return _classCallCheck(this,LabeledControl),_classPrivateFieldInitSpec(_assertThisInitialized(_this15=_super9.call(this,"div")),_storage2,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this15),_manager,{writable:!0,value:void 0}),_classPrivateFieldSet(_assertThisInitialized(_this15),_storage2,null==options?void 0:options.storage),_classPrivateFieldSet(_assertThisInitialized(_this15),_manager,null==options?void 0:options.manager),_this15.className="labeled-control-container",_this15.label=new ManagedElement("label"),_this15.appendChild(_this15.label),_this15.key=key,_this15.definition=definition,_this15.label.innerHTML="<span>".concat(escapeHtml(definition.label),"</span>"),"select"===definition.type?_this15.control=new SelectControl(key,definition):_this15.control=new InputControl(key,definition),_this15.control.setValue(_classPrivateFieldGet(_assertThisInitialized(_this15),_storage2)?_classPrivateFieldGet(_assertThisInitialized(_this15),_storage2).getFromStorage(key,definition.defaultValue):definition.defaultValue),_this15.label.appendChild(_this15.control),_this15.error=_this15.appendChild(new ManagedElement("div","utils-input-error-message")),"range"===definition.type&&_this15.label.appendChild(new RangeIndicator(_this15.control)),_this15.listenToEventOn("input",_this15.control,""),_this15}return _createClass(LabeledControl,[{key:"setValue",value:function(value){var _this$control;null===(_this$control=this.control)||void 0===_this$control||_this$control.setValue(value)}},{key:"handleInputEvent",value:function(eventIgnored){var _classPrivateFieldGet5,value=this.control.getValue();if(this.definition.validate){var validation=this.definition.validate(value);if(!validation.pass)return this.error.textContent=validation.errorMessage,void this.classList.add("utils-error")}this.classList.remove("utils-error"),null===(_classPrivateFieldGet5=_classPrivateFieldGet(this,_storage2))||void 0===_classPrivateFieldGet5||_classPrivateFieldGet5.saveToStorage(this.key,value),this.definition.onupdate&&(this.definition.onupdate(value),_classPrivateFieldGet(this,_manager)?_classPrivateFieldGet(this,_manager).reloadSelectOptions(this.definition.dependents):console.warn("LabeledControl has no manager, so unable to handle dependencies."))}}]),LabeledControl}(ManagedElement),manager=null,settingDefinitions={};function resetIfConfirmed(){return ModalDialog.showConfirm(i18n(_templateObject62||(_templateObject62=_taggedTemplateLiteral(["0ee1cf8d6fe2d39a293bc82ddbc60666::"])))).then((function(value){if(value===ModalDialog.DialogIndex.CONFIRM_YES)return function(){for(var key in settingDefinitions){console.info("Resetting ".concat(key," to its default."));var definition=settingDefinitions[key];if(!isSeparator(definition)){var _definition$onupdate,value=definition.defaultValue;persistentData.saveToStorage(key,value),null===(_definition$onupdate=definition.onupdate)||void 0===_definition$onupdate||_definition$onupdate.call(definition,value)}}}()}))}function isSeparator(definition){return"separator"===definition.type}function loadSettingDefinitions(definitions){!function(definitions){for(var key in definitions){var _definitions$key$init,_definitions$key;null===(_definitions$key$init=(_definitions$key=definitions[key]).initialise)||void 0===_definitions$key$init||_definitions$key$init.call(_definitions$key)}}(definitions),function(definitions){for(var key in settingDefinitions=definitions)if(!isSeparator(settingDefinitions[key])){var _settingDefinitions$k,storedValue=persistentData.getFromStorage(key,settingDefinitions[key].defaultValue);null===(_settingDefinitions$k=settingDefinitions[key].onupdate)||void 0===_settingDefinitions$k||_settingDefinitions$k.call(this,storedValue)}}(definitions)}function getMainMenuItems(){return[{iconDetails:icons.settings,command:{execute:function(){return function(){if(manager)return Promise.reject(new Error("Attempt made to show settings on top of another."));manager=new LabeledControlManager;var dialogContent=new ManagedElement("div");for(var key in dialogContent.innerHTML="\n    <div class='utils-palette'>\n    <span class='utils-primary'></span>\n    <span class='utils-secondary'></span>\n    <span class='utils-tertiary'></span>\n    </div>\n  ",settingDefinitions){var setting=settingDefinitions[key],control=void 0;control=isSeparator(setting)?new SeparatorControl(key,setting):manager.createLabeledControl(key,setting,persistentData),dialogContent.appendChild(control)}var settingsValueCache=new SettingsValueCache(settingDefinitions);return ModalDialog.showSettingsDialog(dialogContent).then((function(value){return value===ModalDialog.DialogIndex.SETTINGS_RESET?resetIfConfirmed():value})).then((function(value){return manager.removeControls(),manager=null,reloader.reloadIfRequired(),value})).then((function(value){var changes=settingsValueCache.changes;return""!==changes&&(reloader.flagAsRequired("".concat(i18n(_templateObject63||(_templateObject63=_taggedTemplateLiteral(["3c5d22824f5b26b56b4edfc952f083f7::"])))," ").concat(changes,".")),reloader.reloadIfRequired()),value}))}()}}},{iconDetails:null,command:null},{iconDetails:icons.privacy,command:{execute:function(){return window.open(Urls.PRIVACY,"_blank")}}}]}function registerServiceWorker(buildMode){try{!function(buildMode){"production"===buildMode&&"serviceWorker"in navigator&&window.addEventListener("load",(function(){navigator.serviceWorker.register("./sw.js").then((function(registration){console.info("SW registered: ",registration);var controller=navigator.serviceWorker.controller;console.info("Page controlled by ".concat(controller,"."))})).catch((function(registrationError){console.error("SW registration failed: ",registrationError)}))}))}(buildMode)}catch(error){console.error("Error during service worker registration",error)}}var I18nResolutionError=function(_Error){_inherits(I18nResolutionError,_wrapNativeSuper(Error));var _super10=_createSuper(I18nResolutionError);function I18nResolutionError(error,fetchSummary){var _this16;return _classCallCheck(this,I18nResolutionError),error instanceof Error?(_this16=_super10.call(this,error.message)).cause=error:_this16=_super10.call(this,error),_this16.fetchSummary=fetchSummary,_possibleConstructorReturn(_this16)}return _createClass(I18nResolutionError)}();function resolveLanguages(languagesListingUrl){var languagesListing={},languagesBaseUrl="",fetchSummary=[];return fetchJson(languagesListingUrl).then((function(languages){languagesListing=languages,languagesBaseUrl=new URL(languages.location,window.location.href);var url=new URL(languages.meta.master,languagesBaseUrl);return fetchSummary.push({url:url,read:!1}),fetchJson(url.href)})).then((function(masterTranslations){fetchSummary[0].read=!0,setActiveTranslations(masterTranslations);var preferredLanguages,availableLanguageFiles,availableSubTags,preferredSubTags,bestMatch,bestFile=(preferredLanguages=navigator.languages,availableLanguageFiles=languagesListing.files,availableSubTags=availableLanguageFiles.map((function(entry){return extractLanguageSubTags(entry.toLowerCase().replace(/\.json$/i,""))})),preferredSubTags=preferredLanguages.map((function(entry){return extractLanguageSubTags(entry)})),bestMatch={weight:0,file:null},preferredSubTags.forEach((function(prefSubTag,prefIndexIgnored){var languageIndex=preferredSubTags.findIndex((function(element){return element.language===prefSubTag.language})),prefSubTagRank=preferredSubTags.length-languageIndex;availableSubTags.forEach((function(availSubTag,availIndex){var weight=0;prefSubTag.language===availSubTag.language&&(weight+=100*prefSubTagRank,""!==prefSubTag.region&&prefSubTag.region===availSubTag.region&&(weight+=10),""!==prefSubTag.script&&prefSubTag.script===availSubTag.script&&(weight+=1),weight>bestMatch.weight&&(bestMatch.weight=weight,bestMatch.file=availableLanguageFiles[availIndex]))}))})),bestMatch.file);if(bestFile===languagesListing.meta.master)return Promise.resolve(null);var url=new URL(bestFile,languagesBaseUrl);return fetchSummary.push({url:url,read:!1}),fetchJson(url.href)})).then((function(bestTranslations){return bestTranslations&&(fetchSummary[1].read=!0,setActiveTranslations(bestTranslations)),fetchSummary})).catch((function(error){return Promise.reject(new I18nResolutionError(error,fetchSummary))}))}function getLanguages(embeddedLanguages){if(!BuildInfo.isBuilt())return Promise.resolve(void 0);if(embeddedLanguages)try{var languages=JSON.parse(base64ToString(embeddedLanguages));return languages.fallback&&setActiveTranslations(languages.fallback),setActiveTranslations(languages.active),Promise.resolve(void 0)}catch(error){console.error("Unable to decode embedded languages ${embeddedLanguages}.",error)}return resolveLanguages("./languages.json").then((function(){console.info("Build information: ".concat(BuildInfo.getBundleName," ").concat(BuildInfo.getVersion()," ").concat(BuildInfo.getMode()))})).catch((function(error){var fetchSummary=error.fetchSummary;if(!(fetchSummary&&fetchSummary.length>0&&fetchSummary[0].read))return console.error(error.message),Promise.reject(error);console.error("".concat(error,"\nUsing translation ").concat(fetchSummary[0].url))}))}var _stage=new WeakMap,StageManager=function(){function StageManager(stageElement){_classCallCheck(this,StageManager),_classPrivateFieldInitSpec(this,_stage,{writable:!0,value:void 0}),_classPrivateFieldSet(this,_stage,new ManagedElement(stageElement))}var _startShow;return _createClass(StageManager,[{key:"startShow",value:(_startShow=_asyncToGenerator(_regeneratorRuntime().mark((function _callee(presenter){return _regeneratorRuntime().wrap((function(_context){for(;;)switch(_context.prev=_context.next){case 0:_classPrivateFieldGet(this,_stage).removeChildren();case 1:return _context.next=3,presenter.presentOnStage(_classPrivateFieldGet(this,_stage));case 3:if(presenter=_context.sent,_classPrivateFieldGet(this,_stage).removeChildren(),null!==presenter){_context.next=7;break}return _context.abrupt("return");case 7:_context.next=1;break;case 9:case"end":return _context.stop()}}),_callee,this)}))),function(_x){return _startShow.apply(this,arguments)})}]),StageManager}(),_items=new WeakMap,_wrap=new WeakMap,_index=new WeakMap,ArrayIndexer=function(){function ArrayIndexer(items){var wrap=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];_classCallCheck(this,ArrayIndexer),_classPrivateFieldInitSpec(this,_items,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_wrap,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_index,{writable:!0,value:void 0}),_classPrivateFieldSet(this,_items,items),_classPrivateFieldSet(this,_wrap,wrap),_classPrivateFieldSet(this,_index,0)}return _createClass(ArrayIndexer,[{key:"items",get:function(){return _classPrivateFieldGet(this,_items)}},{key:"reset",value:function(){_classPrivateFieldSet(this,_index,0)}},{key:"decrement",value:function(){var _this$index;_classPrivateFieldGet(this,_index)>0?_classPrivateFieldSet(this,_index,(_this$index=_classPrivateFieldGet(this,_index),--_this$index)):_classPrivateFieldSet(this,_index,_classPrivateFieldGet(this,_wrap)?_classPrivateFieldGet(this,_items).length-1:_classPrivateFieldGet(this,_index)-1);return _classPrivateFieldGet(this,_items)[_classPrivateFieldGet(this,_index)]}},{key:"increment",value:function(){var _this$index2;_classPrivateFieldGet(this,_index)<_classPrivateFieldGet(this,_items).length-1?_classPrivateFieldSet(this,_index,(_this$index2=_classPrivateFieldGet(this,_index),++_this$index2)):_classPrivateFieldSet(this,_index,_classPrivateFieldGet(this,_wrap)?0:_classPrivateFieldGet(this,_index));return _classPrivateFieldGet(this,_items)[_classPrivateFieldGet(this,_index)]}}]),ArrayIndexer}(),HelpButton=function(_ManagedElement9){_inherits(HelpButton,_ManagedElement9);var _super11=_createSuper(HelpButton);function HelpButton(){var _this17;return _classCallCheck(this,HelpButton),(_this17=_super11.call(this,"button","help-button")).classList.add("icon-only-button"),icons.applyIconToElement(icons.help,_assertThisInitialized(_this17),{hideText:!0}),_this17.listenToOwnEvent("click","HELP"),_this17}return _createClass(HelpButton,[{key:"handleClickEvent",value:function(eventIgnored,eventIdIgnored){var presenter=document.querySelector(".Presenter");console.debug("Help triggered from ".concat(null==presenter?void 0:presenter.className)),window.open(Urls.HELP,"_blank")}}],[{key:"createInside",value:function(container){var button=new HelpButton(container);return button.appendTo(container),button}}]),HelpButton}(ManagedElement),_menuContent=new WeakMap,_menuItems=new WeakMap,_createMenuContentHtml=new WeakSet,_showMenuItems=new WeakSet,_hideMenuItems=new WeakSet,Menu=function(_ManagedElement10){_inherits(Menu,_ManagedElement10);var _super12=_createSuper(Menu);function Menu(){var _this18;return _classCallCheck(this,Menu),_classPrivateMethodInitSpec(_assertThisInitialized(_this18=_super12.call(this,"button")),_hideMenuItems),_classPrivateMethodInitSpec(_assertThisInitialized(_this18),_showMenuItems),_classPrivateMethodInitSpec(_assertThisInitialized(_this18),_createMenuContentHtml),_classPrivateFieldInitSpec(_assertThisInitialized(_this18),_menuContent,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this18),_menuItems,{writable:!0,value:void 0}),_this18.setAttribute("aria-haspopup",!0),icons.applyIconToElement(icons.openMenu,_assertThisInitialized(_this18),{hideText:!0}),_this18.classList.add("utils-menu-icon-open","icon-only-button"),_classPrivateMethodGet(_assertThisInitialized(_this18),_createMenuContentHtml,_createMenuContentHtml2).call(_assertThisInitialized(_this18)),_classPrivateFieldSet(_assertThisInitialized(_this18),_menuItems,new MenuItems),_this18}return _createClass(Menu,[{key:"setMenuItems",value:function(items){_classPrivateFieldGet(this,_menuItems).setMenuItems(items)}},{key:"handleClickEvent",value:function(eventIgnored,eventId){if("OPEN"===eventId)_classPrivateMethodGet(this,_showMenuItems,_showMenuItems2).call(this);else _classPrivateMethodGet(this,_hideMenuItems,_hideMenuItems2).call(this)}},{key:"handleKeydownEvent",value:function(event,eventIdIgnored){"Escape"===event.key&&_classPrivateMethodGet(this,_hideMenuItems,_hideMenuItems2).call(this)}}]),Menu}(ManagedElement);function _createMenuContentHtml2(){var menuTitleBar=new ManagedElement("div");menuTitleBar.classList.add("utils-menu-title"),_classPrivateFieldSet(this,_menuContent,new ManagedElement("div","utils-menu-content")),_classPrivateFieldGet(this,_menuContent).style.visibility="hidden",document.body.insertBefore(_classPrivateFieldGet(this,_menuContent).element,document.getElementById("modal-mask").nextSibling);var menuItemsElement=new ManagedElement("div");menuItemsElement.classList.add("container","utils-menu-items"),menuItemsElement.setAttribute("aria-role","menu"),_classPrivateFieldGet(this,_menuContent).appendChild(menuTitleBar),_classPrivateFieldGet(this,_menuContent).appendChild(menuItemsElement),this.listenToOwnEvent("click","OPEN"),this.listenToEventOn("click",_classPrivateFieldGet(this,_menuContent),"CONTENT-ACTION"),this.listenToEventOn("keydown",_classPrivateFieldGet(this,_menuContent),"CONTENT-ACTION")}function _showMenuItems2(){showMask(),this.style.visibility="hidden",_classPrivateFieldGet(this,_menuContent).classList.add("modal"),_classPrivateFieldGet(this,_menuContent).style.visibility="visible",_classPrivateFieldGet(this,_menuContent).style.transform="translateX(0)",_classPrivateFieldGet(this,_menuContent).querySelector("button.utils-menu-item").focus()}function _hideMenuItems2(){hideMask(),this.style.visibility="visible",_classPrivateFieldGet(this,_menuContent).style.transform="translateX(-100%)",_classPrivateFieldGet(this,_menuContent).style.visibility="hidden",_classPrivateFieldGet(this,_menuContent).classList.remove("modal"),focusManager.findBestFocus()}var MenuItem=function(_ManagedElement11){_inherits(MenuItem,_ManagedElement11);var _super13=_createSuper(MenuItem);function MenuItem(iconDetails){var _this19;return _classCallCheck(this,MenuItem),_this19=_super13.call(this,"button","utils-menu-item"),icons.applyIconToElement(iconDetails,_assertThisInitialized(_this19)),_this19.setAttributes({"aria-role":"menuitem"}),_this19}return _createClass(MenuItem)}(ManagedElement),_navigator=new WeakMap,_menuIconClose=new WeakMap,MenuItems=function(_ManagedElement12){_inherits(MenuItems,_ManagedElement12);var _super14=_createSuper(MenuItems);function MenuItems(){var _this20;_classCallCheck(this,MenuItems);var parent=document.querySelector(".utils-menu-items");if(!parent)throw"Html structure not in place. createMenuHtml should have been called.";_classPrivateFieldInitSpec(_assertThisInitialized(_this20=_super14.call(this,parent)),_navigator,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this20),_menuIconClose,{writable:!0,value:void 0}),_this20.setAttributes({"aria-role":"menu"}),_this20.menuDefinition=null,_classPrivateFieldSet(_assertThisInitialized(_this20),_menuIconClose,new ManagedElement("button")),icons.applyIconToElement(icons.closeMenu,_classPrivateFieldGet(_assertThisInitialized(_this20),_menuIconClose),{hideText:!0}),_classPrivateFieldGet(_assertThisInitialized(_this20),_menuIconClose).classList.add("utils-menu-icon-close","icon-only-button");var logo=new ManagedElement("img");logo.setAttribute("src",Urls.LOGO);var title=document.querySelector(".utils-menu-title");return title.appendChild(logo.element),title.appendChild(_classPrivateFieldGet(_assertThisInitialized(_this20),_menuIconClose).element),_this20.listenToEventOn("click",_classPrivateFieldGet(_assertThisInitialized(_this20),_menuIconClose),MenuItems.CLOSE_EVENT_ID),_this20}return _createClass(MenuItems,[{key:"setMenuItems",value:function(menuDefinition){var _this21=this;this.menuDefinition&&this.remove(),this.menuDefinition=menuDefinition;var commandItems=[_classPrivateFieldGet(this,_menuIconClose)];this.menuDefinition.forEach((function(menuDef,index){var item;menuDef.command?(item=new MenuItem(menuDef.iconDetails),_this21.listenToEventOn("click",item,index),_this21.listenToEventOn("keydown",item,index),commandItems.push(item)):item=new ManagedElement("hr"),_this21.appendChild(item),_classPrivateFieldSet(_this21,_navigator,new ArrayIndexer(commandItems))}))}},{key:"handleClickEvent",value:function(event,eventId){var index=parseInt(eventId);isNaN(index)||(console.debug("Handling event ".concat(event.type," with id ").concat(eventId)),this.menuDefinition[index].command.execute().then((function(value){console.debug("Finished handling menu option ".concat(value,"."))})))}}]),MenuItems}(ManagedElement);_defineProperty(MenuItems,"CLOSE_EVENT_ID","close");var Header=function(){function Header(){_classCallCheck(this,Header)}return _createClass(Header,[{key:"setup",value:function(menuItems){var _titleElement$childre,titleElement=document.getElementById("title-bar");if(titleElement)if((null===(_titleElement$childre=titleElement.children)||void 0===_titleElement$childre?void 0:_titleElement$childre.length)>0)console.error("Second attempt made to setup title bar ignored.");else{var headerTextContainer=document.createElement("span");headerTextContainer.innerHTML=BuildInfo.getProductName();var helpButtonContainer=document.createElement("span");HelpButton.createInside(helpButtonContainer);var menu=new Menu;menu.setMenuItems(menuItems),titleElement.appendChild(menu.element),titleElement.appendChild(headerTextContainer),titleElement.appendChild(helpButtonContainer)}else console.error('Cannot find element with id of "title-bar".')}}]),Header}(),_buttonBar2=new WeakMap,footer=new(function(){function Footer(){_classCallCheck(this,Footer),_classPrivateFieldInitSpec(this,_buttonBar2,{writable:!0,value:void 0})}return _createClass(Footer,[{key:"buttonBar",get:function(){return _classPrivateFieldGet(this,_buttonBar2)}},{key:"setup",value:function(){var _footerElement$childr,footerElement=document.getElementById("footer");if(footerElement)if((null===(_footerElement$childr=footerElement.children)||void 0===_footerElement$childr?void 0:_footerElement$childr.length)>0)console.error("Second attempt made to setup footer ignored.");else{_classPrivateFieldSet(this,_buttonBar2,new ManagedElement("div","button-bar")),footerElement.appendChild(_classPrivateFieldGet(this,_buttonBar2).element);var footerTextContainer=document.createElement("div");footerTextContainer.className="footer-text";var devTag="PRODUCTION"!==BuildInfo.getMode().toUpperCase()?"[".concat(BuildInfo.getMode(),"]"):"";footerTextContainer.innerHTML="".concat(BuildInfo.getProductName()," ").concat(BuildInfo.getVersion()).concat(devTag," ").concat(BuildInfo.getBuildDate()),footerElement.appendChild(footerTextContainer)}else console.error('Cannot find element with id of "footer".')}}]),Footer}()),header=new Header;var _resolutionExecutor=new WeakMap,_navigator2=new WeakMap,_preamble=new WeakMap,_presentation=new WeakMap,_buttonBar3=new WeakMap,_homeButton=new WeakMap,_backwardsButton=new WeakMap,_forwardsButton=new WeakMap,_addClassNames=new WeakSet,_buildContent=new WeakSet,_addNavigationButtons=new WeakSet,Presenter=function(_ManagedElement13){_inherits(Presenter,_ManagedElement13);var _handleClickEvent,_allowNavigation,_askIfOkayToLeave,_super15=_createSuper(Presenter);function Presenter(config){var _this22,_presentationTagName=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"div";return _classCallCheck(this,Presenter),_classPrivateMethodInitSpec(_assertThisInitialized(_this22=_super15.call(this,"div")),_addNavigationButtons),_classPrivateMethodInitSpec(_assertThisInitialized(_this22),_buildContent),_classPrivateMethodInitSpec(_assertThisInitialized(_this22),_addClassNames),_classPrivateFieldInitSpec(_assertThisInitialized(_this22),_resolutionExecutor,{writable:!0,value:void 0}),_defineProperty(_assertThisInitialized(_this22),"config",void 0),_classPrivateFieldInitSpec(_assertThisInitialized(_this22),_navigator2,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this22),_preamble,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this22),_presentation,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this22),_buttonBar3,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this22),_homeButton,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this22),_backwardsButton,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this22),_forwardsButton,{writable:!0,value:void 0}),_classPrivateMethodGet(_assertThisInitialized(_this22),_addClassNames,_addClassNames2).call(_assertThisInitialized(_this22)),_this22.config=config,footer.buttonBar.removeChildren(),_classPrivateMethodGet(_assertThisInitialized(_this22),_buildContent,_buildContent2).call(_assertThisInitialized(_this22),_presentationTagName),_this22}return _createClass(Presenter,[{key:"presentation",get:function(){return _classPrivateFieldGet(this,_presentation)}},{key:"expandPresentation",value:function(){_classPrivateFieldGet(this,_presentation).classList.add("expanded")}},{key:"addButtonToBar",value:function(managedButton){_classPrivateFieldGet(this,_buttonBar3).element.insertBefore(managedButton.element,_classPrivateFieldGet(this,_buttonBar3).element.lastElementChild)}},{key:"addPreamble",value:function(data){_classPrivateFieldGet(this,_preamble).removeChildren(),"string"==typeof data?_classPrivateFieldGet(this,_preamble).innerHTML=data:_classPrivateFieldGet(this,_preamble).appendChild(data)}},{key:"hideHomeButton",value:function(){_classPrivateFieldGet(this,_homeButton).hide()}},{key:"showBackButton",value:function(){_classPrivateFieldGet(this,_backwardsButton).show(),focus&&_classPrivateFieldGet(this,_backwardsButton).focus()}},{key:"showNextButton",value:function(focus){_classPrivateFieldGet(this,_forwardsButton).show(),focus&&_classPrivateFieldGet(this,_forwardsButton).focus()}},{key:"applyIconToNextButton",value:function(iconDetails,overrideText){icons.applyIconToElement(iconDetails,_classPrivateFieldGet(this,_forwardsButton),{overrideText:overrideText})}},{key:"autoAddKeydownEvents",value:function(managedElements){var _this23=this;if(_classPrivateFieldGet(this,_navigator2))console.error("autoAddKeydownEvents can only be called once.");else{var items=null!=managedElements?managedElements:_classPrivateFieldGet(this,_presentation).managedChildren;_classPrivateFieldSet(this,_navigator2,new ArrayIndexer(items,!0)),items.forEach((function(item,index){_this23.listenToEventOn("keydown",item,index)}))}}},{key:"next",value:function(indexIgnored){return this.config.factory.getNext(this,this.config)}},{key:"previous",value:function(){return this.config.factory.getPrevious(this,this.config)}},{key:"presentOnStage",value:function(stageElement){var _this24=this;return new Promise((function(resolve){_classPrivateFieldSet(_this24,_resolutionExecutor,resolve),stageElement.appendChild(_this24),focusManager.focusWithin(stageElement)}))}},{key:"askIfOkayToLeave",value:(_askIfOkayToLeave=_asyncToGenerator(_regeneratorRuntime().mark((function _callee2(message){var confirmation;return _regeneratorRuntime().wrap((function(_context2){for(;;)switch(_context2.prev=_context2.next){case 0:return _context2.next=2,ModalDialog.showConfirm(message);case 2:return confirmation=_context2.sent,_context2.abrupt("return",confirmation===ModalDialog.DialogIndex.CONFIRM_YES);case 4:case"end":return _context2.stop()}}),_callee2)}))),function(_x2){return _askIfOkayToLeave.apply(this,arguments)})},{key:"allowNavigation",value:(_allowNavigation=_asyncToGenerator(_regeneratorRuntime().mark((function _callee3(eventIgnored,eventIdIgnored){return _regeneratorRuntime().wrap((function(_context3){for(;;)switch(_context3.prev=_context3.next){case 0:return _context3.abrupt("return",!0);case 1:case"end":return _context3.stop()}}),_callee3)}))),function(_x3,_x4){return _allowNavigation.apply(this,arguments)})},{key:"handleClickEvent",value:(_handleClickEvent=_asyncToGenerator(_regeneratorRuntime().mark((function _callee4(event,eventId){var index,upperCaseId,nextPresenter;return _regeneratorRuntime().wrap((function(_context4){for(;;)switch(_context4.prev=_context4.next){case 0:if(index=parseInt(eventId),(upperCaseId=eventId?eventId.toString().toUpperCase():"")!==Presenter.HOME_ID&&upperCaseId!==Presenter.PREVIOUS_ID&&upperCaseId!==Presenter.NEXT_ID){_context4.next=7;break}return _context4.next=5,this.allowNavigation(event,eventId);case 5:if(_context4.sent){_context4.next=7;break}return _context4.abrupt("return",!0);case 7:nextPresenter=null,(nextPresenter=upperCaseId===Presenter.PREVIOUS_ID?this.previous():upperCaseId===Presenter.NEXT_ID?this.next(Presenter.NEXT_ID):upperCaseId===Presenter.HOME_ID?this.config.factory.getHome(this.config):this.next(isNaN(index)?eventId:index))&&_classPrivateFieldGet(this,_resolutionExecutor).call(this,nextPresenter);case 10:case"end":return _context4.stop()}}),_callee4,this)}))),function(_x5,_x6){return _handleClickEvent.apply(this,arguments)})},{key:"handleKeydownEvent",value:function(event,eventId){var index=parseInt(eventId);if(console.debug("Key ".concat(event.key," down for index ").concat(index)),!isNaN(index))switch(event.key){case" ":case"Enter":this.handleClickEvent(event,eventId)}}}]),Presenter}(ManagedElement);function _addClassNames2(){var item=this;do{this.classList.add(item.constructor.name),item=Object.getPrototypeOf(item)}while("Object"!==item.constructor.name)}function _buildContent2(presentationTagName){_classPrivateFieldSet(this,_preamble,new ManagedElement("div","preamble")),_classPrivateFieldSet(this,_presentation,new ManagedElement(presentationTagName,"presentation")),_classPrivateFieldSet(this,_buttonBar3,footer.buttonBar),_classPrivateMethodGet(this,_addNavigationButtons,_addNavigationButtons2).call(this),this.appendChild(_classPrivateFieldGet(this,_preamble)),this.appendChild(_classPrivateFieldGet(this,_presentation))}function _addNavigationButtons2(){_classPrivateFieldSet(this,_homeButton,new ManagedElement("button","home-navigation")),icons.applyIconToElement(icons.home,_classPrivateFieldGet(this,_homeButton)),this.listenToEventOn("click",_classPrivateFieldGet(this,_homeButton),Presenter.HOME_ID),_classPrivateFieldGet(this,_buttonBar3).appendChild(_classPrivateFieldGet(this,_homeButton)),_classPrivateFieldSet(this,_backwardsButton,new ManagedElement("button","back-navigation")),icons.applyIconToElement(icons.back,_classPrivateFieldGet(this,_backwardsButton)),this.listenToEventOn("click",_classPrivateFieldGet(this,_backwardsButton),Presenter.PREVIOUS_ID),_classPrivateFieldGet(this,_buttonBar3).appendChild(_classPrivateFieldGet(this,_backwardsButton)),_classPrivateFieldGet(this,_backwardsButton).hide(),_classPrivateFieldSet(this,_forwardsButton,new ManagedElement("button","forward-navigation")),icons.applyIconToElement(icons.forward,_classPrivateFieldGet(this,_forwardsButton)),this.listenToEventOn("click",_classPrivateFieldGet(this,_forwardsButton),Presenter.NEXT_ID),_classPrivateFieldGet(this,_buttonBar3).appendChild(_classPrivateFieldGet(this,_forwardsButton)),_classPrivateFieldGet(this,_forwardsButton).hide()}_defineProperty(Presenter,"HOME_ID","HOME"),_defineProperty(Presenter,"PREVIOUS_ID","BACKWARDS"),_defineProperty(Presenter,"NEXT_ID","FORWARDS");var _input=new WeakMap,FileInputButton=function(_ManagedElement14){_inherits(FileInputButton,_ManagedElement14);var _super16=_createSuper(FileInputButton);function FileInputButton(options){var _this25;return _classCallCheck(this,FileInputButton),_classPrivateFieldInitSpec(_assertThisInitialized(_this25=_super16.call(this,"label","file-input-button")),_input,{writable:!0,value:void 0}),_this25.classList.add("selectable"),_classPrivateFieldSet(_assertThisInitialized(_this25),_input,new ManagedElement("input")),_classPrivateFieldGet(_assertThisInitialized(_this25),_input).setAttribute("type","file"),icons.applyIconToElement(icons.import,_assertThisInitialized(_this25),options),_classPrivateFieldGet(_assertThisInitialized(_this25),_input).style.visibility="hidden",_classPrivateFieldGet(_assertThisInitialized(_this25),_input).style.height="1em",_this25.appendChild(_classPrivateFieldGet(_assertThisInitialized(_this25),_input)),_this25.listenToEventOn("change",_classPrivateFieldGet(_assertThisInitialized(_this25),_input)),_this25}return _createClass(FileInputButton,[{key:"handleChangeEvent",value:function(eventIgnored,eventIdIgnored){var file=_classPrivateFieldGet(this,_input).element.files[0];if(file){var reader=new FileReader,control=this;reader.addEventListener("load",(function(){reader.result,control.dispatchEvent(new CustomEvent(FileInputButton.DATA_AVAILABLE_EVENT_NAME,{detail:{file:file,content:reader.result}}))})),reader.readAsText(file)}}}]),FileInputButton}(ManagedElement);_defineProperty(FileInputButton,"DATA_AVAILABLE_EVENT_NAME","dataAvailable");var _title3=new WeakMap,_content3=new WeakMap,_getDataUri=new WeakSet,_lessonAsString=new WeakMap,_getFilename=new WeakSet,LessonExporter=function(){function LessonExporter(title,content){_classCallCheck(this,LessonExporter),_classPrivateMethodInitSpec(this,_getFilename),_classPrivateFieldInitSpec(this,_lessonAsString,{get:_get_lessonAsString,set:void 0}),_classPrivateMethodInitSpec(this,_getDataUri),_classPrivateFieldInitSpec(this,_title3,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_content3,{writable:!0,value:void 0}),_classPrivateFieldSet(this,_title3,title),_classPrivateFieldSet(this,_content3,content)}return _createClass(LessonExporter,[{key:"exportLesson",value:function(){var _this26=this;return ModalDialog.showDialog(i18n(_templateObject65||(_templateObject65=_taggedTemplateLiteral(["b68686a697ec08b09db6d729aed81c71::"]))),i18n(_templateObject66||(_templateObject66=_taggedTemplateLiteral(["5ae903bf09202faef9d5fcedbf21cf14::"]))),{dialogType:ModalDialog.DialogType.QUESTION,buttons:[icons.export,icons.exportAutoRun]}).then((function(index){return 0===index?_this26.exportBase64Lesson():_this26.exportAutorunLesson()}))}},{key:"exportBase64Lesson",value:function(){this.saveDataToFile(stringToBase64(_classPrivateFieldGet(this,_lessonAsString)),"txt")}},{key:"exportAutorunLesson",value:function(){var html=function(data){var rootUrl=Urls.ROOT;return'<!DOCTYPE html>\n  <html lang="en">\n    <head>\n      <meta charset="UTF-8" />\n      <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n      <title>Text2Lesson</title>\n      <link\n        rel="icon"\n        type="image/png"\n        sizes="48x48"\n        href="'.concat(rootUrl,'assets/images/favicon.appiconset/favicon_48.png"\n      />\n      <link\n        rel="apple-touch-icon"\n        type="image/png"\n        sizes="167x167"\n        href="').concat(rootUrl,'assets/images/favicon.appiconset/favicon_167.png"\n      />\n      <link\n        rel="apple-touch-icon"\n        type="image/png"\n        sizes="180x180"\n        href="').concat(rootUrl,'assets/images/favicon.appiconset/favicon_180.png"\n      />\n      <link\n        rel="icon"\n        type="image/png"\n        sizes="192x192"\n        href="').concat(rootUrl,'assets/images/favicon.appiconset/favicon_192.png"\n      />\n  \n      <link rel="stylesheet" href="').concat(rootUrl,'assets/styles/style.css" />\n      <link\n        href="').concat(rootUrl,'assets/third-party/font-awesome/css/fontawesome.min.css"\n        rel="stylesheet"\n      />\n      <link\n        href="').concat(rootUrl,'assets/third-party/font-awesome/css/brands.min.css"\n        rel="stylesheet"\n      />\n      <link\n        href="').concat(rootUrl,'assets/third-party/font-awesome/css/solid.min.css"\n        rel="stylesheet"\n      />\n    </head>\n  <script>\n      window.text2LessonEmbeddedData = {\n        title: "').concat(data.b64Title,'",\n        source: "').concat(data.b64LessonData,'",\n        translations: "').concat(data.b64Translations,'",\n        rootUrl: "').concat(rootUrl,'",\n      }    \n  <\/script>\n    <body>\n      <div id="modal-mask"></div>\n      <div id="title-bar"></div>\n      <div id="content" class="container">\n        <div id="stage">\n          <p>The application is loading. Please wait a few moments.</p>\n        </div>\n      </div>\n      <div id="footer" class="container"></div>\n      <script type="module" src="').concat(rootUrl,'text2lesson.js"><\/script>\n      <noscript class="always-on-top">\n        <p>\n          Your browser does not support scripts and so this application cannot\n          run. If you\'ve disabled scripts, you will need to enable them to\n          proceed. Sorry.\n        </p>\n      </noscript>\n      <div id="browser-css-not-supported">\n        <p>\n          Sorry, but your browser does not support the features necessary to run\n          this application. Try upgrading your browser to the latest version.\n        </p>\n      </div>\n    </body>\n  </html>\n  ')}({b64Title:stringToBase64(_classPrivateFieldGet(this,_title3)),b64LessonData:stringToBase64(_classPrivateFieldGet(this,_content3)),b64Translations:stringToBase64(JSON.stringify({active:activeTranslations,fallback:fallbackTranslations}))});this.saveDataToFile(html,"html")}},{key:"saveDataToFile",value:function(data,extension){var tempA=document.createElement("a");tempA.setAttribute("href",_classPrivateMethodGet(this,_getDataUri,_getDataUri2).call(this,data)),tempA.setAttribute("download",_classPrivateMethodGet(this,_getFilename,_getFilename2).call(this,extension)),tempA.addEventListener("click",(function(){document.body.removeChild(tempA)})),document.body.appendChild(tempA),tempA.click()}}]),LessonExporter}();function _getDataUri2(data){return"data:text/plain;charset=utf-8,".concat(encodeURIComponent(data))}function _get_lessonAsString(){return JSON.stringify({title:_classPrivateFieldGet(this,_title3),content:_classPrivateFieldGet(this,_content3)})}function _getFilename2(extension){var safename=_classPrivateFieldGet(this,_title3).replace(/[^A-Za-z0-9_-]/g,"_").substring(0,32);return"".concat(safename,".").concat(extension)}var _getSummaryFromBase64File=new WeakSet,_getSummaryFromAutorunFile=new WeakSet,_getSummaryFromPlainTextFile=new WeakSet,LessonImporter=function(){function LessonImporter(){_classCallCheck(this,LessonImporter),_classPrivateMethodInitSpec(this,_getSummaryFromPlainTextFile),_classPrivateMethodInitSpec(this,_getSummaryFromAutorunFile),_classPrivateMethodInitSpec(this,_getSummaryFromBase64File)}return _createClass(LessonImporter,[{key:"convert",value:function(exportedData){var result=_classPrivateMethodGet(this,_getSummaryFromBase64File,_getSummaryFromBase64File2).call(this,exportedData);return result||((result=_classPrivateMethodGet(this,_getSummaryFromAutorunFile,_getSummaryFromAutorunFile2).call(this,exportedData))?(console.log(result.languages),result):_classPrivateMethodGet(this,_getSummaryFromPlainTextFile,_getSummaryFromPlainTextFile2).call(this,exportedData))}}]),LessonImporter}();function _getSummaryFromBase64File2(data){if(data.match(/^[a-zA-Z0-9+/=]+$/))try{return JSON.parse(base64ToString(data))}catch(error){console.error(error)}return null}function _getSummaryFromAutorunFile2(data){var match=data.match(/title:\s*['"]([a-zA-Z0-9+/=]+)['"]\s*,\s*source:\s*['"]([a-zA-Z0-9+/=]+)['"]/);if(match)try{return{title:base64ToString(match[1]),content:base64ToString(match[2])}}catch(error){console.error(error)}return null}function _getSummaryFromPlainTextFile2(data){return data.match(/^[-#_* ]{0,3}(?:\(*([i?=xX&_])\1*[_) ]+)(.*)$/m)?{title:"",content:data}:null}var _importSummary=new WeakMap,_buildContent3=new WeakSet,HomePresenter=function(_Presenter){_inherits(HomePresenter,_Presenter);var _super17=_createSuper(HomePresenter);function HomePresenter(config){var _this27;return _classCallCheck(this,HomePresenter),config.titles=[],config.itemClassName="library",_classPrivateMethodInitSpec(_assertThisInitialized(_this27=_super17.call(this,config)),_buildContent3),_classPrivateFieldInitSpec(_assertThisInitialized(_this27),_importSummary,{writable:!0,value:void 0}),_classPrivateMethodGet(_assertThisInitialized(_this27),_buildContent3,_buildContent4).call(_assertThisInitialized(_this27)),_this27.hideHomeButton(),_this27}return _createClass(HomePresenter,[{key:"handleDataAvailableEvent",value:function(event,eventIdIgnored){var _event$detail,importer=new LessonImporter;(_classPrivateFieldSet(this,_importSummary,importer.convert(event.detail.content)),_classPrivateFieldGet(this,_importSummary))?this.handleClickEvent(event,HomePresenter.FILE_LIBRARY_ID):toast("Unable to import the file ".concat(null===(_event$detail=event.detail)||void 0===_event$detail||null===(_event$detail=_event$detail.file)||void 0===_event$detail?void 0:_event$detail.name,". The file may be corrupt or the wrong type of file."))}},{key:"next",value:function(index){if(index===HomePresenter.FILE_LIBRARY_ID){var unmanagedLesson=new UnmanagedLesson(_classPrivateFieldGet(this,_importSummary).title,_classPrivateFieldGet(this,_importSummary).content,LessonOrigin.FILE_SYSTEM);return this.config.lesson=unmanagedLesson.lesson,this.config.lessonInfo=unmanagedLesson.lessonInfo,this.config.factory.getSuitableProblemPresenter(this.config)}return lessonManager.usingLocalLibrary=index===HomePresenter.LOCAL_LIBRARY_ID,_get(_getPrototypeOf(HomePresenter.prototype),"next",this).call(this,index)}}]),HomePresenter}(Presenter);function _buildContent4(){var button=new ManagedElement("button");icons.applyIconToElement(icons.library,button,{overrideText:i18n(_templateObject89||(_templateObject89=_taggedTemplateLiteral(["adc4c5f402b068fae17cc33ecf648d5d::"]))),hideText:!1}),this.presentation.appendChild(button),this.listenToEventOn("click",button,HomePresenter.REMOTE_LIBRARY_ID),button=new ManagedElement("button"),icons.applyIconToElement(icons.library,button,{overrideText:i18n(_templateObject90||(_templateObject90=_taggedTemplateLiteral(["d63e17b8da99189aff04b37070c61c8e::"]))),hideText:!1}),this.presentation.appendChild(button),this.listenToEventOn("click",button,HomePresenter.LOCAL_LIBRARY_ID),button=new FileInputButton({overrideText:i18n(_templateObject91||(_templateObject91=_taggedTemplateLiteral(["9148a8aa9f535484f03b98ae018a76b6::"]))),hideText:!1}),this.presentation.appendChild(button),this.listenToEventOn(FileInputButton.DATA_AVAILABLE_EVENT_NAME,button,HomePresenter.FILE_LIBRARY_ID),this.addPreamble(parseMarkdown(i18n(_templateObject64||(_templateObject64=_taggedTemplateLiteral(["5a62ae5db3f4f824aa6f41465bab07da::",""])),BuildInfo.getProductName())))}_defineProperty(HomePresenter,"REMOTE_LIBRARY_ID","REMOTE"),_defineProperty(HomePresenter,"LOCAL_LIBRARY_ID","LOCAL"),_defineProperty(HomePresenter,"FILE_LIBRARY_ID","FILE_SYSTEM");var _buildContent5=new WeakSet,ListPresenter=function(_Presenter2){_inherits(ListPresenter,_Presenter2);var _super18=_createSuper(ListPresenter);function ListPresenter(config){var _this28;return _classCallCheck(this,ListPresenter),_classPrivateMethodInitSpec(_assertThisInitialized(_this28=_super18.call(this,config,"ul")),_buildContent5),_classPrivateMethodGet(_assertThisInitialized(_this28),_buildContent5,_buildContent6).call(_assertThisInitialized(_this28)),_this28}return _createClass(ListPresenter)}(Presenter);function _buildContent6(){var _this$config,_this$config2,_this54=this;null===(_this$config=this.config)||void 0===_this$config||null===(_this$config=_this$config.titles)||void 0===_this$config||_this$config.forEach((function(title,index){var itemElement=new ManagedElement("li",_this54.config.itemClassName);itemElement.setAttribute("tabindex","0"),itemElement.classList.add("selectable"),_this54.presentation.appendChild(itemElement),itemElement.innerHTML=title,_this54.listenToEventOn("click",itemElement,index)})),null!==(_this$config2=this.config)&&void 0!==_this$config2&&null!==(_this$config2=_this$config2.factory)&&void 0!==_this$config2&&_this$config2.hasPrevious(this)&&this.showBackButton()}var _buildPreamble=new WeakSet,LibraryPresenter=function(_ListPresenter){_inherits(LibraryPresenter,_ListPresenter);var _super19=_createSuper(LibraryPresenter);function LibraryPresenter(config){var _this29;return _classCallCheck(this,LibraryPresenter),config.titles=lessonManager.bookTitles,config.itemClassName="book",_classPrivateMethodInitSpec(_assertThisInitialized(_this29=_super19.call(this,config)),_buildPreamble),_classPrivateMethodGet(_assertThisInitialized(_this29),_buildPreamble,_buildPreamble2).call(_assertThisInitialized(_this29)),_this29.autoAddKeydownEvents(),_this29}return _createClass(LibraryPresenter,[{key:"next",value:function(index){return lessonManager.bookIndex=index,_get(_getPrototypeOf(LibraryPresenter.prototype),"next",this).call(this,index)}}]),LibraryPresenter}(ListPresenter);function _buildPreamble2(){this.addPreamble("<span class='library-title'>".concat(lessonManager.libraryTitle,"</span>"))}var _buildPreamble3=new WeakSet,BookPresenter=function(_ListPresenter2){_inherits(BookPresenter,_ListPresenter2);var _super20=_createSuper(BookPresenter);function BookPresenter(config){var _this30;return _classCallCheck(this,BookPresenter),config.titles=lessonManager.chapterTitles,config.itemClassName="chapter",_classPrivateMethodInitSpec(_assertThisInitialized(_this30=_super20.call(this,config)),_buildPreamble3),_this30.autoAddKeydownEvents(),_classPrivateMethodGet(_assertThisInitialized(_this30),_buildPreamble3,_buildPreamble4).call(_assertThisInitialized(_this30)),_this30}return _createClass(BookPresenter,[{key:"next",value:function(index){return lessonManager.chapterIndex=index,_get(_getPrototypeOf(BookPresenter.prototype),"next",this).call(this,index)}}]),BookPresenter}(ListPresenter);function _buildPreamble4(){this.addPreamble("<span class='library-title'>".concat(lessonManager.libraryTitle,"</span>\n    <span class='book-title'>").concat(lessonManager.bookTitle,"</span>\n    "))}var _buildPreamble5=new WeakSet,_addNewSlotButton=new WeakSet,ChapterPresenter=function(_ListPresenter3){_inherits(ChapterPresenter,_ListPresenter3);var _super21=_createSuper(ChapterPresenter);function ChapterPresenter(config){var _this31;return _classCallCheck(this,ChapterPresenter),config.titles=lessonManager.lessonTitles,config.itemClassName="lesson",_classPrivateMethodInitSpec(_assertThisInitialized(_this31=_super21.call(this,config)),_addNewSlotButton),_classPrivateMethodInitSpec(_assertThisInitialized(_this31),_buildPreamble5),_defineProperty(_assertThisInitialized(_this31),"ADD_LESSON_EVENT_ID","add-lesson"),_classPrivateMethodGet(_assertThisInitialized(_this31),_buildPreamble5,_buildPreamble6).call(_assertThisInitialized(_this31)),lessonManager.usingLocalLibrary&&_classPrivateMethodGet(_assertThisInitialized(_this31),_addNewSlotButton,_addNewSlotButton2).call(_assertThisInitialized(_this31)),_this31.autoAddKeydownEvents(),_this31}return _createClass(ChapterPresenter,[{key:"handleClickEvent",value:function(event,eventId){var _this32=this;if(eventId===this.ADD_LESSON_EVENT_ID)return lessonManager.addLessonToLocalLibrary().then((function(){_get(_getPrototypeOf(ChapterPresenter.prototype),"handleClickEvent",_this32).call(_this32,event,eventId)}));_get(_getPrototypeOf(ChapterPresenter.prototype),"handleClickEvent",this).call(this,event,eventId)}},{key:"next",value:function(index){return index===this.ADD_LESSON_EVENT_ID?new ChapterPresenter(this.config):(lessonManager.lessonIndex=index,_get(_getPrototypeOf(ChapterPresenter.prototype),"next",this).call(this,index))}}]),ChapterPresenter}(ListPresenter);function _buildPreamble6(){lessonManager.usingLocalLibrary?this.addPreamble("<span class='library-title'>".concat(lessonManager.libraryTitle,"</span>")):this.addPreamble("<span class='library-title'>".concat(lessonManager.libraryTitle,"</span>\n        <span class='book-title'>").concat(lessonManager.bookTitle,"</span>\n        <span class='chapter-title'>").concat(lessonManager.chapterTitle,"</span>\n        "))}function _addNewSlotButton2(){var button=new ManagedElement("button");icons.applyIconToElement(icons.addLesson,button),this.listenToEventOn("click",button,this.ADD_LESSON_EVENT_ID),this.addButtonToBar(button)}var _buildCustomContent=new WeakSet,_addEditButtonIfLocal=new WeakSet,LessonPresenter=function(_Presenter3){_inherits(LessonPresenter,_Presenter3);var _super22=_createSuper(LessonPresenter);function LessonPresenter(config){var _this33$config,_this33;return _classCallCheck(this,LessonPresenter),config.titles=["placeholder"],config.itemClassName="lesson-summary",_classPrivateMethodInitSpec(_assertThisInitialized(_this33=_super22.call(this,config)),_addEditButtonIfLocal),_classPrivateMethodInitSpec(_assertThisInitialized(_this33),_buildCustomContent),_this33.config.lessonInfo=lessonManager.currentLessonInfo,_classPrivateMethodGet(_assertThisInitialized(_this33),_buildCustomContent,_buildCustomContent2).call(_assertThisInitialized(_this33)),_this33.autoAddKeydownEvents(),null!==(_this33$config=_this33.config)&&void 0!==_this33$config&&null!==(_this33$config=_this33$config.factory)&&void 0!==_this33$config&&_this33$config.hasPrevious(_assertThisInitialized(_this33))&&_this33.showBackButton(),_this33}return _createClass(LessonPresenter,[{key:"next",value:function(eventId){var _this34=this;return eventId===LessonPresenter.EDIT_EVENT_ID?this.config.factory.getEditor(this,this.config):lessonManager.loadCurrentLesson().then((function(cachedLesson){var lessonSource=LessonSource.createFromSource(cachedLesson.content);return _this34.config.lesson=lessonSource.convertToLesson(),_this34.config.factory.getNext(_this34,_this34.config)}))}},{key:"previous",value:function(){return this.config.factory.getPrevious(this,this.config)}}]),LessonPresenter}(Presenter);function _buildCustomContent2(){this.presentation.createAndAppendChild("h2",null,i18n(_templateObject92||(_templateObject92=_taggedTemplateLiteral(["8f8bfb5f6d96fb3113a39f781f6fffe4::"]))));var summaryBlock=this.presentation.createAndAppendChild("div","lesson-summary");summaryBlock.createAndAppendChild("span","lesson-title",this.config.lessonInfo.titles.lesson),summaryBlock.createAndAppendChild("p",null,i18n(_templateObject93||(_templateObject93=_taggedTemplateLiteral(["d6cd575eb2dab528448d6c6810598452::"])))),summaryBlock.createAndAppendChild("span","library-title",this.config.lessonInfo.titles.library),lessonManager.usingLocalLibrary||(summaryBlock.createAndAppendChild("span","book-title",this.config.lessonInfo.titles.book),summaryBlock.createAndAppendChild("span","chapter-title",this.config.lessonInfo.titles.chapter)),this.presentation.appendChild(summaryBlock),this.applyIconToNextButton(icons.playLesson),this.showNextButton(),_classPrivateMethodGet(this,_addEditButtonIfLocal,_addEditButtonIfLocal2).call(this)}function _addEditButtonIfLocal2(){if(this.config.lessonInfo.usingLocalLibrary){var editButton=new ManagedElement("button");icons.applyIconToElement(icons.edit,editButton),this.addButtonToBar(editButton),this.listenToEventOn("click",editButton,LessonPresenter.EDIT_EVENT_ID)}}_defineProperty(LessonPresenter,"EDIT_EVENT_ID","EDIT_LESSON");var _lessonTitleElement=new WeakMap,_lessonTitleValue=new WeakMap,_mainEditorElement=new WeakMap,_saveButton=new WeakMap,_importForm=new WeakMap,_importButton=new WeakMap,_exportButton=new WeakMap,_dirty=new WeakMap,_buildCustomContent3=new WeakSet,_setEditorAsDirty=new WeakSet,_setEditorAsClean=new WeakSet,_addSaveButton=new WeakSet,_addImportButton=new WeakSet,_addExportButton=new WeakSet,_addDeleteButton=new WeakSet,_deleteLessonIfConfirmed=new WeakSet,_deleteLesson=new WeakSet,_saveLessonLocally=new WeakSet,_exportLesson=new WeakSet,LessonEditorPresenter=function(_Presenter4){_inherits(LessonEditorPresenter,_Presenter4);var _handleClickEvent2,_allowNavigation2,_super23=_createSuper(LessonEditorPresenter);function LessonEditorPresenter(config){var _this35;return _classCallCheck(this,LessonEditorPresenter),config.titles=["placeholder"],config.itemClassName="lesson-editor",_classPrivateMethodInitSpec(_assertThisInitialized(_this35=_super23.call(this,config)),_exportLesson),_classPrivateMethodInitSpec(_assertThisInitialized(_this35),_saveLessonLocally),_classPrivateMethodInitSpec(_assertThisInitialized(_this35),_deleteLesson),_classPrivateMethodInitSpec(_assertThisInitialized(_this35),_deleteLessonIfConfirmed),_classPrivateMethodInitSpec(_assertThisInitialized(_this35),_addDeleteButton),_classPrivateMethodInitSpec(_assertThisInitialized(_this35),_addExportButton),_classPrivateMethodInitSpec(_assertThisInitialized(_this35),_addImportButton),_classPrivateMethodInitSpec(_assertThisInitialized(_this35),_addSaveButton),_classPrivateMethodInitSpec(_assertThisInitialized(_this35),_setEditorAsClean),_classPrivateMethodInitSpec(_assertThisInitialized(_this35),_setEditorAsDirty),_classPrivateMethodInitSpec(_assertThisInitialized(_this35),_buildCustomContent3),_classPrivateFieldInitSpec(_assertThisInitialized(_this35),_lessonTitleElement,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this35),_lessonTitleValue,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this35),_mainEditorElement,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this35),_saveButton,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this35),_importForm,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this35),_importButton,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this35),_exportButton,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this35),_dirty,{writable:!0,value:void 0}),_classPrivateMethodGet(_assertThisInitialized(_this35),_buildCustomContent3,_buildCustomContent4).call(_assertThisInitialized(_this35)),_classPrivateMethodGet(_assertThisInitialized(_this35),_addSaveButton,_addSaveButton2).call(_assertThisInitialized(_this35)),_classPrivateMethodGet(_assertThisInitialized(_this35),_addImportButton,_addImportButton2).call(_assertThisInitialized(_this35)),_classPrivateMethodGet(_assertThisInitialized(_this35),_addExportButton,_addExportButton2).call(_assertThisInitialized(_this35)),_classPrivateMethodGet(_assertThisInitialized(_this35),_addDeleteButton,_addDeleteButton2).call(_assertThisInitialized(_this35)),_this35.expandPresentation(),_classPrivateMethodGet(_assertThisInitialized(_this35),_setEditorAsClean,_setEditorAsClean2).call(_assertThisInitialized(_this35)),_this35.applyIconToNextButton(icons.closeEditor),_this35.showNextButton(),_classPrivateFieldSet(_assertThisInitialized(_this35),_dirty,!1),_this35}return _createClass(LessonEditorPresenter,[{key:"handleDataAvailableEvent",value:function(event,eventIdIgnored){var _this36=this;_classPrivateFieldGet(this,_importForm).element.reset();var _event$detail2,importSummary=(new LessonImporter).convert(event.detail.content);if(importSummary)return ModalDialog.showConfirm(i18n(_templateObject67||(_templateObject67=_taggedTemplateLiteral(["b087a0f6368816df1cbbf2700e7de192::"])))).then((function(answer){answer===ModalDialog.DialogIndex.CONFIRM_YES&&(_classPrivateFieldGet(_this36,_lessonTitleElement).setValue(importSummary.title),_classPrivateFieldSet(_this36,_lessonTitleValue,importSummary.title),_classPrivateFieldGet(_this36,_mainEditorElement).value=importSummary.content,_classPrivateMethodGet(_this36,_setEditorAsDirty,_setEditorAsDirty2).call(_this36))}));toast("Unable to import the file ".concat(null===(_event$detail2=event.detail)||void 0===_event$detail2||null===(_event$detail2=_event$detail2.file)||void 0===_event$detail2?void 0:_event$detail2.name,". The file may be corrupt or the wrong type of file."))}},{key:"handleInputEvent",value:function(eventIgnored,eventIdIgnored){_classPrivateMethodGet(this,_setEditorAsDirty,_setEditorAsDirty2).call(this)}},{key:"allowNavigation",value:(_allowNavigation2=_asyncToGenerator(_regeneratorRuntime().mark((function _callee5(eventIgnored,eventIdIgnored){return _regeneratorRuntime().wrap((function(_context5){for(;;)switch(_context5.prev=_context5.next){case 0:if(!_classPrivateFieldGet(this,_dirty)){_context5.next=4;break}return _context5.abrupt("return",this.askIfOkayToLeave(i18n(_templateObject68||(_templateObject68=_taggedTemplateLiteral(["0fd040b4b27f744bd6c771e624f1a466::"])))));case 4:return _context5.abrupt("return",!0);case 5:case"end":return _context5.stop()}}),_callee5,this)}))),function(_x7,_x8){return _allowNavigation2.apply(this,arguments)})},{key:"handleClickEvent",value:(_handleClickEvent2=_asyncToGenerator(_regeneratorRuntime().mark((function _callee6(event,eventId){return _regeneratorRuntime().wrap((function(_context6){for(;;)switch(_context6.prev=_context6.next){case 0:_context6.t0=eventId,_context6.next=_context6.t0===LessonEditorPresenter.DELETE_EVENT_ID?3:_context6.t0===LessonEditorPresenter.SAVE_EVENT_ID?9:_context6.t0===LessonEditorPresenter.EXPORT_EVENT_ID?10:11;break;case 3:return _context6.next=5,_classPrivateMethodGet(this,_deleteLessonIfConfirmed,_deleteLessonIfConfirmed2).call(this);case 5:if(_context6.sent){_context6.next=8;break}return _context6.abrupt("return");case 8:return _context6.abrupt("break",11);case 9:return _context6.abrupt("return",_classPrivateMethodGet(this,_saveLessonLocally,_saveLessonLocally2).call(this));case 10:return _context6.abrupt("return",_classPrivateMethodGet(this,_exportLesson,_exportLesson2).call(this));case 11:return _context6.abrupt("return",_get(_getPrototypeOf(LessonEditorPresenter.prototype),"handleClickEvent",this).call(this,event,eventId));case 12:case"end":return _context6.stop()}}),_callee6,this)}))),function(_x9,_x10){return _handleClickEvent2.apply(this,arguments)})},{key:"next",value:function(eventId){return eventId===LessonEditorPresenter.DELETE_EVENT_ID?this.config.factory.getLibraryPresenter(this,this.config):_get(_getPrototypeOf(LessonEditorPresenter.prototype),"next",this).call(this,eventId)}}]),LessonEditorPresenter}(Presenter);function _buildCustomContent4(){return _buildCustomContent5.apply(this,arguments)}function _buildCustomContent5(){return(_buildCustomContent5=_asyncToGenerator(_regeneratorRuntime().mark((function _callee8(){var cachedLesson,_this61=this;return _regeneratorRuntime().wrap((function(_context8){for(;;)switch(_context8.prev=_context8.next){case 0:return _context8.next=2,lessonManager.loadCurrentLesson();case 2:cachedLesson=_context8.sent,_classPrivateFieldSet(this,_lessonTitleValue,this.config.lessonInfo.titles.lesson),_classPrivateFieldSet(this,_lessonTitleElement,new LabeledControl(LocalLibrary,{defaultValue:_classPrivateFieldGet(this,_lessonTitleValue),label:i18n(_templateObject101||(_templateObject101=_taggedTemplateLiteral(["b78a3223503896721cca1303f776159b::"]))),type:"input",onupdate:function(value){_classPrivateFieldSet(_this61,_lessonTitleValue,value),_classPrivateMethodGet(_this61,_setEditorAsDirty,_setEditorAsDirty2).call(_this61)}},{storage:null})),this.addPreamble(_classPrivateFieldGet(this,_lessonTitleElement)),_classPrivateFieldSet(this,_mainEditorElement,this.presentation.createAndAppendChild("textarea","lesson-editor",cachedLesson.content)),this.listenToEventOn("input",_classPrivateFieldGet(this,_mainEditorElement));case 8:case"end":return _context8.stop()}}),_callee8,this)})))).apply(this,arguments)}function _setEditorAsDirty2(){_classPrivateFieldGet(this,_saveButton).disabled=!1,_classPrivateFieldSet(this,_dirty,!0)}function _setEditorAsClean2(){_classPrivateFieldGet(this,_saveButton).disabled=!0,_classPrivateFieldSet(this,_dirty,!1)}function _addSaveButton2(){_classPrivateFieldSet(this,_saveButton,new ManagedElement("button")),icons.applyIconToElement(icons.save,_classPrivateFieldGet(this,_saveButton)),this.listenToEventOn("click",_classPrivateFieldGet(this,_saveButton),LessonEditorPresenter.SAVE_EVENT_ID),this.addButtonToBar(_classPrivateFieldGet(this,_saveButton))}function _addImportButton2(){_classPrivateFieldSet(this,_importForm,new ManagedElement("form","button-wrapper")),_classPrivateFieldSet(this,_importButton,new FileInputButton),_classPrivateFieldGet(this,_importForm).appendChild(_classPrivateFieldGet(this,_importButton)),this.listenToEventOn(FileInputButton.DATA_AVAILABLE_EVENT_NAME,_classPrivateFieldGet(this,_importButton),LessonEditorPresenter.IMPORT_EVENT_ID),this.addButtonToBar(_classPrivateFieldGet(this,_importForm))}function _addExportButton2(){_classPrivateFieldSet(this,_exportButton,new ManagedElement("button")),icons.applyIconToElement(icons.export,_classPrivateFieldGet(this,_exportButton)),this.listenToEventOn("click",_classPrivateFieldGet(this,_exportButton),LessonEditorPresenter.EXPORT_EVENT_ID),this.addButtonToBar(_classPrivateFieldGet(this,_exportButton))}function _addDeleteButton2(){var deleteButton=new ManagedElement("button");icons.applyIconToElement(icons.delete,deleteButton),this.listenToEventOn("click",deleteButton,LessonEditorPresenter.DELETE_EVENT_ID),this.addButtonToBar(deleteButton)}function _deleteLessonIfConfirmed2(){var _this55=this;return ModalDialog.showConfirm(i18n(_templateObject94||(_templateObject94=_taggedTemplateLiteral(["784dc4bc7f2a0374bd038e01caf85d4d::"]))),i18n(_templateObject95||(_templateObject95=_taggedTemplateLiteral(["f89bc18e7afb05b3ac03300bec624b63::"])))).then((function(response){return response===ModalDialog.DialogIndex.CONFIRM_YES&&_classPrivateMethodGet(_this55,_deleteLesson,_deleteLesson2).call(_this55)}))}function _deleteLesson2(){return lessonManager.deleteLocalLibraryCurrentLesson().then((function(){return!0}))}function _saveLessonLocally2(){lessonManager.updateCurrentLessonContent(_classPrivateFieldGet(this,_lessonTitleValue),_classPrivateFieldGet(this,_mainEditorElement).value),_classPrivateMethodGet(this,_setEditorAsClean,_setEditorAsClean2).call(this)}function _exportLesson2(){new LessonExporter(_classPrivateFieldGet(this,_lessonTitleValue),_classPrivateFieldGet(this,_mainEditorElement).value).exportLesson()}_defineProperty(LessonEditorPresenter,"SAVE_EVENT_ID","SAVE"),_defineProperty(LessonEditorPresenter,"EXPORT_EVENT_ID","EXPORT"),_defineProperty(LessonEditorPresenter,"IMPORT_EVENT_ID","IMPORT"),_defineProperty(LessonEditorPresenter,"DELETE_EVENT_ID","DELETE");var CelebrationType_HAPPY="smiley-face",CelebrationType_SAD="sad-face",_animationClass=new WeakMap,_busy=new WeakMap,Celebrator=function(_ManagedElement15){_inherits(Celebrator,_ManagedElement15);var _super24=_createSuper(Celebrator);function Celebrator(){var _this37;return _classCallCheck(this,Celebrator),_classPrivateFieldInitSpec(_assertThisInitialized(_this37=_super24.call(this,"div","celebrator")),_animationClass,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this37),_busy,{writable:!0,value:void 0}),_this37.appendTo(document.body),_this37.listenToOwnEvent("animationend"),_classPrivateFieldSet(_assertThisInitialized(_this37),_busy,!1),_this37.hide(),_this37}return _createClass(Celebrator,[{key:"handleAnimationendEvent",value:function(eventIgnored,eventIdIgnored){console.debug("Celebration ended."),this.hide(),_classPrivateFieldSet(this,_busy,!1)}},{key:"celebrate",value:function(){var celebration=arguments.length>0&&void 0!==arguments[0]?arguments[0]:CelebrationType_HAPPY;_classPrivateFieldGet(this,_busy)?console.warn("Celebration busy so new celebration ignored."):(this.show(),_classPrivateFieldGet(this,_animationClass)&&this.classList.remove(_classPrivateFieldGet(this,_animationClass)),_classPrivateFieldSet(this,_animationClass,celebration),this.classList.add(_classPrivateFieldGet(this,_animationClass)))}}]),Celebrator}(ManagedElement),celebrator=new Celebrator,ClassName={ANSWER:"problem-answer",ANSWERS:"problem-answers",EXPLANATION:"problem-explanation",INCORRECT_ANSWER:"incorrect-answer",CORRECT_ANSWER:"correct-answer",MISSED_ANSWER:"missed-answer",AVOIDED_ANSWER:"avoided-answer",QUESTION:"problem-question",SELECTED_ANSWER:"selected-answer"},ElementId={CLICKED_ANSWER:"answer",CLICKED_SUBMIT:"submit",CLICKED_NEXT:"next"},Attribute={RIGHT_OR_WRONG:"data-code"},AnswerSelectionState={UNDEFINED:0,CORRECT:1,INCORRECT:2,MISSED:3,AVOIDED:4},_problem=new WeakMap,_questionElement=new WeakMap,_answerElement=new WeakMap,_explanationElement=new WeakMap,_submitButton=new WeakMap,_freezeAnswers=new WeakMap,_addSubmitButton=new WeakSet,_processClickedSubmit=new WeakSet,ProblemPresenter=function(_Presenter5){_inherits(ProblemPresenter,_Presenter5);var _allowNavigation3,_super25=_createSuper(ProblemPresenter);function ProblemPresenter(config){var _this38;return _classCallCheck(this,ProblemPresenter),config.titles=[],config.itemClassName="",_classPrivateMethodInitSpec(_assertThisInitialized(_this38=_super25.call(this,config,"div")),_processClickedSubmit),_classPrivateMethodInitSpec(_assertThisInitialized(_this38),_addSubmitButton),_classPrivateFieldInitSpec(_assertThisInitialized(_this38),_problem,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this38),_questionElement,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this38),_answerElement,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this38),_explanationElement,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this38),_submitButton,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this38),_freezeAnswers,{writable:!0,value:void 0}),_classPrivateFieldSet(_assertThisInitialized(_this38),_problem,config.lesson.getNextProblem()),_classPrivateFieldSet(_assertThisInitialized(_this38),_questionElement,new ManagedElement("div",ClassName.QUESTION)),_classPrivateFieldGet(_assertThisInitialized(_this38),_questionElement).innerHTML=_classPrivateFieldGet(_assertThisInitialized(_this38),_problem).question.html,_classPrivateFieldSet(_assertThisInitialized(_this38),_answerElement,new ManagedElement("div",ClassName.ANSWERS)),_classPrivateFieldSet(_assertThisInitialized(_this38),_explanationElement,new ManagedElement("div",ClassName.EXPLANATION)),_classPrivateFieldGet(_assertThisInitialized(_this38),_explanationElement).innerHTML=_classPrivateFieldGet(_assertThisInitialized(_this38),_problem).explanation.html,_classPrivateFieldGet(_assertThisInitialized(_this38),_explanationElement).hide(),_this38.presentation.appendChild(_classPrivateFieldGet(_assertThisInitialized(_this38),_questionElement)),_this38.presentation.appendChild(_classPrivateFieldGet(_assertThisInitialized(_this38),_answerElement)),_this38.presentation.appendChild(_classPrivateFieldGet(_assertThisInitialized(_this38),_explanationElement)),_this38.addButtons(),_classPrivateFieldGet(_assertThisInitialized(_this38),_submitButton).show(),_classPrivateFieldSet(_assertThisInitialized(_this38),_freezeAnswers,!1),_this38.config.lessonInfo.managed||_this38.hideHomeButton(),_this38}return _createClass(ProblemPresenter,[{key:"problem",get:function(){return _classPrivateFieldGet(this,_problem)}},{key:"questionElement",get:function(){return _classPrivateFieldGet(this,_questionElement)}},{key:"answerElement",get:function(){return _classPrivateFieldGet(this,_answerElement)}},{key:"explanationElement",get:function(){return _classPrivateFieldGet(this,_explanationElement)}},{key:"submitButton",get:function(){return _classPrivateFieldGet(this,_submitButton)}},{key:"addButtons",value:function(){_classPrivateMethodGet(this,_addSubmitButton,_addSubmitButton2).call(this)}},{key:"presentOnStage",value:function(stage){var _this39=this;return""!==_classPrivateFieldGet(this,_problem).intro.html&&_classPrivateFieldGet(this,_problem).questionType!==QuestionType.SLIDE?ModalDialog.showInfo(_classPrivateFieldGet(this,_problem).intro.html).then((function(){return _get(_getPrototypeOf(ProblemPresenter.prototype),"presentOnStage",_this39).call(_this39,stage)})):_get(_getPrototypeOf(ProblemPresenter.prototype),"presentOnStage",this).call(this,stage)}},{key:"handleClickEvent",value:function(event,eventId){switch(eventId){case ElementId.CLICKED_ANSWER:_classPrivateFieldGet(this,_freezeAnswers)||this.processClickedAnswer(event.currentTarget);break;case ElementId.CLICKED_SUBMIT:_classPrivateFieldSet(this,_freezeAnswers,!0),_classPrivateMethodGet(this,_processClickedSubmit,_processClickedSubmit2).call(this);break;default:_get(_getPrototypeOf(ProblemPresenter.prototype),"handleClickEvent",this).call(this,event,eventId)}}},{key:"allowNavigation",value:(_allowNavigation3=_asyncToGenerator(_regeneratorRuntime().mark((function _callee7(event,eventId){return _regeneratorRuntime().wrap((function(_context7){for(;;)switch(_context7.prev=_context7.next){case 0:if(eventId!==Presenter.HOME_ID&&eventId!==Presenter.PREVIOUS_ID){_context7.next=4;break}return _context7.abrupt("return",this.askIfOkayToLeave(i18n(_templateObject69||(_templateObject69=_taggedTemplateLiteral(["d54132fd8e2fa9a6c89e8c27bc122fc2::"])))));case 4:return _context7.abrupt("return",!0);case 5:case"end":return _context7.stop()}}),_callee7,this)}))),function(_x11,_x12){return _allowNavigation3.apply(this,arguments)})},{key:"processClickedAnswer",value:function(target){console.debug("Process ".concat(target.tagName,":").concat(target.className))}},{key:"areAnswersCorrect",value:function(){return console.debug("Override markAnswers should be overridden."),!1}}]),ProblemPresenter}(Presenter);function _addSubmitButton2(){_classPrivateFieldSet(this,_submitButton,new ManagedElement("button",ClassName.ANSWER_SUBMIT)),icons.applyIconToElement(icons.submitAnswer,_classPrivateFieldGet(this,_submitButton).element),this.listenToEventOn("click",_classPrivateFieldGet(this,_submitButton),ElementId.CLICKED_SUBMIT),this.addButtonToBar(_classPrivateFieldGet(this,_submitButton))}function _processClickedSubmit2(){var correct=this.areAnswersCorrect();this.config.lesson.markProblem(_classPrivateFieldGet(this,_problem),correct?MarkState.CORRECT:MarkState.INCORRECT),_classPrivateFieldGet(this,_submitButton).hide(),this.showNextButton(!0),celebrator.celebrate(correct?CelebrationType_HAPPY:CelebrationType_SAD)}var _answerListElement=new WeakMap,_buildSimpleOrMultiple=new WeakSet,_buildAnswers=new WeakSet,_pushAnswerElementsToArray=new WeakSet,_selectAnswer=new WeakSet,_deselectAnswer=new WeakSet,_deselectAllAnswers=new WeakSet,_processAnswerState=new WeakSet,_showAnswerState=new WeakSet,ChoiceProblemPresenter=function(_ProblemPresenter){_inherits(ChoiceProblemPresenter,_ProblemPresenter);var _super26=_createSuper(ChoiceProblemPresenter);function ChoiceProblemPresenter(config){var _this40;return _classCallCheck(this,ChoiceProblemPresenter),_classPrivateMethodInitSpec(_assertThisInitialized(_this40=_super26.call(this,config)),_showAnswerState),_classPrivateMethodInitSpec(_assertThisInitialized(_this40),_processAnswerState),_classPrivateMethodInitSpec(_assertThisInitialized(_this40),_deselectAllAnswers),_classPrivateMethodInitSpec(_assertThisInitialized(_this40),_deselectAnswer),_classPrivateMethodInitSpec(_assertThisInitialized(_this40),_selectAnswer),_classPrivateMethodInitSpec(_assertThisInitialized(_this40),_pushAnswerElementsToArray),_classPrivateMethodInitSpec(_assertThisInitialized(_this40),_buildAnswers),_classPrivateMethodInitSpec(_assertThisInitialized(_this40),_buildSimpleOrMultiple),_classPrivateFieldInitSpec(_assertThisInitialized(_this40),_answerListElement,{writable:!0,value:void 0}),_classPrivateMethodGet(_assertThisInitialized(_this40),_buildSimpleOrMultiple,_buildSimpleOrMultiple2).call(_assertThisInitialized(_this40)),_this40}return _createClass(ChoiceProblemPresenter,[{key:"processClickedAnswer",value:function(element){switch(this.problem.questionType){case QuestionType.MULTI:element.classList.toggle(ClassName.SELECTED_ANSWER);break;case QuestionType.SIMPLE:var selected=element.classList.contains(ClassName.SELECTED_ANSWER);_classPrivateMethodGet(this,_deselectAllAnswers,_deselectAllAnswers2).call(this),selected||_classPrivateMethodGet(this,_selectAnswer,_selectAnswer2).call(this,element);break;default:console.error("Wrong presenter ".concat(this.constructor.name," being used for ").concat(this.problem.questionType))}}},{key:"areAnswersCorrect",value:function(){var _this41=this,correct=!0;return document.querySelectorAll(".".concat(ClassName.ANSWER)).forEach((function(element){_classPrivateMethodGet(_this41,_processAnswerState,_processAnswerState2).call(_this41,element)||(correct=!1),element.classList.replace("selectable","selectable-off"),element.setAttribute("tabindex","-1")})),correct}},{key:"handleKeydownEvent",value:function(event,eventId){if(eventId!==ElementId.CLICKED_ANSWER)return _get(_getPrototypeOf(ChoiceProblemPresenter.prototype),"handleKeydownEvent",this).call(this,event,eventId);switch(event.key){case" ":case"Enter":event.stopPropagation(),this.handleClickEvent(event,eventId)}}}]),ChoiceProblemPresenter}(ProblemPresenter);function _buildSimpleOrMultiple2(){_classPrivateMethodGet(this,_buildAnswers,_buildAnswers2).call(this),this.autoAddKeydownEvents(this.answerElement.managedChildren)}function _buildAnswers2(){var _this56=this;_classPrivateFieldSet(this,_answerListElement,new ManagedElement("ul")),this.answerElement.appendChild(_classPrivateFieldGet(this,_answerListElement)),_classPrivateFieldGet(this,_answerListElement).setAttributes({"aria-label":i18n(_templateObject96||(_templateObject96=_taggedTemplateLiteral(["3e67adbbda024584ca573026d35039d0::"]))),"aria-role":this.problem.questionType===QuestionType.MULTI?"":"radiogroup"});var answers=[];_classPrivateMethodGet(this,_pushAnswerElementsToArray,_pushAnswerElementsToArray2).call(this,this.problem.rightAnswers,answers,!0),_classPrivateMethodGet(this,_pushAnswerElementsToArray,_pushAnswerElementsToArray2).call(this,this.problem.wrongAnswers,answers,!1),function(data){for(var count=data.length;count;){var index=Math.floor(Math.random()*count--),_ref=[data[index],data[count]];data[count]=_ref[0],data[index]=_ref[1]}}(answers),answers.forEach((function(element){_classPrivateFieldGet(_this56,_answerListElement).appendChild(element),_this56.listenToEventOn("click",element,ElementId.CLICKED_ANSWER),_this56.listenToEventOn("keydown",element,ElementId.CLICKED_ANSWER)})),setTimeout((function(){return _classPrivateFieldGet(_this56,_answerListElement).children[0].focus()}))}function _pushAnswerElementsToArray2(answers,destination,areRight){var role=this.problem.questionType===QuestionType.MULTI?"checkbox":"radio";answers.forEach((function(value){var element=new ManagedElement("li",ClassName.ANSWER);element.classList.add("selectable"),element.innerHTML=value.html,element.setSafeAttribute(Attribute.RIGHT_OR_WRONG,areRight),element.setAttributes({tabindex:"0","aria-role":role,"aria-checked":!1,"aria-label":i18n(_templateObject97||(_templateObject97=_taggedTemplateLiteral(["e5f965d7cf958839a31acefa71728846::"])))}),destination.push(element)}))}function _selectAnswer2(element){element.setAttribute("aria-checked","true"),element.classList.add(ClassName.SELECTED_ANSWER)}function _deselectAnswer2(element){element.setAttribute("aria-checked","false"),element.classList.remove(ClassName.SELECTED_ANSWER)}function _deselectAllAnswers2(){var _this57=this;document.querySelectorAll(".".concat(ClassName.ANSWER)).forEach((function(element){_classPrivateMethodGet(_this57,_deselectAnswer,_deselectAnswer2).call(_this57,element)}))}function _processAnswerState2(element){this.freezeAnswers=!0;var answerState,elementIsCorrect="true"===ManagedElement.getSafeAttribute(element,Attribute.RIGHT_OR_WRONG).toLowerCase(),selected=element.classList.contains(ClassName.SELECTED_ANSWER);return answerState=elementIsCorrect?selected?AnswerSelectionState.CORRECT:AnswerSelectionState.MISSED:selected?AnswerSelectionState.INCORRECT:AnswerSelectionState.AVOIDED,_classPrivateMethodGet(this,_showAnswerState,_showAnswerState2).call(this,element,answerState),answerState===AnswerSelectionState.CORRECT||answerState===AnswerSelectionState.AVOIDED}function _showAnswerState2(element,answerState){var className="";switch(answerState){case AnswerSelectionState.AVOIDED:className=ClassName.AVOIDED_ANSWER;break;case AnswerSelectionState.CORRECT:className=ClassName.CORRECT_ANSWER;break;case AnswerSelectionState.INCORRECT:className=ClassName.INCORRECT_ANSWER;break;case AnswerSelectionState.MISSED:className=ClassName.MISSED_ANSWER}element.classList.add(className)}var _missingWordSelectors=new WeakMap,_missingWordCorrectAnswers=new WeakMap,_createMissingWordSelectors=new WeakSet,_showAnswerState3=new WeakSet,FillProblemPresenter=function(_ProblemPresenter2){_inherits(FillProblemPresenter,_ProblemPresenter2);var _super27=_createSuper(FillProblemPresenter);function FillProblemPresenter(config){var _this42;return _classCallCheck(this,FillProblemPresenter),_classPrivateMethodInitSpec(_assertThisInitialized(_this42=_super27.call(this,config)),_showAnswerState3),_classPrivateMethodInitSpec(_assertThisInitialized(_this42),_createMissingWordSelectors),_classPrivateFieldInitSpec(_assertThisInitialized(_this42),_missingWordSelectors,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this42),_missingWordCorrectAnswers,{writable:!0,value:void 0}),_classPrivateMethodGet(_assertThisInitialized(_this42),_createMissingWordSelectors,_createMissingWordSelectors2).call(_assertThisInitialized(_this42)),_this42.answerElement.hide(),_this42}return _createClass(FillProblemPresenter,[{key:"areAnswersCorrect",value:function(){var _this43=this,correct=!0;return _classPrivateFieldGet(this,_missingWordSelectors).forEach((function(selectControl,index){var givenAnswer=selectControl.getText(),container=selectControl.parentElement;selectControl.remove(),container.textContent=givenAnswer,givenAnswer===_classPrivateFieldGet(_this43,_missingWordCorrectAnswers)[index]?_classPrivateMethodGet(_this43,_showAnswerState3,_showAnswerState4).call(_this43,container,AnswerSelectionState.CORRECT):(_classPrivateMethodGet(_this43,_showAnswerState3,_showAnswerState4).call(_this43,container,AnswerSelectionState.INCORRECT),correct=!1)})),correct}}]),FillProblemPresenter}(ProblemPresenter);function _createMissingWordSelectors2(){var _this58=this,questionWordElements=this.questionElement.querySelectorAll(".missing-word");_classPrivateFieldSet(this,_missingWordCorrectAnswers,[]),questionWordElements.forEach((function(element){var correctAnswer=ManagedElement.getSafeAttribute(element,"data-missing-word");_classPrivateFieldGet(_this58,_missingWordCorrectAnswers).push(correctAnswer)}));var redHerrings=this.problem.firstWordsOfWrongAnswers,options=["..."].concat(_toConsumableArray(_classPrivateFieldGet(this,_missingWordCorrectAnswers)),_toConsumableArray(redHerrings));options.sort();var settingDefinition={defaultValue:"...",options:options};_classPrivateFieldSet(this,_missingWordSelectors,[]),questionWordElements.forEach((function(element,index){var selector=new SelectControl(index,settingDefinition);element.appendChild(selector.element),_classPrivateFieldGet(_this58,_missingWordSelectors).push(selector)})),this.autoAddKeydownEvents(_classPrivateFieldGet(this,_missingWordSelectors))}function _showAnswerState4(element,answerState){var className="";switch(answerState){case AnswerSelectionState.AVOIDED:className=ClassName.AVOIDED_ANSWER;break;case AnswerSelectionState.CORRECT:className=ClassName.CORRECT_ANSWER;break;case AnswerSelectionState.INCORRECT:className=ClassName.INCORRECT_ANSWER;break;case AnswerSelectionState.MISSED:className=ClassName.MISSED_ANSWER}element.classList.add(className)}var _missingWordSelectors2=new WeakMap,_missingWordCorrectAnswers2=new WeakMap,_buildOrder=new WeakSet,_showAnswerState5=new WeakSet,OrderProblemPresenter=function(_ProblemPresenter3){_inherits(OrderProblemPresenter,_ProblemPresenter3);var _super28=_createSuper(OrderProblemPresenter);function OrderProblemPresenter(config){var _this44;return _classCallCheck(this,OrderProblemPresenter),_classPrivateMethodInitSpec(_assertThisInitialized(_this44=_super28.call(this,config)),_showAnswerState5),_classPrivateMethodInitSpec(_assertThisInitialized(_this44),_buildOrder),_classPrivateFieldInitSpec(_assertThisInitialized(_this44),_missingWordSelectors2,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this44),_missingWordCorrectAnswers2,{writable:!0,value:void 0}),_classPrivateMethodGet(_assertThisInitialized(_this44),_buildOrder,_buildOrder2).call(_assertThisInitialized(_this44)),_this44}return _createClass(OrderProblemPresenter,[{key:"areAnswersCorrect",value:function(){var _this45=this,correct=!0;return _classPrivateFieldGet(this,_missingWordSelectors2).forEach((function(selectControl,index){var givenAnswer=selectControl.getText(),container=selectControl.parentElement;selectControl.remove(),container.textContent=givenAnswer,givenAnswer===_classPrivateFieldGet(_this45,_missingWordCorrectAnswers2)[index]?_classPrivateMethodGet(_this45,_showAnswerState5,_showAnswerState6).call(_this45,container,AnswerSelectionState.CORRECT):(_classPrivateMethodGet(_this45,_showAnswerState5,_showAnswerState6).call(_this45,container,AnswerSelectionState.INCORRECT),correct=!1)})),correct}}]),OrderProblemPresenter}(ProblemPresenter);function _buildOrder2(){_classPrivateFieldSet(this,_missingWordCorrectAnswers2,this.problem.firstWordsOfRightAnswers);var redHerrings=this.problem.firstWordsOfWrongAnswers,options=["..."].concat(_toConsumableArray(_classPrivateFieldGet(this,_missingWordCorrectAnswers2)),_toConsumableArray(redHerrings));options.sort();var settingDefinition={defaultValue:"...",options:options},orderedAnswers=new ManagedElement("div","problem-ordered-answers");_classPrivateFieldSet(this,_missingWordSelectors2,[]);for(var index=0;index<this.problem.rightAnswers.length;index++){var span=new ManagedElement("span","missing-word"),selectControl=new SelectControl(index,settingDefinition);_classPrivateFieldGet(this,_missingWordSelectors2).push(selectControl),span.appendChild(selectControl),orderedAnswers.appendChild(span)}this.answerElement.appendChild(orderedAnswers),this.autoAddKeydownEvents(_classPrivateFieldGet(this,_missingWordSelectors2))}function _showAnswerState6(element,answerState){var className="";switch(answerState){case AnswerSelectionState.AVOIDED:className=ClassName.AVOIDED_ANSWER;break;case AnswerSelectionState.CORRECT:className=ClassName.CORRECT_ANSWER;break;case AnswerSelectionState.INCORRECT:className=ClassName.INCORRECT_ANSWER;break;case AnswerSelectionState.MISSED:className=ClassName.MISSED_ANSWER}element.classList.add(className)}var _secondsPerWord=new WeakMap,ReadSpeedCalculator=function(){function ReadSpeedCalculator(){var wordsPerMinute=arguments.length>0&&void 0!==arguments[0]?arguments[0]:130;_classCallCheck(this,ReadSpeedCalculator),_classPrivateFieldInitSpec(this,_secondsPerWord,{writable:!0,value:void 0}),this.setWordsPerMinute(wordsPerMinute)}return _createClass(ReadSpeedCalculator,[{key:"setWordsPerMinute",value:function(wordsPerMinute){var wpm=parseInt(wordsPerMinute);isNaN(wpm)?console.error("Attempt made to set words per minute to non-numeric value of ".concat(wordsPerMinute)):(wpm=Math.max(wordsPerMinute,ReadSpeedCalculator.MIN_WPM),wpm=Math.min(wpm,ReadSpeedCalculator.MAX_WPM),_classPrivateFieldSet(this,_secondsPerWord,60/wpm))}},{key:"getSecondsToRead",value:function(data){return getPlainTextFromHtml(data).trim().split(/\s+/).length*_classPrivateFieldGet(this,_secondsPerWord)}}]),ReadSpeedCalculator}();_defineProperty(ReadSpeedCalculator,"MIN_WPM",80),_defineProperty(ReadSpeedCalculator,"MAX_WPM",1e3);var _blocks=new WeakMap,_index2=new WeakMap,_readSpeedCalculator=new WeakMap,_splitHtml=new WeakSet,DisplayCards=function(){function DisplayCards(_html2){_classCallCheck(this,DisplayCards),_classPrivateMethodInitSpec(this,_splitHtml),_classPrivateFieldInitSpec(this,_blocks,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_index2,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(this,_readSpeedCalculator,{writable:!0,value:void 0}),_classPrivateFieldSet(this,_blocks,_classPrivateMethodGet(this,_splitHtml,_splitHtml2).call(this,_html2)),_classPrivateFieldSet(this,_index2,0),_classPrivateFieldSet(this,_readSpeedCalculator,new ReadSpeedCalculator)}return _createClass(DisplayCards,[{key:"getNext",value:function(){if(_classPrivateFieldGet(this,_index2)<_classPrivateFieldGet(this,_blocks).length){var _this$index3,_this$index4,html=_classPrivateFieldGet(this,_blocks)[(_classPrivateFieldSet(this,_index2,(_this$index3=_classPrivateFieldGet(this,_index2),_this$index4=_this$index3++,_this$index3)),_this$index4)];return{html:html,readTimeSecs:_classPrivateFieldGet(this,_readSpeedCalculator).getSecondsToRead(html)}}return null}},{key:"hasMore",get:function(){return _classPrivateFieldGet(this,_index2)<_classPrivateFieldGet(this,_blocks).length}},{key:"reset",value:function(){_classPrivateFieldSet(this,_index2,0)}},{key:"setWordsPerMinute",value:function(wpm){_classPrivateFieldGet(this,_readSpeedCalculator).setWordsPerMinute(wpm)}}]),DisplayCards}();function _splitHtml2(html){for(var blocks=html.split(/(<\/(?:p|div)>)/i),result=[],iterations=Math.ceil(blocks.length/2),index=0;index<iterations;index++){var _blocks2,tail=null!==(_blocks2=blocks[2*index+1])&&void 0!==_blocks2?_blocks2:"";result.push("".concat(blocks[2*index]).concat(tail).trim())}return result.filter((function(e){return e}))}var MediaClass={PAUSE:"pause",PLAY:"play",SKIP:"skip"},MediaID={PAUSE:"pause",PLAY:"play",SKIP:"skip"},CardState={INACTIVE:0,ARRIVING:1,READING:2,LEAVING:3},_cards=new WeakMap,_visualCard=new WeakMap,_skipButton=new WeakMap,_playButton=new WeakMap,_pauseButton=new WeakMap,_readTimerId=new WeakMap,_cardState=new WeakMap,_currentCardDetail=new WeakMap,_paused=new WeakMap,_buildSlideShow=new WeakSet,_addMediaButtons=new WeakSet,_addButtonToButtonBar=new WeakSet,_setCardState=new WeakSet,_showNextCard=new WeakSet,_readCard=new WeakSet,_removeCard=new WeakSet,_endShowIfLastCard=new WeakSet,_showMediaButtons=new WeakSet,SlideProblemPresenter=function(_ProblemPresenter4){_inherits(SlideProblemPresenter,_ProblemPresenter4);var _super29=_createSuper(SlideProblemPresenter);function SlideProblemPresenter(config){var _this46;return _classCallCheck(this,SlideProblemPresenter),_classPrivateMethodInitSpec(_assertThisInitialized(_this46=_super29.call(this,config)),_showMediaButtons),_classPrivateMethodInitSpec(_assertThisInitialized(_this46),_endShowIfLastCard),_classPrivateMethodInitSpec(_assertThisInitialized(_this46),_removeCard),_classPrivateMethodInitSpec(_assertThisInitialized(_this46),_readCard),_classPrivateMethodInitSpec(_assertThisInitialized(_this46),_showNextCard),_classPrivateMethodInitSpec(_assertThisInitialized(_this46),_setCardState),_classPrivateMethodInitSpec(_assertThisInitialized(_this46),_addButtonToButtonBar),_classPrivateMethodInitSpec(_assertThisInitialized(_this46),_addMediaButtons),_classPrivateMethodInitSpec(_assertThisInitialized(_this46),_buildSlideShow),_classPrivateFieldInitSpec(_assertThisInitialized(_this46),_cards,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this46),_visualCard,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this46),_skipButton,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this46),_playButton,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this46),_pauseButton,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this46),_readTimerId,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this46),_cardState,{writable:!0,value:CardState.INACTIVE}),_classPrivateFieldInitSpec(_assertThisInitialized(_this46),_currentCardDetail,{writable:!0,value:void 0}),_classPrivateFieldInitSpec(_assertThisInitialized(_this46),_paused,{writable:!0,value:void 0}),_classPrivateMethodGet(_assertThisInitialized(_this46),_buildSlideShow,_buildSlideShow2).call(_assertThisInitialized(_this46)),_this46.submitButton.hide(),_this46}return _createClass(SlideProblemPresenter,[{key:"presentOnStage",value:function(stageElement){var _this47=this;return _classPrivateMethodGet(this,_showMediaButtons,_showMediaButtons2).call(this,!0),setTimeout((function(){return _classPrivateMethodGet(_this47,_showNextCard,_showNextCard2).call(_this47)})),_get(_getPrototypeOf(SlideProblemPresenter.prototype),"presentOnStage",this).call(this,stageElement)}},{key:"handleClickEvent",value:function(event,eventId){switch(eventId){case MediaID.PAUSE:return clearTimeout(_classPrivateFieldGet(this,_readTimerId)),_classPrivateMethodGet(this,_showMediaButtons,_showMediaButtons2).call(this,!1),void _classPrivateFieldSet(this,_paused,!0);case MediaID.PLAY:return clearTimeout(_classPrivateFieldGet(this,_readTimerId)),_classPrivateMethodGet(this,_showMediaButtons,_showMediaButtons2).call(this,!0),_classPrivateFieldGet(this,_cardState)===CardState.READING&&_classPrivateMethodGet(this,_removeCard,_removeCard2).call(this),void _classPrivateFieldSet(this,_paused,!1);case MediaID.SKIP:return clearTimeout(_classPrivateFieldGet(this,_readTimerId)),_classPrivateMethodGet(this,_showMediaButtons,_showMediaButtons2).call(this,!0),_classPrivateFieldGet(this,_cardState)!==CardState.ARRIVING&&_classPrivateFieldGet(this,_cardState)!==CardState.READING||_classPrivateMethodGet(this,_removeCard,_removeCard2).call(this),void _classPrivateFieldSet(this,_paused,!1)}_get(_getPrototypeOf(SlideProblemPresenter.prototype),"handleClickEvent",this).call(this,event,eventId)}},{key:"handleAnimationendEvent",value:function(eventIgnored,eventIdIgnored){switch(_classPrivateFieldGet(this,_cardState)){case CardState.ARRIVING:_classPrivateMethodGet(this,_readCard,_readCard2).call(this);break;case CardState.LEAVING:_classPrivateMethodGet(this,_showNextCard,_showNextCard2).call(this);break;default:console.error("Animation unexpectedly ended with card in state ".concat(_classPrivateFieldGet(this,_cardState)))}}}]),SlideProblemPresenter}(ProblemPresenter);function _buildSlideShow2(){_classPrivateFieldSet(this,_cards,new DisplayCards(this.problem.intro.html||this.problem.question.html)),_classPrivateFieldSet(this,_visualCard,new ManagedElement("div","display-card")),this.listenToEventOn("animationend",_classPrivateFieldGet(this,_visualCard)),this.questionElement.removeChildren(),this.questionElement.appendChild(_classPrivateFieldGet(this,_visualCard)),this.expandPresentation(),_classPrivateMethodGet(this,_addMediaButtons,_addMediaButtons2).call(this)}function _addMediaButtons2(){_classPrivateFieldSet(this,_playButton,new ManagedElement("button",MediaClass.PLAY)),_classPrivateMethodGet(this,_addButtonToButtonBar,_addButtonToButtonBar2).call(this,_classPrivateFieldGet(this,_playButton),icons.play,MediaID.PLAY),_classPrivateFieldSet(this,_pauseButton,new ManagedElement("button",MediaClass.PAUSE)),_classPrivateMethodGet(this,_addButtonToButtonBar,_addButtonToButtonBar2).call(this,_classPrivateFieldGet(this,_pauseButton),icons.pause,MediaID.PAUSE),_classPrivateFieldSet(this,_skipButton,new ManagedElement("button",MediaClass.SKIP)),_classPrivateMethodGet(this,_addButtonToButtonBar,_addButtonToButtonBar2).call(this,_classPrivateFieldGet(this,_skipButton),icons.skip,MediaID.SKIP)}function _addButtonToButtonBar2(button,icon,eventId){icons.applyIconToElement(icon,button.element),this.listenToEventOn("click",button,eventId),this.addButtonToBar(button)}function _setCardState2(cardState){switch(cardState){case CardState.ARRIVING:_classPrivateFieldGet(this,_visualCard).classList.remove("card-offscreen"),_classPrivateFieldGet(this,_visualCard).classList.add("card-onscreen");break;case CardState.LEAVING:_classPrivateFieldGet(this,_visualCard).classList.remove("card-onscreen"),_classPrivateFieldGet(this,_visualCard).classList.add("card-offscreen")}_classPrivateFieldSet(this,_cardState,cardState)}function _showNextCard2(){if(console.log("Show the next card"),_classPrivateMethodGet(this,_endShowIfLastCard,_endShowIfLastCard2).call(this))this.handleClickEvent(new Event("click"),Presenter.NEXT_ID);else{var readingSpeed=persistentData.getFromStorage("readingSpeed",130);_classPrivateFieldGet(this,_cards).setWordsPerMinute(readingSpeed),_classPrivateFieldSet(this,_currentCardDetail,_classPrivateFieldGet(this,_cards).getNext()),_classPrivateFieldGet(this,_visualCard).innerHTML=_classPrivateFieldGet(this,_currentCardDetail).html;var cardRect=_classPrivateFieldGet(this,_visualCard).getBoundingClientRect(),verticalSpace=this.presentation.getBoundingClientRect().height-cardRect.height;_classPrivateFieldGet(this,_visualCard).style.marginTop=verticalSpace>0?"".concat(Math.floor(verticalSpace/2),"px"):"0px",_classPrivateMethodGet(this,_setCardState,_setCardState2).call(this,CardState.ARRIVING),_classPrivateMethodGet(this,_endShowIfLastCard,_endShowIfLastCard2).call(this)}}function _readCard2(){var _this59=this;_classPrivateMethodGet(this,_setCardState,_setCardState2).call(this,CardState.READING),_classPrivateFieldGet(this,_paused)||_classPrivateFieldSet(this,_readTimerId,setTimeout((function(){_classPrivateMethodGet(_this59,_removeCard,_removeCard2).call(_this59)}),1e3*_classPrivateFieldGet(this,_currentCardDetail).readTimeSecs))}function _removeCard2(){_classPrivateMethodGet(this,_setCardState,_setCardState2).call(this,CardState.LEAVING)}function _endShowIfLastCard2(){return!_classPrivateFieldGet(this,_cards).hasMore&&(_classPrivateFieldGet(this,_pauseButton).hide(),_classPrivateFieldGet(this,_playButton).hide(),_classPrivateFieldGet(this,_skipButton).hide(),this.showNextButton(!0),!0)}function _showMediaButtons2(playing){playing?(_classPrivateFieldGet(this,_pauseButton).show(),_classPrivateFieldGet(this,_playButton).hide(),_classPrivateFieldGet(this,_skipButton).show(),_classPrivateFieldGet(this,_pauseButton).focus()):(_classPrivateFieldGet(this,_pauseButton).hide(),_classPrivateFieldGet(this,_playButton).show(),_classPrivateFieldGet(this,_skipButton).hide(),_classPrivateFieldGet(this,_playButton).focus())}var MedalDetails={POOR:{upperLimit:25,cssClass:"poor"},BAD:{upperLimit:50,cssClass:"bad"},GOOD:{upperLimit:75,cssClass:"good"},EXCELLENT:{upperLimit:100,cssClass:"excellent"}},_marks=new WeakMap,_buildContent7=new WeakSet,_adjustButtonsForOrigin=new WeakSet,_addHeadings=new WeakSet,_addBookDetailsIfManaged=new WeakSet,_addRetryButton=new WeakSet,_addAnswers=new WeakSet,_addResult=new WeakSet,_calcMedalClass=new WeakSet,_getClassForMarkState=new WeakSet,MarksPresenter=function(_Presenter6){_inherits(MarksPresenter,_Presenter6);var _super30=_createSuper(MarksPresenter);function MarksPresenter(config){var _this48;return _classCallCheck(this,MarksPresenter),_classPrivateMethodInitSpec(_assertThisInitialized(_this48=_super30.call(this,config)),_getClassForMarkState),_classPrivateMethodInitSpec(_assertThisInitialized(_this48),_calcMedalClass),_classPrivateMethodInitSpec(_assertThisInitialized(_this48),_addResult),_classPrivateMethodInitSpec(_assertThisInitialized(_this48),_addAnswers),_classPrivateMethodInitSpec(_assertThisInitialized(_this48),_addRetryButton),_classPrivateMethodInitSpec(_assertThisInitialized(_this48),_addBookDetailsIfManaged),_classPrivateMethodInitSpec(_assertThisInitialized(_this48),_addHeadings),_classPrivateMethodInitSpec(_assertThisInitialized(_this48),_adjustButtonsForOrigin),_classPrivateMethodInitSpec(_assertThisInitialized(_this48),_buildContent7),_classPrivateFieldInitSpec(_assertThisInitialized(_this48),_marks,{writable:!0,value:void 0}),_classPrivateMethodGet(_assertThisInitialized(_this48),_buildContent7,_buildContent8).call(_assertThisInitialized(_this48)),_this48}return _createClass(MarksPresenter,[{key:"next",value:function(eventId){switch(eventId){case MarksPresenter.RETRY_LESSON_ID:return this.config.factory.getProblemAgain(this,this.config);case Presenter.NEXT_ID:if(this.config.lessonInfo.origin===LessonOrigin.EMBEDDED)return void window.top.location.replace(embeddedLesson.rootUrl)}return _get(_getPrototypeOf(MarksPresenter.prototype),"next",this).call(this,eventId)}}]),MarksPresenter}(Presenter);function _buildContent8(){_classPrivateMethodGet(this,_addHeadings,_addHeadings2).call(this),_classPrivateMethodGet(this,_addAnswers,_addAnswers2).call(this),_classPrivateMethodGet(this,_addResult,_addResult2).call(this),_classPrivateMethodGet(this,_addRetryButton,_addRetryButton2).call(this),_classPrivateMethodGet(this,_adjustButtonsForOrigin,_adjustButtonsForOrigin2).call(this)}function _adjustButtonsForOrigin2(){switch(this.config.lessonInfo.origin){case LessonOrigin.EMBEDDED:this.hideHomeButton(),this.applyIconToNextButton(icons.exit),this.showNextButton();break;case LessonOrigin.REMOTE:this.applyIconToNextButton(icons.selectLesson),this.showNextButton()}}function _addHeadings2(){var lessonTitle=this.config.lessonInfo.titles.lesson||this.config.lesson.metadata.getValue("TITLE",i18n(_templateObject98||(_templateObject98=_taggedTemplateLiteral(["80ba26f176878a8c09fed91eec1847ac::"]))));this.presentation.createAndAppendChild("h1",null,i18n(_templateObject99||(_templateObject99=_taggedTemplateLiteral(["8a7b5ed72835af8c2804d8f5047da3d3::"])))),this.presentation.createAndAppendChild("h2",null,lessonTitle),_classPrivateMethodGet(this,_addBookDetailsIfManaged,_addBookDetailsIfManaged2).call(this)}function _addBookDetailsIfManaged2(){if(this.config.lessonInfo.managed){var bookDetails="<p>from:</p>";lessonManager.usingLocalLibrary?bookDetails+="<span class='library-title'>".concat(this.config.lessonInfo.titles.library,"</span>"):bookDetails+="<span class='library-title'>".concat(this.config.lessonInfo.titles.library,"</span> \n        <span class='book-title'>").concat(this.config.lessonInfo.titles.book,"</span>\n        <span class='chapter-title'>").concat(this.config.lessonInfo.titles.chapter,"</span>"),this.presentation.createAndAppendChild("div",null,bookDetails)}}function _addRetryButton2(){var repeatButton=new ManagedElement("button");icons.applyIconToElement(icons.repeatLesson,repeatButton),this.addButtonToBar(repeatButton),this.listenToEventOn("click",repeatButton,MarksPresenter.RETRY_LESSON_ID)}function _addAnswers2(){var _this60=this,answers=new ManagedElement("ul");this.config.lesson.marks.markedItems.forEach((function(markedItem){var li=new ManagedElement("li");li.innerHTML="".concat(markedItem.item.question.plainText),li.classList.add(_classPrivateMethodGet(_this60,_getClassForMarkState,_getClassForMarkState2).call(_this60,markedItem.state)),answers.appendChild(li)})),this.presentation.appendChild(answers)}function _addResult2(){var marks=this.config.lesson.marks,totalQuestions=marks.correct+marks.incorrect+marks.skipped,percent=0==totalQuestions?0:Math.round(100*marks.correct/totalQuestions),summary=i18n(_templateObject100||(_templateObject100=_taggedTemplateLiteral(["dba099f02fa6e674228bce51535a5cc4::","","",""])),percent,marks.correct,totalQuestions);this.presentation.createAndAppendChild("p","result-summary",summary).classList.add(_classPrivateMethodGet(this,_calcMedalClass,_calcMedalClass2).call(this,percent))}function _calcMedalClass2(percent){for(var key in MedalDetails){var details=MedalDetails[key];if(percent<details.upperLimit)return details.cssClass}return MedalDetails.EXCELLENT.cssClass}function _getClassForMarkState2(state){switch(state){case MarkState.CORRECT:return"correct";case MarkState.INCORRECT:return"incorrect";case MarkState.SKIPPED:return"skipped"}return"unknown-state"}_defineProperty(MarksPresenter,"RETRY_LESSON_ID","RETRY_LESSON");var NAVIGATION={HomePresenter:{previous:null,next:LibraryPresenter},LibraryPresenter:{previous:HomePresenter,next:BookPresenter},BookPresenter:{previous:LibraryPresenter,next:ChapterPresenter},ChapterPresenter:{previous:BookPresenter,next:LessonPresenter},LessonPresenter:{previous:ChapterPresenter,next:ProblemPresenter},LessonEditorPresenter:{previous:LessonPresenter,next:LessonPresenter},ProblemPresenter:{previous:null,next:ProblemPresenter},ChoiceProblemPresenter:{previous:null,next:ProblemPresenter},FillProblemPresenter:{previous:null,next:ProblemPresenter},OrderProblemPresenter:{previous:null,next:ProblemPresenter},SlideProblemPresenter:{previous:null,next:ProblemPresenter},MarksPresenter:{previous:null,next:ChapterPresenter}},_skipUnnecessaryListPresenters=new WeakSet,_moveToNextPresenterIfUnnecessary=new WeakSet,PresenterFactory=function(){function PresenterFactory(){_classCallCheck(this,PresenterFactory),_classPrivateMethodInitSpec(this,_moveToNextPresenterIfUnnecessary),_classPrivateMethodInitSpec(this,_skipUnnecessaryListPresenters)}return _createClass(PresenterFactory,[{key:"getSuitableProblemPresenter",value:function(config){switch(config.lesson.peekAtNextProblem().questionType){case QuestionType.ORDER:return new OrderProblemPresenter(config);case QuestionType.FILL:return new FillProblemPresenter(config);case QuestionType.MULTI:case QuestionType.SIMPLE:return new ChoiceProblemPresenter(config);case QuestionType.SLIDE:default:return new SlideProblemPresenter(config)}}},{key:"hasNext",value:function(caller){return!!NAVIGATION[caller.constructor.name].next}},{key:"hasPrevious",value:function(caller){return!!NAVIGATION[caller.constructor.name].previous}},{key:"getHome",value:function(config){return new HomePresenter(config)}},{key:"getEditor",value:function(caller,config){return caller instanceof LessonPresenter?new LessonEditorPresenter(config):(console.error("Attempt to edit a presenter for which there is no editor. Going home."),new HomePresenter(config))}},{key:"getNext",value:function(caller,config){if(caller instanceof ProblemPresenter||caller instanceof LessonPresenter)return config.lesson.hasMoreProblems?this.getSuitableProblemPresenter(config):new MarksPresenter(config);var klass=_classPrivateMethodGet(this,_skipUnnecessaryListPresenters,_skipUnnecessaryListPresenters2).call(this,NAVIGATION[caller.constructor.name].next);return klass?new klass(config):null}},{key:"getPrevious",value:function(caller,config){var klass=NAVIGATION[caller.constructor.name].previous;return klass?new klass(config):null}},{key:"getProblemAgain",value:function(caller,config){return caller instanceof MarksPresenter?(config.lesson.restart(),config.lesson.hasMoreProblems?this.getSuitableProblemPresenter(config):new MarksPresenter(config)):(console.error("Attempt to retry problem from other than a MarksPresenter."),this.getHome(config))}},{key:"getLibraryPresenter",value:function(callerIgnored,config){return new(_classPrivateMethodGet(this,_skipUnnecessaryListPresenters,_skipUnnecessaryListPresenters2).call(this,LibraryPresenter))(config)}}],[{key:"getInitial",value:function(){var config={factory:new PresenterFactory};return embeddedLesson.hasLesson?(config.lesson=embeddedLesson.lesson,config.lessonInfo=embeddedLesson.lessonInfo,config.lesson.hasMoreProblems?config.factory.getSuitableProblemPresenter(config):new MarksPresenter(config)):new HomePresenter(config)}}]),PresenterFactory}();function _skipUnnecessaryListPresenters2(presenterClass){for(;;){var nextClass=_classPrivateMethodGet(this,_moveToNextPresenterIfUnnecessary,_moveToNextPresenterIfUnnecessary2).call(this,presenterClass);if(nextClass===presenterClass)return presenterClass;presenterClass=nextClass}}function _moveToNextPresenterIfUnnecessary2(presenterClass){switch(presenterClass.name){case"LibraryPresenter":if(lessonManager.bookTitles.length<=1)return lessonManager.bookIndex=0,BookPresenter;break;case"BookPresenter":if(lessonManager.chapterTitles.length<=1)return lessonManager.chapterIndex=0,ChapterPresenter;break;case"ChapterPresenter":if(lessonManager.lessonTitles.length<=1)return lessonManager.lessonIndex=0,LessonPresenter}return presenterClass}var throttleTimer=null;function setVhCssVariable(){var vh=.01*window.innerHeight;document.documentElement.style.setProperty("--vh","".concat(vh,"px"))}function showFatalError(error){var html="<h1>Whoops!</h1>\n  <p>An error has occured from which I can't recover on my own.</p>\n  <ul>\n  <li>Name: ".concat(error.name,"</li>\n  <li>Cause: ").concat(error.cause,"</li>\n  <li>Message: ").concat(error.message,"</li>\n  </ul>\n  <p>Try reloading the application.</p>\n  ");console.error(error),document.getElementById("content").innerHTML=html}function loadApplication(){return console.info("Launching application."),persistentData.setStorageKeyPrefix("LR_".concat(BuildInfo.getBundleName().replace(".","_"))),getLanguages(embeddedLesson.translations).then((function(){return lessonManager.loadAllLibraries("assets/lessons/libraries.json")})).then((function(){return loadSettingDefinitions({palette:{type:"separator",label:i18n(_templateObject44||(_templateObject44=_taggedTemplateLiteral(["54016c9d89a98aa8bf2e8a8e7ba6f352::"])))},hue:{type:"range",label:i18n(_templateObject45||(_templateObject45=_taggedTemplateLiteral(["d86cbd21656e6a16eeebdf3041f7d9b0::"]))),defaultValue:DEFAULT_HUE,min:0,max:360,onupdate:function(value){setPalette({hue:value=parseInt(value)})}},saturation:{type:"range",label:i18n(_templateObject46||(_templateObject46=_taggedTemplateLiteral(["0b0d1a40638f299b733e0c7c90344698::"]))),defaultValue:DEFAULT_SATURATION,min:0,max:100,onupdate:function(value){setPalette({saturation:value=parseInt(value)})}},spread:{type:"range",label:i18n(_templateObject47||(_templateObject47=_taggedTemplateLiteral(["c13970d8379e2f9daef71a2d63e2233d::"]))),defaultValue:DEFAULT_COLOR_SPREAD,min:0,max:180,onupdate:function(value){setPalette({spread:value=parseInt(value)})}},darkMode:{type:"checkbox",label:i18n(_templateObject48||(_templateObject48=_taggedTemplateLiteral(["3924c958175e666737225e86a68ac4b4::"]))),defaultValue:DEFAULT_DARK_MODE,onupdate:function(value){setPalette({dark:value})}},fontSize:{type:"range",label:i18n(_templateObject49||(_templateObject49=_taggedTemplateLiteral(["c4943062b634c56348c67fdebba808eb::"]))),defaultValue:DEFAULT_FONT_SIZE,min:10,max:22,onupdate:function(value){setProperty("--font-base-size","".concat(value,"px"))}},hideButtonText:{type:"checkbox",label:i18n(_templateObject50||(_templateObject50=_taggedTemplateLiteral(["63d171a5c8e1018a70b682bc3eca413f::"]))),defaultValue:!1,onupdate:function(value){icons.hideText=value}},readingSpeed:{type:"range",label:i18n(_templateObject51||(_templateObject51=_taggedTemplateLiteral(["23944ac1bff1399fe70064067e3e4804::"]))),defaultValue:DEFAULT_READING_SPEED,min:80,max:1e3},lessonInfo:{type:"separator",label:i18n(_templateObject52||(_templateObject52=_taggedTemplateLiteral(["16c6a433b76133c6204c165f24374006::"])))},library:{type:"select",label:i18n(_templateObject53||(_templateObject53=_taggedTemplateLiteral(["b0ef546d26b0e0a6ad6a89b8f81b9170::"]))),defaultValue:DEFAULT_LIBRARY_KEY,onupdate:function(value){lessonManager.remoteLibraryKey=value},options:function(){return lessonManager.remoteLibraryTitles},reloadIfChanged:!0},showFirstUseMessage:{type:"checkbox",label:i18n(_templateObject54||(_templateObject54=_taggedTemplateLiteral(["5bb6f06649fe039d8738eab53560e644::"]))),defaultValue:!0}})})).then((function(){var language=i18n(_templateObject82||(_templateObject82=_taggedTemplateLiteral(["language::"])));return""!==language&&(console.info("Language ".concat(language)),document.documentElement.setAttribute("lang",language)),!0})).then((function(){return menuItems=getMainMenuItems(),header.setup(menuItems),void footer.setup();var menuItems})).then((function(){return lessonManager.loadAllLibraryContent()})).then((function(){return toast('<span style="font-size:3rem;">&#x1F631;</span>This application is work in progress and not released yet. Things may change and things may break. Documentation may not be correct.')})).then((function(){return function(){if(persistentData.getFromStorage("showFirstUseMessage",!0)){var appName=BuildInfo.getProductName(),privacyLinkLabel=i18n(_templateObject70||(_templateObject70=_taggedTemplateLiteral(["c5f29bb36f9158d2e00f5d4dc213a0ff::"]))),privacyLink="[".concat(privacyLinkLabel,"](").concat(Urls.PRIVACY,")"),message=[i18n(_templateObject71||(_templateObject71=_taggedTemplateLiteral(["a7c4b7db96ceb235072a13b2f6d0a47c::",""])),appName),i18n(_templateObject72||(_templateObject72=_taggedTemplateLiteral(["f1c6d62749c0daf6f811d81d8e81a0ac::"]))),"",i18n(_templateObject73||(_templateObject73=_taggedTemplateLiteral(["09c78e9bf1c7828280e85b6422d6e712::",""])),appName),i18n(_templateObject74||(_templateObject74=_taggedTemplateLiteral(["645a1e1fef8324f7061e6cd82b966b02::"]))),i18n(_templateObject75||(_templateObject75=_taggedTemplateLiteral(["85320d2bf19b4540dfca0365564a452e::"]))),i18n(_templateObject76||(_templateObject76=_taggedTemplateLiteral(["9c56fddb40ff68400351826fd5d07d45::"]))),i18n(_templateObject77||(_templateObject77=_taggedTemplateLiteral(["d41d8cd98f00b204e9800998ecf8427e::"]))),i18n(_templateObject78||(_templateObject78=_taggedTemplateLiteral(["8b73f389cf0286a63a4adfb231300c05::"]))),i18n(_templateObject79||(_templateObject79=_taggedTemplateLiteral(["d41d8cd98f00b204e9800998ecf8427e::"]))),i18n(_templateObject80||(_templateObject80=_taggedTemplateLiteral(["f3d5c4e36b478dff85e2fec9c9be9a35::",""])),privacyLink)].join("\n");return ModalDialog.showInfo(parseMarkdown(message),i18n(_templateObject81||(_templateObject81=_taggedTemplateLiteral(["83218ac34c1834c26781fe4bde918ee4::"])))).then((function(){return persistentData.saveToStorage("showFirstUseMessage",!1)}))}return Promise.resolve()}()})).then((function(){var stage=document.getElementById("stage");return new StageManager(stage).startShow(PresenterFactory.getInitial())})).then((function(){console.warn("Did not expect to get here."),ModalDialog.showInfo(i18n(_templateObject83||(_templateObject83=_taggedTemplateLiteral(["c55bdbb47fee32f4ca56a977427374bf::"])))).then((function(){return window.location.reload()}))})).catch((function(error){showFatalError(error),ModalDialog.showFatal(error).then((function(){return window.location.reload()}))}))}window.addEventListener("resize",(function(){null===throttleTimer&&(throttleTimer=window.setTimeout((function(){throttleTimer=null,setVhCssVariable()}),200))})),setVhCssVariable(),window.addEventListener("load",(function(){try{return BuildInfo.isBuilt()&&registerServiceWorker(BuildInfo.getMode()),loadApplication()}catch(error){showFatalError(error)}}))}();
+(function () {
+  'use strict';
+
+  /**
+   * @file Polyfill for String.replaceAll
+   *
+   * @module utils/polyfills/string
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Implement replaceAll function if not already implemented.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll}
+   *
+   * @param {string} str - the source string
+   * @param {string | RegExp} pattern - the pattern to look for in the source string
+   * @param {string} replacement - the replacement
+   */
+
+  if (!String.prototype.replaceAll) {
+    String.prototype.replaceAll = function stringReplaceAll(
+      pattern,
+      replacement
+    ) {
+      if (pattern instanceof RegExp) {
+        if (pattern.flags.indexOf('g') < 0) {
+          throw new TypeError(
+            'String.prototype.replaceAll called with a non-global RegExp argument'
+          );
+        }
+        return this.replace(pattern, replacement);
+      } else {
+        return this.replace(new RegExp(pattern, 'g'), replacement);
+      }
+    };
+  }
+
+  /**
+   * @file Constants used by the application. In most cases these are items which
+   * are replaced with the appropriate values during the build process.
+   *
+   * @module data/constants
+   *
+   * @license GPL-3.0-or-later
+   * Lesson RunnerCreate quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  /**
+   * Build information. All values are provided via functions to allow the
+   * application to be viewed with a server on the source *index.html* file
+   * prior to build. The use of functions prevents constant replacements during build process.
+   * @property {function():boolean} isBuilt - has the code been built.
+   * This distinguishes versions which are being viewed directly from the source.
+   * @property {function():string} mode - production or development
+   * @property {function():string} version - build version
+   * @property {function():string} bundleName - final bundle name including the extension
+   */
+  const BuildInfo = {
+    isBuilt: () => BuildInfo.getMode().indexOf('$') < 0,
+    getBuildDate: () => '$_BUILD_DATE_TXT_$',
+    getBundleName: () => '$_BUNDLE_NAME_TXT_$',
+    getProductName: () => '$_PRODUCT_NAME_TXT_$',
+    getMode: () => '$_BUILD_MODE_TXT_$',
+    getVersion: () => '$_APP_VERSION_TXT_$ ',
+  };
+
+  /**
+   * @file Parser for a light version of Markdown
+   *
+   * @module utils/text/textProcessing
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  /**
+   * @typedef {Object} Replacement
+   * @property {RegExp} re - the expression to match.
+   * @property {string | function(match, ...captures): string} rep - replacement. If a function is
+   * passed, it is provided with the string that matched followed by the captured
+   * groups.
+   */
+
+  /**
+   * Block replacements (flow). {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories}
+   * When processing the Markdown, blocks are created. These are defined as blocks
+   * of text separated by at least one blank line. The following replacements
+   * are used for code which should be treated as independent blocks. To ensure
+   * post processing is correct, they should insert two newlines at the end to
+   * create an independent block.
+   * @type {Replacement[]}
+   */
+  const blockReps = [
+    /** Setext heading 1 */
+    {
+      re: /(?:(.+)\n=+\n)/g,
+      rep: '\n\n<h1>$1</h1>\n\n',
+    },
+    /** Setext heading 2 */
+    {
+      re: /(?:(.+)\n-+\n)/g,
+      rep: '\n\n<h2>$1</h2>\n\n',
+    },
+    /** ATX heading. Any level. */
+    {
+      re: /^(#+)(?: *)(.+?)(?:#*)[ \t]*$/gm,
+      rep: (matched, hashes, txt) => {
+        const level = Math.min(hashes.length, 6);
+        return `\n\n<h${level}>${txt.trim()}</h${level}>\n`;
+      },
+    },
+    /** block quote */
+    reAllLinesStartWith('>[ \t]*', {
+      blockPrefix: '<blockquote>',
+      blockSuffix: '</blockquote>',
+    }),
+    /** code block */
+    reAllLinesStartWith('(?: {4}|\t)', {
+      blockPrefix: '<pre><code>',
+      blockSuffix: '</code></pre>',
+    }),
+    /** horizontal rule. This must come before unordered lists to prevent interpretation of - as bullet */
+    {
+      re: /^(?:[*_-] *){3,}\s*$/gm,
+      rep: '\n\n<hr>\n\n',
+    },
+    /** unordered list */
+    reAllLinesStartWith(' {0,3}[*+-][ \t]*', {
+      blockPrefix: '<ul>',
+      blockSuffix: '</ul>',
+      linePrefix: '<li>',
+      lineSuffix: '</li>',
+    }),
+    /** ordered list */
+    reAllLinesStartWith(' {0,3}\\d+\\.[ \t]*', {
+      blockPrefix: '<ol>',
+      blockSuffix: '</ol>',
+      linePrefix: '<li>',
+      lineSuffix: '</li>',
+    }),
+    /** paragraphs of elements not in blocks */
+    {
+      re: /(?:(?:^|\n{2,})(?!<\w+>))((?:.(?:\n(?!\n))?)+)/g,
+      rep: '\n\n<p>$1</p>\n\n',
+    },
+    /** tidy up */
+    {
+      re: /\n{2,}/g,
+      rep: '\n\n',
+    },
+  ];
+
+  /**
+   * Span replacements used for Markdown.
+   * @type {Replacement[]}
+   */
+  const spanReps = [
+    /** image */
+    {
+      re: /!\[(.*)\]\((https?:\/\/[-\w@:%.+~#=/]+)(?: +"(.*)")?\)/gm,
+      rep: `<img alt="$1" src="$2" title="$3"/>`,
+    },
+    /** link */
+    {
+      re: /\[(.*)\]\((https?:\/\/[-\w@:%.+~#=/]+)(?: +"(.*)")?\)/gm,
+      rep: `<a target="_blank" href="$2" title="$3">$1</a>`,
+    },
+    /** automatic link */
+    {
+      re: /(?:&lt;|<)(https?:\/\/[-\w@:%.+~#=/]+)>/gm,
+      rep: '<a target="_blank" href="$1">$1</a>',
+    },
+    /** automatic email */
+    {
+      re: /(?:&lt;|<)(\w+(?:[.-]?\w+)*@\w+(?:[.-]?\w+)*(?:\.\w{2,4})+)>/gm,
+      rep: (match, address) => {
+        const encoded = encodeToEntities(address);
+        return `<a href="${encoded}">${encoded}</a>`;
+      },
+    },
+    /** code */
+    {
+      re: /(?:`{2,}(.*?)`{2,}|`(.*?)`)/gm,
+      rep: (match, codeA, codeB) => `<code>${codeA ?? codeB}</code>`,
+    },
+    /** emphasis */
+    {
+      re: /\*\*([^\s])(.*?)([^\s])\*\*/gm,
+      rep: '<strong>$1$2$3</strong>',
+    },
+    {
+      re: /__([^\s])(.*?)([^\s])__/gm,
+      rep: '<strong>$1$2$3</strong>',
+    },
+    {
+      re: /\*([^\s])(.*?)([^\s])\*/gm,
+      rep: '<em>$1$2$3</em>',
+    },
+    {
+      re: /_([^\s])(.*?)([^\s])_/gm,
+      rep: '<em>$1$2$3</em>',
+    },
+  ];
+
+  /**
+   * Escape replacements used for Markdown
+   * @type {Replacement[]}
+   */
+  const markdownEscReps = [
+    {
+      re: /\\([\\`*_{}[\]()#+.!-])/g,
+      rep: (match, chr) => encodeCharToEntity(chr),
+    },
+  ];
+
+  /**
+   * Replacements for security reasons.
+   */
+  const securityReps = [
+    {
+      re: '\0',
+      rep: '\ufffd',
+    },
+  ];
+
+  /**
+   * Escape HTML
+   * @type {Replacement}
+   */
+  const htmlEscIgnoringBrReps = [
+    {
+      re: /&(?![\w#]+?;)/gm,
+      rep: '&amp;',
+    },
+    {
+      re: /<(?!br>)/gim,
+      rep: '&lt;',
+    },
+  ];
+
+  /**
+   * Escape HTML
+   * @type {Replacement}
+   */
+  const htmlEscAllReps = [
+    {
+      re: /&(?![\w#]+?;)/gm,
+      rep: '&amp;',
+    },
+    {
+      re: /</gim,
+      rep: '&lt;',
+    },
+  ];
+
+  /**
+   * Clean up HTML
+   */
+  const htmlCleanUpReps = [
+    {
+      re: /^\s*$/gm,
+      rep: '',
+    },
+    {
+      re: /<(?:p|div)>\s*?<\/(?:p|div)>/gim,
+      rep: '',
+    },
+  ];
+
+  /**
+   * Parse data using replacements.
+   * @param {string} data - text to be parsed.
+   * @param {Replacement} replacements - replacements to apply.
+   * @returns {string}
+   */
+  function processReplacements(data, replacements) {
+    if (!data) {
+      return data;
+    }
+    replacements.forEach((sub) => {
+      data = data.replaceAll(sub.re, sub.rep);
+    });
+    return data;
+  }
+
+  /**
+   * Create Replacement for consecutive block of lines that all begin with the
+   * specified character. This will form part of a regular expression so should be
+   * escaped if special characters are to be matched.
+   * @param {string} reStart - expression to match at start of each line. NB. if this
+   * is a group, it must be non-capturing.
+   * @param {Object} [options] - options for the block formation.
+   * @param {string} options.blockPrefix - characters placed at the beginning of the resulting block.
+   * @param {string} options.blockSuffix - characters placed at the end of the resulting block.
+   * @param {string} options.linePrefix - characters placed at the beginning of each resulting line.
+   * @param {string} options.lineSuffix - characters placed at the end of each resulting line.
+   * @returns {Replacement}
+   */
+  function reAllLinesStartWith(reStart, options) {
+    const reBlockSearchRe = new RegExp(
+      `(?:^|\\n)${reStart}(?:.|\\n)*?(?:(\\n(?!${reStart}))|$)`,
+      'g'
+    );
+    const lineReplacementRe = new RegExp(`^${reStart}(\\s*.*)$`, 'gm');
+    const lineReplacement = `${options?.linePrefix ?? ''}$1${
+    options?.lineSuffix ?? ''
+  }`;
+    return {
+      re: reBlockSearchRe,
+      rep: (match) => {
+        return `\n\n${options?.blockPrefix ?? ''}${match.replaceAll(
+        lineReplacementRe,
+        lineReplacement
+      )}${options?.blockSuffix ?? ''}\n\n`;
+      },
+    };
+  }
+
+  /**
+   * Encode character to HTML entity
+   * @param {string} chr - character to encode. Although accepting a string, only the first
+   * character is encoded.
+   * @returns{string} HTML entity for first character.
+   */
+  function encodeCharToEntity(chr) {
+    return `&#${chr.charCodeAt(0).toString()};`;
+  }
+  /**
+   * Encode a string to html entities.
+   * @param {string} data
+   * @returns {string}
+   */
+  function encodeToEntities(data) {
+    let result = '';
+    for (const chr of data) {
+      result += encodeCharToEntity(chr);
+    }
+    return result;
+  }
+
+  /**
+   * Convert the Markdown data into HTML.
+   * Before parsing the Markdown, any HTML special characters are escaped.
+   * Note that note all Markdown is supported and there are some limitations.
+   *
+   * + Blockquotes: Lazy blockquotes are not supported. Each line must be preceded
+   * by >. Also nested blockquotes are not supported.
+   * + lists: only simple lists are supported. Blockquotes, code blocks and other
+   * block elements cannot be included.
+   * + Html: Inline HTML is not supported. This is not safe when merging HTML
+   * generated from Markdown into existing elements and so, with the exception of
+   * HTML entities and <br>, all HTML is escaped.
+   * Entities such as &amp;copy; and line breaks <br> will not be escaped.
+   * + Reference links: These are not supported.
+   * + Automatic links: Markdown uses less than and greater than characters to
+   * surround automatic links. However, the greater than character is converted to
+   * an HTML entity before parsing the Markdown. This means that <...> or &lt;...>
+   * will be interpreted as automatic links. If you want to prevent the contents
+   * being interpreted as an automatic link, use the &gt; entity for the closing
+   * tag.
+   *
+   *
+   * @param {string} data
+   * @param {Object} options - additional processing options.
+   * @param {Replacement[]} options.pre - an array of Replacement objects which
+   * are applied before any other processing is applied
+   * @param {Replacement[]} options.post - an array of Replacement objects
+   * which are applied after the markdown replacements have been made.
+   * @returns Resulting html.
+   */
+  function parseMarkdown(data, options) {
+    var result = data.replaceAll(/\r/g, ''); // normalise line endings
+    result = processReplacements(result, securityReps);
+    if (options?.pre) {
+      result = processReplacements(result, options.pre);
+    }
+    result = processReplacements(result, htmlEscIgnoringBrReps);
+    result = processReplacements(result, markdownEscReps);
+    result = processReplacements(result, blockReps);
+    result = processReplacements(result, spanReps);
+    result = processReplacements(result, htmlCleanUpReps);
+
+    if (options?.post) {
+      result = processReplacements(result, options.post);
+    }
+    return result;
+  }
+
+  /**
+   * Escapes html. No markdown is processed.
+   * @param {string} data
+   * @returns {string}
+   */
+  function escapeHtml(data) {
+    data = processReplacements(data, securityReps);
+    return processReplacements(data, htmlEscAllReps);
+  }
+
+  /**
+   * Convert html into plain text
+   * @param {string} html
+   * @returns {string} the plain text
+   */
+  function getPlainTextFromHtml(html) {
+    return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ');
+  }
+
+  /**
+   * @file Base 64 functions
+   *
+   * @module utils/text/base64
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  /**
+   * Converts string to base64 represention. Note that the string is first encoded
+   * so the base64 result represents the encoded version and not the original string.
+   * @param {string} str - string to encode.
+   * @returns {string}
+   */
+  function stringToBase64(str) {
+    return window.btoa(encodeURIComponent(str));
+  }
+
+  /**
+   * converts base64 string to a string.
+   * It is assumed that the original string used to create the base64 version
+   * was first encoded using encodeURIComponent.
+   * As such the resulting base64 conversion is decoded using
+   * decodeURIComponent before returning.
+   * @param {string} base64
+   * @returns {string}
+   */
+  function base64ToString(base64) {
+    return decodeURIComponent(window.atob(base64));
+  }
+
+  /**
+   * @file Localisation routines.
+   *
+   * @module utils/i18n/i18n
+   *
+   * @license GPL-3.0-or-later
+   * Lesson RunnerCreate quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * @typedef {Object<string, string>} Translations - key: value pair. The key is
+   * a unique identification for the translation.
+   *
+   * @type {Translations}
+   */
+  let activeTranslations = null;
+
+  /**
+   * @type {Translations}
+   */
+  let fallbackTranslations = null;
+
+  /**
+   * Set the active translation. If an activeTranslation has already been set,
+   * the existing entry is moved into the fallbackTranslations. So normally usage
+   * would be to call setActiveTranslations with the master language and then call
+   * setActiveTranslations again with the user's preferred language.
+   * @param {Translations} translations - translations to use.
+   */
+  function setActiveTranslations(translations) {
+    sanitiseTranslations(translations);
+    if (activeTranslations) {
+      fallbackTranslations = activeTranslations;
+    }
+    activeTranslations = translations;
+  }
+
+  /**
+   * Escape the translation to prevent script injection via translation.
+   * @param {Translations} translations
+   */
+  function sanitiseTranslations(translations) {
+    for (const key in translations) {
+      translations[key] = escapeHtml(translations[key]);
+    }
+  }
+  /**
+   * Complete the template. Replacement values are inserted in the template at
+   * locations marked with ${n}, where n is the index of the replacement provided
+   * in the values. If n is omitted or is not a number, the index used is
+   * derived from it's position in the template. So these are equivalent:
+   * ```
+   * 'This is my ${0} replacement ${1} string'
+   * 'This is my ${} replacement ${} string'
+   * 'This is my ${BUILD-INFO.date()} replacement ${BUILD-INFO.mode()} string'
+   * ```
+   * This means it is only necessary to amend the original placeholders if it is
+   * necessary to rearrange the position of the strings.
+   * @param {string} template template using ${} placeholders.
+   * @param {string[]} values results of the replacement expressions from the original
+   *  string literal.
+   * @returns Completed template. HTML is escaped to prevent injection via tranlations.
+   */
+  function completeTemplate(template, values) {
+    let defaultIndex = 0;
+    return template.replace(/\${(.*?)}/g, (match, index) => {
+      index = parseInt(index);
+      if (isNaN(index)) {
+        index = defaultIndex++;
+      }
+      if (index < values.length) {
+        return values[index];
+      } else {
+        console.error(`Cannot find {${index}} for "${template}"`);
+        return '${?}';
+      }
+    });
+  }
+
+  /**
+   * Tag function routine for template literals.
+   * Translations are picked up from the activeTranslations if they exist.
+   *
+   * The template literal to which the tag function is applied should start with a
+   * keyword like this:
+   * ```
+   * i18n`keyword::the normal ${varA} use ${varB}.`
+   * ```
+   * In the translations, ${varA} and ${varB} are referenced as ${0} ${1}.
+   *
+   * @see completeTemplate for more information about referencing the original
+   * expression results.
+   *
+   * Do not use in constants defined at the module level as these could be
+   * resolved prior to resolution of the language files. Use a function instead.
+   *
+   * @param {string[]} strings
+   * @param  {...any} values
+   * @returns resulting string.
+   */
+  function i18n(strings, ...values) {
+    const keyMatch = strings[0].match(/(\w+?)::(.*)/);
+    let keyword = '';
+    let result = [];
+    if (keyMatch) {
+      keyword = keyMatch[1];
+      result.push(keyMatch[2]);
+    } else {
+      result.push(strings[0]);
+    }
+
+    let template = activeTranslations ? activeTranslations[keyword] : null;
+    if (!template) {
+      template = fallbackTranslations ? fallbackTranslations[keyword] : null;
+    }
+
+    let output;
+    if (template) {
+      output = completeTemplate(template, values);
+    } else {
+      // just return default template literal as was.
+      values.forEach((value, i) => {
+        result.push(value);
+        result.push(strings[i + 1]);
+      });
+      output = result.join('');
+    }
+    return output;
+  }
+
+  /**
+   *
+   * @returns the preferred language as defined in navigator.languages.
+   */
+  function getPreferredLanguages() {
+    return navigator.languages;
+  }
+
+  /**
+   * @typedef {Object} LanguageSubTags
+   * @property {string} language - the primary language
+   * @property {string} extlang - the first extended languages. Note that these
+   * are not split, so multiple extended languages are concatenated but separated
+   * by hyphens.
+   * @property {string} script - the script
+   * @property {string} region - the region
+   */
+  /**
+   * Decode an RFC5646 language tag.
+   *
+   * The tag is converted to lowercase first, so all subtags are in lowercase.
+   * @param {string} languageTag - tag conforming to RFC5646
+   * @returns {LanguageSubTags} the decoded language tag.
+   */
+  function extractLanguageSubTags(languageTag) {
+    languageTag = languageTag.toLowerCase();
+    var language = '';
+    var extlang = '';
+    var script = '';
+    var region = '';
+
+    const matches = languageTag.match(
+      /^([a-z]{2,3})(-[a-z]{3}(?:-[a-z]{3}){0,2})?(-[a-z]{4})?(-(?:[a-z]{2}|[0-9]{3}))?([-].{5,})?$/
+    );
+    if (matches) {
+      language = matches[1];
+      extlang = matches[2] ? matches[2].substring(1) : '';
+      script = matches[3] ? matches[3].substring(1) : '';
+      region = matches[4] ? matches[4].substring(1) : '';
+    }
+
+    return {
+      language: language,
+      extlang: extlang,
+      script: script,
+      region: region,
+    };
+  }
+
+  /**
+   * Compares an array of preferred languages against an array of language files
+   * and returns the best match. When comparing, the language subtag must always
+   * match. A more specific match is normally preferred, with the region being
+   * more important than the script subtag. However, the order of languages will
+   * affect this. The closer a language is to the beginning of the
+   * preferredLanguages array, the more important it is. Matching a language
+   * closer to the start of the array, will out rank a more specific match to a
+   * language further down the array.
+   *
+   * @param {string[]} preferredLanguages - array of preferred languages.
+   * @param {string[]} availableLanguageFiles - array of file names. The file names
+   * should follow be in the form of [RFC 5646](https://datatracker.ietf.org/doc/html/rfc5646)
+   * tags followed by '.json'.
+   * @returns the matching file name. Null if no match.
+   */
+  function getBestLanguageFile(
+    preferredLanguages,
+    availableLanguageFiles
+  ) {
+    const availableSubTags = availableLanguageFiles.map((entry) => {
+      const languageTag = entry.toLowerCase().replace(/\.json$/i, '');
+      return extractLanguageSubTags(languageTag);
+    });
+    const preferredSubTags = preferredLanguages.map((entry) => {
+      return extractLanguageSubTags(entry);
+    });
+
+    let bestMatch = {
+      weight: 0,
+      file: null,
+    };
+    preferredSubTags.forEach((prefSubTag, prefIndexIgnored) => {
+      const languageIndex = preferredSubTags.findIndex(
+        (element) => element.language === prefSubTag.language
+      );
+      const prefSubTagRank = preferredSubTags.length - languageIndex;
+      availableSubTags.forEach((availSubTag, availIndex) => {
+        let weight = 0;
+        if (prefSubTag.language === availSubTag.language) {
+          weight += 100 * prefSubTagRank;
+          if (
+            prefSubTag.region !== '' &&
+            prefSubTag.region === availSubTag.region
+          ) {
+            weight += 10;
+          }
+          if (
+            prefSubTag.script !== '' &&
+            prefSubTag.script === availSubTag.script
+          ) {
+            weight += 1;
+          }
+          if (weight > bestMatch.weight) {
+            bestMatch.weight = weight;
+            bestMatch.file = availableLanguageFiles[availIndex];
+          }
+        }
+      });
+    });
+    return bestMatch.file;
+  }
+
+  /**
+   * Get the translations. This is primarily for exporting.
+   * @returns {{active: Translations, fallback: Translations}}
+   */
+  function getBase64Translations() {
+    return stringToBase64(
+      JSON.stringify({
+        active: activeTranslations,
+        fallback: fallbackTranslations,
+      })
+    );
+  }
+
+  /**
+   * @file Utilities for managing dynamic palettes.
+   *
+   * @module utils/color/colorConversions
+   *
+   * @license GPL-3.0-or-later
+   * Lesson RunnerCreate quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  /**
+   * @class
+   * Encapsulate an RGB color.
+   * @param {number} red - the red color. 0 to 255.
+   * @param {number} green - the green color. 0 to 255.
+   * @param {number} blue - the blur color. 0 to 255.
+   */
+  function RGB(red, green, blue) {
+    /**
+     * Red setting
+     * @type{number}
+     */
+    this.red = red;
+    /**
+     * Green setting
+     * @type{number}
+     */
+    this.green = green;
+    /**
+     * Blue setting
+     * @type{number}
+     */
+    this.blue = blue;
+  }
+
+  /**
+   * @class
+   * Encapsulate an HSL color.
+   * @param {number} hue - hue value. 0 to 360.
+   * @param {number} saturation - saturation value. 0 to 100.
+   * @param {number} luminance - luminance value. 0 to 100.
+   */
+  function HSL(hue, saturation, luminance) {
+    /**
+     * Colour's hue.
+     * @type{number}
+     */
+    this.hue = hue;
+    /**
+     * Colour's saturation.
+     * @type{number}
+     */
+    this.saturation = saturation;
+    /**
+     * Colour's luminance.
+     * @type{number}
+     */
+    this.luminance = luminance;
+  }
+
+  /**
+   * Calculate the relativeLuminance using the
+   * [WCAG 2.x relative luminance](https://www.w3.org/WAI/GL/wiki/Relative_luminance)
+   * definition. Note that in this function, variables are named to match the
+   * equations in the WCAG defintion, and break the normal JavaScript style
+   * guides.
+   *
+   * @param {RGB} rgbColor - color to convert
+   * @returns {number} relative luminance. 0 to 100%. Although the WCAG
+   * calculation normally returns a value from 0 to 1, this function returns a
+   * value as a percentage to match the requirements of CSS.
+   */
+  function relativeLuminance(rgbColor) {
+    const RsRGB = rgbColor.red / 255.0;
+    const GsRGB = rgbColor.green / 255.0;
+    const BsRGB = rgbColor.blue / 255.0;
+
+    const R = RsRGB <= 0.03928 ? RsRGB / 12.92 : ((RsRGB + 0.055) / 1.055) ** 2.4;
+    const G = GsRGB <= 0.03928 ? GsRGB / 12.92 : ((GsRGB + 0.055) / 1.055) ** 2.4;
+    const B = BsRGB <= 0.03928 ? BsRGB / 12.92 : ((BsRGB + 0.055) / 1.055) ** 2.4;
+
+    const L = 0.2126 * R + 0.7152 * G + 0.0722 * B;
+    return L * 100;
+  }
+
+  /**
+   * Test if the colour should be treated as dark.
+   * @param {module:utils/color/colorConversions.RGB} rgbColor
+   * @returns true if relative luminance is less than 50%.
+   */
+  function isDark(rgbColor) {
+    return relativeLuminance(rgbColor) < 50;
+  }
+
+  /**
+   * Convert RGB values to HSL.
+   * See [Math behind colorspace conversions](https://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/)
+   * @param {RGB} rgbValue - color to convert.
+   * @returns {HSL} - HSL value.
+   * Hue: 0 to 360; saturation: 0 to 100; luminance: 0 to 100. Values are rounded
+   * to integers.
+   */
+  function rgbToHsl(rgbValue) {
+    const RsRGB = rgbValue.red / 255.0;
+    const GsRGB = rgbValue.green / 255.0;
+    const BsRGB = rgbValue.blue / 255.0;
+
+    const minChannelValue = Math.min(RsRGB, GsRGB, BsRGB);
+    const maxChannelValue = Math.max(RsRGB, GsRGB, BsRGB);
+    const channelRange = maxChannelValue - minChannelValue;
+
+    const luminance = (minChannelValue + maxChannelValue) / 2.0;
+
+    if (Math.abs(channelRange) < 0.001) {
+      return {
+        hue: 0,
+        saturation: 0,
+        luminance: Math.round(luminance * 100),
+      };
+    }
+
+    let saturation = 0;
+    if (luminance <= 0.5) {
+      saturation = channelRange / (minChannelValue + maxChannelValue);
+    } else {
+      saturation = channelRange / (2.0 - maxChannelValue - minChannelValue);
+    }
+
+    let hue = 0;
+    if (channelRange !== 0) {
+      if (Math.abs(maxChannelValue - RsRGB) < 0.001) {
+        hue = (GsRGB - BsRGB) / channelRange;
+      } else if (Math.abs(maxChannelValue - GsRGB) < 0.001) {
+        hue = 2.0 + (BsRGB - RsRGB) / channelRange;
+      } else {
+        hue = 4.0 + (RsRGB - GsRGB) / channelRange;
+      }
+    }
+    hue *= 60.0;
+    if (hue < 0) {
+      hue += 360;
+    }
+
+    return {
+      hue: Math.round(hue),
+      saturation: Math.round(saturation * 100),
+      luminance: Math.round(luminance * 100),
+    };
+  }
+
+  /**
+   * Conversion of HSL value to RGB. Conversion from
+   * [Wikipedia HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV).
+   * Variable names are chosen to follow as closely as possible the equations
+   * on WikiPedia rather than conforming to JavaScript style conventions. For
+   * example `Htick` is equivalent to `H'`.
+   * @param {HSL} hslValue - HSL value to convert
+   * @param {*} saturation - 0 to 100
+   * @param {*} luminance  - 0 to 100
+   * @returns {RGB} RGB value.
+   */
+  function hslToRgb(hslValue) {
+    const S = hslValue.saturation / 100.0;
+    const L = hslValue.luminance / 100.0;
+
+    const C = (1 - Math.abs(2.0 * L - 1.0)) * S;
+    const Htick = hslValue.hue / 60.0;
+    const X = C * (1 - Math.abs((Htick % 2) - 1));
+    let RGBtick = {};
+    if (0 <= Htick && Htick < 1) {
+      RGBtick = { red: C, green: X, blue: 0 };
+    } else if (Htick < 2) {
+      RGBtick = { red: X, green: C, blue: 0 };
+    } else if (Htick < 3) {
+      RGBtick = { red: 0, green: C, blue: X };
+    } else if (Htick < 4) {
+      RGBtick = { red: 0, green: X, blue: C };
+    } else if (Htick < 5) {
+      RGBtick = { red: X, green: 0, blue: C };
+    } else {
+      RGBtick = { red: C, green: 0, blue: X };
+    }
+
+    const m = L - C / 2.0;
+    return new RGB(
+      Math.round(255.0 * (RGBtick.red + m)),
+      Math.round(255.0 * (RGBtick.green + m)),
+      Math.round(255.0 * (RGBtick.blue + m))
+    );
+  }
+
+  /**
+   * Get a darker version of a color.
+   * @param {RGB} rgbColor - the RGB color
+   * @param {number} delta - the amount by which to shift the luminance.
+   * @returns {RGB}
+   */
+  function getDarker(rgbColor, delta) {
+    const hslColor = rgbToHsl(rgbColor);
+    hslColor.luminance -= delta;
+    hslColor.luminance = Math.max(hslColor.luminance, 0);
+    return hslToRgb(hslColor);
+  }
+
+  /**
+   * Get a lighter version of a color.
+   * @param {RGB} rgbColor - the RGB color
+   * @param {number} delta - the amount by which to shift the luminance.
+   * @returns {RGB}
+   */
+  function getLighter(rgbColor, delta) {
+    const hslColor = rgbToHsl(rgbColor);
+    hslColor.luminance += delta;
+    hslColor.luminance = Math.min(hslColor.luminance, 100);
+    return hslToRgb(hslColor);
+  }
+
+  /**
+   * Get the contrast between color A and B. The contrast is alway >= 1.
+   * @param {RGB} rgbColorA
+   * @param {RGB} rgbColorB
+   * @returns {number} contrast
+   */
+  function getContrast$1(rgbColorA, rgbColorB) {
+    const relLuminanceA = relativeLuminance(rgbColorA) / 100.0;
+    const relLuminanceB = relativeLuminance(rgbColorB) / 100.0;
+    const contrast = (relLuminanceA + 0.05) / (relLuminanceB + 0.05);
+    return contrast < 1 ? 1.0 / contrast : contrast;
+  }
+
+  /**
+   * Adjust rgbColor to ensure minimum contrast
+   * @param {*} rgbColor - color to adjust
+   * @param {*} rgbColorReference - color against which contrast is required.
+   * @param {*} minContrast - minimum constrast
+   */
+  function ensureContrast(rgbColor, rgbColorReference, minContrast) {
+    const refIsDark = isDark(rgbColorReference);
+    const deltaL = 5;
+    let loopLimit = Math.floor(100 / deltaL);
+    while (
+      loopLimit-- &&
+      getContrast$1(rgbColor, rgbColorReference) < minContrast
+    ) {
+      rgbColor = refIsDark
+        ? getLighter(rgbColor, deltaL)
+        : getDarker(rgbColor, deltaL);
+    }
+    return rgbColor;
+  }
+
+  /**
+   * Rotate hue around the color wheel.
+   * @param {RGB} rgbValue color
+   * @param {number} degrees - rotation.
+   * @returns {RGB} adjusted color.
+   */
+  function shiftHue(rgbValue, degrees) {
+    const hsl = rgbToHsl(rgbValue);
+    hsl.hue;
+    hsl.hue += degrees;
+    hsl.hue %= 360;
+    if (hsl.hue < 0) {
+      hsl.hue += 360;
+    }
+    return hslToRgb(hsl);
+  }
+
+  /**
+   * Convert a color to a CSS string representation.
+   * @param {RGB} rgbColor color to convert
+   * @returns {string}
+   */
+  function rgbToCss(rgbColor) {
+    return `rgb(${rgbColor.red}, ${rgbColor.green}, ${rgbColor.blue})`;
+  }
+
+  /**
+   * @file CssVariables class allowing JavaScript to access CSS
+   * properties.
+   *
+   * @module utils/color/cssVariables
+   *
+   * @license GPL-3.0-or-later
+   * Lesson RunnerCreate quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  const root = document.querySelector(':root');
+
+  /**
+   * Set the value of the specified property.
+   * @param {string} propertyName - the property to modify.
+   * @param {string} propertyValue - the new value.
+   */
+  function setProperty(propertyName, propertyValue) {
+    root.style.setProperty(propertyName, propertyValue);
+  }
+
+  /**
+   * @file Tools to assist with creation of color palettes.
+   *
+   * @module utils/color/colorPalettes
+   *
+   * @license GPL-3.0-or-later
+   * Lesson RunnerCreate quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * PaletteEntry details
+   * @class
+   * @param {RGB} base - the base color.
+   * @param {RGB} contrast - the contrast color for items on the base.
+   * @param {RBG} highlight - a 10% lighter or darker color.
+   */
+  function PaletteEntry(base, contrast, highlight) {
+    this.base = base;
+    this.contrast = contrast;
+    this.highlight = highlight;
+  }
+
+  /**
+   * Palette details
+   * @class
+   * @param {object} config - configuration of the Palette
+   * @param {PaletteEntry} config.primary - main color for elements
+   * @param {PaletteEntry} config.secondary - secondary color for contrast
+   * @param {PaletteEntry} config.tertiary - tertiary color. Rarely used.
+   * @param {PaletteEntry} config.background - background for user entry and
+   *    scrollable elements.
+   * @param {PaletteEntry} config.window - for the main window;
+   * @param {PaletteEntry} config.error - for error panels
+   */
+  function Palette(config) {
+    this.primary = config.primary;
+    this.secondary = config.secondary;
+    this.tertiary = config.tertiary;
+    this.background = config.background;
+    this.window = config.window;
+    this.error = config.error;
+  }
+
+  /**
+   * Get a contrasting colour of either white or black based on whether the
+   * colour is regarded as dark. @See isDark.
+   * @param {*} rgbColor
+   * @returns {module:utils/color/colorConversions.RGB} white or black.
+   */
+  function getContrast(rgbColor) {
+    if (isDark(rgbColor)) {
+      return { red: 255, green: 255, blue: 255 };
+    } else {
+      return { red: 0, green: 0, blue: 0 };
+    }
+  }
+
+  /** Create a palette entry for the color.
+   * @param {RGB} the main color for the entry.
+   * @returns {PaletteEntry}
+   */
+  function getPaletteEntry(rgbColor) {
+    const tintShadeAdjustment = 10;
+    let highlight;
+    if (isDark(rgbColor)) {
+      highlight = getLighter(rgbColor, tintShadeAdjustment);
+    } else {
+      highlight = getDarker(rgbColor, tintShadeAdjustment);
+    }
+    const contrastColor = getContrast(rgbColor);
+    rgbColor = ensureContrast(rgbColor, contrastColor, 7.5);
+    return new PaletteEntry(rgbColor, contrastColor, highlight);
+  }
+
+  /**
+   * @typedef {object}  Palette
+   * @property {PaletteEntry} primary
+   * @property {PaletteEntry} secondary
+   * @property {PaletteEntry} tertiary
+   */
+
+  /**
+   * @typedef {Object} PaletteSettings
+   * @property {number} hue 0 to 360
+   * @property {number} saturation  - 0 to 100
+   * @property {number} spread - 0 to 180. The separation between the primary color
+   * and the secondary and tertiary colors.
+   * @property {boolean} dark - true if dark palette required.
+   */
+  /**
+   * Create a palette based on the primary color.
+   * @param {PaletteSettings} - settings used to configure the paletted.
+   * @return {Palette}
+   */
+  function createPalette(settings) {
+    const primaryHsl = new HSL(
+      settings.hue,
+      settings.saturation,
+      settings.dark ? 70 : 30
+    );
+    const primaryRgb = hslToRgb(primaryHsl);
+    const colors = [primaryRgb];
+    let complementA = shiftHue(primaryRgb, settings.spread);
+    let complementB = shiftHue(primaryRgb, -settings.spread);
+
+    colors.push(complementA, complementB);
+    colors.sort((a, b) => {
+      const relLuminanceA = relativeLuminance(a);
+      const relLuminanceB = relativeLuminance(b);
+      if (relLuminanceA > relLuminanceB) {
+        return 1;
+      } else if (relLuminanceA < relLuminanceB) {
+        return -1;
+      }
+      return 0;
+    });
+    // by sorting colors by lightest to darkest we can ensure our luminance shift
+    // increases contrast rather than decreasing it.
+    colors[0] = getDarker(colors[0], 5);
+    colors[2] = getLighter(colors[0], 5);
+
+    const errorHsl = new HSL(0, settings.saturation, 50);
+    const backgroundHsl = new HSL(
+      settings.hue,
+      0,
+      settings.dark ? 5 : 95
+    );
+    const windowHsl = new HSL(
+      settings.hue,
+      0,
+      settings.dark ? 0 : 100
+    );
+
+    return new Palette({
+      primary: getPaletteEntry(primaryRgb),
+      secondary: getPaletteEntry(complementA),
+      tertiary: getPaletteEntry(complementB),
+      background: getPaletteEntry(hslToRgb(backgroundHsl)),
+      window: getPaletteEntry(hslToRgb(windowHsl)),
+      error: getPaletteEntry(hslToRgb(errorHsl)),
+    });
+  }
+
+  /**
+   * Set a CSS value
+   * @param {string} key - property name
+   * @param {PaletteEntry} paletteEntry - details fo the entry
+   */
+  function setCssFromPaletteEntry(key, paletteEntry) {
+    for (const subkey in paletteEntry) {
+      (relativeLuminance(paletteEntry.base) + 0.05) /
+        (relativeLuminance(paletteEntry.contrast) + 0.05);
+
+      setProperty(
+        `--${key}-${subkey}`,
+        rgbToCss(paletteEntry[subkey])
+      );
+    }
+  }
+
+  /**
+   * Set the CSS variables to the palette settings.
+   * @param {Palette} palette
+   */
+  function setCssFromPalette(palette) {
+    for (const entryKey in palette) {
+      setCssFromPaletteEntry(entryKey, palette[entryKey]);
+    }
+  }
+
+  /**
+   * @file Json utilities
+   *
+   * @module utils/jsonUtils/json
+   *
+   * @license GPL-3.0-or-later
+   * Lesson RunnerCreate quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  /**
+   * Fetch json file.
+   * @param {string} url path to the json file.
+   * @returns {Promise} Fulfills to JavaScript object as a result of parsing the
+   * file. On error, rejects with Error.
+   */
+  function fetchJson(url) {
+    return fetchFile(url, 'json');
+  }
+
+  /**
+   * Fetch text file.
+   * @param {string} url path to the json file.
+   * @returns {Promise} Fulfills to text. On error, rejects with Error.
+   */
+  function fetchText(url) {
+    return fetchFile(url, 'text');
+  }
+
+  /**
+   * Fetch file.
+   * @param {string} url path to the json file.
+   * @param {string} responseType - text or json.
+   * @returns {Promise} Fulfills to text or JavaScript object as a result of
+   * parsing the file. On error, rejects with Error.
+   */
+  function fetchFile(url, responseType) {
+    console.debug(`Fetch ${url}`);
+    return fetch(url).then((response) => {
+      if (!response.ok) {
+        return Promise.reject(
+          new Error(`${response.status}: ${response.statusText}; ${url}`)
+        );
+      }
+      if (responseType.toLocaleLowerCase() === 'json') {
+        return response.json();
+      }
+      return response.text();
+    });
+  }
+
+  /**
+   * @file Cached lesson
+   *
+   * @module lessons/cachedLesson
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * @typedef {Object} CachedLesson - Retrieved lesson.
+   * @property {module:lessons/lessonManager~LessonInfo} info
+   * @property {string} content
+   */
+
+  class CachedLesson {
+    #info;
+    #content;
+    /**
+     * Create the cached lesson.
+     * @param {module:lesson/lessonManager~LessonInfo} info - basic build information
+     * @param {string} content - the lesson markdown content
+     */
+    constructor(info, content) {
+      this.#info = info;
+      this.#content = content;
+    }
+
+    /**
+     * Set the lesson content.
+     * @param {string} content - the markdown for the lesson.
+     */
+    set content(content) {
+      this.#content = content;
+    }
+
+    /**
+     * @returns {string} the content
+     */
+    get content() {
+      return this.#content;
+    }
+
+    /**
+     * @returns {module:lessons/lessonManager~LessonInfo} the info
+     */
+    get info() {
+      return this.#info;
+    }
+
+    /**
+     * Factory method to create `CachedLesson` by cloning.
+     * @param {CachedLesson} other
+     */
+    static clone(other) {
+      const cloned = new CachedLesson(null);
+      cloned.#info = { ...other.info };
+      cloned.#content = other.content;
+      return cloned;
+    }
+  }
+
+  /**
+   * @file Simple managed element. This simplifies clean up of elements and
+   * attached listeners.
+   *
+   * @module utils/userIo/managedElement
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * ManagedElement class. This wraps a DOM element which is accessible via the
+   * element property. The remove method unregisters any listeners and calls remove
+   * on all children. It also removes itself from the DOM if it created the element
+   * itself. If it was passed an existing element, this is left in the DOM.
+   * @class
+   */
+  class ManagedElement {
+    /**
+     * Underlying element.
+     * @type {Element}
+     */
+    #element;
+
+    /**
+     * Targets which the element is listening to.
+     * @type {ManagedElement[]}
+     */
+    #listeningTargets;
+
+    /**
+     * Children
+     * @type {ManagedElement[]}
+     */
+    #managedChildren;
+
+    /**
+     * Flag whether the underlying element should be removed from the DOM on calls
+     * to `remove`.
+     * @type {boolean}
+     */
+    #elementRemovable;
+
+    /**
+     * Create a managed element.If passed a tag, a new element is created. If
+     * passed an Element, the element is assumed to already exist.
+     * @param {string | Element} tagOrElement
+     * @param {string} className
+     */
+    constructor(tagOrElement, className) {
+      if (tagOrElement instanceof Element) {
+        this.#element = tagOrElement;
+        this.#elementRemovable = false;
+      } else {
+        this.#element = document.createElement(tagOrElement);
+        this.#elementRemovable = true;
+      }
+      if (className) {
+        this.#element.className = className;
+      }
+      this.#listeningTargets = [];
+      this.#managedChildren = [];
+    }
+
+    /**
+     * Get the underlying element from either a ManagedElement or Element
+     * @param {Element | module:utils/userIo/managedElement.ManagedElement} item - the Element or ManagedElement
+     */
+    static getElement(item) {
+      return item instanceof ManagedElement ? item.element : item;
+    }
+
+    /**
+     * Shorthand to get the underlying element from either a ManagedElement or Element
+     * @param {Element | module:utils/userIo/managedElement.ManagedElement} item - the Element or ManagedElement
+     */
+    static $(item) {
+      return item instanceof ManagedElement ? item.element : item;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Get the underlying element
+     * @returns {Element}
+     */
+    get element() {
+      return this.#element;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Shorhand to get the underlying element
+     * @returns {Element}
+     */
+    get $() {
+      return this.#element;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement}
+     * Get the disabled property of the underlying element.
+     * @return {boolean}
+     */
+    get disabled() {
+      return this.#element.disabled;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement}
+     * Set the disabled property of the underlying element.
+     */
+    set disabled(value) {
+      this.#element.disabled = value;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Get the id of the underlying element.
+     * @return {string}
+     */
+    get id() {
+      return this.#element.id;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Set the id of the underlying element.
+     * @param {string} value
+     */
+    set id(value) {
+      this.#element.id = value;
+    }
+
+    /**
+     * Get the children
+     * @returns {ManagedElement[]}
+     */
+    get managedChildren() {
+      return this.#managedChildren;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Get the inner element's classList
+     */
+    get classList() {
+      return this.#element.classList;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Get the inner element's className
+     */
+    get className() {
+      return this.#element.className;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Set the inner element's className
+     */
+    set className(value) {
+      this.#element.className = value;
+    }
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement}
+     * Get the inner element's checked.
+     * @returns {boolean}
+     */
+    get checked() {
+      return this.#element.checked;
+    }
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement}
+     * Set the inner element's value.
+     * @param {boolean} state - content
+     */
+    set checked(state) {
+      this.#element.checked = state;
+    }
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Get the children
+     * @returns {NodeList}
+     */
+    get children() {
+      return this.#element.children;
+    }
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * @returns {string} the inner element's html.
+     */
+    get innerHTML() {
+      return this.#element.innerHTML;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Sets the inner element's html.
+     * @param {string} data - the content.
+     */
+    set innerHTML(data) {
+      this.#element.innerHTML = data;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Get last child element
+     * @returns {Node}
+     */
+    get lastElementChild() {
+      return this.#element.lastElementChild;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Get offsetHeight
+     * @returns {number}
+     */
+    get offsetHeight() {
+      return this.#element.offsetHeight;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Get offsetWidth
+     * @returns {number}
+     */
+    get offsetWidth() {
+      return this.#element.offsetWidth;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Get parentElement
+     * @returns {Node}
+     */
+    get parentElement() {
+      return this.#element.parentElement;
+    }
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * @returns {CSSStyleDeclaration} the element's style
+     */
+    get style() {
+      return this.#element.style;
+    }
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * @returns {string} the element's tagname
+     */
+    get tagName() {
+      return this.#element.tagName;
+    }
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * @returns {string} the inner element's textContent
+     */
+    get textContent() {
+      return this.#element.textContent;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Set the inner element's textContent.
+     * @param {string} data - content
+     */
+    set textContent(data) {
+      this.#element.textContent = data;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement}
+     * Get the inner element's value.
+     * @returns {*}
+     */
+    get value() {
+      return this.#element.value;
+    }
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement}
+     * Set the inner element's value.
+     * @param {*} data - content
+     */
+    set value(data) {
+      this.#element.value = data;
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Implement append child. These are removed when this is removed.
+     * @param {module:utils/userIo/managedElement.ManagedElement} managedElement
+     * @param {string | number} childId - id for child/
+     * @returns {module:utils/userIo/managedElement.ManagedElement} element as received to allow chaining
+     */
+    appendChild(managedElement) {
+      this.#element.appendChild(managedElement.element);
+      this.#managedChildren.push(managedElement);
+      return managedElement;
+    }
+
+    /**
+     * Add an element to another existing DOM element. The child is added to a list of
+     * elements that are removed when this element is removed. The parent, as it
+     * is prexisting, is not touched on removal.
+     * @param {module:utils/userIo/managedElement.ManagedElement | Element} managedElement
+     * @param {Element} parent - parent to which the element is added.
+     */
+    appendChildTo(managedElement, parent) {
+      parent.appendChild(managedElement.element ?? managedElement);
+      this.#managedChildren.push(managedElement);
+    }
+
+    /**
+     * Add this element to another existing DOM element.
+     * @param {Element} parent - parent to which the element is added.
+     */
+    appendTo(parent) {
+      parent.appendChild(this.#element);
+    }
+    /**
+     * Shorthand way to create an element with content and append to this.
+     * Create a managed element.
+     * The html is not escaped so the caller must ensure there is no script injection.
+     * @param {string | Element} tagName - the tag name for the new Element.
+     * @param {?string} [cssClass]
+     * @param {!string} html
+     * @returns {ManagedElement} - the new element.
+     */
+    createAndAppendChild(tagName, cssClass, html) {
+      const managedElement = new ManagedElement(tagName);
+      if (cssClass) {
+        managedElement.classList.add(cssClass);
+      }
+      if (html) {
+        managedElement.innerHTML = html;
+      }
+      this.appendChild(managedElement);
+      return managedElement;
+    }
+
+    /** Decode a value that was previously encoded.
+     * @param {string} value encoded value;
+     * @returns {string} the decoded value
+     */
+    static decodeString(value) {
+      return base64ToString(value);
+    }
+
+    /**
+     * Encode a value to make it safe for attributes.
+     * @param {*} value
+     */
+    static encodeString(value) {
+      return stringToBase64(value);
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Implement dispatchEvent
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent}
+     * @param {Event} event
+     * @returns {boolean}
+     */
+    dispatchEvent(event) {
+      return this.#element.dispatchEvent(event);
+    }
+
+    /**
+     * Fade out the element. This is done by applying the fade-out class and removing
+     * the fade-in class.
+     */
+    fadeOut() {
+      this.#element.classList.remove('fade-in');
+      this.#element.classList.add('fade-out');
+    }
+
+    /**
+     * Fade in the element. This is done by applying the fade-in class and removing
+     * the fade-out class.
+     */
+    fadeIn() {
+      this.#element.classList.remove('fade-out');
+      this.#element.classList.add('fade-in');
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Give focus to the element
+     */
+    focus() {
+      this.#element.focus();
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Implement getBoundingClientRect
+     * @returns {DOMRect}
+     */
+    getBoundingClientRect() {
+      return this.#element.getBoundingClientRect();
+    }
+
+    /**
+     * Gets an attribute previous set by setSafeAttribute.
+     * Unlike the instance method, this retrieves it from a Element. This
+     * is normally used when handling DOM events where the ManagedElement is not
+     * available.
+     * @param {Element} element
+     * @param {string} name
+     * @returns {string}
+     */
+    static getSafeAttribute(element, name) {
+      return ManagedElement.decodeString(element.getAttribute(name));
+    }
+
+    /**
+     * Handle event for which this object has been registered as a listener.
+     * @param {Event} event
+     */
+    handleEvent(event) {
+      console.debug(
+        `Event ${event.type} fired on <${event.currentTarget.tagName}>: class ${event.target.className}.`
+      );
+
+      const handlerName =
+        'handle' +
+        event.type.charAt(0).toUpperCase() +
+        event.type.substring(1) +
+        'Event';
+      const eventId = event.currentTarget.getAttribute('data-event-id');
+      this[handlerName]?.(event, eventId);
+    }
+
+    /**
+     * Hide the element
+     */
+    hide() {
+      this.#element.style.display = 'none';
+    }
+    /**
+     * Append child. These are removed when this is removed.
+     * @param {module:utils/userIo/managedElement.ManagedElement} managedElement
+     * @param {string | number} childId - id for child/
+     * @returns {module:utils/userIo/managedElement.ManagedElement | Element} element as received to allow chaining
+     */
+    insertChildAtTop(managedElement) {
+      this.#element.insertBefore(
+        managedElement.element ?? managedElement,
+        this.#element.firstChild
+      );
+      this.#managedChildren.push(managedElement);
+      return managedElement;
+    }
+    /**
+     * Add event listener to own element.
+     * This is just a convenience method that calls listenToEventOn(eventType, this, eventId);
+     * @param {string} eventType - type of event.
+     * @param {string | number | function} eventIdOrHandler - if a string or number
+     * is provide, this is the id that will be returned to event handlers.
+     * This is done by adding a data-event-id attribute to the element. If it is
+     * a function, then that function will be called.
+     * @param {?Object | boolean} options - boolean flag for useCapture or object primarily
+     * for use with the passive flag for touch events.
+     */
+    listenToOwnEvent(eventType, eventIdOrHandler, options) {
+      this.listenToEventOn(eventType, this, eventIdOrHandler, options);
+    }
+    /**
+     * Add event listener to the target element.
+     * This just adds an event listener for which this is the handler.
+     * When this element is removed, any listeners are also removed.
+     * @param {string} eventType
+     * @param {module:utils/userIo/managedElement.ManagedElement} target
+     * @param {string | number | function} eventIdOrHandler - if a string or number
+     * is provide, this is the id that will be returned to event handlers.
+     * This is done by adding a data-event-id attribute to the element. If it is
+     * a function, then that function will be called.
+     * @param {?Object | boolean} options - boolean flag for useCapture or object primarily
+     * for use with the passive flag for touch events.
+     */
+    listenToEventOn(eventType, target, eventIdOrHandler, options) {
+      if (!(target instanceof ManagedElement)) {
+        throw new Error('Expect ManagedElement');
+      }
+
+      this.#listeningTargets.push({
+        managedElement: target,
+        eventType: eventType,
+        options: options,
+      });
+
+      if (eventIdOrHandler instanceof Function) {
+        target.$.addEventListener(eventType, eventIdOrHandler, options);
+      } else {
+        if (eventIdOrHandler !== null && eventIdOrHandler !== undefined) {
+          target.setAttribute('data-event-id', eventIdOrHandler);
+        }
+        target.$.addEventListener(eventType, this, options);
+      }
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Implement querySelector
+     * @param {string} selectors - selectors to match
+     * @returns {}
+     */
+    querySelector(selectors) {
+      return this.#element.querySelector(selectors);
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Implement querySelectorAll
+     * @param {string} selectors - selectors to match
+     * @returns {NodeList}
+     */
+    querySelectorAll(selectors) {
+      return this.#element.querySelectorAll(selectors);
+    }
+
+    /**
+     * Remove the element from the DOM if it was created from a tag passed to the
+     * constructor. If an existing element was passed in, the element is not removed.
+     * In all cases, all children and listeners are removed.
+     */
+    remove() {
+      this.removeListeners();
+      this.removeChildren();
+      if (this.#elementRemovable) {
+        this.#element.remove();
+      }
+    }
+
+    /**
+     * Remove children only.
+     * This calls replaceChildren on the element after removing any managed
+     * elements to ensure the anything added via a direct call to the element's
+     * innerHTML is also removed.
+     */
+    removeChildren() {
+      this.#managedChildren.forEach((child) => {
+        child.remove();
+      });
+      this.#managedChildren = [];
+      while (this.#element.firstChild) {
+        this.#element.removeChild(this.#element.lastChild);
+      }
+    }
+
+    /**
+     * Remove listeners only. Listeners on the children are also removed
+     */
+    removeListeners() {
+      this.#listeningTargets.forEach((target) => {
+        const element = target.managedElement.element;
+        element.removeEventListener(target.eventType, this, target.options);
+      });
+      this.#managedChildren.forEach((child) => {
+        child.removeListeners();
+      });
+      this.#listeningTargets = [];
+    }
+
+    /**
+     * Sets an attribute on the element. The value is encoded to ensure it cannot
+     * corrupt any html and to prevent script injection.
+     * @param {string} name
+     * @param {string} value
+     */
+    setSafeAttribute(name, value) {
+      this.#element.setAttribute(name, ManagedElement.encodeString(value));
+    }
+
+    /**
+     * @link {https://developer.mozilla.org/en-US/docs/Web/API/Element}
+     * Implement setAttribute on the element. These are not encoded and the method is
+     * typically used for adding aria elements.
+     * If an item's value is null, undefined or an empty string, it is ignored.
+     * @param {string} name - name
+     * @param {string} value - value
+     */
+    setAttribute(name, value) {
+      return this.#element.setAttribute(name, value);
+    }
+
+    /**
+     * Show or unhide the element
+     */
+    show() {
+      this.#element.style.display = 'unset';
+    }
+
+    /**
+     * Gets an attribute previous set by setSafeAttribute.
+     * @param {string} name
+     * @returns {string}
+     */
+    getSafeAttribute(name) {
+      return ManagedElement.decodeString(this.#element.getAttribute(name));
+    }
+
+    /**
+     * Set attributes on the element. These are not encoded and the method is
+     * typically used for adding aria elements.
+     * If an item's value is null, undefined or an empty string, it is ignored.
+     * @param {Object.<string, string>} attributes
+     */
+    setAttributes(attributes) {
+      for (const key in attributes) {
+        const value = attributes[key];
+        if (value != null && value != undefined && value !== '') {
+          this.#element.setAttribute(key, value);
+        }
+      }
+    }
+  }
+
+  /**
+   * @file Configuration data for icons
+   *
+   * @module utils/userIo/icons
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * HTML semantic roles for tagnames.
+   * The key is the element's tagName and the string is the role in lower case.
+   * @type{Object<string, string>}
+   */
+  const HTML_SEMANTIC_ROLES = {
+    A: 'link',
+    BUTTON: 'button',
+  };
+
+  /**
+   * @typedef {Object} IconDetails
+   * @property {string} content - Html that will displays the icon
+   * @property {string} accessibleName - accessible name
+   */
+
+  /**
+   * @typedef {Object} IconConfig
+   * @property {boolean} hideText - if true, the text is hidden. If not set, the system setting is used.
+   * @property {string} overrideText - if set, this overrides the button's normal label*
+   * @property {string} role - the aria role.
+   */
+
+  /**
+   * icons. Note that getter functions are used to prevent module imports
+   * resolving i18n strings prior to the resolution of languages.
+   */
+  class IconGenerator {
+    #cache = new Map();
+    #hideText;
+
+    /**
+     * Get whether text should be hidden
+     * @returns {boolean}
+     */
+    get hideText() {
+      return this.#hideText;
+    }
+
+    /**
+     * Set whether text should be hidden
+     * @param {boolean} value
+     */
+    set hideText(value) {
+      this.#hideText = value;
+    }
+
+    /**
+     * Get the icon key from css
+     * @returns html for icon or !? if not found.
+     */
+    #getIconHtml(key) {
+      if (!this.#cache.has(key)) {
+        let cssValue = getComputedStyle(
+          document.documentElement
+        ).getPropertyValue(key);
+        cssValue = cssValue.trim(); //iPhone includes leading whitespace
+        this.#cache.set(
+          key,
+          cssValue.substring(1, cssValue.length - 1).replace(/\\"/g, `"`)
+        );
+      }
+      return this.#cache.get(key) ?? '!?';
+    }
+    /** @returns {IconDetails} information for icon */
+    get addLesson() {
+      return {
+        content: this.#getIconHtml('--icon-add-lesson-html'),
+        accessibleName: i18n`Add lesson`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get back() {
+      return {
+        content: this.#getIconHtml('--icon-back-nav-html'),
+        accessibleName: i18n`Back`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get cancel() {
+      return {
+        content: this.#getIconHtml('--icon-cancel-html'),
+        accessibleName: i18n`Cancel`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get closeEditor() {
+      return {
+        content: this.#getIconHtml('--icon-close-editor-html'),
+        accessibleName: i18n`Close editor`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get closeMenu() {
+      return {
+        content: this.#getIconHtml('--icon-close-menu-html'),
+        accessibleName: i18n`Close menu`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get delete() {
+      return {
+        content: this.#getIconHtml('--icon-delete-html'),
+        accessibleName: i18n`Delete`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get edit() {
+      return {
+        content: this.#getIconHtml('--icon-edit-html'),
+        accessibleName: i18n`Edit`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get error() {
+      return {
+        content: this.#getIconHtml('--icon-error-html'),
+        accessibleName: i18n`Open menu`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get exit() {
+      return {
+        content: this.#getIconHtml('--icon-exit-html'),
+        accessibleName: i18n`Exit to main site`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get export() {
+      return {
+        content: this.#getIconHtml('--icon-export-html'),
+        accessibleName: i18n`Export lesson`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get exportAutoRun() {
+      return {
+        content: this.#getIconHtml('--icon-export-autorun-html'),
+        accessibleName: i18n`Export autorun`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get fatal() {
+      return {
+        content: this.#getIconHtml('--icon-fatal-html'),
+        accessibleName: i18n`Open menu`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get flag() {
+      return {
+        content: this.#getIconHtml('--icon-flagged-html'),
+        accessibleName: i18n`Flag`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get openFolder() {
+      return {
+        content: this.#getIconHtml('--icon-open-folder-html'),
+        accessibleName: i18n`Open folder`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get forward() {
+      return {
+        content: this.#getIconHtml('--icon-forward-nav-html'),
+        accessibleName: i18n`Forward`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get help() {
+      return {
+        content: this.#getIconHtml('--icon-help-html'),
+        accessibleName: i18n`Help`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get home() {
+      return {
+        content: this.#getIconHtml('--icon-home-html'),
+        accessibleName: i18n`Home`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get import() {
+      return {
+        content: this.#getIconHtml('--icon-import-html'),
+        accessibleName: i18n`Import file`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get info() {
+      return {
+        content: this.#getIconHtml('--icon-info-html'),
+        accessibleName: i18n`Flag`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get selectLesson() {
+      return {
+        content: this.#getIconHtml('--icon-lesson-html'),
+        accessibleName: i18n`Select lesson`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get library() {
+      return {
+        content: this.#getIconHtml('--icon-library-html'),
+        accessibleName: i18n`Open library`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get load() {
+      return {
+        content: this.#getIconHtml('--icon-load-html'),
+        accessibleName: i18n`Open file`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get nextProblem() {
+      return {
+        content: this.#getIconHtml('--icon-next-problem-html'),
+        accessibleName: i18n`Continue`,
+      };
+    }
+
+    /** @returns {IconDetails} information for icon */
+    get no() {
+      return {
+        content: this.#getIconHtml('--icon-no-html'),
+        accessibleName: i18n`No`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get ok() {
+      return {
+        content: this.#getIconHtml('--icon-ok-html'),
+        accessibleName: i18n`OK`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get pause() {
+      return {
+        content: this.#getIconHtml('--icon-pause-html'),
+        accessibleName: i18n`Pause`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get play() {
+      return {
+        content: this.#getIconHtml('--icon-play-html'),
+        accessibleName: i18n`Play`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get playLesson() {
+      return {
+        content: this.#getIconHtml('--icon-play-html'),
+        accessibleName: i18n`Play lesson`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get privacy() {
+      return {
+        content: this.#getIconHtml('--icon-privacy-html'),
+        accessibleName: i18n`Privacy`,
+      };
+    }
+
+    /** @returns {IconDetails} information for icon */
+    get question() {
+      return {
+        content: this.#getIconHtml('--icon-question-html'),
+        accessibleName: i18n`Flag`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get repeatLesson() {
+      return {
+        content: this.#getIconHtml('--icon-repeat-lesson-html'),
+        accessibleName: i18n`Repeat lesson`,
+      };
+    }
+
+    /** @returns {IconDetails} information for icon */
+    get resetToFactory() {
+      return {
+        content: this.#getIconHtml('--icon-reset-to-factory-html'),
+        accessibleName: i18n`Factory reset`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get save() {
+      return {
+        content: this.#getIconHtml('--icon-save-html'),
+        accessibleName: i18n`Save`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get settings() {
+      return {
+        content: this.#getIconHtml('--icon-settings-html'),
+        accessibleName: i18n`Settings`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get skip() {
+      return {
+        content: this.#getIconHtml('--icon-skip-html'),
+        accessibleName: i18n`Skip`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get submitAnswer() {
+      return {
+        content: this.#getIconHtml('--icon-submit-answer-html'),
+        accessibleName: i18n`Check answer`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get openMenu() {
+      return {
+        content: this.#getIconHtml('--icon-open-menu-html'),
+        accessibleName: i18n`Open menu`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get warning() {
+      return {
+        content: this.#getIconHtml('--icon-warning-html'),
+        accessibleName: i18n`Open menu`,
+      };
+    }
+    /** @returns {IconDetails} information for icon */
+    get yes() {
+      return {
+        content: this.#getIconHtml('--icon-yes-html'),
+        accessibleName: i18n`Yes`,
+      };
+    }
+
+    /**
+     *
+     * @param {Element} element - the element to check
+     * @param {string} role - the required role. If empty, null or undefine, any
+     * element fulfils the role.
+     * @returns true if the natural role for the Element's tagName addressesses the
+     * required role.
+     */
+    semanticsAddressRole(element, role) {
+      if (!role) {
+        return true;
+      }
+      const htmlSemanticRole = HTML_SEMANTIC_ROLES[element.tagName];
+      return htmlSemanticRole[element.tagName] == role;
+    }
+
+    /**
+     * Apply the icon to an element.
+     * If the element is a button or link, aria components are not added as HTML
+     * semantics are regarded as sufficient. However, if the text is hidden, the
+     * aria-label will still be added.
+     * @param {IconDetails} icon
+     * @param {Element | module:utils/userIo/managedElement.ManagedElement} item - element or ManagedElement to which the icon is added.
+     * @param {IconConfig} options
+
+     */
+    applyIconToElement(icon, item, options = {}) {
+      const hideText = options.hideText ?? this.#hideText;
+      const label = options.overrideText ?? icon.accessibleName;
+      const element = ManagedElement.getElement(item);
+      const role = options.role?.toLowerCase();
+      element.innerHTML = icon.content;
+      if (icon.accessibleName && !hideText) {
+        element.innerHTML += `&nbsp;${label}`;
+      } else {
+        element.title = label;
+      }
+      if (this.semanticsAddressRole(element, role)) {
+        // semantics match role but still add aria-label if text hidden.
+        if (options.hideText) {
+          element.setAttribute('aria-label', label);
+        }
+        return; // semantics match role.
+      }
+      element.setAttribute('role', role);
+      element.setAttribute('aria-label', label);
+    }
+  }
+
+  const icons = new IconGenerator();
+
+  /**
+   * @file Manage focusing of elements.
+   *
+   * @module utils/userIo/focusManager
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  class FocusManager {
+    constructor() {
+      window.addEventListener('focus', (event) => {
+        console.debug(
+          `Window has focus. Restore focus to active element. Active element ${document.activeElement.tagName} ${document.activeElement.className}`,
+          document.activeElement,
+          event.relatedTarget
+        );
+        if (document.activeElement !== document.body) {
+          document.activeElement.focus();
+        } else {
+          this.findBestFocus();
+        }
+      });
+    }
+    /**
+     * Move the focus to the first possible element within the containingElement
+     * @param {Element | module:utils/userIo/managedElement.ManagedElement} [containingElement=document.body] - where to look
+     * @returns {boolean} true if success.
+     */
+    focusWithin(containingElement = document.body) {
+      const element = containingElement.element ?? containingElement;
+      const candidates = element.querySelectorAll(
+        'button,select,input,.selectable'
+      );
+      for (const candidate of candidates.values()) {
+        if (
+          candidate.style.display !== 'none' &&
+          candidate.style.visibility !== 'hidden'
+        ) {
+          candidate.focus();
+          return true;
+        }
+      }
+      console.debug(
+        `Couldn't find anything to focus on within ${element?.tagName}:${element?.className}`
+      );
+      return false;
+    }
+
+    /** Best effort to restore focus */
+    findBestFocus() {
+      let element = document.querySelector('.selectable.always-on-top');
+      if (element) {
+        element.focus();
+        return;
+      }
+      element = document.querySelector('.modal');
+      if (element) {
+        this.focusWithin(element);
+      } else {
+        element = document.querySelector('#content');
+        this.focusWithin(element);
+      }
+    }
+
+    /**
+     * Sets focus to the element.
+     * Unlike the standard Element focus method, this return whether or not
+     * it succeeded.
+     * @param {*} element
+     * @returns {boolean} true if successfully moved focus to the element.
+     */
+    setFocus(element) {
+      element.focus();
+      return document.activeElement === element;
+    }
+  }
+
+  const focusManager = new FocusManager();
+
+  /**
+   * @file Popup message.
+   *
+   * @module utils/dialog/toast
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * Popup message.
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class Toast extends ManagedElement {
+    /**
+     *
+     * @param {string} message - message to display. This can contain HTML and as
+     * such is vulnerable to code injection.  As such the user should sanitise the
+     * data.
+     * @param {boolean} rawHtml - if true, raw HTML can be provided.
+     */
+    constructor(message, rawHtml) {
+      super('div', 'utils-toast');
+      this.classList.add('selectable', 'always-on-top');
+      this.setAttributes({
+        'aria-role': 'alert',
+        tabindex: '0',
+      });
+      const content = new ManagedElement('div', 'container');
+      const icon = new ManagedElement('div');
+      icons.applyIconToElement(icons.closeMenu, icon.element, { hideText: true });
+      this.appendChild(content);
+      this.appendChild(icon);
+
+      if (rawHtml) {
+        content.innerHTML = message;
+      } else {
+        content.textContent = message;
+      }
+
+      this.listenToOwnEvent('click', '');
+      this.listenToOwnEvent('keydown', '');
+    }
+
+    /**
+     * Get rid of the toast message.
+     */
+    #dismiss() {
+      this.style.opacity = 0;
+      this.remove();
+      focusManager.findBestFocus();
+    }
+    /**
+     * Handle the toast click event.
+     * Remove the toast.
+     * @param {Event} event - triggering event
+     * @param {string} eventId - event id. Currently unused.
+     */
+    handleClickEvent(eventIgnored) {
+      this.#dismiss();
+    }
+
+    /**
+     * Handle the keydown event.
+     * Remove the toast if Escape, Space or Enter pressed.
+     * @param {Event} event - triggering event
+     * @param {string} eventId - event id. Currently unused.
+     */
+    handleKeydownEvent(event) {
+      console.debug(`Key ${event.key}`);
+      if (event.key === 'Escape' || event.key === ' ' || event.key === 'Enter') {
+        this.#dismiss();
+      }
+    }
+  }
+
+  /**
+   * Pop up a message.
+   * @param {string} message.
+   * @param {boolean} rawHtml True if raw html can be provided.
+   */
+  function toast(message) {
+    const toast = new Toast(message, true);
+    document.body.appendChild(toast.element);
+    setTimeout(() => {
+      toast.style.top = '45vh';
+      toast.focus();
+    });
+  }
+
+  /**
+   * @file Functions to handle storage for settings.
+   *
+   * @module utils/userIo/storage
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Storage manager. This manages storage that conforms the the WebApi Storage interface.
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/Storage}
+   */
+  class DataStoreManager {
+    /**
+     * @type{Storage}
+     */
+    #storage;
+    /**
+     * String appended to keys to make storage unique when testing locally.
+     * If running a server on the unbuilt source, the {@link module:data/constants.BuildInfo.getBundleName} is
+     * not unique, so a prefix of 'LR' is also appended. This should be modified
+     * for each application.
+     * @type{string}
+     */
+    #keyPrefix = 'app';
+
+    /**
+     * Construct store
+     * @param {Storage} storage - the underlying storage that supports the WebApi Storage interface.
+     * {@link https://developer.mozilla.org/en-US/docs/Web/API/Storage}
+     */
+    constructor(storage) {
+      this.#storage = storage;
+    }
+
+    /**
+     * Create a unique key for the storage. To do this, this.#keyPrefix is
+     * added to the front of the key.
+     * @param {string} key
+     * @returns {string} the unique key.
+     */
+    createStorageKey(key) {
+      return `${this.#keyPrefix}${key}`;
+    }
+
+    /**
+     * Get setting from storage
+     * @param {string} key - saved item key. NB. this is prefixed by
+     * LOCAL_STORAGE_ID to prevent clashes with local debugging.
+     * @param {*} defaultValue
+     * @returns {*}
+     */
+    getFromStorage(key, defaultValue) {
+      key = this.createStorageKey(key);
+      const value = this.#storage.getItem(key);
+      if (value) {
+        try {
+          const parsedValue = JSON.parse(value);
+          if (parsedValue === null || parsedValue === undefined) {
+            return defaultValue;
+          } else {
+            return parsedValue;
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      return defaultValue;
+    }
+    /**
+     * Save setting to local storage
+     * @param {string} key
+     * @param {*} value
+     * @throws {Error} if underlying storage fails.
+     */
+    saveToStorage(key, value) {
+      key = this.createStorageKey(key);
+      try {
+        this.#storage.setItem(key, JSON.stringify(value));
+      } catch (error) {
+        toast(i18n`Unable to save data. ${error.message}`);
+      }
+
+      return;
+    }
+
+    /**
+     * Remove setting from storage
+     * @param {string} key
+     */
+    removeFromStorage(key) {
+      key = this.createStorageKey(key);
+      this.#storage.removeItem(key);
+    }
+
+    /**
+     * Set the prefix for the storage key. This is primarily used to stop apps
+     * from the the same domain sharing the same storage values.
+     * @param {string} prefix
+     */
+    setStorageKeyPrefix(prefix) {
+      this.#keyPrefix = prefix;
+    }
+  }
+
+  /**
+   * DataStoreManager for the localStorage.
+   */
+  const persistentData = new DataStoreManager(localStorage);
+
+  /**
+   * @file Utilities for handling errors.
+   *
+   * @module utils/errorHandling/errors
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * Escape content so that it is safe to include in an attribute.
+   * This is primarily to prevent translations corrupting the HTML.
+   * @param {string} content
+   * @returns {string}
+   */
+  function escapeAttribute(content) {
+    return stringToBase64(content);
+  }
+
+  /**
+   * Get string for `data-error` attribute suitable for inserting into an HTML tag.
+   * The return is `data-error="escapedMessage"`
+   * @param {string} message
+   * @returns {string}
+   */
+  function getErrorAttributeHtml(message) {
+    return `data-error="${escapeAttribute(message)}"`;
+  }
+
+  /**
+   * @file Convert an emoji to html representation.
+   *
+   * @module lessons/emojiParser
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * Array of predefined emojis. All keys must be in lowercase. Do not use underscores
+   * as these could be misconstrued as emphasis characters.
+   */
+  const PREDEFINED_EMOJIS = {
+    GRINNING: '&#x1F600;',
+    ')': '@GRINNING',
+    '-)': '@GRINNING',
+    SMILEY: '@GRINNING',
+    SMILING: '@GRINNING',
+    HAPPY: '@GRINNING',
+
+    WORRIED: '&#x1F61F;',
+    SAD: '@WORRIED',
+
+    LAUGHING: '&#x1F602;',
+    LAUGH: '@LAUGHING',
+
+    CRYING: '&#x1F622;',
+    TEAR: '@CRYING',
+
+    FROWNING: '&#x1F641;',
+    '(': '@FROWNING',
+    '-(': '@FROWNING',
+
+    NEUTRAL: '&#x1F610;',
+
+    ANGRY: '&#x1F620;',
+    GRUMPY: '@ANGRY',
+
+    WINK: '&#x1F609;',
+    WINKY: '@WINK',
+    WINKING: '@WINK',
+
+    WARNING: '&#x26A0;&#xFE0F;',
+    ALERT: '@WARNING',
+    ERROR: '@WARNING',
+
+    'WHITE-QUESTION-MARK': '&#x2754;',
+  };
+
+  /**
+   * Get emojis as HTML characters. If a blank string or null is passed in, the
+   * function returns a single space.
+   * @param {string} originalDefinition - definition for the emoji. This can be
+   * a named emoji in the {@link PREDEFINED_EMOJIS} or a sequence of Unicode
+   * characters in the format U+xxxxx. The definition is not case sensitive.
+   * @returns {string}
+   */
+  function getEmojiHtml(originalDefinition) {
+    if (!originalDefinition) {
+      return ' ';
+    }
+    const definition = originalDefinition.toUpperCase();
+    if (definition.startsWith('U+')) {
+      return definition.replaceAll(/U\+([A-F0-9]+)/g, '&#x$1;');
+    } else {
+      let code = PREDEFINED_EMOJIS[definition];
+      if (code?.startsWith('@')) {
+        code = PREDEFINED_EMOJIS[code.substring(1)];
+      }
+      if (!code) {
+        const errorAttribute = getErrorAttributeHtml(
+          i18n`Cannot find emoji ${originalDefinition}`
+        );
+        return `<span ${errorAttribute}>${PREDEFINED_EMOJIS['WHITE-QUESTION-MARK']}</span>`;
+      }
+      return code;
+    }
+  }
+
+  /**
+   * @file Base item parser for a problem item.
+   *
+   * @module lessons/textItem
+   *
+   * @license GPL-3.0-or-later
+   * Text2Lesson: create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Safe classes for items. This prevents users providing a class that might corrupt
+   * the presentation of data. Class names in the array must be in lowercase.
+   * @type {string[]}
+   */
+  const SAFE_CLASSES = [
+    'big',
+    'bigger',
+    'biggest',
+    'small',
+    'smaller',
+    'smallest',
+  ];
+
+  /**
+   * Get a safe class from the array of SAFE_CLASSES. The requested class is
+   * case insensitive. If the `requestedClass` is not safe, an empty string is
+   * returned.
+   * @param {string} requestedClass
+   * @returns {string}
+   */
+  function makeClassSafe(requestedClass) {
+    if (!requestedClass) {
+      return '';
+    }
+    const index = SAFE_CLASSES.indexOf(requestedClass.toLowerCase());
+    return index < 0 ? '' : SAFE_CLASSES[index];
+  }
+
+  /**
+   * Replacement class that allows retention of items that have been replaced.
+   * This is primarily used for tracking missing words.
+   */
+  class TrackedReplacements {
+    /** list of missing words in the order they appeared in the source. */
+    #missingWords;
+
+    /**
+     * Replacements used for converting source.
+     * @type {module:libs/utils/text/textProcessing~Replacement[]}
+     */
+    #replacements;
+
+    /**
+     * @returns {string[]} copy of the missing words.
+     */
+    get missingWords() {
+      return [...this.#missingWords];
+    }
+
+    /**
+     * Get the replacements to use.
+     * @returns {module:libs/utils/text/textProcessing~Replacement[]}
+     */
+    get replacements() {
+      return this.#replacements;
+    }
+
+    /**
+     * @param {Metadata} [metadata] - Metadata used in substitutions
+     */
+    constructor(metadata) {
+      this.#missingWords = [];
+      const tracker = this;
+      this.#replacements = [
+        {
+          re: /\\>/g,
+          rep: '&gt;',
+        },
+        getItemReplacement('[.]{3}', (match, startChr, word) => {
+          tracker.#missingWords.push(word);
+          return `${startChr}<span class="missing-word" data-missing-word="${ManagedElement.encodeString(
+          word
+        )}"></span>`;
+        }),
+        getItemReplacement('emoji:', (match, startChr, word, emojiClass) => {
+          let requiredClasses = 'emoji';
+          emojiClass = makeClassSafe(emojiClass);
+          if (emojiClass) {
+            requiredClasses = `${requiredClasses} ${emojiClass}`;
+          }
+          return `${startChr}<span class="${requiredClasses}">${getEmojiHtml(
+          word
+        )}</span>`;
+        }),
+        getItemReplacement('meta:', (match, startChr, word) => {
+          const metavalue = metadata?.getValue(word);
+          if (!metavalue) {
+            const errorAttribute = getErrorAttributeHtml(
+              i18n`Cannot find metadata ${word}`
+            );
+            return `${startChr}<span ${errorAttribute}>${word}</span>`;
+          }
+          return `${startChr}${metavalue}`;
+        }),
+      ];
+    }
+  }
+
+  /**
+   * Basic lesson text item.
+   */
+  class TextItem {
+    /**
+     * flag to mimic private constructor.
+     */
+    static #isConstructing = false;
+    /**
+     * Parsed source to create html.
+     * @type {string}
+     */
+    #html = '';
+
+    /**
+     * Missing words.
+     * @type {string[]}
+     */
+    #missingWords = [];
+
+    /**
+     * Metadata used in substitutions.
+     * @type {Metadata}
+     */
+    #metadata;
+
+    /**
+     * @param {Metadata} metadata - Metadata used for substitutions.
+     */
+    constructor(metadata) {
+      if (!TextItem.#isConstructing) {
+        throw new Error('Private constructor. Use createTextItem');
+      }
+      this.#metadata = metadata;
+    }
+
+    /**
+     * Get the html.
+     * @returns{string}
+     * */
+    get html() {
+      return this.#html;
+    }
+
+    /**
+     * Get a plain text version
+     */
+    get plainText() {
+      const elidedHtml = this.#html.replace(
+        /<(?:[^>]*missing-word[^>]*)>/g,
+        '...'
+      );
+      return getPlainTextFromHtml(elidedHtml);
+    }
+
+    /**
+     * Get the missing words.
+     * @returns {string[]}
+     * */
+    get missingWords() {
+      return this.#missingWords;
+    }
+
+    /**
+     * Create a TextItem from the source.
+     * @param {string} source - source text using the light version of Markdown.
+     * @param {Metadata}  [metadata] - metadata
+     * @returns {TextItem}
+     */
+    static createFromSource(source, metadata) {
+      TextItem.#isConstructing = true;
+      const textItem = new TextItem();
+      TextItem.#isConstructing = false;
+      if (source) {
+        const tracker = new TrackedReplacements(metadata);
+        textItem.#html = parseMarkdown(source, {
+          post: tracker.replacements,
+        });
+        textItem.#missingWords = tracker.missingWords;
+      }
+      return textItem;
+    }
+
+    /**
+     * Extract the first word from the item.
+     * @returns {string} empty string if no word found.
+     */
+    get firstWord() {
+      const match = this.#html?.match(
+        /^(?:\s*(?:<\/?[^\r\n\f\t]*?>)*\s*)*([^\s<]*)/
+      );
+      if (match) {
+        return match[1]; // get the first word
+      } else {
+        return '';
+      }
+    }
+  }
+
+  /**
+   * Create a `Replacement` object for finding lession items in the source.
+   * Important: any groups contained within `prefix`
+   * *must be non-capturing*. The regex provides a number of capture groups.
+   * The format of and item expression is expected to be as follows:
+   *
+   * + prefixWORD>class
+   *
+   * Note: WORD and >class are optional. If the > character is provided without a
+   * following class, the class will be empty.
+   *
+   * + $1 - the character preceding the prefix. This should normally be restored by the replacement.
+   * + $2 - the *WORD* following the prefix.
+   * + $3 - the *class* without the preceding *>* character.
+   *
+   * The item must be on a word boundary. As the text could be enclosed within
+   * HTML tags, the starting word boundary is the start of a line, a whitespace
+   * character or a `>` character. The ending word boundary is the end of a line,
+   * a whitespace character, standard punctuation (,;:.!?) or any closing HTML tag.
+   *
+   * @param {string} prefix - string which forms part of RegExp constructor to identify
+   * the start of the item. This should not include any capturing groups.
+   * @param {*} replace - function or replacement string.
+   * @returns {module:libs/utils/text/textProcessing~Replacement}
+   */
+  function getItemReplacement(prefix, replace) {
+    const startCapture = '(^|[ >])';
+    const wordCapture = '((?:&#?[a-zA-Z0-9]+?;|[^\\s<>])+?)?';
+    const classCapture = '(?:>([a-zA_Z]*))?';
+    const endLookAhead = '(?=[\\s,;:.?!]|$|</.+?>)';
+
+    const re = new RegExp(
+      `${startCapture}${prefix}${wordCapture}${classCapture}${endLookAhead}`,
+      'gmi'
+    );
+    return {
+      re: re,
+      rep: replace,
+    };
+  }
+
+  /**
+   * @file Parse meta data which is information at the start of a file.
+   *
+   * @module lessons/metadata
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  /**
+   * Encapsulate the metadata
+   */
+  class Metadata {
+    static #isConstructing = false;
+
+    /**
+     * Collection of meta data keys.
+     * @type {Object<string, string>}
+     */
+    #map = new Map();
+
+    constructor() {
+      if (!Metadata.#isConstructing) {
+        throw new Error('Private constructor. Use createMetaData');
+      }
+    }
+
+    /**
+     * Get the value associated with the key.
+     * @param {string} key - key to lookup.
+     * @param {string} defaultValue - returned if key not found.
+     * @returns {string}
+     */
+    getValue(key, defaultValue) {
+      const value = this.#map.get(key.toUpperCase());
+      return value ?? defaultValue;
+    }
+
+    /**
+     * Create the a `MetaData` object from the source. The format of meta data is
+     * a number of lines comprising a key and value. The key cannot have any spaces
+     * in its name and can only comprise the characters a to z, A to Z, 0 to 9 and
+     * underscore; i.e. the regex `\w` characters. If a key is repeated, it is
+     * overwritten. Additional lines are ignored.
+     *
+     * The key should be separated from its value by a colon, semi-colon, period,
+     * or a semi-colon. Any of these can be immediately followed by a hyphen.
+     * There can be any number of spaces surrounding the key, separator and values.
+     *
+     * Keywords are converted to uppercase.
+     * @param {string} source
+     */
+    static createFromSource(source) {
+      Metadata.#isConstructing = true;
+      const metadata = new Metadata();
+      Metadata.#isConstructing = false;
+      const lines = source.split('\n');
+      lines.forEach((element) => {
+        const match = element.match(/^\s*(\w+)\s*[:;.]-?\s*(.*?)\s*$/);
+        if (match) {
+          metadata.#map.set(match[1].toUpperCase(), escapeHtml(match[2]));
+        }
+      });
+      return metadata;
+    }
+  }
+
+  /**
+   * @file The `Problem` class.
+   *
+   * @module lessons/problem
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Question types.
+   * @enum {string}
+   */
+  const QuestionType = {
+    SIMPLE: 'simple',
+    MULTI: 'multi',
+    FILL: 'fill',
+    ORDER: 'order',
+    SLIDE: 'slide',
+  };
+
+  /**
+   * Decoded problem.
+   */
+  class Problem {
+    /**
+     * @type {module:lessons/textItem-parser~TextItem}
+     */
+    #intro;
+
+    /**
+     * @type {module:lessons/textItem-parser~TextItem}
+     */
+    #question;
+
+    /**
+     * @type {module:lessons/textItem-parser~TextItem}
+     */
+    #explanation;
+
+    /**
+     * @type {module:lessons/textItem-parser~TextItem[]}
+     */
+    #rightAnswers;
+
+    /**
+     * @type {module:lessons/textItem-parser~TextItem[]}
+     */
+    #wrongAnswers;
+
+    /**
+     * @type {QuestionType}
+     */
+    #questionType = QuestionType.SLIDE;
+
+    /**
+     * Construct `Problem`.
+     */
+    constructor() {}
+
+    /**
+     * Get the intro
+     * @returns {module:lessons/textItem-parser~TextItem}
+     */
+    get intro() {
+      return this.#intro;
+    }
+
+    /**
+     * Set the intro
+     * @param {module:lessons/textItem-parser~TextItem} value
+     */
+    set intro(value) {
+      this.#intro = value;
+    }
+
+    /**
+     * Get the question
+     * @returns {module:lessons/textItem-parser~TextItem}
+     */
+    get question() {
+      return this.#question;
+    }
+
+    /**
+     * Set the question
+     * @param {module:lessons/textItem-parser~TextItem} value
+     */
+    set question(value) {
+      this.#question = value;
+      this.#deriveQuestionType();
+    }
+
+    /**
+     * Get the explanation
+     * @returns {module:lessons/textItem-parser~TextItem}
+     */
+    get explanation() {
+      return this.#explanation;
+    }
+
+    /**
+     * Set the explanation
+     * @param {module:lessons/textItem-parser~TextItem} value
+     */
+    set explanation(value) {
+      this.#explanation = value;
+    }
+
+    /**
+     * Get the rightAnswers
+     * @returns {module:lessons/textItem-parser~TextItem[]}
+     */
+    get rightAnswers() {
+      return this.#rightAnswers;
+    }
+
+    /**
+     * Set the rightAnswers
+     * @param {module:lessons/textItem-parser~TextItem[]} value
+     */
+    set rightAnswers(value) {
+      this.#rightAnswers = value;
+      this.#deriveQuestionType();
+    }
+
+    /**
+     * Get the wrongAnswers
+     * @returns {module:lessons/textItem-parser~TextItem[]}
+     */
+    get wrongAnswers() {
+      return this.#wrongAnswers;
+    }
+
+    /**
+     * Get the first words from the wrong answers.
+     * @returns {string[]}
+     */
+    get firstWordsOfWrongAnswers() {
+      return this.#extractFirstWords(this.wrongAnswers);
+    }
+    /**
+     * Get the first words from the wrong answers.
+     * @returns {string[]}
+     */
+    get firstWordsOfRightAnswers() {
+      return this.#extractFirstWords(this.rightAnswers);
+    }
+
+    /**
+     * Extract the first word from
+     * @param {module:lessons/textItem-parser~TextItem} data
+     * @returns {string[]}
+     */
+    #extractFirstWords(data) {
+      const words = [];
+      data.forEach((textItem) => {
+        words.push(textItem.firstWord);
+      });
+      return words;
+    }
+
+    /**
+     * Set the wrongAnswers
+     * @param {module:lessons/textItem-parser~TextItem[]} value
+     */
+    set wrongAnswers(value) {
+      this.#wrongAnswers = value;
+      this.#deriveQuestionType();
+    }
+
+    /**
+     * Get the question type
+     */
+    get questionType() {
+      return this.#questionType;
+    }
+
+    /**
+     * Derive the type of question.
+     *
+     * The program supports six question types. The type is automatically derived
+     * from the question type,
+     *
+     * +simple: a multiple choice question with just one correct answer.
+     * +multi: a multiple choice question where the user can select more than one
+     * correct answer.
+     * +fill: a fill the blank question. Users have a selection of words which
+     * they must select to fill in the blanks in the question. This type is
+     * created if the question has an array of missing words which are not blank.
+     * Any wrong answers are added as red herrings. Note that only the first word
+     * of any wrong answer is used. If right answers have also been added, they
+     * are ignored. Note that if the question has one missing word with no content
+     * at the end, this is taken as the trigger to add an extra answer line at the
+     * end and this becomes an *order* question.
+     * +order: a select the answers in the correct order question. Users have a
+     * selection of words which they must select in the correct order. Any wrong
+     * answers that have been defined are treated as red herrings. This is similar
+     * to the fill question, but with the correct selections being added to a
+     * separate answer line rather than being inserted into blanks in the
+     * question. This type is created if there is a single missing word (...) at
+     * the end with no content.
+     * +slide: there is no question to answer. The user can just continue when
+     * ready. This is the default if the question does not fall into any of the
+     * other categories.
+     */
+    #deriveQuestionType() {
+      if (!this.#question?.html) {
+        return QuestionType.SLIDE;
+      }
+      if (this.#isOrderQuestion()) {
+        this.#questionType = QuestionType.ORDER;
+      } else if (this.#isFillQuestion()) {
+        this.#questionType = QuestionType.FILL;
+      } else if (this.#isMultiQuestion()) {
+        this.#questionType = QuestionType.MULTI;
+      } else if (this.#isSimpleQuestion()) {
+        this.#questionType = QuestionType.SIMPLE;
+      } else {
+        this.#questionType = QuestionType.SLIDE;
+      }
+    }
+
+    /**
+     * Return true if this is a multiple choice question with one correct answers.
+     * This means there is just one right answer. Callers must check that
+     * the question is not an order or fill question first.
+     * @returns {true}
+     */
+    #isSimpleQuestion() {
+      return this.#rightAnswers ? this.#rightAnswers.length === 1 : false;
+    }
+
+    /**
+     * Return true if this is a multiple choice question with multiple answers.
+     * This means there is more that one right answer. Callers must check that
+     * the question is not an order or fill question first.
+     * @returns {true}
+     */
+    #isMultiQuestion() {
+      return this.#rightAnswers ? this.#rightAnswers.length > 1 : false;
+    }
+
+    /**
+     * Return true if the question is a fill type.
+     * This means that the question contains missing words, each containing
+     * content.
+     * @returns {boolean}
+     */
+    #isFillQuestion() {
+      if (this.#question.missingWords.length === 0) {
+        return false;
+      }
+      for (const content of this.#question.missingWords) {
+        if (!content) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    /**
+     * Return true if the question is an *order*.
+     * This means there is just one missing word in the question, positioned at
+     * the very end and with no content.
+     * @returns {boolean}
+     */
+    #isOrderQuestion() {
+      const missingAtEnd = this.#question.html.match(
+        /<span +class *= *"missing-word".*?><\/span>(?:\s*<\/p>\s*)*$/
+      );
+      return (
+        missingAtEnd &&
+        this.#question.missingWords.length === 1 &&
+        !this.#question.missingWords[0]
+      );
+    }
+  }
+
+  /**
+   * @file Marker for keep track of scores
+   *
+   * @module lessons/itemMarker
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Possible states for a problem waiting to be answered.
+   * @enum
+   */
+  const MarkState = {
+    UNDEFINED: -1,
+    CORRECT: 0,
+    INCORRECT: 1,
+    SKIPPED: 2,
+  };
+
+  /**
+   * Information about the current marks.
+   * @typedef {Object} Marks
+   * @property {number} correct
+   * @property {number} incorrect
+   * @property {number} skipped
+   * @property {Problem[]} markedItems
+   */
+
+  /**
+   * @typedef {Object} MarkedItem
+   * @property {Object} item
+   * @property {MarkState} state
+   */
+
+  /**
+   * Class for keeping track of scores.
+   */
+  class ItemMarker {
+    /** @type {MarkedItem[]} */
+    #markedItems;
+
+    /**
+     * Create the marker.
+     */
+    constructor() {
+      this.reset();
+    }
+
+    /**
+     * Reset all scores to zero
+     */
+    reset() {
+      this.#markedItems = [];
+    }
+
+    /**
+     * Get the current marks.
+     * @returns {Marks}
+     */
+    get marks() {
+      const marks = {
+        correct: 0,
+        incorrect: 0,
+        skipped: 0,
+        markedItems: this.#markedItems,
+      };
+      this.#markedItems.forEach((markedItem) => {
+        switch (markedItem.state) {
+          case MarkState.CORRECT:
+            marks.correct++;
+            break;
+          case MarkState.INCORRECT:
+            marks.incorrect++;
+            break;
+          case MarkState.SKIPPED:
+            marks.skipped++;
+            break;
+        }
+      });
+      return marks;
+    }
+
+    /**
+     * Add a mark for the specified state.
+     * @param {Object} item - marked item.
+     * @param {MarkState} state - state to be marked.
+     */
+    markItem(item, state) {
+      this.#markedItems.push({
+        item: item,
+        state: state,
+      });
+    }
+  }
+
+  /**
+   * @file Provides the `Lesson` class.
+   *
+   * @module lessons/lesson
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  /**
+   * Encapsulation of a lesson.
+   */
+  class Lesson {
+    /**
+     * @type {Metadata}
+     */
+    #metadata;
+
+    /**
+     * @type {Problem[]}
+     */
+    #problems = [];
+
+    /**
+     * @type {number}
+     */
+    #problemIndex = 0;
+
+    /**
+     * Marker to keep track of scores
+     * @type {Marker}
+     */
+    #marker = new ItemMarker();
+
+    /**
+     * Create the lesson with scores initialised to zero.
+     */
+    constructor() {
+      this.#marker.reset();
+    }
+    /**
+     * get the metadata
+     * @returns {Metadata}
+     */
+    get metadata() {
+      return this.#metadata;
+    }
+
+    /**
+     * Set the metadata
+     * @param {Metadata} value
+     */
+    set metadata(value) {
+      this.#metadata = value;
+    }
+
+    /**
+     * Get the problems.
+     * @returns {Problem[]}
+     */
+    get problems() {
+      return this.#problems;
+    }
+
+    /**
+     * Get the marks
+     * @return {module:lessons/itemMarker~Marks}
+     */
+    get marks() {
+      return this.#marker.marks;
+    }
+
+    /**
+     * Add problem to the lesson.
+     * @param {Problem} problem
+     */
+    addProblem(problem) {
+      this.#problems.push(problem);
+    }
+
+    /**
+     * Reset the problem index and marker.
+     */
+    restart() {
+      this.#marker.reset();
+      this.#problemIndex = 0;
+    }
+
+    /**
+     * Check if there are more problems.
+     * @returns {boolean} true if more questions remain to be answered.
+     */
+    get hasMoreProblems() {
+      return this.#problemIndex < this.#problems.length;
+    }
+
+    /**
+     * Get next problem.
+     * This advances the internal index.
+     * If there aren't any more, it returns null;
+     * @returns {Problem | null}
+     */
+    getNextProblem() {
+      return this.#problemIndex < this.#problems.length
+        ? this.#problems[this.#problemIndex++]
+        : null;
+    }
+
+    /**
+     * Gets the next problem but without advancing the internal index.
+     * If there aren't any more, it returns null;
+     * @returns {Problem | null}
+     */
+    peekAtNextProblem() {
+      return this.#problemIndex < this.#problems.length
+        ? this.#problems[this.#problemIndex]
+        : null;
+    }
+
+    /**
+     *
+     * @param {Problem} problem
+     * @param {module:lessons/marker.MarkStates} state
+     */
+    markProblem(problem, state) {
+      this.#marker.markItem(problem, state);
+    }
+  }
+
+  /**
+   * @file Source describing a problem
+   *
+   * @module lessons/problem-source
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  class ProblemSource {
+    /**
+     * @type {string}
+     */
+    #introSource;
+    /**
+     * @type {string}
+     */
+    #questionSource;
+    /**
+     * @type {string[]}
+     */
+    #rightAnswerSources;
+    /**
+     * @type {string[]}
+     */
+    #wrongAnswerSources;
+    /**
+     * @type {string}
+     */
+    #explanationSource;
+
+    constructor() {
+      this.#introSource = '';
+      this.#questionSource = '';
+      this.#rightAnswerSources = [];
+      this.#wrongAnswerSources = [];
+      this.#explanationSource = '';
+    }
+
+    /**
+     * Get the introduction data;
+     */
+    get introSource() {
+      return this.#introSource;
+    }
+    /**
+     * Set the introduction data;
+     */
+    set introSource(data) {
+      this.#introSource = data;
+    }
+
+    /**
+     * Get the question data;
+     */
+    get questionSource() {
+      return this.#questionSource;
+    }
+    /**
+     * Set the question data;
+     */
+    set questionSource(data) {
+      this.#questionSource = data;
+    }
+    /**
+     * Get the explanation data;
+     */
+    get explanationSource() {
+      return this.#explanationSource;
+    }
+    /**
+     * Set the explanation data;
+     */
+    set explanationSource(data) {
+      this.#explanationSource = data;
+    }
+
+    /**
+     * Get the right answers;
+     */
+    get rightAnswerSources() {
+      return this.#rightAnswerSources;
+    }
+
+    /**
+     * Get the wrong answers;
+     */
+    get wrongAnswerSources() {
+      return this.#wrongAnswerSources;
+    }
+
+    /**
+     * Add a new right answer
+     * @param(string) data
+     */
+    addRightAnswerSource(data) {
+      this.#rightAnswerSources.push(data);
+    }
+
+    /**
+     * Add a new right answer
+     * @param(string) data
+     */
+    addWrongAnswerSource(data) {
+      this.#wrongAnswerSources.push(data);
+    }
+  }
+
+  /**
+   * @file Convert plain text
+   * {@link module:lessons/lessonSource~LessonSourceRawText} to a
+   * {@link LessonSource} instance.
+   *
+   * @module lessons/lessonSource
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Keys for splitting the problem source into parts. All keys are lowerCase.
+   */
+  const ProblemItemKey = {
+    INTRO: 'i',
+    QUESTION: '?',
+    RIGHT_ANSWER: '=',
+    WRONG_ANSWER: 'x',
+    EXPLANATION: '&',
+    QUESTION_BREAK: '_',
+  };
+
+  /**
+   * Class encapsulating the source text use to define the problems that comprise
+   * a lesson.
+   */
+  class LessonSource {
+    static #isConstructing = false;
+    /**
+     * Lesson metadata
+     */
+    #metaSource;
+    /**
+     * Question blocks in the lesson
+     */
+    #problemSources;
+
+    /**
+     * Construct a lesson.
+     */
+    constructor() {
+      if (!LessonSource.#isConstructing) {
+        throw new Error('Private constructor. Use createFromSource');
+      }
+      this.#problemSources = [];
+    }
+
+    /**
+     * Set the metaSource
+     * @param {string} value
+     */
+    set metaSource(value) {
+      this.#metaSource = value;
+    }
+
+    /**
+     * @returns {string}
+     */
+    get metaSource() {
+      return this.#metaSource;
+    }
+
+    /**
+     * Get the problem defs
+     * @returns {ProblemSource[]}
+     */
+    get problemSources() {
+      return this.#problemSources;
+    }
+    /**
+     * Create a new LessonSource.
+     * Break the source into a collection of {@link ProblemSource} objects.
+     * @param {LessonSourceRawText} source
+     * @return {LessonSource}
+     */
+    static createFromSource(source) {
+      LessonSource.#isConstructing = true;
+      const lessonSource = new LessonSource();
+      LessonSource.#isConstructing = false;
+      const lines = source.split(/\r\n|\n/);
+      let currentItemKey = null;
+      let problemSource = lessonSource.createProblemSource();
+      let data = '';
+
+      lines.forEach((line) => {
+        const details = lessonSource.getLineDetails(line);
+        if (!details.key) {
+          data += `${details.content}\n`;
+        } else {
+          lessonSource.addDataToProblemSource(
+            problemSource,
+            currentItemKey,
+            data
+          );
+
+          data = details.content ? `${details.content}\n` : '';
+          if (
+            lessonSource.isNewProblem(currentItemKey, details.key, problemSource)
+          ) {
+            problemSource = lessonSource.createProblemSource();
+          }
+          currentItemKey = details.key;
+        }
+      });
+      if (data) {
+        lessonSource.addDataToProblemSource(problemSource, currentItemKey, data);
+      }
+      return lessonSource;
+    }
+
+    /**
+     * Test to see if the key represents a new question block.
+     * Keys for INTRO or QUESTION result in new question blocks if they've already
+     * been fulfilled.
+     * If the last key was a QUESTION_BREAK, any key creates a new question.
+     * @param {QuestionItemKey} lastKey - last key that was in use/
+     * @param {QuestionItemKey} newKey - the new key.
+     * @param {ProblemSource} currentProblem - the current problem.
+     * @returns {boolean}
+     */
+    isNewProblem(lastKey, newKey, currentProblem) {
+      if (lastKey === ProblemItemKey.QUESTION_BREAK) {
+        return true;
+      }
+      switch (newKey) {
+        case ProblemItemKey.INTRO:
+          return !!currentProblem.introSource;
+        case ProblemItemKey.QUESTION:
+          return !!currentProblem.questionSource;
+      }
+      return false;
+    }
+    /**
+     * Add data to the appropriate part of the {@link Problem} based
+     * on the state. If the itemType is not defined, the data is added as metadata
+     * to the lesson.
+     * @param {ProblemSource} problem
+     * @param {QUESTION_ITEM_TYPE} itemType
+     * @param {string} data
+     *
+     */
+    addDataToProblemSource(problem, itemType, data) {
+      switch (itemType) {
+        case ProblemItemKey.INTRO:
+          problem.introSource = data;
+          break;
+        case ProblemItemKey.QUESTION:
+          problem.questionSource = data;
+          break;
+        case ProblemItemKey.RIGHT_ANSWER:
+          problem.addRightAnswerSource(data);
+          break;
+        case ProblemItemKey.WRONG_ANSWER:
+          problem.addWrongAnswerSource(data);
+          break;
+        case ProblemItemKey.EXPLANATION:
+          problem.explanationSource = data;
+          break;
+        case ProblemItemKey.QUESTION_BREAK:
+          break;
+        default:
+          this.metaSource = data;
+      }
+    }
+
+    /**
+     * Create a new {@link ProblemSource} and append to internal array.
+     * @returns {ProblemSource}
+     */
+    createProblemSource() {
+      const block = new ProblemSource();
+      this.problemSources.push(block);
+      return block;
+    }
+
+    /**
+     * Get the key and content that follows the key for the line.
+     * If there is no key found, the entire line is returned in the content and
+     * key is undefined.
+     * A key line can be preceded by up to 3 -, #, _ or space characters. It then comprises the
+     * key character, i?=x+& or _, optionallycontained within () brackets. The brackets can
+     * be repeated and the key character can be repeated. This allows the author
+     * to use more visually prominent key lines if preferred.
+     * The content does not include the line terminator.
+     * @param {string} line
+     * @returns {{key:QuestionItemKey, content:string}}
+     */
+    getLineDetails(line) {
+      // @ToDo remove comment.  const match = line.match(/^ {0,3}(?:\(+([i?=x+#])\1*\)+)(.*)$/i);
+      const match = line.match(/^[-#_* ]{0,3}(?:\(*([i?=xX&_])\1*[_) ]+)(.*)$/);
+
+      if (!match) {
+        return { key: undefined, content: line };
+      }
+      return { key: match[1].toLowerCase(), content: match[2] ?? '' };
+    }
+
+    /**
+     * Converts the lesson source to a `Lesson`
+     * @returns {module:lessons/lesson.Lesson}
+     */
+    convertToLesson() {
+      const lesson = new Lesson();
+      lesson.metadata = Metadata.createFromSource(this.metaSource);
+      this.problemSources.forEach((problemSource) => {
+        const problem = new Problem();
+        problem.intro = TextItem.createFromSource(
+          problemSource.introSource,
+          lesson.metadata
+        );
+        problem.question = TextItem.createFromSource(
+          problemSource.questionSource,
+          lesson.metadata
+        );
+        problem.explanation = TextItem.createFromSource(
+          problemSource.explanationSource,
+          lesson.metadata
+        );
+        problem.rightAnswers = problemSource.rightAnswerSources.map((source) =>
+          TextItem.createFromSource(source, lesson.metadata)
+        );
+        problem.wrongAnswers = problemSource.wrongAnswerSources.map((source) =>
+          TextItem.createFromSource(source, lesson.metadata)
+        );
+        lesson.addProblem(problem);
+      });
+      return lesson;
+    }
+  }
+
+  /**
+   * @file Class to handle unmanaged lessons
+   *
+   * @module lessons/unmanagedLesson
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /** Class to handle lesson provided via the a system outside of the normal
+   * lesson manager approach. */
+  class UnmanagedLesson {
+    /**
+     * @type {string}
+     */
+    #data;
+
+    /**
+     * @type {string}
+     */
+    #title;
+
+    /**
+     * @type {module:lessons/lesson.Lesson}
+     */
+    #lesson;
+
+    /**
+     * @type {module:lessons/lessonManager.LessonOrigin}
+     */
+    #origin;
+
+    /**
+     * Create the unmanaged lesson
+     * @param {string} title - the title of the lesson.
+     * @param {string} data - the raw text for the lesson.
+     * @param {module:lessons/lessonManager.LessonOrigin} origin - origin of the lesson
+     */
+    constructor(title, data, origin) {
+      this.#title = title;
+      if (data) {
+        this.#lesson = this.#convertDataToLesson(data);
+      }
+      this.#origin = origin;
+    }
+
+    /**
+     * Convert the lesson data into a lesson.
+     * @param {string} data
+     * @returns {module:lessons/lesson.Lesson}
+     */
+    #convertDataToLesson(data) {
+      const lessonSource = LessonSource.createFromSource(data);
+      return lessonSource.convertToLesson();
+    }
+    /**
+     * @returns {boolean} true if there is lesson data.
+     */
+    get hasLesson() {
+      return !!this.#lesson;
+    }
+
+    /**
+     * @returns {module:lessons/lesson.Lesson}
+     */
+    get lesson() {
+      return this.#lesson;
+    }
+
+    /**
+     * Get the lesson info
+     */
+    get lessonInfo() {
+      return this.#getUnmanagedLessonInfo(escapeHtml(this.#title), this.#origin);
+    }
+
+    /**
+     * Get unmanaged lesson information.
+     * The lesson info is undefined except for the managed flag which is false and
+     * the lesson title.
+     * @param {string} lessonTitle
+     * @param {LessonOrigin} origin - this should be EMBEDDED or FILE_SYSTEM if unmanaged
+     * @returns {LessonInfo}
+     */
+    #getUnmanagedLessonInfo(lessonTitle, origin) {
+      return {
+        origin: origin,
+        usingLocalLibrary: false,
+        libraryKey: undefined,
+        file: undefined,
+        url: undefined,
+        indexes: {
+          book: 0,
+          chapter: 0,
+          lesson: 0,
+        },
+        titles: {
+          library: '',
+          book: '',
+          chapter: '',
+          lesson: lessonTitle,
+        },
+      };
+    }
+  }
+
+  /**
+   * @file Origins for lessons
+   *
+   * @module lessons/lessonOrigins
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Possible origins for lessons.
+   * @const
+   * @enum {string}
+   */
+  const LessonOrigin = {
+    REMOTE: 'remote',
+    LOCAL: 'local',
+    EMBEDDED: 'embedded',
+    FILE_SYSTEM: 'file_system',
+  };
+
+  /**
+   * @file Handle lesson provided via embedded data in the file.
+   *
+   * @module lessons/embeddedLesson
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /** Class to handle lesson provided via the embedded data. */
+  class EmbeddedLesson extends UnmanagedLesson {
+    /**
+     * Create the session lesson
+     */
+    constructor() {
+      super(
+        EmbeddedLesson.#getEmbeddedItem(
+          'Embedded title',
+          window.text2LessonEmbeddedData?.title
+        ),
+        EmbeddedLesson.#getEmbeddedItem(
+          'Embedded source',
+          window.text2LessonEmbeddedData?.source
+        ),
+        LessonOrigin.EMBEDDED
+      );
+    }
+
+    /** Get the embedded root url. It will have the trailing /.
+     * This is where the lesson originated.
+     * @returns {string}
+     */
+    get rootUrl() {
+      return window.text2LessonEmbeddedData?.rootUrl;
+    }
+
+    /**
+     * Get the embedded translations.
+     * @returns {string}
+     */
+    get translations() {
+      return window.text2LessonEmbeddedData?.translations;
+    }
+
+    /**
+     * Gets the stored item. All items stored are expected to be in base64.
+     * @param {string} name - just used for logging.
+     * @param {string} data
+     * @returns {string}
+     */
+    static #getEmbeddedItem(name, data) {
+      if (data) {
+        try {
+          return base64ToString(data);
+        } catch (error) {
+          console.error(
+            `Could not decoded embedded variable ${name}. Data: ${data} `
+          );
+        }
+      }
+      return null;
+    }
+  }
+
+  const embeddedLesson = new EmbeddedLesson();
+
+  /**
+   * @file Collection of urls.
+   *
+   * @module data/urls
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  let rootUrl = embeddedLesson.hasLesson
+    ? embeddedLesson.rootUrl
+    : window.location.href.replace(/index\.html(\?.*)?$/, '');
+  if (!rootUrl.endsWith('/')) {
+    rootUrl += '/'; // defensive
+  }
+
+  const DOCS_ROOT_URL = 'https://henspace.com/text2lesson-docs/';
+
+  /**
+   * @enum {string}
+   */
+  const Urls = {
+    ROOT: `${rootUrl}`,
+    LOGO: `${rootUrl}assets/images/logo.png`,
+    HELP: `${DOCS_ROOT_URL}about.html`,
+    PRIVACY: `${DOCS_ROOT_URL}privacy.html`,
+  };
+
+  /**
+   * @file Implementation of local libraries.
+   *
+   * @module lessons/localLibrary
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * @type {Map.<string, lessons/lessonManager~LibraryInfo>}
+   * @typedef {} LibraryInfo - Information about a library.
+   * @property {string} title - title of the library
+   * @property {string} file - file containing the books available in the library.
+   * This file should contain a JSON representation of a {@link Library}
+   * object.
+   */
+
+  /**
+   * @typedef {Object} LocalLesson
+   * @property {string} title - title of the lesson
+   * @property {string} content - the text that defines the lesson
+   */
+
+  /**
+   * Class to present local storage as a library.
+   */
+  class LocalLibrary {
+    /**
+     * @type {string}
+     * @const
+     */
+    static LOCAL_LIBRARY_KEY = 'LOCAL_LIBRARY';
+
+    /**
+     * @type {string}
+     * @const
+     */
+    static LOCAL_LIBRARY_INDEX_KEY = 'LOCAL_LIBRARY_INDEX';
+
+    /**
+     * @type {string}
+     * @const
+     */
+    static LOCAL_LESSON_KEY_PREFIX = 'LocalLesson_';
+
+    /**
+     * @type {number}
+     * @const
+     */
+    static NUMBER_OF_INITIAL_LESSONS = 4;
+    /**
+     * @type {string}
+     */
+    #key;
+    /**
+     * @type {string}
+     */
+    #title;
+
+    /**
+     * @type {function():module:lessons/lessonManager~Library}
+     */
+    #contentLoader;
+
+    /**
+     * Construct the local library.
+     */
+    constructor() {
+      this.#key = LocalLibrary.LOCAL_LIBRARY_KEY;
+      this.#title = i18n`Local library`;
+      this.#contentLoader = () => this.#getLibraryContent();
+    }
+
+    /**
+     * Get the local library key.
+     * @returns {string}
+     */
+    get key() {
+      return this.#key;
+    }
+
+    /**
+     * Get the library info.
+     * @returns {module:lessons/lessonManager~LibraryInfo}
+     */
+    get info() {
+      return {
+        title: this.#title,
+        contentLoader: this.#contentLoader,
+      };
+    }
+
+    /**
+     * Get the default lesson keys
+     * @returns {number[]}
+     */
+    #getDefaultLessonKeys() {
+      const indexes = [];
+      for (
+        let index = 0;
+        index < LocalLibrary.NUMBER_OF_INITIAL_LESSONS;
+        index++
+      ) {
+        indexes.push(index);
+      }
+      return indexes;
+    }
+
+    /**
+     * Get the current local library lesson keys. These are all the books stored
+     * in local storage.
+     * @returns {numbers[]}
+     */
+    #getLessonKeys() {
+      return persistentData.getFromStorage(
+        LocalLibrary.LOCAL_LIBRARY_INDEX_KEY,
+        this.#getDefaultLessonKeys()
+      );
+    }
+
+    /**
+     * Save the local library lesson keys. These are all the lessons stored
+     * in local storage.
+     * @param {number[]} keys
+     */
+    #saveLessonKeys(keys) {
+      persistentData.saveToStorage(LocalLibrary.LOCAL_LIBRARY_INDEX_KEY, keys);
+    }
+
+    /**
+     * Gets an object representing the local library content.
+     * @returns {module:lessons/lessonManager~LibraryContent}
+     */
+    #getLibraryContent() {
+      const book = {
+        title: i18n`My personal lesson book`,
+        location: '',
+        chapters: [{ title: i18n`Chapter 1`, lessons: [] }],
+      };
+
+      const lessonKeys = this.#getLessonKeys();
+      lessonKeys.forEach((key) => {
+        const localLesson = this.#loadLocalLesson(key);
+        book.chapters[0].lessons.push({
+          title: localLesson.title,
+          contentLoader: () => localLesson.content,
+        });
+      });
+      return [book];
+    }
+
+    /**
+     * Get the storage key for a particular book's key.
+     * @param {number} key
+     */
+    #getStorageKeyForLessonKey(key) {
+      return `${LocalLibrary.LOCAL_LESSON_KEY_PREFIX}${key}`;
+    }
+
+    /**
+     * Load a local lesson from storage.
+     * @param {number} key
+     * @returns {LocalLesson}
+     */
+    #loadLocalLesson(key) {
+      const lessonHelpLink = `[How to write lessons](${Urls.HELP})`;
+      const defaultLesson = {
+        title: i18n`Untitled lesson`,
+        content: i18n`(i)This is a lesson which you need to create. See ${lessonHelpLink}`,
+      };
+      return persistentData.getFromStorage(
+        this.#getStorageKeyForLessonKey(key),
+        defaultLesson
+      );
+    }
+
+    /**
+     * Save the local lesson.
+     * @param {number} index
+     * @param {LocalLesson} localLesson
+     */
+    saveLocalLessonAtIndex(index, localLesson) {
+      const keys = this.#getLessonKeys();
+      if (index < 0 || index >= keys.length) {
+        console.error(`Attempt to store to index ${index} ignored.`);
+        return;
+      }
+      const key = keys[index];
+      persistentData.saveToStorage(
+        this.#getStorageKeyForLessonKey(key),
+        localLesson
+      );
+    }
+
+    /**
+     * Get a free key. Searches through all the indexes to find any gaps.
+     * @returns {number}
+     */
+    #getFreeKey() {
+      const indexes = this.#getLessonKeys();
+      indexes.sort();
+      for (let n = 0; n < indexes.length - 1; n++) {
+        if (indexes[n + 1] - indexes[n] > 1) {
+          return indexes[n] + 1;
+        }
+      }
+      return indexes[indexes.length - 1] + 1;
+    }
+
+    /**
+     * Add a new lesson slot.
+     */
+    addNewLessonSlot() {
+      const key = this.#getFreeKey();
+      const keys = this.#getLessonKeys();
+      keys.push(key);
+      this.#saveLessonKeys(keys);
+    }
+
+    /**
+     * Delete a lesson slot.
+     */
+    deleteLessonAtIndex(index) {
+      const keys = this.#getLessonKeys();
+      const key = keys[index];
+      if (key != undefined) {
+        console.debug(`Removing lesson storage index: ${index}; key:${key}`);
+        persistentData.removeFromStorage(this.#getStorageKeyForLessonKey(key));
+        keys.splice(index, 1);
+        this.#saveLessonKeys(keys);
+      }
+    }
+  }
+
+  /**
+   * @file Manager for fetching the lesson plan
+   * Lessons are structured as follows:
+   * + this.#libraries {@link module:lessons/lessonManager~Library}: object
+   * containing all available this.#libraries.
+   * + Library {@link module:lessons/lessonManager~LibraryDetails}:
+   * contains a number of different this.#libraries. These this.#libraries contain a
+   * Catalogue.
+   * + Catalogue {@link module:lessons/lessonManager~CatalogueDetails}: contains
+   * an array of Books.
+   * + Book {@link module:lessons/lessonManager~BookDetails}: contains and array
+   * of Chapters.
+   * + Chapter {@link module:lessons/lessonManager~ChapterDetails}: effectively
+   * sections within a book containing a number of lessons.
+   * + Lesson {@link module:lessons/lessonManager~LessonDetails}: this is the
+   * final element of the book and contains the information that is actually run
+   * by the application.
+   *
+   * @module lessons/lessonManager
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * @typedef {Map<string, LibraryInfo>} Libraries - object containing
+   * all available this.#libraries accessible to the application. The keyword is used
+   * as a unique identifier for the library.
+   */
+
+  /**
+   * @typedef {Object} LibraryInfo - Information about a library.
+   * @property {string} title - title of the library
+   * @property {string | function():LibraryContent} url - the url name which
+   * provides the path to a JSON representation of a {@link LibraryContent}
+   * object.
+   * @property {function():LibraryContent} contentLoader - loader for the content as an alternative
+   * to provided the {@link LibraryContent}. This takes precedence over the url.
+   *
+   * {@link LibraryContent} object directly.
+   */
+
+  /**
+   * @typedef {Map<string, Library>} this.#libraries - object containing
+   * all available this.#libraries accessible to the application. The keyword is used
+   * as a unique identifier for the library.
+   */
+
+  /**
+   * @typedef {BookDetails[]} LibraryContent
+   */
+  /**
+   * @typedef {Object} Library - the library as used by the application.
+   * @property {string} title - title of the library
+   * @property {string} file - file containing the books available in the library.
+   * This file should contain a JSON representation of a {@link LibraryContent}
+   * object.
+   * @property {LibraryContent} books - the books in the library
+   */
+
+  /**
+   * @typedef {Object} BookDetails
+   * @property {string} title - title of the book
+   * @property {string} location - the path to where the files in each lesson are
+   * located. This should have a trailing forward slash.
+   * @property {ChapterDetails[]} chapters - details of the chapters in the book.
+   */
+
+  /**
+   * @typedef {Object} ChapterDetails - details of a book chapter.
+   * @property {string} title - title of the chapter.
+   * @property {LessonDetails[]} lessons - lessons in the chapter.
+   */
+
+  /**
+   * @typedef {Object} LessonDetails - details of a lesson.
+   * @property {string} title - title of the lesson.
+   * @property {string} file - path to the actual lesson if it needs to be loaded.
+   * @property {function():string} contentLoader - loader for the content as an alternative
+   * to provided the file. This takes precedence.
+   */
+
+  /**
+   * @typedef {Object} LessonInfo
+   * @property {LessonOrigin} - indicate of where the lesson originated. If this is not REMOTE, all other fields are unmanaged.
+   * @property {boolean} usingLocalLibrary - flag whether the lesson manager is using local lessons.
+   * @property {string} libraryKey - key for the library
+   * @property {string} file - file without any path.
+   * @property {string} url - the url of the lesson. This is used as its unique key.
+   * @property {Object} indexes
+   * @property {number} indexes.book - index of the book
+   * @property {number} indexes.chapter - index of the chapter
+   * @property {number} indexes.lesson - index of the lesson
+   * @property {Object} titles
+   * @property {string} titles.library - title of the library
+   * @property {string} titles.book - title of the book
+   * @property {string} titles.chapter - title of the chapter
+   * @property {string} titles.lesson - title of the lesson
+   */
+
+  class LessonManager {
+    /**
+     * @type {boolean}
+     */
+    #usingLocalLibrary = false;
+
+    /**
+     * Available this.#libraries.
+     * @type {Map.<string, Libraries>}
+     */
+    #libraries = new Map();
+    #remoteLibraryKey;
+    #currentLibraryKey;
+    #currentBookIndex = 0;
+    #currentChapterIndex = 0;
+    #currentLessonIndex = 0;
+    /**
+     * @type {CachedLesson}
+     */
+    #cachedLesson;
+
+    constructor() {}
+
+    /** Set the current remote library key.
+     * The library's catalog should have already been loaded.
+     * If the key is invalid, the first entry in the this.#libraries is used and storage
+     * is switched to the local library
+     * @param {string} key the library key.
+     */
+    set remoteLibraryKey(key) {
+      if (!this.#libraries.has(key)) {
+        console.error(
+          `Ignored attempt to set remote invalid remote library key ${key}.`
+        );
+        this.#usingLocalLibrary = true;
+        return;
+      }
+      this.#remoteLibraryKey = key;
+      if (!this.#usingLocalLibrary) {
+        this.#currentLibraryKey = this.#remoteLibraryKey;
+      }
+    }
+
+    /**
+     * Switch which library is in use.
+     * @param {boolean} value - true to switch to local library.
+     */
+    set usingLocalLibrary(value) {
+      this.#usingLocalLibrary = value;
+      this.#currentLibraryKey = this.#usingLocalLibrary
+        ? LocalLibrary.LOCAL_LIBRARY_KEY
+        : this.#remoteLibraryKey;
+    }
+
+    /**
+     *  Get which library is in use.
+     *  @returns {boolean} true if using local library.
+     */
+    get usingLocalLibrary() {
+      return this.#usingLocalLibrary;
+    }
+
+    /**
+     * Set the index of the book we are working on.
+     * @param {number} index
+     */
+    set bookIndex(index) {
+      const library = this.#libraries.get(this.#currentLibraryKey);
+      if (!library) {
+        this.#currentBookIndex = 0;
+        return;
+      }
+      this.#currentBookIndex = this.#ensurePositiveInt(index);
+    }
+
+    /**
+     * Set the index of the chapter we are working on.
+     * @param {number} index
+     */
+    set chapterIndex(index) {
+      this.#currentChapterIndex = this.#ensurePositiveInt(index);
+    }
+
+    /**
+     * Set the index of the lesson we are working on.
+     * @param {number} index
+     */
+    set lessonIndex(index) {
+      this.#currentLessonIndex = this.#ensurePositiveInt(index);
+    }
+
+    /**
+     * Get the current library title. If key is not valid, returns an empty string.
+     * @returns {string}
+     */
+    get libraryTitle() {
+      const title = this.#libraries.get(this.#currentLibraryKey)?.title;
+      return title ?? '';
+    }
+
+    /**
+     * Get the library titles.
+     * @returns {Map<string, string>}
+     */
+    get libraryTitles() {
+      const options = new Map();
+      this.#libraries.forEach((value, key) => {
+        options.set(key, value.title);
+      });
+      return options;
+    }
+
+    /**
+     * Get the remote library titles.
+     * This ignores local storage.
+     * @returns {Map<string, string>}
+     */
+    get remoteLibraryTitles() {
+      const options = new Map();
+      this.#libraries.forEach((value, key) => {
+        if (key !== LocalLibrary.LOCAL_LIBRARY_KEY) {
+          options.set(key, value.title);
+        }
+      });
+      return options;
+    }
+
+    /**
+     * Get the book chapter title. If index is not valid, returns an empty string.
+     * @returns {string}
+     */
+    get bookTitle() {
+      const title = this.#getCurrentBook()?.title;
+      return title ?? '';
+    }
+
+    /**
+     * Get list of all the book titles.
+     * @returns {string[]}
+     */
+    get bookTitles() {
+      const titles = [];
+      this.#libraries.get(this.#currentLibraryKey)?.books.forEach((value) => {
+        titles.push(value.title);
+      });
+      return titles;
+    }
+
+    /**
+     * Get the current chapter title. If index is not valid, returns an empty string.
+     * @returns {string}
+     */
+    get chapterTitle() {
+      const title =
+        this.#getCurrentBook()?.chapters[this.#currentChapterIndex]?.title;
+      return title ?? '';
+    }
+
+    /**
+     * Get list of all the chapter titles.
+     * @returns {string[]}
+     */
+    get chapterTitles() {
+      const titles = [];
+      this.#getCurrentBook().chapters.forEach((value) => {
+        titles.push(value.title);
+      });
+      return titles;
+    }
+
+    /**
+     * Get the current lesson title. If index is not valid, returns an empty string.
+     * @returns {string}
+     */
+    get lessonTitle() {
+      const title =
+        this.#getCurrentBook()?.chapters[this.#currentChapterIndex]?.lessons[
+          this.#currentLessonIndex
+        ]?.title;
+      return title ?? '';
+    }
+    /**
+     * Get list of all the lesson titles.
+     * @returns {string[]}
+     */
+    get lessonTitles() {
+      const titles = [];
+      this.#getCurrentBook().chapters[this.#currentChapterIndex].lessons.forEach(
+        (value) => {
+          titles.push(value.title);
+        }
+      );
+      return titles;
+    }
+
+    /**
+     * @typedef {Object} LessonDetails
+     * @property {string} libraryTitle
+     * @property {string} bookTitle
+     * @property {string} chapterTitle
+     * @property {string} lessonTitle
+     * @property {string} lessonFile
+     */
+
+    /**
+     * Get the current lesson information.
+     * @returns {LessonInfo}
+     */
+    get currentLessonInfo() {
+      return this.#buildCurrentLessonInfo();
+    }
+
+    /**
+     * Build the current lesson information.
+     * @param {string} url - the url for the lesson. This is used as its unique key.
+     * @returns {LessonInfo}
+     */
+    #buildCurrentLessonInfo(url) {
+      this.#ensureIndexesValid();
+      const book = this.#getCurrentBook();
+      return {
+        origin: this.#usingLocalLibrary
+          ? LessonOrigin.LOCAL
+          : LessonOrigin.REMOTE,
+        usingLocalLibrary: this.#usingLocalLibrary,
+        libraryKey: this.#currentLibraryKey,
+        file: book?.chapters[this.#currentChapterIndex]?.lessons[
+          this.#currentLessonIndex
+        ]?.file,
+        url: url,
+        indexes: {
+          book: this.#currentBookIndex,
+          chapter: this.#currentChapterIndex,
+          lesson: this.#currentLessonIndex,
+        },
+        titles: {
+          library: this.#libraries.get(this.#currentLibraryKey)?.title,
+          book: book?.title,
+          chapter: book?.chapters[this.#currentChapterIndex]?.title,
+          lesson:
+            book?.chapters[this.#currentChapterIndex]?.lessons[
+              this.#currentLessonIndex
+            ]?.title,
+        },
+      };
+    }
+
+    /**
+     * Form url to retrieve the lesson under book, chapter and sections.
+     * The current settings for the library key and indexes are used.
+     * @returns {string} the url for the lesson content.
+     */
+    formUrlForLesson() {
+      const books = this.#libraries.get(this.#currentLibraryKey).books;
+      const fileLocation = books[this.#currentBookIndex].location;
+      const fileName =
+        books[this.#currentBookIndex].chapters[this.#currentChapterIndex].lessons[
+          this.#currentLessonIndex
+        ].file;
+      return `${fileLocation}${fileName}`;
+    }
+
+    /**
+     * Makes sure index is a positive integer.
+     * @param {string | number} index
+     * @returns integer index or 0 if index is not valid
+     */
+    #ensurePositiveInt(index) {
+      index = parseInt(index);
+      return isNaN(index) || index < 0 ? 0 : index;
+    }
+
+    /**
+     * Ensure all indexes are within the bounds of the library's contents.
+     * Any invalid index is set to 0.
+     * If library.books is not set, not indexes are adjusted.
+     */
+    #ensureIndexesValid() {
+      const library = this.#libraries.get(this.#currentLibraryKey);
+
+      if (this.#indexInvalid(this.#currentBookIndex, library?.books)) {
+        this.#currentBookIndex = 0;
+      }
+      const book = library?.books[this.#currentBookIndex];
+      if (this.#indexInvalid(this.#currentChapterIndex, book?.chapters)) {
+        this.#currentChapterIndex = 0;
+      }
+      const chapter = book?.chapters[this.#currentChapterIndex];
+      if (this.#indexInvalid(this.#currentLessonIndex, chapter?.lessons.length)) {
+        this.#currentLessonIndex = 0;
+      }
+    }
+
+    /** Check if index is invalid.
+     * It is regarded as invalid if it is out of the bounds of the array.
+     * If the array is null or undefined, then then index is _NOT_ regarded as
+     * invalid.
+     * @returns {boolean}
+     */
+    #indexInvalid(index, arrayData) {
+      if (arrayData === null || arrayData === undefined) {
+        return false;
+      }
+      return isNaN(index) || index < 0 || index >= arrayData.length;
+    }
+
+    /**
+     * Utility function to simplify code.
+     * @returns {BookDetails}
+     */
+    #getCurrentBook() {
+      return this.#libraries.get(this.#currentLibraryKey).books[
+        this.#currentBookIndex
+      ];
+    }
+
+    /**
+     * Set the available libraries. The `librariesFileLocation` should be the path
+     * to a JSON representation of a `libraries` object.
+     * Note that all titles are escaped.
+     * @param {string} librariesFileLocation - if null or empty, just local libraries are loaded.
+     * @returns {Promise} fufils to number of libraries.
+     */
+    loadAllLibraries(librariesFileLocation) {
+      this.#libraries = new Map();
+      const localLibrary = new LocalLibrary();
+      this.#libraries.set(localLibrary.key, localLibrary.info);
+      if (!librariesFileLocation) {
+        return Promise.resolve(this.#libraries.size);
+      }
+      return fetchJson(librariesFileLocation).then((entries) => {
+        for (const key in entries) {
+          const entry = entries[key];
+          entry.title = escapeHtml(entry.title);
+          this.#libraries.set(key, entries[key]);
+          this.#libraries.get(key).books = [];
+        }
+        return this.#libraries.size;
+      });
+    }
+
+    /**
+     * Load the current libraries. This is the local storage library and the
+     * current remote library.
+     * @returns {Promise} fulfils to undefined.
+     */
+    loadAllLibraryContent() {
+      return this.#loadLibraryContent(LocalLibrary.LOCAL_LIBRARY_KEY).then(() =>
+        this.#loadLibraryContent(this.#remoteLibraryKey)
+      );
+    }
+
+    /**
+     * Load the library associated with the key. If the key is invalid,
+     * it is altered to the first key of the #libraries.
+     * Indexes are set to zero if found to be invalid.
+     * @param {string} key - the library key
+     * @param {boolean} [force] - if true, the content will be reloaded even if it exists.
+     * @returns {Promise} fulfils to undefined.
+     */
+    #loadLibraryContent(key, force) {
+      const library = this.#libraries.get(key);
+
+      if (library.books?.length > 0 && !force) {
+        return Promise.resolve();
+      }
+      if (library.contentLoader) {
+        library.books = library.contentLoader();
+        this.#escapeAllTitles(library.books);
+        this.#ensureIndexesValid();
+        return Promise.resolve();
+      }
+      return fetchJson(library.url).then((value) => {
+        library.books = value;
+        this.#escapeAllTitles(library.books);
+        this.#ensureIndexesValid();
+        return;
+      });
+    }
+
+    /**
+     * Escape all the titles in the books
+     * @param {BookDetails}
+     */
+    #escapeAllTitles(books) {
+      books.forEach((book) => {
+        book.title = escapeHtml(book.title);
+        book.chapters.forEach((chapter) => {
+          chapter.title = escapeHtml(chapter.title);
+          chapter.lessons.forEach((lesson) => {
+            lesson.title = escapeHtml(lesson.title);
+          });
+        });
+      });
+    }
+
+    /**
+     * Load the current lesson.
+     * @returns {Promise} Fulfils to {@link module:lessons/cachedLesson~CachedLesson}
+     */
+    loadCurrentLesson() {
+      this.#ensureIndexesValid();
+      const contentLoader =
+        this.#getCurrentBook().chapters[this.#currentChapterIndex].lessons[
+          this.#currentLessonIndex
+        ].contentLoader;
+
+      if (contentLoader) {
+        return this.#loadLessonUsingContentLoader(contentLoader);
+      } else {
+        return this.#loadRemoteLesson();
+      }
+    }
+
+    /**
+     * Load the current lesson from local storage.
+     * @param {function():string} contentLoader - function that directly loads the
+     * content.
+     * @returns {Promise} Fulfils to {@link module:lessons/cachedLesson~CachedLesson}
+     */
+    #loadLessonUsingContentLoader(contentLoader) {
+      return Promise.resolve(
+        new CachedLesson(this.#buildCurrentLessonInfo(''), contentLoader())
+      );
+    }
+    /**
+     * Load the current lesson from remote storage.
+     * @returns {Promise} Fulfils to {@link module:lessons/cachedLesson~CachedLesson}
+     */
+    #loadRemoteLesson() {
+      const url = this.formUrlForLesson();
+      if (this.#cachedLesson?.info.url === url) {
+        console.info(`Using cached version of lesson: ${url}`);
+        return Promise.resolve(CachedLesson.clone(this.#cachedLesson));
+      }
+      this.#cachedLesson = new CachedLesson(this.#buildCurrentLessonInfo(url));
+
+      return fetchText(url).then((text) => {
+        console.info(`Loaded lesson: ${url}`);
+        this.#cachedLesson.content = text;
+        return CachedLesson.clone(this.#cachedLesson);
+      });
+    }
+
+    /**
+     * Updates the lesson content.
+     * This can only be called if using a local library.
+     * @param {string} title - lesson title.
+     * @param {string} content - lesson content.
+     * @throws {Error} thrown if trying to update a remote lesson.
+     * @returns {Promise} fulfils to undefined.
+     */
+    updateCurrentLessonContent(title, content) {
+      if (!this.#usingLocalLibrary) {
+        throw new Error('Attempt made to update a remote library.');
+      }
+      new LocalLibrary().saveLocalLessonAtIndex(this.#currentLessonIndex, {
+        title: title,
+        content: content,
+      });
+      return this.#loadLibraryContent(LocalLibrary.LOCAL_LIBRARY_KEY, true);
+    }
+
+    /**
+     * Add lesson to local library.
+     * @returns {Promise} fulfils to undefined
+     */
+    addLessonToLocalLibrary() {
+      const localLibrary = new LocalLibrary();
+      localLibrary.addNewLessonSlot();
+      this.#libraries.set(localLibrary.key, localLibrary.info);
+      return this.#loadLibraryContent(localLibrary.key, true);
+    }
+
+    /**
+     * Delete the current local library slot.
+     * @returns {Promise} fulfils to undefined
+     */
+    deleteLocalLibraryCurrentLesson() {
+      if (!this.#usingLocalLibrary) {
+        console.error(
+          'Ignored attempt to delete local library when it is not the active library.'
+        );
+        return Promise.resolve();
+      }
+      const localLibrary = new LocalLibrary();
+      localLibrary.deleteLessonAtIndex(this.#currentLessonIndex);
+      this.#libraries.set(localLibrary.key, localLibrary.info);
+      return this.#loadLibraryContent(localLibrary.key, true);
+    }
+  }
+
+  /**
+   * Lesson Manager for embedded lessons. These don't have access to JSON and therefore
+   * There is no remote access.
+   */
+  class EmbeddedLessonManager {
+    loadAllLibraries(librariesFileLocation) {
+      console.debug(
+        `Embedded lesson manager ignore attempt to load ${librariesFileLocation}`
+      );
+    }
+    loadAllLibraryContent() {
+      console.debug(
+        `Embedded lesson manager ignored attempt to load all library content`
+      );
+    }
+  }
+
+  const lessonManager = embeddedLesson.hasLesson
+    ? new EmbeddedLessonManager()
+    : new LessonManager();
+
+  /**
+   * @file Definition of settings.
+   *
+   * @module data/settingDefinitions
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  const DEFAULT_HUE = 120;
+  const DEFAULT_SATURATION = 50;
+  const DEFAULT_COLOR_SPREAD = 120;
+  const DEFAULT_DARK_MODE = false;
+  const DEFAULT_FONT_SIZE = 15;
+  const DEFAULT_LIBRARY_KEY = 'EN';
+  const DEFAULT_READING_SPEED = '180';
+
+  /**
+   * Create a palette.
+   * @param {module:utils/color/colorPalettes~PaletteSettings} settings
+   */
+  function setPalette(settings) {
+    settings.hue =
+      settings.hue ?? persistentData.getFromStorage('hue', DEFAULT_HUE);
+    settings.saturation =
+      settings.saturation ??
+      persistentData.getFromStorage('saturation', DEFAULT_SATURATION);
+    settings.spread =
+      settings.spread ??
+      persistentData.getFromStorage('spread', DEFAULT_COLOR_SPREAD);
+    settings.dark =
+      settings.dark ??
+      persistentData.getFromStorage('darkMode', DEFAULT_DARK_MODE);
+    setCssFromPalette(createPalette(settings));
+  }
+
+  /**
+   * Get the definitions for all settings. Definition contain key, value settings.
+   * This provided as a function to ensure template tags are executed after
+   * languages have been loaded.
+   * @returns  {SettingDefinitions}
+   */
+  function getSettingDefinitions() {
+    return {
+      palette: {
+        type: 'separator',
+        label: i18n`Colour settings`,
+      },
+      hue: {
+        type: 'range',
+        label: i18n`Palette hue`,
+        defaultValue: DEFAULT_HUE,
+        min: 0,
+        max: 360,
+        onupdate: (value) => {
+          value = parseInt(value);
+          setPalette({ hue: value });
+        },
+      },
+      saturation: {
+        type: 'range',
+        label: i18n`Palette saturation`,
+        defaultValue: DEFAULT_SATURATION,
+        min: 0,
+        max: 100,
+        onupdate: (value) => {
+          value = parseInt(value);
+          setPalette({ saturation: value });
+        },
+      },
+      spread: {
+        type: 'range',
+        label: i18n`Palette spread`,
+        defaultValue: DEFAULT_COLOR_SPREAD,
+        min: 0,
+        max: 180,
+        onupdate: (value) => {
+          value = parseInt(value);
+          setPalette({ spread: value });
+        },
+      },
+      darkMode: {
+        type: 'checkbox',
+        label: i18n`Dark mode`,
+        defaultValue: DEFAULT_DARK_MODE,
+        onupdate: (value) => {
+          setPalette({ dark: value });
+        },
+      },
+      fontSize: {
+        type: 'range',
+        label: i18n`Font size`,
+        defaultValue: DEFAULT_FONT_SIZE,
+        min: 10,
+        max: 22,
+        onupdate: (value) => {
+          setProperty('--font-base-size', `${value}px`);
+        },
+      },
+      hideButtonText: {
+        type: 'checkbox',
+        label: i18n`Hide button labels`,
+        defaultValue: false,
+        onupdate: (value) => {
+          icons.hideText = value;
+        },
+      },
+      readingSpeed: {
+        type: 'range',
+        label: i18n`Reading speed (wpm)`,
+        defaultValue: DEFAULT_READING_SPEED,
+        min: 80,
+        max: 1000,
+      },
+      lessonInfo: {
+        type: 'separator',
+        label: i18n`Lesson settings`,
+      },
+      library: {
+        type: 'select',
+        label: i18n`Remote library`,
+        defaultValue: DEFAULT_LIBRARY_KEY,
+        onupdate: (value) => {
+          lessonManager.remoteLibraryKey = value;
+        },
+        options: () => lessonManager.remoteLibraryTitles,
+        reloadIfChanged: true,
+      },
+      showFirstUseMessage: {
+        type: 'checkbox',
+        label: i18n`Show first use message`,
+        defaultValue: true,
+      },
+    };
+  }
+
+  /**
+   * @file button classes
+   *
+   * @module utils/userIo/buttons
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Managed button.
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class BarButton extends ManagedElement {
+    /**
+     * Button
+     * @param {string | module:utils/userIo/icons~IconDetails} IconDetail - if just a string
+     * it is assumed to hold a string that is suitable for accessibility.
+     * @param {string} detail.content the text to display. This can contain HTML and soe
+     * @param {string} detail.accessibleName text for accessibility
+     */
+    constructor(detail) {
+      super('button');
+      if (detail.content) {
+        icons.applyIconToElement(detail, this.element);
+      } else {
+        this.innerHTML = detail;
+      }
+    }
+  }
+
+  /**
+   * Button bar. This is a managed element so when it is removed, its children
+   * and any attached listeners are also removed.
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class ButtonBar extends ManagedElement {
+    constructor() {
+      super('div', 'utils-button-bar');
+    }
+    /**
+     * Add buttons to the button bar. If there are no buttons, an OK button is
+     * automatically added.
+     * @param {string[] | {content: string, accessibleName: string}} definition of buttons.
+     * @returns {Promise} Fulfils to the index of the button that fulfils.
+     */
+    showButtons(buttons) {
+      if (!buttons?.length) {
+        buttons = [icons.ok];
+      }
+      this.resolutionFunction = null;
+      const promise = new Promise((resolve) => {
+        this.resolutionFunction = resolve;
+      });
+
+      buttons.forEach((value, index) => {
+        const button = new BarButton(value);
+        button.setAttribute('data-index', index);
+        this.appendChild(button, index);
+        this.listenToEventOn('click', button, index);
+      });
+      focusManager.findBestFocus();
+      return promise;
+    }
+
+    /**
+     * Handle the click event from the buttons.
+     * @param {Event} eventIgnored - triggering event
+     * @param {string} eventId - id of the event
+     */
+    handleClickEvent(eventIgnored, eventId) {
+      const index = parseInt(eventId);
+      this.resolutionFunction(index);
+    }
+  }
+
+  /**
+   * @file modal mask
+   *
+   * @module utils/userIo/modalMask
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * @type {Element}
+   */
+  const mask = document.getElementById('modal-mask');
+
+  /**
+   * @type {string[]}
+   */
+  const standardSelectionIds = ['title-bar', 'content', 'footer'];
+
+  /**
+   * @type {number}
+   */
+  let referenceCount = 0;
+
+  /**
+   * @typedef {Object} MaskedItems
+   * @property {Element} element - the element that has been masked
+   * @property {boolean} ariaHidden - the state of the aria-hidden attribute before masking
+   * @property {boolean} disabled - the state of the disable property before masking.
+   */
+
+  /**
+   * @type {MaskedItems[]}
+   */
+  let itemsToRestore = [];
+
+  /**
+   * Mask the element. This prevents it being click or tabbed to.
+   * @param {Element} element
+   */
+  function deactivateElement(element) {
+    console.debug(`Deactivating ${element.tagName}: ${element.className}`);
+    const elementDetails = {
+      element: element,
+      'aria-hidden': element.getAttribute('aria-hidden'),
+      disabled: element.disabled,
+      tabIndex: element.tabIndex,
+    };
+    itemsToRestore.push(elementDetails);
+    element.setAttribute('aria-hidden', true);
+    if (element.disabled !== undefined) {
+      element.disabled = true;
+    }
+    element.tabIndex = -1;
+  }
+
+  /**
+   * Restore deactivated items.
+   */
+  function reactivateItems() {
+    itemsToRestore.forEach((item) => {
+      if (!item.ariaHidden) {
+        item.element.removeAttribute('aria-hidden');
+      } else {
+        item.element.setAttribute('aria-hidden', item.ariaHidden);
+      }
+      if (item.disabled !== undefined) {
+        item.element.disabled = item.disabled;
+      }
+      if (item.tabIndex !== undefined) {
+        item.element.tabIndex = item.tabIndex;
+      }
+    });
+    itemsToRestore = [];
+  }
+  /**
+   * Mask all the items in the `containersToMask` array.
+   * The items are disabled and the `aria-hidden` attribute set to true.
+   */
+  function deactivateItems() {
+    standardSelectionIds.forEach((id) => {
+      document
+        .getElementById(id)
+        .querySelectorAll('button,.selectable,input,textarea')
+        .forEach((element) => {
+          deactivateElement(element);
+        });
+    });
+  }
+
+  /**
+   * Show the modal mask
+   */
+  function showMask() {
+    mask.style.visibility = 'visible';
+    if (referenceCount === 0) {
+      deactivateItems();
+    } else {
+      console.debug(
+        `Reference count ${referenceCount} is > 0 so mask already in place.`
+      );
+    }
+    referenceCount++;
+  }
+
+  /**
+   * Hide the modal mask
+   */
+  function hideMask() {
+    if (--referenceCount > 0) {
+      console.debug(
+        `Reference count ${referenceCount} is > 0 so leave mask in place.`
+      );
+      return;
+    }
+    reactivateItems();
+    mask.style.visibility = 'hidden';
+  }
+
+  /**
+   * @file Simple popup dialog.
+   *
+   * @module utils/dialog/modalDialog
+   *
+   * @license GPL-3.0-or-later
+   * Lesson RunnerCreate quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  /**
+   * @typedef {Object} DialogDefinition
+   * @property {string} title
+   * @property {string | Element} content - html to display. This is not escaped and as
+   * such is vulnerable to script injection. It is the caller's responsibility to
+   * santise the data.
+   * @property {ModalDialog.DialogType} dialogType
+   * @property {string[]} iconClasses - array of classes that are applied to the icon
+   * @property {string[] | string | module:utils/userIo/icons~IconDetails[]} buttons - array of labels for buttons. These normally
+   * only apply to questions.
+   */
+
+  /**
+   * Get the appropriate FontAwesome classes for dialogType
+   * @param {ModalDialog.DialogType} dialogType
+   * @returns {module:utils/icons~IconDetails} icon
+   */
+  function getIconDetailsForType(dialogType) {
+    switch (dialogType) {
+      case ModalDialog.DialogType.WARNING:
+        return icons.warning;
+      case ModalDialog.DialogType.ERROR:
+        return icons.error;
+      case ModalDialog.DialogType.FATAL:
+        return icons.fatal;
+      case ModalDialog.DialogType.QUESTION:
+        return icons.question;
+      case ModalDialog.DialogType.SETTINGS:
+        return icons.settings;
+      case ModalDialog.DialogType.INFO:
+      default:
+        return icons.info;
+    }
+  }
+
+  /**
+   * ModalDialog class.
+   */
+  class ModalDialog {
+    /**
+     * Enum for different dialog types
+     * @const
+     * @enum {string}
+     */
+    static DialogType = {
+      ERROR: 'error',
+      FATAL: 'fatal',
+      INFO: 'info',
+      QUESTION: 'question',
+      SETTINGS: 'settings',
+      WARNING: 'warning',
+    };
+
+    /**
+     * Enum of return values from dialogs. These are the indexes of the associated buttons.
+     * @const
+     * @enum{number}
+     */
+    static DialogIndex = {
+      SETTINGS_OK: 0,
+      SETTINGS_RESET: 1,
+      CONFIRM_YES: 0,
+      CONFIRM_NO: 1,
+    };
+
+    /** @type{boolean} */
+    static #isConstructing = false;
+
+    /**
+     * Main dialog container
+     * @type{module:utils/userIo/managedElement.ManagedElement}
+     */
+    #dialog;
+
+    /**
+     * Element containing the dialog title.
+     * @type{module:utils/userIo/managedElement.ManagedElement}
+     */
+    #titleText;
+
+    /**
+     * Element containing the dialog icon.
+     * @type{module:utils/userIo/managedElement.ManagedElement}
+     */
+    #icon;
+
+    /**
+     * Element containing the dialog content.
+     * @type{module:utils/userIo/managedElement.ManagedElement}
+     */
+    #content;
+
+    /**
+     * Element containing the button bar.
+     * @type{module:utils/userIo/managedElement.ManagedElement}
+     */
+    #buttonBar;
+
+    /**
+     * Constructor. Do not call directly. A factory method should be used.
+     * @throws {Error} Constructor must be called via factory method.
+     */
+    constructor() {
+      if (!ModalDialog.#isConstructing) {
+        throw new Error('ModalDialog should be instantiated via factory method.');
+      }
+      this.#createHtml();
+    }
+
+    /** Instantiate a new ModalDialog.
+     * @returns {ModalDialog}
+     * @private
+     */
+    static #constructDialog() {
+      ModalDialog.#isConstructing = true;
+      const dialog = new ModalDialog();
+      ModalDialog.#isConstructing = false;
+      return dialog;
+    }
+
+    /**
+     * Create the html infrastructure for the dialog.
+     * @private
+     */
+    #createHtml() {
+      this.#dialog = new ManagedElement('div', 'utils-dialog');
+      this.#dialog.classList.add('framed', 'modal');
+      const titleBar = new ManagedElement('div', 'utils-title-bar');
+      titleBar.classList.add('container');
+
+      this.#icon = new ManagedElement('span', 'utils-dialog-icon');
+      titleBar.appendChild(this.#icon);
+
+      this.#titleText = new ManagedElement('span');
+      titleBar.appendChild(this.#titleText);
+
+      const contentFrame = new ManagedElement(
+        'div',
+        'utils-dialog-content-frame'
+      );
+      contentFrame.classList.add('container');
+
+      this.#content = new ManagedElement('div', 'utils-dialog-content');
+      contentFrame.appendChild(this.#content);
+
+      this.#buttonBar = new ButtonBar();
+
+      this.#dialog.appendChild(titleBar);
+      this.#dialog.appendChild(contentFrame);
+      this.#dialog.appendChild(this.#buttonBar);
+
+      this.#dialog.appendTo(document.body);
+    }
+
+    /**
+     * Show the dialog based on its DialogDefinition.
+     * Note that the dialogDefinition can contain raw HTML so the caller should make
+     * sure the data are sanitised to prevent code injection.
+     * @param {DialogDefinition} dialogDefinition
+     * @returns {Promise} Fulfils to index of button pressed.
+     * @private
+     */
+    #showDialogDefinition(dialogDefinition) {
+      this.#titleText.textContent = dialogDefinition.title;
+      if (
+        dialogDefinition.content instanceof Element ||
+        dialogDefinition.content instanceof ManagedElement
+      ) {
+        this.#content.textContent = '';
+        this.#content.appendChild(dialogDefinition.content);
+      } else {
+        this.#content.innerHTML = dialogDefinition.content;
+      }
+
+      icons.applyIconToElement(dialogDefinition.iconDetails, this.#icon, {
+        hideText: true,
+      });
+      showMask();
+      return this.#buttonBar
+        .showButtons(dialogDefinition.buttons)
+        .then((index) => {
+          this.#hideDialog();
+          focusManager.findBestFocus();
+          return index;
+        });
+    }
+
+    /**
+     * Hide the dialog box.
+     * @private
+     */
+    #hideDialog() {
+      hideMask();
+      this.#dialog.remove();
+    }
+
+    /**
+     * Appends a reload warning to the content.
+     * @param {string} content - html to add. This will be wrapped in a <p> element.
+     * @returns {string | Element} Content with paragraph appended
+     * @private
+     */
+    static #addReloadWarning(content) {
+      let reloadText = i18n`A serious error has occurred. Wait a few minutes and then close this dialog to try to reload the application.`;
+      if (reloadText === '') {
+        reloadText =
+          'A serious error has occurred and languages cannot be loaded. Wait a few minutes and then close this dialog to try to reload the application.';
+      }
+      if (content instanceof Element) {
+        const para = document.createElement('p');
+        para.textContent = reloadText;
+        content.appendChild(para);
+        return content;
+      }
+      return `${content}<p>${reloadText}</p>`;
+    }
+
+    /**
+     * Popup the dialog box. If called multiple times, each call will be stacked
+     * on top of the previous calls.
+     *
+     * When the dialog is closed, by clicking on the close icon or on the background,
+     * the previous dialog will be displayed. The one exception is for dialogs with
+     * dialogType equal to {@link ModalDialog.DialogType.ERROR}. This dialog type will reload the
+     * application when closed. Automatic boiler plate text is added to the content
+     * to explain this.
+     * @param {string} title - any HTML <> characters will be escaped.
+     * @param {*} content - content to display. This is treated as HTML
+     * @param {Object} options - additional settings
+     * @param {ModalDialog.DialogType} options.dialogType - dialog type.
+     * @param {string[]} options.buttons - buttons to display.
+     * @returns {Promise} Fulfils to 0 for all types except ModalDialog.DialogType.QUESTION.
+     * For questions it Fulfils to the index of the button that was pressed. Rejects
+     * if a dialog is already showing.
+     */
+    static showDialog(title, content, options) {
+      const dialog = ModalDialog.#constructDialog();
+      if (options?.dialogType === ModalDialog.DialogType.FATAL) {
+        content = ModalDialog.#addReloadWarning(content);
+      }
+
+      const iconDetails = getIconDetailsForType(options?.dialogType);
+      const dialogDefinition = {
+        title: title && title.length > 0 ? title : ':',
+        buttons: options?.buttons,
+        content: content,
+        dialogType: options?.dialogType,
+        iconDetails: iconDetails,
+      };
+      return dialog.#showDialogDefinition(dialogDefinition);
+    }
+
+    /**
+     * Shorthand method to call ModalDialog.showDialog('Settings', content, ModalDialog.DialogType.SETTINGS)
+     * @param {string} content
+     * @returns {Promise} Fulfils to index of button pressed.
+     */
+    static showSettingsDialog(content) {
+      const options = {
+        dialogType: ModalDialog.DialogType.SETTINGS,
+        buttons: [icons.ok, icons.resetToFactory],
+      };
+      return ModalDialog.showDialog(i18n`Settings`, content, options);
+    }
+
+    /**
+     * Shorthand call for ModalDialog.showDialog('Error', content, ModalDialog.DialogType.WARNING)
+     * @param {string} content
+     * @param {string} [title] - optional title.
+     * @returns {Promise} Fulfils to index of button pressed.
+     */
+    static showWarning(content, title) {
+      return ModalDialog.showDialog(title ?? i18n`Warning`, content, {
+        dialogType: ModalDialog.DialogType.WARNING,
+      });
+    }
+
+    /**
+     * Shorthand call for ModalDialog.showDialog('Error', content, ModalDialog.DialogType.ERROR)
+     * @param {string} content
+     * @param {string} [title] - optional title.
+     * @returns {Promise} Fulfils to index of button pressed.
+     */
+    static showError(content, title) {
+      return ModalDialog.showDialog(title ?? i18n`Error`, content, {
+        dialogType: ModalDialog.DialogType.ERROR,
+      });
+    }
+
+    /**
+     * Shorthand call for ModalDialog.showDialog('Information', content, ModalDialog.DialogType.INFO)
+     * @param {string} content
+     * @param {string} [title] - optional title.
+     * @returns {Promise} Fulfils to index of button pressed.
+     */
+    static showInfo(content, title) {
+      return ModalDialog.showDialog(title ?? i18n`Information`, content, {
+        dialogType: ModalDialog.DialogType.INFO,
+      });
+    }
+
+    /**
+     * Shorthand call for ModalDialog.showDialog('Question', content, ModalDialog.DialogType.QUESTION)
+     * @param {string} content
+     * @param {string} [title] - optional title.
+     * @returns {Promise} Fulfils to index of button pressed. This will be
+     * ModalDialog.DialogIndex.CONFIRM_YES or ModalDialog.DialogIndex.CONFIRM_YES.
+     */
+    static showConfirm(content, title) {
+      return ModalDialog.showDialog(title ?? i18n`Question`, content, {
+        dialogType: ModalDialog.DialogType.QUESTION,
+        buttons: [icons.yes, icons.no],
+      });
+    }
+
+    /**
+     * Shorthand call for ModalDialog.showDialog('Fatal error', content, ModalDialog.DialogType.FATAL)
+     * @param {string} content
+     * @param {string} [title] - optional title.
+     * @returns {Promise} Fulfils to index of button pressed.
+     */
+    static showFatal(content, title) {
+      return ModalDialog.showDialog(title ?? i18n`Fatal error`, content, {
+        dialogType: ModalDialog.DialogType.FATAL,
+      });
+    }
+  }
+
+  /**
+   * @file Utility to handle reloading after setting changes.
+   *
+   * @module utils/userIo/reloader
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Singleton class to manage reloading the application.
+   */
+  class Reloader {
+    #reloadRequired = false;
+    #reason = '';
+    constructor() {}
+
+    /**
+     * Flag that a reload is required. This is used by reloadIfRequired to decide
+     * if the application should be reloaded.
+     * @param {string} reason
+     */
+    flagAsRequired(reason) {
+      this.#reason = reason;
+      this.#reloadRequired = true;
+    }
+
+    /**
+     * If `this.markRequired` has been called, shows a warning dialog and then reloads
+     * the application.
+     * @returns {Promise} fulfils to undefined
+     */
+    reloadIfRequired() {
+      if (this.#reloadRequired) {
+        const warning = i18n`The application needs to reload.`;
+        return ModalDialog.showWarning(
+          `<p>${warning}</p><p>${this.#reason}</p>`
+        ).then(() => {
+          window.location.reload();
+        });
+      } else {
+        return Promise.resolve();
+      }
+    }
+  }
+
+  const reloader = new Reloader();
+
+  /**
+   * @file Cache settings data
+   *
+   * @module utils/userIo/settingsValueCache
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * @typedef {Object} CachedValue
+   * @property {*} value
+   * @property {string} label
+   */
+  class SettingsValueCache {
+    /**
+     * Stored values.
+     * @type {Map(CachedValue)}
+     */
+    #storedValues = new Map();
+
+    /**
+     * Construct the SettingsValueCache. Only settings with reloadOnChanged set are saved.
+     * @param {module:libs/utils/userIo/settings~SettingDefinitions} definitions
+     */
+    constructor(definitions) {
+      for (const key in definitions) {
+        if (definitions[key].reloadIfChanged) {
+          const cachedValue = {
+            value: persistentData.getFromStorage(key),
+            label: definitions[key].label,
+          };
+          this.#storedValues.set(key, cachedValue);
+        }
+      }
+    }
+
+    /**
+     * @returns {string} comma separated list of all changed labels.
+     * The string is empty if nothing.
+     */
+    get changes() {
+      let labels = [];
+      this.#storedValues.forEach((cachedValue, key) => {
+        const newValue = persistentData.getFromStorage(key);
+        if (newValue !== cachedValue.value) {
+          labels.push(cachedValue.label);
+        }
+      });
+      return labels.join(', ');
+    }
+  }
+
+  /**
+   * @file Controls
+   *
+   * @module utils/userIo/controls
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Class to encapsulate a range indicator. The control tracks the input
+   * control.
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class RangeIndicator extends ManagedElement {
+    /**
+     * Construct the indicator.
+     * @param {module:utils/userIo/managedElement.ManagedElement} control - input control of type range.
+     */
+    constructor(control) {
+      super('div', 'utils-range-value');
+      this.classList.add('on-top');
+      this.control = control;
+      this.listenToEventOn('input', this.control, '');
+      this.hide();
+    }
+
+    /**
+     * Handle the change input event.
+     * @param {Event} event
+     */
+    handleInputEvent(event) {
+      if (!this.timerId) {
+        this.timerId = setTimeout(() => {
+          this.hide();
+          this.timerId = null;
+        }, 500);
+      }
+      const controlEl = this.control.element;
+      const minValue = parseFloat(controlEl.min ?? 0);
+      const maxValue = parseFloat(controlEl.max ?? 100);
+      const currentValue = parseFloat(controlEl.value);
+      const proportion = (currentValue - minValue) / (maxValue - minValue);
+      this.textContent = event.target.value;
+      this.style.opacity = 100;
+      const top = controlEl.offsetTop - this.offsetHeight;
+      let left =
+        controlEl.offsetLeft +
+        controlEl.offsetWidth * proportion -
+        this.offsetWidth / 2;
+      left = Math.max(controlEl.offsetLeft, left);
+      left = Math.min(
+        controlEl.offsetLeft + controlEl.offsetWidth - this.offsetWidth,
+        left
+      );
+      this.style.left = `${left}px`;
+      this.style.top = `${top}px`;
+      this.show();
+    }
+
+    /**
+     * Hide the indicator.
+     */
+    hide() {
+      this.style.opacity = 0;
+      this.style.visibility = 'hidden';
+    }
+
+    /**
+     * Show the indicator.
+     */
+    show() {
+      this.style.visibility = 'visible';
+      this.style.opacity = 100;
+    }
+  }
+
+  /**
+   * Separator control class.
+   * This is typically used in menus
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class SeparatorControl extends ManagedElement {
+    constructor(key, definition) {
+      super('div', 'utils-separator');
+      this.innerHTML =
+        '<span class="utils-hr"><hr></span>' +
+        `<span> ${escapeHtml(definition.label)} </span>` +
+        '<span class="utils-hr"><hr></span>';
+    }
+  }
+
+  /**
+   * Input control class.
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class InputControl extends ManagedElement {
+    /**
+     * Construct an range control.
+     * @param {string} key - the key for the item. This is used for saving the value
+     * to and from local storage.
+     * @param {SettingDefinition} definition
+     */
+    constructor(key, definition) {
+      super('input');
+      this.type = definition.type;
+      this.setAttribute('type', definition.type);
+      this.setAttribute('min', definition.min);
+      this.setAttribute('max', definition.max);
+      this.className = definition.type;
+    }
+
+    /**
+     * Set the element's value.
+     * @param {*} value
+     */
+    setValue(value) {
+      switch (this.type) {
+        case 'checkbox':
+          this.checked = value;
+          return;
+        default:
+          this.value = value;
+          return;
+      }
+    }
+
+    /**
+     * Get the element's value.
+     * @returns {*} value
+     */
+    getValue() {
+      switch (this.type) {
+        case 'checkbox':
+          return this.checked;
+        case 'range':
+          return parseFloat(this.value);
+        default:
+          return this.value;
+      }
+    }
+  }
+
+  /**
+   * Input control class.
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class SelectControl extends ManagedElement {
+    /**
+     * Construct an range control.
+     * @param {string} key - the key for the item. This is used for saving the value
+     * to and from local storage.
+     * @param {SettingDefinition} definition
+     */
+    constructor(key, definition) {
+      super('select');
+      this.definition = definition;
+      if (definition.type) {
+        this.className = definition.type;
+      }
+      this.#addOptions();
+    }
+
+    /**
+     * Set the element's value.
+     * @param {*} value
+     */
+    setValue(value) {
+      console.log(value);
+      const options = [...this.$.options];
+      const index = options.findIndex((option) => option.value === value);
+      if (index >= 0) {
+        this.$.selectedIndex = index;
+      } else {
+        console.warn(`Could not set select control to value of ${value}`);
+      }
+    }
+
+    /**
+     * Get the element's value.
+     * @returns {*} value
+     */
+    getValue() {
+      return this.$.selectedOptions[0].value;
+    }
+
+    /**
+     * Get the element's text.
+     * @returns {string} text
+     */
+    getText() {
+      return this.$.selectedOptions[0].text;
+    }
+
+    /**
+     * Add options
+     */
+    #addOptions() {
+      this.options = this.definition.options;
+      if (typeof this.options === 'function') {
+        this.options = this.options.call(this);
+      }
+      if (typeof this.options === 'function') {
+        this.options = this.options.call(this);
+      }
+
+      this.options?.forEach((value, key) => {
+        const option = new Option(value, key);
+        this.$.add(option);
+      });
+    }
+
+    /**
+     * Reload the options. This only has an affect if the options are generated by
+     * a function in the definition.
+     */
+    reloadOptions() {
+      this.options = this.definition.options;
+      if (typeof this.definition.options === 'function') {
+        let n = this.$.length;
+        while (n-- > 0) {
+          this.$.remove(0);
+        }
+      }
+      this.#addOptions();
+    }
+  }
+
+  /**
+   * @file Labeled control. This is a special control for use on dialogs.
+   *
+   * @module utils/userIo/labeledControl
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  class LabeledControlManager {
+    /** @type {ManagedElement[]} */
+    #managedControls = [];
+
+    /**
+     * Create a manager.
+     */
+    constructor() {}
+
+    /**
+     * Create a form control from a definition
+     * @param {string} key - the key for the item. This is used for saving the value
+     * to and from local storage.
+     * @param {module:utils/userio/settings~SettingDefinition} definition
+     * @param {module:utils/userIo/storage.DataStoreManager} storage - used to retrieve and save data
+     * @returns {LabeledControl}
+     */
+    createLabeledControl(key, definition, storage) {
+      const options = {
+        storage: storage,
+        manager: this,
+      };
+      const control = new LabeledControl(key, definition, options);
+      this.#managedControls.push(control);
+      return control;
+    }
+
+    /**
+     * Remove all the managed controls.
+     */
+    removeControls() {
+      this.#managedControls.forEach((control) => {
+        control.remove();
+      });
+    }
+
+    /**
+     * Reload the options on any select control.
+     * If keys refer to controls which are not {@link module:utils/userIo/controls~SelectControl}
+     * instances are ignored.
+     * @param {string[]} keys - keys for controls that need to be reloaded
+     */
+    reloadSelectOptions(keys) {
+      keys?.forEach((value) => {
+        const dependentControl = this.#managedControls.find(
+          (control) => control.key === value
+        );
+        if (dependentControl) {
+          if (dependentControl.control instanceof SelectControl) {
+            dependentControl.control.reloadOptions();
+          } else {
+            console.log(
+              `Ignoring dependent ${value} as it is not a select type.`
+            );
+          }
+        }
+      });
+    }
+  }
+
+  /**
+   * Class to manage inputs. The class comprise a `div` element with a `label`
+   * element containing the `label` text and the input control. Another `div` is
+   * positioned after the `label` to hold any validation error messages.
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class LabeledControl extends ManagedElement {
+    /** @type {module:utils/userIo/storage.DataStoreManager} */
+    #storage;
+    /** @type {LabeledControlManager} */
+    #manager;
+    /**
+     * Create a form control from a definition. Although this can be created
+     * independently, it should be constructed via a `LabeledControlManager` if
+     * dependents are to be managed.
+     * @param {string} key - the key for the item. This is used for saving the value
+     * to and from local storage.
+     * @param {module:utils/userio/settings~SettingDefinition} definition
+     * @param {Object} options - additional options
+     * @param {module:utils/userIo/storage.DataStoreManager} options.storage - used to retrieve and save data.
+     * If not set, storage is not automatically updated.
+     * @param {LabeledControlManager} options.manager Parent manager. If null, dependencies cannot be handled.
+     */
+    constructor(key, definition, options) {
+      super('div');
+      this.#storage = options?.storage;
+      this.#manager = options?.manager;
+      this.className = 'labeled-control-container';
+      this.label = new ManagedElement('label');
+      this.appendChild(this.label);
+      this.key = key;
+      this.definition = definition;
+      this.label.innerHTML = `<span>${escapeHtml(definition.label)}</span>`;
+      if (definition.type === 'select') {
+        this.control = new SelectControl(key, definition);
+      } else {
+        this.control = new InputControl(key, definition);
+      }
+
+      this.control.setValue(
+        this.#storage
+          ? this.#storage.getFromStorage(key, definition.defaultValue)
+          : definition.defaultValue
+      );
+      this.label.appendChild(this.control);
+
+      this.error = this.appendChild(
+        new ManagedElement('div', 'utils-input-error-message')
+      );
+
+      if (definition.type === 'range') {
+        this.label.appendChild(new RangeIndicator(this.control));
+      }
+      this.listenToEventOn('input', this.control, '');
+    }
+
+    /**
+     * Sets the control's value.
+     * @param {*} value
+     */
+    setValue(value) {
+      this.control?.setValue(value);
+    }
+
+    /**
+     * Handle the input event.
+     * @param {Event} eventIgnored
+     */
+    handleInputEvent(eventIgnored) {
+      const value = this.control.getValue();
+      if (this.definition.validate) {
+        const validation = this.definition.validate(value);
+        if (!validation.pass) {
+          this.error.textContent = validation.errorMessage;
+          this.classList.add('utils-error');
+          return;
+        }
+      }
+      this.classList.remove('utils-error');
+
+      this.#storage?.saveToStorage(this.key, value);
+
+      if (this.definition.onupdate) {
+        this.definition.onupdate(value);
+        if (this.#manager) {
+          this.#manager.reloadSelectOptions(this.definition.dependents);
+        } else {
+          console.warn(
+            'LabeledControl has no manager, so unable to handle dependencies.'
+          );
+        }
+      }
+    }
+  }
+
+  /**
+   * @file Settings routines for use with the modal dialog.
+   *
+   * @module utils/userio/settings
+   *
+   * @license GPL-3.0-or-later
+   * Lesson RunnerCreate quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * Array of all the controls on the current SettingsDialog.
+   * @type {LabeledControlManager}
+   */
+  let manager = null;
+
+  /**
+   * Current settings.
+   * @type{SettingDefinitions}
+   */
+  let settingDefinitions = {};
+
+  /**
+   * @typedef {Object} ValidationResult
+   * @property {boolean} pass -true on success.
+   * @property {string} errorMessage - message if fails. Empty if passes.
+   */
+
+  /**
+   * Definition of an object. This is either an array of strings each holding the
+   * text to display, or a map of key/value entries where the value is the
+   * text to display.
+   * @typedef {string[] | Map<string, string>} OptionDetails
+   */
+
+  /**
+   * Definition of a setting
+   * @typedef {Object} SettingDefinition
+   * @property {string | number} defaultValue - default value
+   * @property {string[]} dependents - array of keys for dependent controls.
+   * @property {string} label - text used to label the UI control
+   * @property {number} max - maximum value
+   * @property {number} min - minimum value
+   * @property {function(*)} onupdate - function that is called when the setting
+   * is changed. The argument holds the new value.
+   * @property {function()} initialise - function that is called to initialise the setting.
+   * @property {OptionDetails | function(): OptionDetails} options - options for a select control.
+   * @property {function(*): ValidationResult} validate - validator function.
+   * Returns {@link ValidationResult} where pass is true if okay.
+   * @property {string} type - input type. E.g. 'range'.
+   * @property {boolean} reloadIfChanged = application should be reloaded if this has changed.
+   */
+
+  /**
+   * Collection of settings as key, value record.
+   * @typedef {Object.<string, SettingDefinition>} SettingDefinitions
+   */
+
+  /**
+   * Set the definitions used to configure the UI controls. When set, the onupdate
+   * function for each setting will be called, using the currently stored value.
+   * Note that any dependents are updated, so {@link definitions} should be valid
+   * before calling.
+   * @param {SettingDefinitions} definitions - key, definitions pairs
+   */
+  function setSettingDefinitions(definitions) {
+    settingDefinitions = definitions;
+    for (const key in settingDefinitions) {
+      if (!isSeparator(settingDefinitions[key])) {
+        const storedValue = persistentData.getFromStorage(
+          key,
+          settingDefinitions[key].defaultValue
+        );
+        settingDefinitions[key].onupdate?.call(this, storedValue);
+      }
+    }
+  }
+
+  /**
+   * Resets all values to their factory defaults if confirmed by the user.
+   * @returns {Promise} Fulfils to undefined.
+   */
+  function resetIfConfirmed() {
+    return ModalDialog.showConfirm(
+      i18n`Are you sure you want to reset all settings to their factory defaults?`
+    ).then((value) => {
+      if (value === ModalDialog.DialogIndex.CONFIRM_YES) {
+        return resetAll();
+      }
+    });
+  }
+
+  /**
+   * Test if definition is a separator.
+   * @param {SettingDefinition} definition
+   * @returns {boolean}
+   */
+  function isSeparator(definition) {
+    return definition.type === 'separator';
+  }
+
+  /**
+   * Reset everything in the settingDefinitions back to their defaults.
+   */
+  function resetAll() {
+    for (const key in settingDefinitions) {
+      console.info(`Resetting ${key} to its default.`);
+      const definition = settingDefinitions[key];
+      if (!isSeparator(definition)) {
+        const value = definition.defaultValue;
+        persistentData.saveToStorage(key, value);
+        definition.onupdate?.(value);
+      }
+    }
+  }
+
+  /**
+   * Initialise the setting definitions. This calls the initialise method of each
+   * setting
+   * @param {SettingDefinitions} definitions - key, definitions pairs
+   */
+  function initialiseSettingDefinitions(definitions) {
+    for (const key in definitions) {
+      definitions[key].initialise?.();
+    }
+  }
+
+  /**
+   * Set the definitions used to configure the UI controls. When set, the onupdate
+   * function for each setting will be called, using the currently stored value.
+   * Note that any dependents are updated, so `definitions` should be valid
+   * before calling.
+   * @param {SettingDefinitions} definitions - key, definitions pairs
+   * @returns {Promise} Fulfills to undefined
+   */
+  function loadSettingDefinitions(definitions) {
+    initialiseSettingDefinitions(definitions);
+    setSettingDefinitions(definitions);
+  }
+
+  /**
+   * Pop up a dialog allowing the current settings to be modified.
+   * @returns {Promise} Fulfils to index of button pressed. This will be 0.
+   * If -1 this indicates that a reload is required.
+   */
+  function showAllSettings() {
+    if (manager) {
+      return Promise.reject(
+        new Error('Attempt made to show settings on top of another.')
+      );
+    }
+    manager = new LabeledControlManager();
+    const dialogContent = new ManagedElement('div');
+    dialogContent.innerHTML = `
+    <div class='utils-palette'>
+    <span class='utils-primary'></span>
+    <span class='utils-secondary'></span>
+    <span class='utils-tertiary'></span>
+    </div>
+  `;
+
+    for (const key in settingDefinitions) {
+      const setting = settingDefinitions[key];
+      let control;
+      if (isSeparator(setting)) {
+        control = new SeparatorControl(key, setting);
+      } else {
+        control = manager.createLabeledControl(key, setting, persistentData);
+      }
+      dialogContent.appendChild(control);
+    }
+
+    const settingsValueCache = new SettingsValueCache(settingDefinitions);
+
+    return ModalDialog.showSettingsDialog(dialogContent)
+      .then((value) => {
+        if (value === ModalDialog.DialogIndex.SETTINGS_RESET) {
+          return resetIfConfirmed();
+        } else {
+          return value;
+        }
+      })
+      .then((value) => {
+        manager.removeControls();
+        manager = null;
+        reloader.reloadIfRequired();
+        return value;
+      })
+      .then((value) => {
+        const changes = settingsValueCache.changes;
+        if (changes !== '') {
+          reloader.flagAsRequired(
+            `${i18n`The following settings have changed:`} ${changes}.`
+          );
+          reloader.reloadIfRequired();
+        }
+        return value;
+      });
+  }
+
+  /**
+   * @file List of menu items
+   *
+   * @module data/menuItems
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * Get the main menu items.
+   * @returns {module:utils/userIo/menu~MenuItemDefinition[]}
+   */
+  function getMainMenuItems() {
+    return [
+      {
+        iconDetails: icons.settings,
+        command: { execute: () => showAllSettings() },
+      },
+      { iconDetails: null, command: null },
+      {
+        iconDetails: icons.privacy,
+        command: {
+          execute: () => {
+            window.open(Urls.PRIVACY, '_blank');
+            return Promise.resolve();
+          },
+        },
+      },
+    ];
+  }
+
+  /**
+   * @file Support the Workbox service worker
+   *
+   * @module utils/serviceWorkers/serviceWorkersUtilities
+   *
+   * @license GPL-3.0-or-later
+   * Lesson RunnerCreate quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+  /**
+   * Perform the actual registration.
+   * @param {string} buildMode - production or development.
+   */
+  function performRegistrationIfPossible(buildMode) {
+    if (buildMode === 'production' && 'serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('./sw.js')
+          .then((registration) => {
+            console.info('SW registered: ', registration);
+            let controller = navigator.serviceWorker.controller;
+            console.info(`Page controlled by ${controller}.`);
+          })
+          .catch((registrationError) => {
+            console.error('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  }
+
+  /**
+   * Register the service worker if in production mode.
+   * @param {string} buildMode - production or development.
+   */
+  function registerServiceWorker(buildMode) {
+    try {
+      performRegistrationIfPossible(buildMode);
+    } catch (error) {
+      console.error('Error during service worker registration', error);
+    }
+  }
+
+  /**
+   * @file Get the required JSON files for the translations.
+   *
+   * @module utils/i18n/i18FileResolver
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   */
+
+
+  /**
+   * @typedef {Object} FetchSummary - lists language files retrieved.
+   * @property {string} url - url of file fetched.
+   * @property {boolean} read - true on a successful retrieval.
+   */
+
+  /**
+   * Extended error that provides the fetch summary.
+   * @extends Error
+   */
+  class I18nResolutionError extends Error {
+    /**
+     * @param {*} error - initial error
+     * @param {FetchSummary[]} fetchSummary - summary prior to error. Accessible via #fetchSummary property
+     */
+    constructor(error, fetchSummary) {
+      if (error instanceof Error) {
+        super(error.message);
+        this.cause = error;
+      } else {
+        super(error);
+      }
+
+      /**
+       * Summary of results prior to error.
+       * @type {FetchSummary[]}
+       * @public
+       */
+      this.fetchSummary = fetchSummary;
+    }
+  }
+
+  /**
+   * Set up the translations based on the user's settings and the available
+   * translations.
+   * @param {*} languagesListingUrl - url of the json file containing a listing
+   * of the files.
+   * @returns {Promise} Fulfills to FetchSummary[]. Rejects with I18ResolutionError.
+   */
+  function resolveLanguages(languagesListingUrl) {
+    let languagesListing = {};
+    let languagesBaseUrl = '';
+    let fetchSummary = [];
+
+    return fetchJson(languagesListingUrl)
+      .then((languages) => {
+        languagesListing = languages;
+        languagesBaseUrl = new URL(languages.location, window.location.href);
+        const url = new URL(languages.meta.master, languagesBaseUrl);
+        fetchSummary.push({ url: url, read: false });
+        return fetchJson(url.href);
+      })
+      .then((masterTranslations) => {
+        fetchSummary[0].read = true;
+        setActiveTranslations(masterTranslations);
+        const bestFile = getBestLanguageFile(
+          getPreferredLanguages(),
+          languagesListing.files
+        );
+        if (bestFile === languagesListing.meta.master) {
+          return Promise.resolve(null);
+        }
+        const url = new URL(bestFile, languagesBaseUrl);
+        fetchSummary.push({ url: url, read: false });
+        return fetchJson(url.href);
+      })
+      .then((bestTranslations) => {
+        if (bestTranslations) {
+          fetchSummary[1].read = true;
+          setActiveTranslations(bestTranslations);
+        }
+        return fetchSummary;
+      })
+      .catch((error) => {
+        return Promise.reject(new I18nResolutionError(error, fetchSummary));
+      });
+  }
+
+  /**
+   * @file Load the appropriate languages.
+   *
+   * @module utils/i18n/languageLoader
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Get the language files required for the application.
+   * If the application has not been build, the application just returns a fulfilled
+   * Promise.
+   * @param {string} embeddedLanguages - embedded language definition from previous call to
+   * @returns {Promise} Fulfils to undefined.
+   */
+  function getLanguages(embeddedLanguages) {
+    if (!BuildInfo.isBuilt()) {
+      return Promise.resolve(undefined);
+    }
+    if (embeddedLanguages) {
+      try {
+        const languages = JSON.parse(base64ToString(embeddedLanguages));
+        if (languages.fallback) {
+          setActiveTranslations(languages.fallback);
+        }
+        setActiveTranslations(languages.active);
+        return Promise.resolve(undefined);
+      } catch (error) {
+        console.error(
+          'Unable to decode embedded languages ${embeddedLanguages}.',
+          error
+        );
+      }
+    }
+    return getLanguagesFromJson();
+  }
+
+  /**
+   * Get the language files required for the application from remote JSON files..
+   * If the application has not been build, the application just returns a fulfilled
+   * Promise.
+   * @returns {Promise} Fulfils to undefined.
+   */
+  function getLanguagesFromJson() {
+    return resolveLanguages('./languages.json')
+      .then(() => {
+        console.info(
+          `Build information: ${
+          BuildInfo.getBundleName
+        } ${BuildInfo.getVersion()} ${BuildInfo.getMode()}`
+        );
+        return;
+      })
+      .catch((error) => {
+        const fetchSummary = error.fetchSummary;
+        if (fetchSummary && fetchSummary.length > 0 && fetchSummary[0].read) {
+          console.error(`${error}\nUsing translation ${fetchSummary[0].url}`);
+        } else {
+          console.error(error.message);
+          return Promise.reject(error);
+        }
+        return;
+      });
+  }
+
+  /**
+   * @file StageManager. Responsible for switching Presenters on the stage.
+   *
+   * @module lessons/presenters/stageManager
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Class to manage movement between Presenters.
+   */
+  class StageManager {
+    /**
+     * Main stage element.
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #stage;
+
+    /**
+     * Prepare the stage
+     * @param {Element} stageElement
+     */
+    constructor(stageElement) {
+      this.#stage = new ManagedElement(stageElement);
+    }
+
+    /**
+     * Start the stage show using the provided presenter. If the presenter fulfils
+     * to another presenter, the show continues.
+     * @param {module:lessons/presenters/presenter.Presenter} presenter - the presenter that starts the show.
+     * @returns {undefined}  The method returns when a presenter is null.
+     */
+    async startShow(presenter) {
+      this.#stage.removeChildren();
+      for (;;) {
+        presenter = await presenter.presentOnStage(this.#stage);
+        this.#stage.removeChildren();
+        if (presenter === null) {
+          return;
+        }
+      }
+    }
+  }
+
+  /**
+   * @file General indexer for arrays
+   *
+   * @module utils/arrayIndexer
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  class ArrayIndexer {
+    /**
+     * Array of the items to index
+     * @type {Array<*>}
+     */
+    #items;
+
+    /**
+     * * Should increment wrap.
+     * @type {boolean}
+     */
+    #wrap;
+
+    /**
+     * Current index
+     * @type {number}
+     */
+    #index;
+
+    /**
+     * Construct the indexer
+     * @param {Array<*>} items - array to managed index
+     * @param {boolean} wrap - should index wrap or not.
+     */
+    constructor(items, wrap = true) {
+      this.#items = items;
+      this.#wrap = wrap;
+      this.#index = 0;
+    }
+
+    /** Get the underlying array.
+     * @returns {Array<*>}
+     */
+    get items() {
+      return this.#items;
+    }
+
+    /**
+     * Reset the index to 0
+     */
+    reset() {
+      this.#index = 0;
+    }
+    /**
+     * Decrements the index
+     * @returns {*} the item at the new index
+     */
+    decrement() {
+      if (this.#index > 0) {
+        --this.#index;
+      } else {
+        this.#index = this.#wrap ? this.#items.length - 1 : this.#index - 1;
+      }
+      return this.#items[this.#index];
+    }
+    /**
+     * Increments the index
+     * @returns {*} the item at the next index
+     */
+    increment() {
+      if (this.#index < this.#items.length - 1) {
+        ++this.#index;
+      } else {
+        this.#index = this.#wrap ? 0 : this.#index;
+      }
+      return this.#items[this.#index];
+    }
+  }
+
+  /**
+   * @file Add help button
+   *
+   * @module utils/userIo/help
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Icon only help button which launches external help.
+   */
+  class HelpButton extends ManagedElement {
+    /**
+     * Create the button.
+     */
+    constructor() {
+      super('button', 'help-button');
+      this.classList.add('icon-only-button');
+      icons.applyIconToElement(icons.help, this, { hideText: true });
+      this.listenToOwnEvent('click', 'HELP');
+    }
+
+    /**
+     * @override
+     */
+    handleClickEvent(eventIgnored, eventIdIgnored) {
+      const presenter = document.querySelector('.Presenter');
+      console.debug(`Help triggered from ${presenter?.className}`); // this could be used for context sensitive help.
+      window.open(Urls.HELP, '_blank');
+    }
+
+    /**
+     * Create the help button and append to the container.
+     * @param {Element | ManagedElement} container
+     * @returns {ManagedElement}
+     */
+    static createInside(container) {
+      const button = new HelpButton(container);
+      button.appendTo(container);
+      return button;
+    }
+  }
+
+  /**
+   * @file Menu io.
+   * This module appends the menu HTML to the `body` element of the the document.
+   * This is effectively a Singleton with the application containing one menu
+   * which is always present.
+   *
+   * @module utils/userIo/menu
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Definition of a menu item.
+   * @typedef {Object} MenuItemDefinition
+   * @property {module:utils/userIo/icons~IconDetails} iconDetails - the button definition for the menu item.
+   * @property {module:libs/utils/command/commands#Command} command - command used to action
+   * the menu selection.
+   * If the command is not defined, the text property is ignored and a separator
+   * is added.
+   */
+
+  /**
+   * Create a managed element for the menu. The element itself is the open button.
+   */
+  class Menu extends ManagedElement {
+    /**
+     * @type {Element}
+     */
+    #menuContent;
+    /**
+     * @type {MenuItems}
+     */
+    #menuItems;
+
+    /**
+     * create the menu.
+     */
+    constructor() {
+      super('button');
+      this.setAttribute('aria-haspopup', true);
+      icons.applyIconToElement(icons.openMenu, this, { hideText: true });
+      this.classList.add('utils-menu-icon-open', 'icon-only-button');
+      this.#createMenuContentHtml();
+      this.#menuItems = new MenuItems();
+    }
+
+    /**
+     * Create the HTML for the menu.
+     * The menu added to the `body` element.
+     * @param {Element | module:utils/userIo/managedElement.ManagedElement} container
+     */
+    #createMenuContentHtml() {
+      const menuTitleBar = new ManagedElement('div');
+      menuTitleBar.classList.add('utils-menu-title');
+
+      this.#menuContent = new ManagedElement('div', 'utils-menu-content');
+      this.#menuContent.style.visibility = 'hidden';
+
+      document.body.insertBefore(
+        this.#menuContent.element,
+        document.getElementById('modal-mask').nextSibling
+      );
+
+      const menuItemsElement = new ManagedElement('div');
+      menuItemsElement.classList.add('container', 'utils-menu-items');
+      menuItemsElement.setAttribute('aria-role', 'menu');
+      this.#menuContent.appendChild(menuTitleBar);
+      this.#menuContent.appendChild(menuItemsElement);
+      this.listenToOwnEvent('click', 'OPEN');
+      this.listenToEventOn('click', this.#menuContent, 'CONTENT-ACTION');
+      this.listenToEventOn('keydown', this.#menuContent, 'CONTENT-ACTION');
+    }
+    /**
+     * Set the items for the menu.
+     * @param {MenuItemDefinition[]} items
+     */
+    setMenuItems(items) {
+      this.#menuItems.setMenuItems(items);
+    }
+    /**
+     * Show the menu items.
+     */
+    #showMenuItems() {
+      showMask();
+      this.style.visibility = 'hidden';
+      this.#menuContent.classList.add('modal');
+      this.#menuContent.style.visibility = 'visible';
+      this.#menuContent.style.transform = 'translateX(0)';
+      this.#menuContent.querySelector('button.utils-menu-item').focus();
+    }
+
+    /**
+     * Hide the menu items.
+     */
+    #hideMenuItems() {
+      hideMask();
+      this.style.visibility = 'visible';
+      this.#menuContent.style.transform = 'translateX(-100%)';
+      this.#menuContent.style.visibility = 'hidden';
+      this.#menuContent.classList.remove('modal');
+      focusManager.findBestFocus();
+    }
+    /**
+     * @override
+     */
+    handleClickEvent(eventIgnored, eventId) {
+      switch (eventId) {
+        case 'OPEN':
+          this.#showMenuItems();
+          break;
+        default:
+          this.#hideMenuItems();
+      }
+    }
+
+    /**
+     * @override
+     */
+    handleKeydownEvent(event, eventIdIgnored) {
+      if (event.key === 'Escape') {
+        this.#hideMenuItems();
+      }
+    }
+  }
+
+  /**
+   * Element to encapsulate a menu item.
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class MenuItem extends ManagedElement {
+    /**
+     * @param {module:utils/userIo/icons~IconDetails} iconDetail - icon to apply to button.
+     */
+    constructor(iconDetails) {
+      super('button', 'utils-menu-item');
+      icons.applyIconToElement(iconDetails, this);
+      this.setAttributes({
+        'aria-role': 'menuitem',
+      });
+    }
+  }
+
+  /**
+   * Class to encapsulate the list of MenuItem objects that make up the full
+   * menu. The function {@link createMenuHtml} must have been called first to
+   * ensure the required html structure is in place.
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class MenuItems extends ManagedElement {
+    static CLOSE_EVENT_ID = 'close';
+
+    /**
+     * @type {module:utils/arrayIndexer.ArrayIndexer}
+     */
+    #navigator;
+    /**
+     * @type{Element}
+     */
+    #menuIconClose;
+    /**
+     * Construct the menu
+     */
+    constructor() {
+      const parent = document.querySelector('.utils-menu-items');
+      if (!parent) {
+        throw 'Html structure not in place. createMenuHtml should have been called.';
+      }
+      super(parent);
+      this.setAttributes({
+        'aria-role': 'menu',
+      });
+      this.menuDefinition = null;
+      this.#menuIconClose = new ManagedElement('button');
+      icons.applyIconToElement(icons.closeMenu, this.#menuIconClose, {
+        hideText: true,
+      });
+      this.#menuIconClose.classList.add(
+        'utils-menu-icon-close',
+        'icon-only-button'
+      );
+
+      const logo = new ManagedElement('img');
+      logo.setAttribute('src', Urls.LOGO);
+
+      const title = document.querySelector('.utils-menu-title');
+      title.appendChild(logo.element);
+      title.appendChild(this.#menuIconClose.element);
+      this.listenToEventOn(
+        'click',
+        this.#menuIconClose,
+        MenuItems.CLOSE_EVENT_ID
+      );
+    }
+
+    /**
+     * Build the menu from the menu definition.
+     * @param {MenuItemDefinition[]} menuDefinition
+     */
+    setMenuItems(menuDefinition) {
+      if (this.menuDefinition) {
+        this.remove();
+      }
+      this.menuDefinition = menuDefinition;
+      const commandItems = [this.#menuIconClose];
+      this.menuDefinition.forEach((menuDef, index) => {
+        let item;
+        if (menuDef.command) {
+          item = new MenuItem(menuDef.iconDetails);
+          this.listenToEventOn('click', item, index);
+          this.listenToEventOn('keydown', item, index);
+          commandItems.push(item);
+        } else {
+          item = new ManagedElement('hr');
+        }
+        this.appendChild(item);
+        this.#navigator = new ArrayIndexer(commandItems);
+      });
+    }
+
+    /**
+     * Handle click on menu option
+     * @param {Event} event
+     * @param {string} eventId
+     */
+    handleClickEvent(event, eventId) {
+      const index = parseInt(eventId);
+      if (isNaN(index)) {
+        return;
+      }
+      console.debug(`Handling event ${event.type} with id ${eventId}`);
+      this.menuDefinition[index].command.execute().then((value) => {
+        console.debug(`Finished handling menu option ${value}.`);
+      });
+    }
+  }
+
+  /**
+   * @file Set up the headers and footers
+   *
+   * @module setHeadersAndFooters
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Class representing the header
+   */
+  class Header {
+    /**
+     * Construct
+     */
+    constructor() {}
+    /**
+     * Set up the header.
+     * @param {module:utils/userIo/menu~MenuItemDefinition[]} menuItems
+     */
+    setup(menuItems) {
+      const titleElement = document.getElementById('title-bar');
+      if (!titleElement) {
+        console.error('Cannot find element with id of "title-bar".');
+        return;
+      }
+
+      if (titleElement.children?.length > 0) {
+        console.error('Second attempt made to setup title bar ignored.');
+        return;
+      }
+      const headerTextContainer = document.createElement('span');
+      headerTextContainer.innerHTML = BuildInfo.getProductName();
+
+      const helpButtonContainer = document.createElement('span');
+      HelpButton.createInside(helpButtonContainer);
+
+      const menu = new Menu();
+      menu.setMenuItems(menuItems);
+      titleElement.appendChild(menu.element);
+      titleElement.appendChild(headerTextContainer);
+      titleElement.appendChild(helpButtonContainer);
+    }
+  }
+
+  /**
+   * Class representing the footer.
+   */
+  class Footer {
+    /**
+     * @type{module:utils/userIo/managedElement.ManagedElement}
+     */
+    #buttonBar;
+
+    /**
+     * Create the footer.
+     */
+    constructor() {}
+
+    /**
+     * Get the button bar.
+     */
+    get buttonBar() {
+      return this.#buttonBar;
+    }
+    /**
+     * Set up the footer.
+     */
+    setup() {
+      const footerElement = document.getElementById('footer');
+      if (!footerElement) {
+        console.error('Cannot find element with id of "footer".');
+        return;
+      }
+
+      if (footerElement.children?.length > 0) {
+        console.error('Second attempt made to setup footer ignored.');
+        return;
+      }
+      this.#buttonBar = new ManagedElement('div', 'button-bar');
+      footerElement.appendChild(this.#buttonBar.element);
+
+      const footerTextContainer = document.createElement('div');
+      footerTextContainer.className = 'footer-text';
+
+      const devTag =
+        BuildInfo.getMode().toUpperCase() !== 'PRODUCTION'
+          ? `[${BuildInfo.getMode()}]`
+          : '';
+
+      footerTextContainer.innerHTML = `${BuildInfo.getProductName()} ${BuildInfo.getVersion()}${devTag} ${BuildInfo.getBuildDate()}`;
+
+      footerElement.appendChild(footerTextContainer);
+    }
+  }
+
+  const footer = new Footer();
+  const header = new Header();
+
+  /**
+   * Set up the headers and footers. The header includes a help button.
+   * @param {module:utils/userIo/menu~MenuItemDefinition[]} menuItems
+   */
+  function setHeaderAndFooter(menuItems) {
+    header.setup(menuItems);
+    footer.setup();
+  }
+
+  /**
+   * @file Abstract presenter.
+   * Presenters are states in a state machine. The state is entered by calling the
+   * present method. The present method allows 3 possible exits: back, new presenter,
+   * and escape. See {@link Presenter#present} for details.
+   *
+   * @module lessons/presenters/presenter
+   *
+   * @license GPL-3.0-or-later
+   * : create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * @typedef {Object} Navigator
+   * @property {constructor} next - constructor for the next presenter
+   * @property {constructor} previous - constructor for the  previous presenter
+   */
+  /**
+   * @typedef {Object} PresenterFactory
+   * @property {function(className): constructor} next - function to return constructor for next Presenter
+   * @property {function(className): constructor} previous - function to return constructor for previous Presenter
+   */
+
+  /**
+   * @typedef {Object} PresenterConfig
+   * @property {string[]} titles - titles that are displayed for each item.
+   * @property {string} itemClassName - class name for the items.
+   * @property {module:lessons/lesson/Lesson} [lesson] - the lesson. It is optional for most presenters.
+   * @property {lessons/lessonManager~LessonInfo} lessonInfo - information about the lesson.
+   * @property {PresenterFactory} factory - the presenter factory used to create the next and previous presenters.
+   */
+
+  /**
+   * Base presenter class. This is expected to be extended and the `next` and
+   * `previous` methods overridden.
+   * @class
+   * @extends module:utils/userIo/managedElement.ManagedElement
+   */
+  class Presenter extends ManagedElement {
+    static HOME_ID = 'HOME';
+    static PREVIOUS_ID = 'BACKWARDS';
+    static NEXT_ID = 'FORWARDS';
+
+    /**
+     * The resolve function for the Promise returned by the `presentOnStage` method.
+     * @type {function}
+     */
+    #resolutionExecutor;
+
+    /**
+     * @type {PresenterConfig}
+     */
+    config;
+
+    /*
+     * Navigator for keyboard updown navigation.
+     * @type {module:utils/arrayIndexer.ArrayIndexer} #navigator
+     */
+    #navigator;
+
+    /**
+     * Preamble
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #preamble;
+
+    /**
+     * Presentation
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #presentation;
+
+    /**
+     * Get the presentation
+     * @returns {module:utils/userIo/managedElement.ManagedElement}
+     */
+    get presentation() {
+      return this.#presentation;
+    }
+
+    /**
+     * Button bar - bar at bottom
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #buttonBar;
+    /**
+     * Back button
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #homeButton;
+
+    /**
+     * Back button
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #backwardsButton;
+
+    /**
+     * Next button
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #forwardsButton;
+
+    /**
+     * Construct the presenter
+     * @param {PresenterConfig} - configuration for the presenter.
+     * @param {string} presentationTagName - type of presentation containing element. This defaults to a div
+     */
+    constructor(config, presentationTagName = 'div') {
+      super('div');
+      this.#addClassNames();
+      this.config = config;
+      footer.buttonBar.removeChildren();
+      this.#buildContent(presentationTagName);
+    }
+
+    #addClassNames() {
+      let item = this;
+      do {
+        this.classList.add(item.constructor.name);
+        item = Object.getPrototypeOf(item);
+      } while (item.constructor.name !== 'Object');
+    }
+
+    /**
+     * Add preamble
+     * @param {string} presentationTagName - type of the presentation container
+     */
+    #buildContent(presentationTagName) {
+      this.#preamble = new ManagedElement('div', 'preamble');
+      this.#presentation = new ManagedElement(
+        presentationTagName,
+        'presentation'
+      );
+      this.#buttonBar = footer.buttonBar; // new ManagedElement('div', 'button-bar');
+      this.#addNavigationButtons();
+      this.appendChild(this.#preamble);
+      this.appendChild(this.#presentation);
+      //this.appendChild(this.#buttonBar);
+    }
+
+    /**
+     * Set up the presenter to expand.
+     * The presentation is expanded.
+     */
+    expandPresentation() {
+      this.#presentation.classList.add('expanded');
+    }
+    /**
+     * Add button bar to the presenter's button bar.
+     * The default button bar has the buttons in HOME, BACK, FORWARD order.
+     * This adds the button between the BACK and FORWARD buttons.
+     * @param {module:utils/userIo/managedElement.ManagedElement}
+     */
+    addButtonToBar(managedButton) {
+      this.#buttonBar.element.insertBefore(
+        managedButton.element,
+        this.#buttonBar.element.lastElementChild
+      );
+    }
+
+    /**
+     * Preamble html or ManagedElement
+     * @param {string | Element | module:utils/userIo/managedElement.ManagedElement}
+     */
+    addPreamble(data) {
+      this.#preamble.removeChildren();
+      if (typeof data === 'string') {
+        this.#preamble.innerHTML = data;
+      } else {
+        this.#preamble.appendChild(data);
+      }
+    }
+
+    /**
+     * Add back and forward navigation buttons.
+     * These are initially hidden.
+     */
+    #addNavigationButtons() {
+      this.#homeButton = new ManagedElement('button', 'home-navigation');
+      icons.applyIconToElement(icons.home, this.#homeButton);
+      this.listenToEventOn('click', this.#homeButton, Presenter.HOME_ID);
+      this.#buttonBar.appendChild(this.#homeButton);
+
+      this.#backwardsButton = new ManagedElement('button', 'back-navigation');
+      icons.applyIconToElement(icons.back, this.#backwardsButton);
+      this.listenToEventOn('click', this.#backwardsButton, Presenter.PREVIOUS_ID);
+      this.#buttonBar.appendChild(this.#backwardsButton);
+      this.#backwardsButton.hide();
+
+      this.#forwardsButton = new ManagedElement('button', 'forward-navigation');
+      icons.applyIconToElement(icons.forward, this.#forwardsButton);
+      this.listenToEventOn('click', this.#forwardsButton, Presenter.NEXT_ID);
+      this.#buttonBar.appendChild(this.#forwardsButton);
+      this.#forwardsButton.hide();
+    }
+
+    /**
+     * Hide the home button.
+     */
+    hideHomeButton() {
+      this.#homeButton.hide();
+    }
+
+    /**
+     * Show the back button.
+     * @param {boolean} focus - if true, the button will also get focus.
+     */
+    showBackButton() {
+      this.#backwardsButton.show();
+      if (focus) {
+        this.#backwardsButton.focus();
+      }
+    }
+
+    /**
+     * Show the forwards button.
+     * @param {boolean} focus - if true, the button will also get focus.
+     */
+    showNextButton(focus) {
+      this.#forwardsButton.show();
+      if (focus) {
+        this.#forwardsButton.focus();
+      }
+    }
+
+    /**
+     * Restyle the forwards button
+     * This allows the next button's logic to be used but with a different presentation
+     * that might be more appropriate for presenter.
+     * @param {module:utils/userIo/icons~IconDetails}
+     * @param {?string} overrideText - text to override label if required.
+     */
+    applyIconToNextButton(iconDetails, overrideText) {
+      icons.applyIconToElement(iconDetails, this.#forwardsButton, {
+        overrideText: overrideText,
+      });
+    }
+
+    /**
+     * Add a keydown event for all the element's children.
+     * The default handling is to trigger a click event on space or enter.
+     * This is used primarily to make items such as LI elements behave more like buttons.
+     * This can only be called once.
+     * If element omitted, the children of the presentation element are used.
+     * @param {module:utils/userIo/managedElement.ManagedElement[]} [managedElements].
+     */
+    autoAddKeydownEvents(managedElements) {
+      if (this.#navigator) {
+        console.error('autoAddKeydownEvents can only be called once.');
+        return;
+      }
+      const items = managedElements ?? this.#presentation.managedChildren;
+      this.#navigator = new ArrayIndexer(items, true);
+      items.forEach((item, index) => {
+        this.listenToEventOn('keydown', item, index);
+      });
+    }
+
+    /**
+     * Get configuration for the next presenter.
+     * The default implementation just calls the presenter factory in the configuration
+     * to get the next presenter. This should be overridden if you need to take action based on the index.
+     *
+     * @param {number | string} index - index of the item that triggered the call or the eventId if it can't be passed as a number.
+     * @returns {Presenter | Promise} new Presenter or Promise that fulfils to a Presenter.
+     */
+    next(indexIgnored) {
+      return this.config.factory.getNext(this, this.config);
+    }
+
+    /**
+     * Move to the previous Presenter.
+     * The default implementation just calls the presenter factory in the configuration
+     * to get the previous presenter.
+     * @returns {Presenter} new Presenter
+     */
+    previous() {
+      return this.config.factory.getPrevious(this, this.config);
+    }
+
+    /**
+     * Present on stage. The element is appended to the stageElement.
+     * Note that it is not removed and any existing content is not removed..
+     *
+     * @param {module:utils/userIo/managedElement.ManagedElement} stageElement
+     * @returns {Promise} - The Promise fulfils to the next `Presenter` that should be shown.
+     */
+    presentOnStage(stageElement) {
+      return new Promise((resolve) => {
+        this.#resolutionExecutor = resolve;
+        stageElement.appendChild(this);
+        focusManager.focusWithin(stageElement);
+      });
+    }
+
+    /**
+     * Check if okay to leave.
+     * @param {string} message to ask
+     * @returns {boolean} true if okay
+     */
+    async askIfOkayToLeave(message) {
+      const confirmation = await ModalDialog.showConfirm(message);
+      return confirmation === ModalDialog.DialogIndex.CONFIRM_YES;
+    }
+
+    /**
+     * Prevent navigation away from page.
+     * This is called when the handleClickEvent method is handling a Home, Back or
+     * Forwards navigation button. It should be overriden if you need to prevent
+     * navigation. Implementers can use the `askIfOkayToLeave` method to ask.
+     * @param {Event} event
+     * @param {string} eventId
+     * @returns {boolean} true if navigation away from page should be allowed
+     */
+    async allowNavigation(eventIgnored, eventIdIgnored) {
+      return true;
+    }
+
+    /**
+     * Handle the click event.
+     * The method will resolve the `Promise` made by `presentOnStage`.
+     * The resolution is determined by the eventId.
+     * + If the eventId is a positive integer, including zero, the Presenter resolves by
+     * calling the next method in the config.
+     * + If the eventId is 'PREVIOUS', case insensitive, the Presenter resolves by
+     * calling the previous method in the config.
+     * + Any other eventId, does not resolves with null.
+     *
+     * Override this method for handling other eventIds.
+     * @param {Event} event
+     * @param {string} eventId
+     */
+    async handleClickEvent(event, eventId) {
+      const index = parseInt(eventId);
+      const upperCaseId = !eventId ? '' : eventId.toString().toUpperCase();
+      if (
+        upperCaseId === Presenter.HOME_ID ||
+        upperCaseId === Presenter.PREVIOUS_ID ||
+        upperCaseId === Presenter.NEXT_ID
+      ) {
+        if (!(await this.allowNavigation(event, eventId))) {
+          return true;
+        }
+      }
+      let nextPresenter = null;
+      if (upperCaseId === Presenter.PREVIOUS_ID) {
+        nextPresenter = this.previous();
+      } else if (upperCaseId === Presenter.NEXT_ID) {
+        nextPresenter = this.next(Presenter.NEXT_ID);
+      } else if (upperCaseId === Presenter.HOME_ID) {
+        nextPresenter = this.config.factory.getHome(this.config);
+      } else {
+        nextPresenter = this.next(isNaN(index) ? eventId : index);
+      }
+      if (nextPresenter) {
+        this.#resolutionExecutor(nextPresenter);
+      }
+    }
+
+    /**
+     * Handle key down event to allow up and down arrows to navigate list.
+     * @param {Event} event
+     * @param {string} eventId - holds index of the answer.
+     */
+    handleKeydownEvent(event, eventId) {
+      const index = parseInt(eventId);
+      console.debug(`Key ${event.key} down for index ${index}`);
+      if (isNaN(index)) {
+        return;
+      }
+
+      switch (event.key) {
+        case ' ':
+        case 'Enter':
+          this.handleClickEvent(event, eventId);
+          break;
+      }
+    }
+  }
+
+  /**
+   * @file Home message.
+   *
+   * @module data/home
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  const getHomeText = () => i18n`Welcome to ${BuildInfo.getProductName()}`;
+
+  /**
+   * @file File input control
+   *
+   * @module utils/userIo/fileInput
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * File input button.
+   * Users should listen for the 'dataAvailable' event.
+   */
+  class FileInputButton extends ManagedElement {
+    static DATA_AVAILABLE_EVENT_NAME = 'dataAvailable';
+
+    #input;
+    /**
+     * Create a file input button.
+     * @param {module:utils/userIo/icons~IconConfig} options - options to override the default presentation.
+     */
+    constructor(options) {
+      super('label', 'file-input-button');
+      this.classList.add('selectable');
+      this.#input = new ManagedElement('input');
+      this.#input.setAttribute('type', 'file');
+      icons.applyIconToElement(icons.import, this, options);
+      this.#input.style.visibility = 'hidden';
+      this.#input.style.height = '1em';
+      this.appendChild(this.#input);
+      this.listenToEventOn('change', this.#input);
+    }
+
+    /**
+     * Handles changes to the file input control
+     * If a file is selected, it is read and a custom event 'data-available' is
+     * dispatched.
+     * @param {Event} event
+     * @param {string} eventIdIgnored
+     */
+    handleChangeEvent(eventIgnored, eventIdIgnored) {
+      const file = this.#input.element.files[0];
+      if (!file) {
+        return;
+      }
+      const reader = new FileReader();
+      const control = this;
+      reader.addEventListener('load', () => {
+        reader.result;
+        control.dispatchEvent(
+          new CustomEvent(FileInputButton.DATA_AVAILABLE_EVENT_NAME, {
+            detail: {
+              file: file,
+              content: reader.result,
+            },
+          })
+        );
+      });
+      reader.readAsText(file);
+    }
+  }
+
+  /**
+   * @file Template for the autorun html template
+   *
+   * @module src/assets/templates/autorunHtml.js
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Get the HTML for the autorun file.
+   * @param {Object} data
+   * @param {string} data.b64Title - lesson title in base64
+   * @param {string} data.b64LessonData - lesson definition text in base64
+   * @param {string} data.b64Translations - translations from i18 in base64
+   */
+  function getAutorunHtml(data) {
+    let rootUrl = Urls.ROOT;
+    return `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Text2Lesson</title>
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="48x48"
+        href="${rootUrl}assets/images/favicon.appiconset/favicon_48.png"
+      />
+      <link
+        rel="apple-touch-icon"
+        type="image/png"
+        sizes="167x167"
+        href="${rootUrl}assets/images/favicon.appiconset/favicon_167.png"
+      />
+      <link
+        rel="apple-touch-icon"
+        type="image/png"
+        sizes="180x180"
+        href="${rootUrl}assets/images/favicon.appiconset/favicon_180.png"
+      />
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="${rootUrl}assets/images/favicon.appiconset/favicon_192.png"
+      />
+  
+      <link rel="stylesheet" href="${rootUrl}assets/styles/style.css" />
+      <link
+        href="${rootUrl}assets/third-party/font-awesome/css/fontawesome.min.css"
+        rel="stylesheet"
+      />
+      <link
+        href="${rootUrl}assets/third-party/font-awesome/css/brands.min.css"
+        rel="stylesheet"
+      />
+      <link
+        href="${rootUrl}assets/third-party/font-awesome/css/solid.min.css"
+        rel="stylesheet"
+      />
+    </head>
+  <script>
+      window.text2LessonEmbeddedData = {
+        title: "${data.b64Title}",
+        source: "${data.b64LessonData}",
+        translations: "${data.b64Translations}",
+        rootUrl: "${rootUrl}",
+      }    
+  </script>
+    <body>
+      <div id="modal-mask"></div>
+      <div id="title-bar"></div>
+      <div id="content" class="container">
+        <div id="stage">
+          <p>The application is loading. Please wait a few moments.</p>
+        </div>
+      </div>
+      <div id="footer" class="container"></div>
+      <script type="module" src="${rootUrl}text2lesson.js"></script>
+      <noscript class="always-on-top">
+        <p>
+          Your browser does not support scripts and so this application cannot
+          run. If you've disabled scripts, you will need to enable them to
+          proceed. Sorry.
+        </p>
+      </noscript>
+      <div id="browser-css-not-supported">
+        <p>
+          Sorry, but your browser does not support the features necessary to run
+          this application. Try upgrading your browser to the latest version.
+        </p>
+      </div>
+    </body>
+  </html>
+  `;
+  }
+
+  /**
+   * @file Importers and Exporters for lesson data.
+   *
+   * @module lessons/lessonImportExport
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * @typedef {Object} LessonImportExportSummary
+   * @property {string} title - the lesson's title
+   * @property {string} content - the source text for the lesson
+   */
+  /**
+   * Class to handle exporting of a lesson.
+   */
+  class LessonExporter {
+    /**
+     * @type {string}
+     */
+    #title;
+
+    /**
+     * @type {string}
+     */
+    #content;
+
+    /**
+     * Constuctor
+     * @param {string} title - lesson title
+     * @param {string} content - lesson source
+     */
+    constructor(title, content) {
+      this.#title = title;
+      this.#content = content;
+    }
+
+    /**
+     * Get a uri for the data.
+     * @param {string} data
+     */
+    #getDataUri(data) {
+      return `data:text/plain;charset=utf-8,${encodeURIComponent(data)}`;
+    }
+
+    /**
+     * Get a string version of the lesson.
+     * @returns {string}
+     */
+    get #lessonAsString() {
+      return JSON.stringify({
+        title: this.#title,
+        content: this.#content,
+      });
+    }
+
+    /**
+     * Get a safe filename based on the title.
+     * @param {string} extension - do not include the leading period.
+     * @return {string}
+     */
+    #getFilename(extension) {
+      const safename = this.#title
+        .replace(/[^A-Za-z0-9_-]/g, '_')
+        .substring(0, 32);
+      return `${safename}.${extension}`;
+    }
+
+    /**
+     * Export the lesson by creating a temporary anchor and clicking it.
+     * @returns {Promise} fulfils to undefined
+     */
+    exportLesson() {
+      return ModalDialog.showDialog(
+        i18n`Select type of export`,
+        i18n`Select the type of export required. AutoRun files provide an easy way for users to run a lesson.`,
+        {
+          dialogType: ModalDialog.DialogType.QUESTION,
+          buttons: [icons.export, icons.exportAutoRun],
+        }
+      ).then((index) => {
+        if (index === 0) {
+          return this.exportBase64Lesson();
+        } else {
+          return this.exportAutorunLesson();
+        }
+      });
+    }
+
+    /**
+     * Export the lesson by creating a temporary anchor and clicking it.
+     */
+    exportBase64Lesson() {
+      this.saveDataToFile(stringToBase64(this.#lessonAsString), 'txt');
+    }
+
+    /**
+     * Export an autorun lesson.
+     */
+    exportAutorunLesson() {
+      const b64Title = stringToBase64(this.#title);
+      const b64Data = stringToBase64(this.#content);
+      const html = getAutorunHtml({
+        b64Title: b64Title,
+        b64LessonData: b64Data,
+        b64Translations: getBase64Translations(),
+      });
+      this.saveDataToFile(html, 'html');
+    }
+
+    /**
+     * Save the data to file.
+     * @param {string} data
+     * @param {string} extension - without the leading period.
+     */
+    saveDataToFile(data, extension) {
+      const tempA = document.createElement('a');
+      tempA.setAttribute('href', this.#getDataUri(data));
+      tempA.setAttribute('download', this.#getFilename(extension));
+      tempA.addEventListener('click', () => {
+        document.body.removeChild(tempA);
+      });
+      document.body.appendChild(tempA);
+      tempA.click();
+    }
+  }
+
+  class LessonImporter {
+    /**
+     * Create the importer.
+     */
+    constructor() {}
+
+    /**
+     * Convert data previously saved by a call to exportPlainData or plain text.
+     * @param {string} exportedData
+     * @returns {LessonImportExportSummary} null if fails.
+     */
+    convert(exportedData) {
+      let result = this.#getSummaryFromBase64File(exportedData);
+      if (result) {
+        return result;
+      }
+
+      result = this.#getSummaryFromAutorunFile(exportedData);
+      if (result) {
+        console.log(result.languages);
+        return result;
+      }
+      return this.#getSummaryFromPlainTextFile(exportedData);
+    }
+
+    /**
+     * Try to decode data using base64.
+     * @param {string} data
+     * @returns {LessonImportExportSummary} null if not decoded.
+     */
+    #getSummaryFromBase64File(data) {
+      const match = data.match(/^[a-zA-Z0-9+/=]+$/);
+      if (match) {
+        try {
+          return JSON.parse(base64ToString(data));
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      return null;
+    }
+
+    /**
+     * Try to decode data assuming its an autorun file.
+     * @param {string} data
+     * @returns {LessonImportExportSummary} null if not decoded.
+     */
+    #getSummaryFromAutorunFile(data) {
+      const match = data.match(
+        /title:\s*['"]([a-zA-Z0-9+/=]+)['"]\s*,\s*source:\s*['"]([a-zA-Z0-9+/=]+)['"]/
+      );
+      if (match) {
+        try {
+          return {
+            title: base64ToString(match[1]),
+            content: base64ToString(match[2]),
+          };
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      return null;
+    }
+
+    /**
+     * Simple check to see if the data is plain text.
+     * Looks for a question or introduction line.
+     * @param {string} data
+     * @returns {boolean} true if plain text file.
+     */
+    #getSummaryFromPlainTextFile(data) {
+      if (data.match(/^[-#_* ]{0,3}(?:\(*([i?=xX&_])\1*[_) ]+)(.*)$/m)) {
+        return {
+          title: '',
+          content: data,
+        };
+      } else {
+        return null;
+      }
+    }
+  }
+
+  /**
+   * @file Simple home page
+   *
+   * @module lessons/presenters/homePresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Class to present a slide show.
+   * Presentation of a Problem provides the full problem and answer.
+   * @class
+   * @extends module:lessons/presenters/Presenter.Presenter
+   */
+  class HomePresenter extends Presenter {
+    static REMOTE_LIBRARY_ID = 'REMOTE';
+    static LOCAL_LIBRARY_ID = 'LOCAL';
+    static FILE_LIBRARY_ID = 'FILE_SYSTEM';
+
+    /**
+     * @type { module:lessons/lessonImportExport~LessonImportExportSummary }
+     */
+    #importSummary;
+
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      config.titles = [];
+      config.itemClassName = 'library';
+      super(config);
+      this.#buildContent();
+      this.hideHomeButton();
+    }
+
+    #buildContent() {
+      let button = new ManagedElement('button');
+      icons.applyIconToElement(icons.library, button, {
+        overrideText: i18n`Open remote library`,
+        hideText: false,
+      });
+      this.presentation.appendChild(button);
+      this.listenToEventOn('click', button, HomePresenter.REMOTE_LIBRARY_ID);
+
+      button = new ManagedElement('button');
+      icons.applyIconToElement(icons.library, button, {
+        overrideText: i18n`Open local library`,
+        hideText: false,
+      });
+      this.presentation.appendChild(button);
+      this.listenToEventOn('click', button, HomePresenter.LOCAL_LIBRARY_ID);
+
+      button = new FileInputButton({
+        overrideText: i18n`Open lesson from file system`,
+        hideText: false,
+      });
+      this.presentation.appendChild(button);
+      this.listenToEventOn(
+        FileInputButton.DATA_AVAILABLE_EVENT_NAME,
+        button,
+        HomePresenter.FILE_LIBRARY_ID
+      );
+
+      this.addPreamble(parseMarkdown(getHomeText()));
+    }
+
+    /**
+     * Handle file input.
+     * @param {*} event
+     * @param {*} eventId
+     */
+    handleDataAvailableEvent(event, eventIdIgnored) {
+      const importer = new LessonImporter();
+      this.#importSummary = importer.convert(event.detail.content);
+      if (!this.#importSummary) {
+        toast(
+          `Unable to import the file ${event.detail?.file?.name}. The file may be corrupt or the wrong type of file.`
+        );
+        return;
+      }
+      this.handleClickEvent(event, HomePresenter.FILE_LIBRARY_ID);
+    }
+
+    /**
+     * @override
+     */
+    next(index) {
+      if (index === HomePresenter.FILE_LIBRARY_ID) {
+        const unmanagedLesson = new UnmanagedLesson(
+          this.#importSummary.title,
+          this.#importSummary.content,
+          LessonOrigin.FILE_SYSTEM
+        );
+        this.config.lesson = unmanagedLesson.lesson;
+        this.config.lessonInfo = unmanagedLesson.lessonInfo;
+        return this.config.factory.getSuitableProblemPresenter(this.config);
+      } else {
+        lessonManager.usingLocalLibrary =
+          index === HomePresenter.LOCAL_LIBRARY_ID;
+        return super.next(index);
+      }
+    }
+  }
+
+  /**
+   * @file list presenter
+   *
+   * @module lessons/presenters/listPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Class that creates a simple list presenter
+   * @extends module:lessons/presenters/presenter.Presenter
+   */
+
+  class ListPresenter extends Presenter {
+    /**
+     * Construct simple list presenter
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      super(config, 'ul');
+      this.#buildContent();
+    }
+
+    /**
+     * Build the presenter content.
+     * If the config includes the `previous` function, a back button is automatically
+     * added at the end.
+     * @private
+     */
+    #buildContent() {
+      this.config?.titles?.forEach((title, index) => {
+        const itemElement = new ManagedElement('li', this.config.itemClassName);
+        itemElement.setAttribute('tabindex', '0');
+        itemElement.classList.add('selectable');
+        this.presentation.appendChild(itemElement);
+        itemElement.innerHTML = title;
+        this.listenToEventOn('click', itemElement, index);
+      });
+
+      if (this.config?.factory?.hasPrevious(this)) {
+        this.showBackButton();
+      }
+    }
+  }
+
+  /**
+   * @file Present a library on the stage.
+   *
+   * @module lessons/presenters/libraryPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Class to present a library.
+   * Presentation of a library involves displaying all of the books available in
+   * the library.
+   * @extends module:lessons/presenters/listPresenter.ListPresenter
+   */
+  class LibraryPresenter extends ListPresenter {
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      config.titles = lessonManager.bookTitles;
+      config.itemClassName = 'book';
+      super(config);
+      this.#buildPreamble();
+      this.autoAddKeydownEvents();
+    }
+
+    /**
+     * Set up the preamble
+     */
+    #buildPreamble() {
+      this.addPreamble(
+        `<span class='library-title'>${lessonManager.libraryTitle}</span>`
+      );
+    }
+
+    /**
+     * @override
+     */
+    next(index) {
+      lessonManager.bookIndex = index;
+      return super.next(index);
+    }
+  }
+
+  /**
+   * @file Presenter for books
+   *
+   * @module lessons/presenters/bookPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Class to present a library.
+   * Presentation of a library involves displaying all of the books available in
+   * the library.
+   * @extends module:lessons/presenters/listPresenter.ListPresenter
+   */
+  class BookPresenter extends ListPresenter {
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      config.titles = lessonManager.chapterTitles;
+      config.itemClassName = 'chapter';
+      super(config);
+      this.autoAddKeydownEvents();
+      this.#buildPreamble();
+    }
+    /**
+     * Set up the preamble
+     */
+    #buildPreamble() {
+      this.addPreamble(
+        `<span class='library-title'>${lessonManager.libraryTitle}</span>
+    <span class='book-title'>${lessonManager.bookTitle}</span>
+    `
+      );
+    }
+
+    /**
+     * @override
+     */
+    next(index) {
+      lessonManager.chapterIndex = index;
+      return super.next(index);
+    }
+  }
+
+  /**
+   * @file Chapter presenter
+   *
+   * @module lessons/presenters/chapterPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+  /**
+   * Class to present a chapter.
+   * Presentation of a chapter involves displaying all of the lessons available in
+   * the chapter.
+   * @extends module:lessons/presenters/listPresenter.ListPresenter
+   */
+  class ChapterPresenter extends ListPresenter {
+    ADD_LESSON_EVENT_ID = 'add-lesson';
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      config.titles = lessonManager.lessonTitles;
+      config.itemClassName = 'lesson';
+      super(config);
+      this.#buildPreamble();
+      if (lessonManager.usingLocalLibrary) {
+        this.#addNewSlotButton();
+      }
+      this.autoAddKeydownEvents();
+    }
+
+    /**
+     * Set up the preamble
+     */
+    #buildPreamble() {
+      if (lessonManager.usingLocalLibrary) {
+        this.addPreamble(
+          `<span class='library-title'>${lessonManager.libraryTitle}</span>`
+        );
+      } else {
+        this.addPreamble(
+          `<span class='library-title'>${lessonManager.libraryTitle}</span>
+        <span class='book-title'>${lessonManager.bookTitle}</span>
+        <span class='chapter-title'>${lessonManager.chapterTitle}</span>
+        `
+        );
+      }
+    }
+
+    #addNewSlotButton() {
+      const button = new ManagedElement('button');
+      icons.applyIconToElement(icons.addLesson, button);
+      this.listenToEventOn('click', button, this.ADD_LESSON_EVENT_ID);
+      this.addButtonToBar(button);
+    }
+    /**
+     *
+     * @override
+     */
+    handleClickEvent(event, eventId) {
+      if (eventId === this.ADD_LESSON_EVENT_ID) {
+        return lessonManager.addLessonToLocalLibrary().then(() => {
+          super.handleClickEvent(event, eventId);
+        });
+      }
+      super.handleClickEvent(event, eventId);
+    }
+    /**
+     * @override
+     */
+    next(index) {
+      if (index === this.ADD_LESSON_EVENT_ID) {
+        return new ChapterPresenter(this.config);
+      } else {
+        lessonManager.lessonIndex = index;
+        return super.next(index);
+      }
+    }
+  }
+
+  /**
+   * @file Lesson Presenter
+   *
+   * @module lessons/presenters/lessonPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Class to present a Lesson.
+   * Presentation of a Lesson involves displaying the lesson summary.
+   * @extends module:lessons/presenters/presenter.Presenter
+   */
+  class LessonPresenter extends Presenter {
+    /**
+     * @type {string}
+     */
+    static EDIT_EVENT_ID = 'EDIT_LESSON';
+
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      config.titles = ['placeholder']; // this will be replaced later.
+      config.itemClassName = 'lesson-summary';
+      super(config);
+      this.config.lessonInfo = lessonManager.currentLessonInfo;
+      this.#buildCustomContent();
+      this.autoAddKeydownEvents();
+      if (this.config?.factory?.hasPrevious(this)) {
+        this.showBackButton();
+      }
+    }
+
+    /**
+     * Build custom content for the lesson.
+     */
+    #buildCustomContent() {
+      this.presentation.createAndAppendChild('h2', null, i18n`Selected lesson:`);
+      const summaryBlock = this.presentation.createAndAppendChild(
+        'div',
+        'lesson-summary'
+      );
+      summaryBlock.createAndAppendChild(
+        'span',
+        'lesson-title',
+        this.config.lessonInfo.titles.lesson
+      );
+      summaryBlock.createAndAppendChild('p', null, i18n`taken from`);
+      summaryBlock.createAndAppendChild(
+        'span',
+        'library-title',
+        this.config.lessonInfo.titles.library
+      );
+      if (!lessonManager.usingLocalLibrary) {
+        summaryBlock.createAndAppendChild(
+          'span',
+          'book-title',
+          this.config.lessonInfo.titles.book
+        );
+        summaryBlock.createAndAppendChild(
+          'span',
+          'chapter-title',
+          this.config.lessonInfo.titles.chapter
+        );
+      }
+
+      this.presentation.appendChild(summaryBlock);
+      this.applyIconToNextButton(icons.playLesson);
+      this.showNextButton();
+      this.#addEditButtonIfLocal();
+    }
+
+    /**
+     * Add the edit button
+     */
+    #addEditButtonIfLocal() {
+      if (this.config.lessonInfo.usingLocalLibrary) {
+        const editButton = new ManagedElement('button');
+        icons.applyIconToElement(icons.edit, editButton);
+        this.addButtonToBar(editButton);
+        this.listenToEventOn('click', editButton, LessonPresenter.EDIT_EVENT_ID);
+      }
+    }
+
+    /**
+     * @override
+     */
+    next(eventId) {
+      if (eventId === LessonPresenter.EDIT_EVENT_ID) {
+        return this.config.factory.getEditor(this, this.config);
+      } else {
+        return lessonManager.loadCurrentLesson().then((cachedLesson) => {
+          const lessonSource = LessonSource.createFromSource(
+            cachedLesson.content
+          );
+          this.config.lesson = lessonSource.convertToLesson();
+          return this.config.factory.getNext(this, this.config);
+        });
+      }
+    }
+    /**
+     * @override
+     */
+    previous() {
+      return this.config.factory.getPrevious(this, this.config);
+    }
+  }
+
+  /**
+   * @file Lesson editor
+   *
+   * @module lessons/presenters/lessonEditorPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  class LessonEditorPresenter extends Presenter {
+    static SAVE_EVENT_ID = 'SAVE';
+    static EXPORT_EVENT_ID = 'EXPORT';
+    static IMPORT_EVENT_ID = 'IMPORT';
+    static DELETE_EVENT_ID = 'DELETE';
+
+    #lessonTitleElement;
+    #lessonTitleValue;
+    #mainEditorElement;
+    #saveButton;
+    #importForm;
+    #importButton;
+    #exportButton;
+    #dirty;
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      config.titles = ['placeholder']; // this will be replaced later.
+      config.itemClassName = 'lesson-editor';
+      super(config);
+      this.#buildCustomContent();
+      this.#addSaveButton();
+      this.#addImportButton();
+      this.#addExportButton();
+      this.#addDeleteButton();
+      this.expandPresentation();
+      this.#setEditorAsClean();
+      this.applyIconToNextButton(icons.closeEditor);
+      this.showNextButton();
+      this.#dirty = false;
+    }
+
+    /**
+     * Build the content.
+     */
+    async #buildCustomContent() {
+      const cachedLesson = await lessonManager.loadCurrentLesson();
+      this.#lessonTitleValue = this.config.lessonInfo.titles.lesson;
+      this.#lessonTitleElement = new LabeledControl(
+        LocalLibrary,
+        {
+          defaultValue: this.#lessonTitleValue,
+          label: i18n`Title`,
+          type: 'input',
+          onupdate: (value) => {
+            this.#lessonTitleValue = value;
+            this.#setEditorAsDirty();
+          },
+        },
+        { storage: null }
+      );
+      this.addPreamble(this.#lessonTitleElement);
+      this.#mainEditorElement = this.presentation.createAndAppendChild(
+        'textarea',
+        'lesson-editor',
+        cachedLesson.content
+      );
+      this.listenToEventOn('input', this.#mainEditorElement);
+    }
+
+    /**
+     * Set the editor as dirty. The saveButton is shown and the Presenter set to
+     * require confirmation to leave.
+     */
+    #setEditorAsDirty() {
+      this.#saveButton.disabled = false;
+      this.#dirty = true;
+    }
+    /**
+     * Set the editor as dirty. The saveButton is hidden and the Presenter set not to
+     * require confirmation to leave.
+     */
+    #setEditorAsClean() {
+      this.#saveButton.disabled = true;
+      this.#dirty = false;
+    }
+
+    /**
+     * Add a save button */
+    #addSaveButton() {
+      this.#saveButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.save, this.#saveButton);
+      this.listenToEventOn(
+        'click',
+        this.#saveButton,
+        LessonEditorPresenter.SAVE_EVENT_ID
+      );
+      this.addButtonToBar(this.#saveButton);
+    }
+
+    /**
+     * Add an import button
+     */
+    #addImportButton() {
+      this.#importForm = new ManagedElement('form', 'button-wrapper');
+      this.#importButton = new FileInputButton();
+      this.#importForm.appendChild(this.#importButton);
+      this.listenToEventOn(
+        FileInputButton.DATA_AVAILABLE_EVENT_NAME,
+        this.#importButton,
+        LessonEditorPresenter.IMPORT_EVENT_ID
+      );
+      this.addButtonToBar(this.#importForm);
+    }
+    /**
+     * Add an export button */
+    #addExportButton() {
+      this.#exportButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.export, this.#exportButton);
+      this.listenToEventOn(
+        'click',
+        this.#exportButton,
+        LessonEditorPresenter.EXPORT_EVENT_ID
+      );
+      this.addButtonToBar(this.#exportButton);
+    }
+
+    /**
+     * Add a delete button
+     */
+    #addDeleteButton() {
+      const deleteButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.delete, deleteButton);
+      this.listenToEventOn(
+        'click',
+        deleteButton,
+        LessonEditorPresenter.DELETE_EVENT_ID
+      );
+      this.addButtonToBar(deleteButton);
+    }
+    /**
+     * Handle file input.
+     * @param {*} event
+     * @param {*} eventId
+     */
+    handleDataAvailableEvent(event, eventIdIgnored) {
+      this.#importForm.element.reset(); // If we don't do this, we won't get new events for the same file.
+      const importer = new LessonImporter();
+      const importSummary = importer.convert(event.detail.content);
+      if (!importSummary) {
+        toast(
+          `Unable to import the file ${event.detail?.file?.name}. The file may be corrupt or the wrong type of file.`
+        );
+        return;
+      }
+      return ModalDialog.showConfirm(
+        i18n`Are you sure you want to overwrite your lesson?`
+      ).then((answer) => {
+        if (answer === ModalDialog.DialogIndex.CONFIRM_YES) {
+          this.#lessonTitleElement.setValue(importSummary.title);
+          this.#lessonTitleValue = importSummary.title;
+          this.#mainEditorElement.value = importSummary.content;
+          this.#setEditorAsDirty();
+        }
+        return;
+      });
+    }
+    /**
+     * Handle update of the editor.
+     * @param {Event} eventIgnored
+     * @param {string} eventIdIgnored
+     */
+    handleInputEvent(eventIgnored, eventIdIgnored) {
+      this.#setEditorAsDirty();
+    }
+
+    /**
+     * @override
+     */
+    async allowNavigation(eventIgnored, eventIdIgnored) {
+      if (this.#dirty) {
+        return this.askIfOkayToLeave(
+          i18n`Are you sure you want to leave the editor? You will lose your changes.`
+        );
+      } else {
+        return true;
+      }
+    }
+
+    /**
+     * @override
+     */
+    async handleClickEvent(event, eventId) {
+      switch (eventId) {
+        case LessonEditorPresenter.DELETE_EVENT_ID:
+          {
+            const deleted = await this.#deleteLessonIfConfirmed();
+            if (!deleted) {
+              return;
+            }
+          }
+          break;
+        case LessonEditorPresenter.SAVE_EVENT_ID:
+          return this.#saveLessonLocally();
+        case LessonEditorPresenter.EXPORT_EVENT_ID:
+          return this.#exportLesson();
+      }
+      return super.handleClickEvent(event, eventId);
+    }
+
+    /**
+     * @override
+     * @param {string} eventId
+     */
+    next(eventId) {
+      if (eventId === LessonEditorPresenter.DELETE_EVENT_ID) {
+        return this.config.factory.getLibraryPresenter(this, this.config);
+      } else {
+        return super.next(eventId);
+      }
+    }
+
+    /**
+     * Delete the lesson if the user confirms the action.
+     * @returns {Promise} fulfils to true if deleted.
+     */
+    #deleteLessonIfConfirmed() {
+      return ModalDialog.showConfirm(
+        i18n`Are you sure you want to delete this lesson?`,
+        i18n`Confirm deletion`
+      ).then((response) => {
+        if (response === ModalDialog.DialogIndex.CONFIRM_YES) {
+          return this.#deleteLesson();
+        } else {
+          return false;
+        }
+      });
+    }
+
+    /**
+     * Delete the lesson without waiting for confirmation.
+     * @returns {Promise} fulfils to true;
+     */
+    #deleteLesson() {
+      return lessonManager.deleteLocalLibraryCurrentLesson().then(() => true);
+    }
+
+    /**
+     * Save the lesson to local storage.
+     */
+    #saveLessonLocally() {
+      lessonManager.updateCurrentLessonContent(
+        this.#lessonTitleValue,
+        this.#mainEditorElement.value
+      );
+      this.#setEditorAsClean();
+    }
+    /**
+     * Export the lesson.
+     */
+    #exportLesson() {
+      const exporter = new LessonExporter(
+        this.#lessonTitleValue,
+        this.#mainEditorElement.value
+      );
+      exporter.exportLesson();
+    }
+  }
+
+  /**
+   * @file celebrators
+   *
+   * @module lessons/candy/celebrators
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Possible celebration names
+   * @enum {string}
+   */
+  const CelebrationType = {
+    HAPPY: 'smiley-face',
+    SAD: 'sad-face',
+  };
+
+  /**
+   * DOM element that can appear on screen to celebrate something
+   */
+  class Celebrator extends ManagedElement {
+    /**
+     * Class for the celebration type
+     * @type {string}
+     */
+    #animationClass;
+
+    /**
+     * Flag set when an animation is in progress.
+     */
+    #busy;
+
+    /** Create a celebrator. 
+     * The celebrator has the class celebrator.
+     * This should be set so that the celebrator has position absolute and display 
+     * is hidden.
+    
+     * 
+     * No content is included so that should be provided in CSS via a before or
+     * after pseudo class.
+     */
+    constructor() {
+      super('div', 'celebrator');
+      this.appendTo(document.body);
+      this.listenToOwnEvent('animationend');
+      this.#busy = false;
+      this.hide();
+    }
+
+    /**
+     * Free up another celebrator when this animation is over.
+     * @param {Event} event
+     * @param {string} eventId
+     */
+    handleAnimationendEvent(eventIgnored, eventIdIgnored) {
+      console.debug('Celebration ended.');
+      this.hide();
+      this.#busy = false;
+    }
+
+    /**
+     * Bring in the celebrator.
+     * No more celebrations are handled until this one ends.
+     * @param {CelebrationType} [celebration = CelebrationType.SMILEY] - the class to apply
+     */
+    celebrate(celebration = CelebrationType.HAPPY) {
+      if (this.#busy) {
+        console.warn('Celebration busy so new celebration ignored.');
+        return;
+      }
+      this.show();
+      if (this.#animationClass) {
+        this.classList.remove(this.#animationClass);
+      }
+      this.#animationClass = celebration;
+      this.classList.add(this.#animationClass);
+    }
+  }
+
+  const celebrator = new Celebrator();
+
+  /**
+   * @file Present a problem
+   *
+   * @module lessons/presenters/problemPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Class names
+   * @enum {string}
+   */
+  const ClassName = {
+    ANSWER: 'problem-answer',
+    ANSWERS: 'problem-answers',
+    EXPLANATION: 'problem-explanation',
+    INCORRECT_ANSWER: 'incorrect-answer',
+    CORRECT_ANSWER: 'correct-answer',
+    MISSED_ANSWER: 'missed-answer',
+    AVOIDED_ANSWER: 'avoided-answer',
+    QUESTION: 'problem-question',
+    SELECTED_ANSWER: 'selected-answer',
+  };
+
+  /**
+   * Ids
+   * @enum {string}
+   */
+  const ElementId = {
+    CLICKED_ANSWER: 'answer',
+    CLICKED_SUBMIT: 'submit',
+    CLICKED_NEXT: 'next',
+  };
+
+  /**
+   * Attributes
+   * @enum {string}
+   */
+  const Attribute = {
+    RIGHT_OR_WRONG: 'data-code',
+  };
+
+  /**
+   * States for selected answers
+   * @enum {number}
+   */
+  const AnswerSelectionState = {
+    /** Undefined state */
+    UNDEFINED: 0,
+    /** Correct answer selected */
+    CORRECT: 1,
+    /** Incorrect answer selected */
+    INCORRECT: 2,
+    /** Correct answer not selected */
+    MISSED: 3,
+    /** Incorrect answer not selected */
+    AVOIDED: 4,
+  };
+
+  /**
+   * Class to present a problem.
+   * Presentation of a Problem provides the full problem and answer.
+   * @class
+   * @extends module:lessons/presenters/presenter.Presenter
+   */
+  class ProblemPresenter extends Presenter {
+    /** @type {Problem} */
+    #problem;
+
+    /** @type {module:utils/userIo/managedElement.ManagedElement} */
+    #questionElement;
+
+    /** @type {module:utils/userIo/managedElement.ManagedElement} */
+    #answerElement;
+
+    /** @type {module:utils/userIo/managedElement.ManagedElement} */
+    #explanationElement;
+
+    /** @type {module:utils/userIo/controls.ManagedElement} */
+    #submitButton;
+
+    /** @type {boolean} */
+    #freezeAnswers;
+
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      config.titles = [];
+      config.itemClassName = '';
+      super(config, 'div');
+      this.#problem = config.lesson.getNextProblem();
+      this.#questionElement = new ManagedElement('div', ClassName.QUESTION);
+      this.#questionElement.innerHTML = this.#problem.question.html;
+
+      this.#answerElement = new ManagedElement('div', ClassName.ANSWERS);
+
+      this.#explanationElement = new ManagedElement('div', ClassName.EXPLANATION);
+      this.#explanationElement.innerHTML = this.#problem.explanation.html;
+      this.#explanationElement.hide();
+
+      this.presentation.appendChild(this.#questionElement);
+      this.presentation.appendChild(this.#answerElement);
+      this.presentation.appendChild(this.#explanationElement);
+      this.addButtons();
+
+      this.#submitButton.show();
+      this.#freezeAnswers = false;
+      if (!this.config.lessonInfo.managed) {
+        this.hideHomeButton();
+      }
+    }
+
+    /**
+     * @returns {module:lessons/problem.Problem} the underlying problem
+     */
+    get problem() {
+      return this.#problem;
+    }
+
+    /**
+     * @returns {module:utils/userIo/managedElement.ManagedElement}
+     */
+    get questionElement() {
+      return this.#questionElement;
+    }
+
+    /**
+     * @returns {module:utils/userIo/managedElement.ManagedElement}
+     */
+    get answerElement() {
+      return this.#answerElement;
+    }
+
+    /**
+     * @returns {module:utils/userIo/managedElement.ManagedElement}
+     */
+    get explanationElement() {
+      return this.#explanationElement;
+    }
+
+    /**
+     * @returns {module:utils/userIo/managedElement.ManagedElement}
+     */
+    get submitButton() {
+      return this.#submitButton;
+    }
+
+    /**
+     * Add button bar to the presenter.
+     */
+    addButtons() {
+      this.#addSubmitButton();
+    }
+
+    /**
+     * Append a submit button. In this context, submit means sending the selected
+     * answers for marking.
+     * @private
+     */
+    #addSubmitButton() {
+      this.#submitButton = new ManagedElement('button', ClassName.ANSWER_SUBMIT);
+      icons.applyIconToElement(icons.submitAnswer, this.#submitButton.element);
+      this.listenToEventOn('click', this.#submitButton, ElementId.CLICKED_SUBMIT); // numeric handler means this will resolve the presenter.
+      this.addButtonToBar(this.#submitButton);
+    }
+
+    /**
+     * @override
+     */
+    presentOnStage(stage) {
+      if (
+        this.#problem.intro.html !== '' &&
+        this.#problem.questionType !== QuestionType.SLIDE
+      ) {
+        return ModalDialog.showInfo(this.#problem.intro.html).then(() =>
+          super.presentOnStage(stage)
+        );
+      } else {
+        return super.presentOnStage(stage);
+      }
+    }
+
+    /**
+     * Handle the answers. Any other event is passed on to the base Presenter's
+     * handler.
+     * @param {Event} event
+     * @param {string} eventId
+     * @override
+     */
+    handleClickEvent(event, eventId) {
+      switch (eventId) {
+        case ElementId.CLICKED_ANSWER:
+          if (!this.#freezeAnswers) {
+            this.processClickedAnswer(event.currentTarget);
+          }
+          break;
+        case ElementId.CLICKED_SUBMIT:
+          this.#freezeAnswers = true;
+          this.#processClickedSubmit();
+          break;
+        default:
+          super.handleClickEvent(event, eventId);
+      }
+    }
+
+    /**
+     * @override
+     */
+    async allowNavigation(event, eventId) {
+      if (eventId === Presenter.HOME_ID || eventId === Presenter.PREVIOUS_ID) {
+        return this.askIfOkayToLeave(
+          i18n`Are you sure you want to quit the lesson?`
+        );
+      } else {
+        return true;
+      }
+    }
+
+    /**
+     * Process a clicked answer. This should be overridden.
+     * @param {Element} target
+     */
+    processClickedAnswer(target) {
+      console.debug(`Process ${target.tagName}:${target.className}`);
+    }
+
+    /**
+     * Process a clicked answer.
+     * @param {Element} target
+     */
+    #processClickedSubmit() {
+      const correct = this.areAnswersCorrect();
+      this.config.lesson.markProblem(
+        this.#problem,
+        correct ? MarkState.CORRECT : MarkState.INCORRECT
+      );
+      this.#submitButton.hide();
+      this.showNextButton(true);
+      celebrator.celebrate(correct ? CelebrationType.HAPPY : CelebrationType.SAD);
+    }
+
+    /**
+     * Mark the answers. This should be overridden.
+     * @returns {boolean} true if all correct.
+     */
+    areAnswersCorrect() {
+      console.debug(`Override markAnswers should be overridden.`);
+      return false;
+    }
+  }
+
+  /**
+   * @file Array shuffling
+   *
+   * @module utils/arrayManip
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Shuffle the Array
+   * @param {Array<*>} data - the array to shuffle
+   */
+  function shuffle(data) {
+    var count = data.length;
+    // While there remain elements to shuffle…
+    while (count) {
+      const index = Math.floor(Math.random() * count--);
+      [data[count], data[index]] = [data[index], data[count]];
+    }
+    return data;
+  }
+
+  /**
+   * @file Present a problem
+   *
+   * @module lessons/presenters/choiceProblemPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Class to present a problem.
+   * Presentation of a Problem provides the full problem and answer.
+   * @class
+   * @extends module:lessons/presenters/presenter.Presenter
+   */
+  class ChoiceProblemPresenter extends ProblemPresenter {
+    /**
+     * @type {module:utils/userIo/ManagedElement.ManagedElement}
+     */
+    #answerListElement;
+
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      super(config);
+      this.#buildSimpleOrMultiple();
+    }
+
+    /** Build a simple or multiple choice question.
+     * Both question types are similar in design. The only difference is that
+     * the answers that are added are treated like radio buttons or checkboxes.
+     * That is handed by the `#addAnswers` method.
+     * @private
+     */
+    #buildSimpleOrMultiple() {
+      this.#buildAnswers();
+      this.autoAddKeydownEvents(this.answerElement.managedChildren);
+    }
+
+    /**
+     * Append the answers.
+     * @private
+     */
+    #buildAnswers() {
+      this.#answerListElement = new ManagedElement('ul');
+      this.answerElement.appendChild(this.#answerListElement);
+      this.#answerListElement.setAttributes({
+        'aria-label': i18n`Possible answers`,
+        'aria-role':
+          this.problem.questionType === QuestionType.MULTI ? '' : 'radiogroup',
+      });
+      const answers = [];
+      this.#pushAnswerElementsToArray(this.problem.rightAnswers, answers, true);
+      this.#pushAnswerElementsToArray(this.problem.wrongAnswers, answers, false);
+
+      shuffle(answers);
+
+      answers.forEach((element) => {
+        this.#answerListElement.appendChild(element);
+        this.listenToEventOn('click', element, ElementId.CLICKED_ANSWER);
+        this.listenToEventOn('keydown', element, ElementId.CLICKED_ANSWER);
+      });
+
+      setTimeout(() => this.#answerListElement.children[0].focus());
+    }
+
+    /**
+     * Create Elements for the answers and adds to the array.
+     * The `Attributes.RIGHT_OR_WRONG` attribute is set to true or false to flag the answer status.
+     * @param {TextItem[]} answers - answers to create elements for
+     * @param {Element[]} destination - target array for push
+     * @param {boolean} areRight - true if these are correct answers.
+     * @private
+     */
+    #pushAnswerElementsToArray(answers, destination, areRight) {
+      const role =
+        this.problem.questionType === QuestionType.MULTI ? 'checkbox' : 'radio';
+      answers.forEach((value) => {
+        const element = new ManagedElement('li', ClassName.ANSWER);
+        element.classList.add('selectable');
+        element.innerHTML = value.html;
+        element.setSafeAttribute(Attribute.RIGHT_OR_WRONG, areRight);
+        element.setAttributes({
+          tabindex: '0',
+          'aria-role': role,
+          'aria-checked': false,
+          'aria-label': i18n`Possible answer to question`,
+        });
+        destination.push(element);
+      });
+    }
+
+    /**
+     * Handle a clicked answer
+     * @param {Element} element
+     * @override
+     */
+    processClickedAnswer(element) {
+      switch (this.problem.questionType) {
+        case QuestionType.MULTI:
+          element.classList.toggle(ClassName.SELECTED_ANSWER);
+          break;
+        case QuestionType.SIMPLE:
+          {
+            const selected = element.classList.contains(
+              ClassName.SELECTED_ANSWER
+            );
+            this.#deselectAllAnswers();
+            if (!selected) {
+              this.#selectAnswer(element);
+            }
+          }
+          break;
+        default:
+          console.error(
+            `Wrong presenter ${this.constructor.name} being used for ${this.problem.questionType}`
+          );
+          break;
+      }
+    }
+
+    /**
+     * Deselect an answer element
+     * @param {Element} element
+     * @private
+     */
+    #selectAnswer(element) {
+      element.setAttribute('aria-checked', 'true');
+      element.classList.add(ClassName.SELECTED_ANSWER);
+    }
+
+    /**
+     * Deselect an answer element
+     * @param {Element} element
+     * @private
+     */
+    #deselectAnswer(element) {
+      element.setAttribute('aria-checked', 'false');
+      element.classList.remove(ClassName.SELECTED_ANSWER);
+    }
+
+    /**
+     * Deselect all of the answers.
+     * @private
+     */
+    #deselectAllAnswers() {
+      const allAnswers = document.querySelectorAll(`.${ClassName.ANSWER}`);
+      allAnswers.forEach((element) => {
+        this.#deselectAnswer(element);
+      });
+    }
+
+    /**
+     * Mark a simple question.
+     * @returns {boolean} true if answer correct.
+     * @override
+     */
+    areAnswersCorrect() {
+      let correct = true; // default
+      const allAnswers = document.querySelectorAll(`.${ClassName.ANSWER}`);
+
+      allAnswers.forEach((element) => {
+        if (!this.#processAnswerState(element)) {
+          correct = false;
+        }
+        element.classList.replace('selectable', 'selectable-off');
+        element.setAttribute('tabindex', '-1');
+      });
+
+      return correct;
+    }
+
+    /**
+     * Process the selection state of the answer element
+     * @param {*} element
+     * @returns {boolean} true if the selection or lack of selection is correct.
+     */
+    #processAnswerState(element) {
+      this.freezeAnswers = true;
+      const elementIsCorrect =
+        ManagedElement.getSafeAttribute(
+          element,
+          Attribute.RIGHT_OR_WRONG
+        ).toLowerCase() === 'true';
+      const selected = element.classList.contains(ClassName.SELECTED_ANSWER);
+      let answerState;
+      if (elementIsCorrect) {
+        answerState = selected
+          ? AnswerSelectionState.CORRECT
+          : AnswerSelectionState.MISSED;
+      } else {
+        answerState = selected
+          ? AnswerSelectionState.INCORRECT
+          : AnswerSelectionState.AVOIDED;
+      }
+      this.#showAnswerState(element, answerState);
+
+      return (
+        answerState === AnswerSelectionState.CORRECT ||
+        answerState === AnswerSelectionState.AVOIDED
+      );
+    }
+
+    /**
+     * Adjust the element's class to present its state.
+     * @param {Element} element - the element to adjust
+     * @param {AnswerSelectionState} answerState - selection state of the element
+     */
+    #showAnswerState(element, answerState) {
+      let className = '';
+      switch (answerState) {
+        case AnswerSelectionState.AVOIDED:
+          className = ClassName.AVOIDED_ANSWER;
+          break;
+        case AnswerSelectionState.CORRECT:
+          className = ClassName.CORRECT_ANSWER;
+          break;
+        case AnswerSelectionState.INCORRECT:
+          className = ClassName.INCORRECT_ANSWER;
+          break;
+        case AnswerSelectionState.MISSED:
+          className = ClassName.MISSED_ANSWER;
+          break;
+      }
+      element.classList.add(className);
+    }
+
+    /**
+     * Handle key down event to allow up and down arrows to navigate list.
+     * @param {Event} event
+     * @param {string} eventId - holds index of the answer.
+     */
+    handleKeydownEvent(event, eventId) {
+      if (eventId === ElementId.CLICKED_ANSWER) {
+        switch (event.key) {
+          case ' ':
+          case 'Enter':
+            event.stopPropagation();
+            this.handleClickEvent(event, eventId);
+            break;
+        }
+      } else {
+        return super.handleKeydownEvent(event, eventId);
+      }
+    }
+  }
+
+  /**
+   * @file Present a problem
+   *
+   * @module lessons/presenters/fillProblemPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Class to present a problem.
+   * Presentation of a Problem provides the full problem and answer.
+   * @class
+   * @extends module:lessons/presenters/presenter.Presenter
+   */
+  class FillProblemPresenter extends ProblemPresenter {
+    /** @type {control:module:utils/userIo/controls.SelectControl} */
+    #missingWordSelectors;
+    /** @type {string} */
+    #missingWordCorrectAnswers;
+
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      super(config);
+      this.#createMissingWordSelectors();
+      this.answerElement.hide();
+    }
+
+    /**
+     * Create a set of missing word selectors and inject them into the question.
+     */
+    #createMissingWordSelectors() {
+      const questionWordElements =
+        this.questionElement.querySelectorAll('.missing-word');
+
+      this.#missingWordCorrectAnswers = [];
+
+      questionWordElements.forEach((element) => {
+        const correctAnswer = ManagedElement.getSafeAttribute(
+          element,
+          'data-missing-word'
+        );
+        this.#missingWordCorrectAnswers.push(correctAnswer);
+      });
+
+      const redHerrings = this.problem.firstWordsOfWrongAnswers;
+      const options = ['...', ...this.#missingWordCorrectAnswers, ...redHerrings];
+      options.sort();
+      const settingDefinition = {
+        defaultValue: '...',
+        options: options,
+      };
+      this.#missingWordSelectors = [];
+      questionWordElements.forEach((element, index) => {
+        const selector = new SelectControl(index, settingDefinition);
+        element.appendChild(selector.element);
+        this.#missingWordSelectors.push(selector);
+      });
+      this.autoAddKeydownEvents(this.#missingWordSelectors);
+    }
+
+    /**
+     * Mark a fill question.
+     * @returns {boolean} true if answer correct.
+     * @override
+     */
+    areAnswersCorrect() {
+      let correct = true;
+      this.#missingWordSelectors.forEach((selectControl, index) => {
+        const givenAnswer = selectControl.getText();
+        const container = selectControl.parentElement;
+        selectControl.remove();
+        container.textContent = givenAnswer;
+        if (givenAnswer === this.#missingWordCorrectAnswers[index]) {
+          this.#showAnswerState(container, AnswerSelectionState.CORRECT);
+        } else {
+          this.#showAnswerState(container, AnswerSelectionState.INCORRECT);
+          correct = false;
+        }
+      });
+      return correct;
+    }
+
+    /**
+     * Adjust the element's class to present its state.
+     * @param {Element} element - the element to adjust
+     * @param {AnswerSelectionState} answerState - selection state of the element
+     */
+    #showAnswerState(element, answerState) {
+      let className = '';
+      switch (answerState) {
+        case AnswerSelectionState.AVOIDED:
+          className = ClassName.AVOIDED_ANSWER;
+          break;
+        case AnswerSelectionState.CORRECT:
+          className = ClassName.CORRECT_ANSWER;
+          break;
+        case AnswerSelectionState.INCORRECT:
+          className = ClassName.INCORRECT_ANSWER;
+          break;
+        case AnswerSelectionState.MISSED:
+          className = ClassName.MISSED_ANSWER;
+          break;
+      }
+      element.classList.add(className);
+    }
+  }
+
+  /**
+   * @file Present a problem
+   *
+   * @module lessons/presenters/orderProblemPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Class to present an order problem.
+   * Presentation of a Problem provides the full problem and answer.
+   * @class
+   * @extends module:lessons/presenters/presenter.Presenter
+   */
+  class OrderProblemPresenter extends ProblemPresenter {
+    /** @type {control:module:utils/userIo/controls.SelectControl} */
+    #missingWordSelectors;
+    /** @type {string} */
+    #missingWordCorrectAnswers;
+
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      super(config);
+      this.#buildOrder();
+    }
+    /**
+     * Build and order type question
+     */
+    #buildOrder() {
+      this.#missingWordCorrectAnswers = this.problem.firstWordsOfRightAnswers;
+      const redHerrings = this.problem.firstWordsOfWrongAnswers;
+
+      const options = ['...', ...this.#missingWordCorrectAnswers, ...redHerrings];
+      options.sort();
+      const settingDefinition = {
+        defaultValue: '...',
+        options: options,
+      };
+      const orderedAnswers = new ManagedElement('div', 'problem-ordered-answers');
+      this.#missingWordSelectors = [];
+      for (let index = 0; index < this.problem.rightAnswers.length; index++) {
+        const span = new ManagedElement('span', 'missing-word');
+        const selectControl = new SelectControl(index, settingDefinition);
+        this.#missingWordSelectors.push(selectControl);
+        span.appendChild(selectControl);
+        orderedAnswers.appendChild(span);
+      }
+      this.answerElement.appendChild(orderedAnswers);
+      this.autoAddKeydownEvents(this.#missingWordSelectors);
+    }
+
+    /**
+     * Mark a fill question.
+     * @returns {boolean} true if answer correct.
+     * @override
+     */
+    areAnswersCorrect() {
+      let correct = true;
+      this.#missingWordSelectors.forEach((selectControl, index) => {
+        const givenAnswer = selectControl.getText();
+        const container = selectControl.parentElement;
+        selectControl.remove();
+        container.textContent = givenAnswer;
+        if (givenAnswer === this.#missingWordCorrectAnswers[index]) {
+          this.#showAnswerState(container, AnswerSelectionState.CORRECT);
+        } else {
+          this.#showAnswerState(container, AnswerSelectionState.INCORRECT);
+          correct = false;
+        }
+      });
+      return correct;
+    }
+
+    /**
+     * Adjust the element's class to present its state.
+     * @param {Element} element - the element to adjust
+     * @param {AnswerSelectionState} answerState - selection state of the element
+     */
+    #showAnswerState(element, answerState) {
+      let className = '';
+      switch (answerState) {
+        case AnswerSelectionState.AVOIDED:
+          className = ClassName.AVOIDED_ANSWER;
+          break;
+        case AnswerSelectionState.CORRECT:
+          className = ClassName.CORRECT_ANSWER;
+          break;
+        case AnswerSelectionState.INCORRECT:
+          className = ClassName.INCORRECT_ANSWER;
+          break;
+        case AnswerSelectionState.MISSED:
+          className = ClassName.MISSED_ANSWER;
+          break;
+      }
+      element.classList.add(className);
+    }
+  }
+
+  /**
+   * @file Calculate time needed to read text.
+   *
+   * @module utils/userIo/readSpeedCalculator
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  const AVERAGE_WORDS_PER_MINUTE = 130;
+
+  /**
+   * Calculator for reading speeds.
+   */
+  class ReadSpeedCalculator {
+    static MIN_WPM = 80;
+    static MAX_WPM = 1000;
+    /**
+     * @type {number}
+     */
+    #secondsPerWord;
+
+    /**
+     * Construct the calculator
+     * @param {number} [wordsPerMinute = AVERAGE_WORDS_PER_MINUTE]
+     */
+    constructor(wordsPerMinute = AVERAGE_WORDS_PER_MINUTE) {
+      this.setWordsPerMinute(wordsPerMinute);
+    }
+
+    /**
+     * Set the words per minute. This is clipped at ReadSpeedCalulator.MIN_WPM and ReadSpeedCalulator.MAX_WPM;
+     * @param {number} wordsPerMinute
+     */
+    setWordsPerMinute(wordsPerMinute) {
+      let wpm = parseInt(wordsPerMinute);
+      if (isNaN(wpm)) {
+        console.error(
+          `Attempt made to set words per minute to non-numeric value of ${wordsPerMinute}`
+        );
+        return;
+      }
+      wpm = Math.max(wordsPerMinute, ReadSpeedCalculator.MIN_WPM);
+      wpm = Math.min(wpm, ReadSpeedCalculator.MAX_WPM);
+      this.#secondsPerWord = 60.0 / wpm;
+    }
+
+    /**
+     * Calculate the read time for the data.
+     * @param {string} data - this can be plain text or html
+     */
+    getSecondsToRead(data) {
+      const plainText = getPlainTextFromHtml(data);
+      const words = plainText.trim().split(/\s+/);
+      return words.length * this.#secondsPerWord;
+    }
+  }
+
+  /**
+   * @file Display cards
+   *
+   * @module lessons/presenters/displayCards
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * @typedef {Object} CardDetail
+   * @property {string} html - the html content.
+   * @property {number} readTimeSecs - how long it will normally take to read a card in seconds.
+   */
+
+  class DisplayCards {
+    /**
+     * Html broken down into blocks.
+     * @type {string[]}
+     */
+    #blocks;
+
+    /**
+     * @type {number}
+     */
+    #index;
+
+    /**
+     * @type {ReadSpeedCalculator}
+     */
+    #readSpeedCalculator;
+    /**
+     * Create the set of cards.
+     * @param {*} html
+     */
+    constructor(html) {
+      this.#blocks = this.#splitHtml(html);
+      this.#index = 0;
+      this.#readSpeedCalculator = new ReadSpeedCalculator();
+    }
+
+    /**
+     * Breaks down the html into blocks. This is done by splitting at paragraphs
+     * and divs.
+     * @param {string} html
+     */
+    #splitHtml(html) {
+      const blocks = html.split(/(<\/(?:p|div)>)/i);
+      const result = [];
+      const iterations = Math.ceil(blocks.length / 2);
+      for (let index = 0; index < iterations; index++) {
+        const tail = blocks[index * 2 + 1] ?? '';
+        result.push(`${blocks[index * 2]}${tail}`.trim());
+      }
+      return result.filter((e) => e);
+    }
+
+    /**
+     * Gets the next block. The index is increment after providing the block.
+     * @returns {CardDetail} the next block or null
+     */
+    getNext() {
+      if (this.#index < this.#blocks.length) {
+        const html = this.#blocks[this.#index++];
+        return {
+          html: html,
+          readTimeSecs: this.#readSpeedCalculator.getSecondsToRead(html),
+        };
+      }
+      return null;
+    }
+
+    /**
+     * Test to see if there are any more blocks to get.
+     * @returns {boolean} true if there are more.
+     */
+    get hasMore() {
+      return this.#index < this.#blocks.length;
+    }
+
+    /**
+     * Resets the index to 0.
+     */
+    reset() {
+      this.#index = 0;
+    }
+
+    /**
+     * Set the words per minute of the underlying calculator.
+     * @param {number} wpm
+     */
+    setWordsPerMinute(wpm) {
+      this.#readSpeedCalculator.setWordsPerMinute(wpm);
+    }
+  }
+
+  /**
+   * @file Gesture
+   *
+   * @module utils/userIo/gestures
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /** Flag showing whether the passive option is supported by listeners. */
+  var supportsPassive = false;
+
+  /**
+   * Test to see if passive option supported.
+   * @see {@link https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md}
+   */
+  try {
+    var opts = Object.defineProperty({}, 'passive', {
+      get: function () {
+        supportsPassive = true;
+        return undefined;
+      },
+    });
+    window.addEventListener('testPassive', null, opts);
+    window.removeEventListener('testPassive', null, opts);
+  } catch (errorIgnored) {
+    console.log('Passive option for listeners not supported.');
+  }
+
+  /**
+   * Class to handle gestures
+   */
+  class Gesture extends ManagedElement {
+    /**
+     * @enum {number}
+     */
+    static Direction = {
+      UP: 0,
+      RIGHT: 1,
+      DOWN: 2,
+      LEFT: 3,
+    };
+    #startX;
+    #startY;
+    #distanceX;
+    #distanceY;
+    #gesturing = false;
+    #startTime;
+    #maxTimeMs = 500;
+    #minRadius = 100;
+    constructor(element) {
+      super(element);
+      let options = supportsPassive ? { passive: true } : undefined;
+      this.listenToOwnEvent('touchstart', 'start', options);
+      this.listenToOwnEvent('touchend', 'end');
+      this.listenToOwnEvent('touchcancel', 'cancel');
+    }
+
+    /**
+     * Handle the touchstart event.
+     * @param {TouchEvent} event
+     * @param {string} eventIdIgnored
+     */
+    handleTouchstartEvent(event, eventIdIgnored) {
+      this.#gesturing = true;
+      this.#startTime = new Date().getTime();
+      this.#startX = event.touches[0].pageX;
+      this.#startY = event.touches[0].pageY;
+    }
+
+    /**
+     * Handle the touchend event. If a gesture is detected a `gesture` event
+     * is dispatched with Gesture.Direction contained in the detail.
+     * @param {TouchEvent} event
+     * @param {string} eventIdIgnored
+     */
+    handleTouchendEvent(event, eventIdIgnored) {
+      if (event.changedTouches.length > 1) {
+        console.debug('Ignore multiple touches.');
+        return;
+      }
+      this.#distanceX = event.changedTouches[0].pageX - this.#startX;
+      this.#distanceY = this.#startY - event.changedTouches[0].pageY;
+      this.#gesturing = false;
+      const elapsedMs = new Date().getTime() - this.#startTime;
+      if (elapsedMs > this.#maxTimeMs) {
+        console.debug(`Gesture too slow at ${elapsedMs} ms`);
+        return;
+      }
+      const radius = Math.sqrt(
+        this.#distanceX * this.#distanceX + this.#distanceY * this.#distanceY
+      );
+      if (radius < this.#minRadius) {
+        console.debug(`Gesture too short at ${radius} px`);
+        return;
+      }
+      const angle = this.calcAngleInDeg(this.#distanceX, this.#distanceY);
+      console.debug(`Direction ${angle} degrees`);
+      let direction = this.getDirection(angle);
+      this.element.dispatchEvent(
+        new CustomEvent('gesture', { detail: direction })
+      );
+    }
+
+    /**
+     * Handle the touchcancel event.
+     * @param {TouchEvent} eventIgnored
+     * @param {string} eventIdIgnored
+     */
+    handleTouchcancelEvent(eventIgnored, eventIdIgnored) {
+      this.#gesturing = false;
+    }
+
+    /**
+     * Get the direction. Angle 0 is horizontal to the right.
+     * @param {number} angleDeg - angle in degrees
+     * @returns {Gesture.Direction}
+     */
+    getDirection(angle) {
+      if (angle < 0) {
+        angle += 360;
+      }
+      if (angle < 45) {
+        return Gesture.Direction.RIGHT;
+      } else if (angle < 135) {
+        return Gesture.Direction.UP;
+      } else if (angle < 225) {
+        return Gesture.Direction.LEFT;
+      } else if (angle < 315) {
+        return Gesture.Direction.DOWN;
+      } else {
+        return Gesture.Direction.RIGHT;
+      }
+    }
+
+    /**
+     * Calculate the angle from (0, 0) to (x, y) in degrees.
+     * @param {number} x
+     * @param {number} y
+     * @returns {number}
+     */
+    calcAngleInDeg(x, y) {
+      return (Math.atan2(y, x) * 180) / Math.PI;
+    }
+  }
+
+  /**
+   * @file Present a problem
+   *
+   * @module lessons/presenters/slideProblemPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  const MediaClass = {
+    PAUSE: 'pause',
+    PLAY: 'play',
+    SKIP: 'skip',
+  };
+
+  const MediaID = {
+    PAUSE: 'pause',
+    PLAY: 'play',
+    SKIP: 'skip',
+  };
+
+  /**
+   * States of the card.
+   * @enum {number}
+   */
+  const CardState = {
+    INACTIVE: 0,
+    ARRIVING: 1,
+    READING: 2,
+    LEAVING: 3,
+  };
+
+  /**
+   * Class to present a slide show.
+   * Presentation of a Problem provides the full problem and answer.
+   * @class
+   * @extends module:lessons/presenters/presenter.Presenter
+   */
+  class SlideProblemPresenter extends ProblemPresenter {
+    /**
+     * @type {module:lessons/presenters/displayCards.DisplayCards}
+     */
+    #cards;
+    /**
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #visualCard;
+
+    /**
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #skipButton;
+
+    /**
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #playButton;
+
+    /**
+     * @type {module:utils/userIo/managedElement.ManagedElement}
+     */
+    #pauseButton;
+
+    /**
+     * TimerId
+     * @type {number}
+     */
+    #readTimerId;
+
+    /**
+     * @type {CardState}
+     */
+    #cardState = CardState.INACTIVE;
+
+    /**
+     * @type {module:lessons/presenters/displayCards~CardDetail}
+     */
+    #currentCardDetail;
+
+    /**
+     * @type {boolean}
+     */
+    #paused;
+
+    /**
+     * Construct.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+     */
+    constructor(config) {
+      super(config);
+      this.#buildSlideShow();
+      this.submitButton.hide();
+    }
+
+    /**
+     * Build the content.
+     */
+    #buildSlideShow() {
+      this.#cards = new DisplayCards(
+        this.problem.intro.html || this.problem.question.html
+      );
+      this.#visualCard = new ManagedElement('div', 'display-card');
+      this.managedChildren.push(new Gesture(this.#visualCard.element));
+      this.listenToEventOn('gesture', this.#visualCard);
+      this.listenToEventOn('animationend', this.#visualCard);
+      this.questionElement.removeChildren();
+      this.questionElement.appendChild(this.#visualCard);
+      this.expandPresentation();
+      this.#addMediaButtons();
+    }
+
+    /**
+     * Add media control buttons.
+     */
+    #addMediaButtons() {
+      this.#playButton = new ManagedElement('button', MediaClass.PLAY);
+      this.#addButtonToButtonBar(this.#playButton, icons.play, MediaID.PLAY);
+
+      this.#pauseButton = new ManagedElement('button', MediaClass.PAUSE);
+      this.#addButtonToButtonBar(this.#pauseButton, icons.pause, MediaID.PAUSE);
+
+      this.#skipButton = new ManagedElement('button', MediaClass.SKIP);
+      this.#addButtonToButtonBar(this.#skipButton, icons.skip, MediaID.SKIP);
+    }
+
+    /**
+     * Add a button to the button bar
+     * @param {module:utils/userIo/managedElement.ManagedElement} button
+     * @param {utils/userIo/icons~IconDetails} iconDetails
+     * @param {string} eventId
+     */
+    #addButtonToButtonBar(button, icon, eventId) {
+      icons.applyIconToElement(icon, button.element);
+      this.listenToEventOn('click', button, eventId); // numeric handler means this will resolve the presenter.
+      this.addButtonToBar(button);
+    }
+
+    /**
+     * Present on stage. The element is appended to the stageElement.
+     * Note that it is not removed and any existing content is not removed..
+     *
+     * @param {module:utils/userIo/managedElement.ManagedElement} stageElement
+     * @returns {Promise} - The Promise fulfils to the next `Presenter` that should be shown.
+     */
+    presentOnStage(stageElement) {
+      this.#showMediaButtons(true);
+      setTimeout(() => this.#showNextCard());
+      return super.presentOnStage(stageElement);
+    }
+
+    /**
+     * Set the card state adjusting css classes as required.
+     * @param {CardState} cardState
+     * @param {Gesture.Direction} [direction=Gesture.Direction.RIGHT]
+     */
+    #setCardState(cardState, direction) {
+      switch (cardState) {
+        case CardState.ARRIVING:
+          this.#removeAllExitClasses();
+          this.#visualCard.classList.add('card-onscreen');
+          break;
+        case CardState.LEAVING:
+          this.#visualCard.classList.remove('card-onscreen');
+          this.#visualCard.classList.add(
+            this.#getExitClassForDirection(direction)
+          );
+          break;
+      }
+      this.#cardState = cardState;
+    }
+
+    /**
+     * Remove all exit classes from card
+     */
+    #removeAllExitClasses() {
+      this.#visualCard.classList.remove(
+        this.#getExitClassForDirection(Gesture.Direction.UP)
+      );
+      this.#visualCard.classList.remove(
+        this.#getExitClassForDirection(Gesture.Direction.LEFT)
+      );
+      this.#visualCard.classList.remove(
+        this.#getExitClassForDirection(Gesture.Direction.DOWN)
+      );
+      this.#visualCard.classList.remove(
+        this.#getExitClassForDirection(Gesture.Direction.RIGHT)
+      );
+    }
+
+    /**
+     * Get the appropriate class name for the card exit.
+     * @param {Gesture.Direction} direction
+     * @returns {string}
+     */
+    #getExitClassForDirection(direction) {
+      const rootClass = 'card-offscreen';
+      switch (direction) {
+        case Gesture.Direction.UP:
+          return `${rootClass}-up`;
+        case Gesture.Direction.LEFT:
+          return `${rootClass}-left`;
+        case Gesture.Direction.DOWN:
+          return `${rootClass}-down`;
+        case Gesture.Direction.RIGHT:
+        default:
+          return `${rootClass}-right`;
+      }
+    }
+    /**
+     * Show the next card.
+     */
+    #showNextCard() {
+      console.log('Show the next card');
+      if (this.#endShowIfLastCard()) {
+        this.handleClickEvent(new Event('click'), Presenter.NEXT_ID);
+        return;
+      }
+      // obtain reading speed again incase it's been adjusted.
+      const readingSpeed = persistentData.getFromStorage('readingSpeed', 130);
+      this.#cards.setWordsPerMinute(readingSpeed);
+      this.#currentCardDetail = this.#cards.getNext();
+      this.#visualCard.innerHTML = this.#currentCardDetail.html;
+      const cardRect = this.#visualCard.getBoundingClientRect();
+      const presentationRect = this.presentation.getBoundingClientRect();
+      const verticalSpace = presentationRect.height - cardRect.height;
+      if (verticalSpace > 0) {
+        this.#visualCard.style.marginTop = `${Math.floor(verticalSpace / 2)}px`;
+      } else {
+        this.#visualCard.style.marginTop = `0px`;
+      }
+
+      this.#setCardState(CardState.ARRIVING);
+      this.#endShowIfLastCard();
+    }
+
+    /**
+     * Leave card on screen while it's read.
+     * After the read time the remove card is called.
+     */
+    #readCard() {
+      this.#setCardState(CardState.READING);
+      if (!this.#paused) {
+        this.#readTimerId = setTimeout(() => {
+          this.#removeCard();
+        }, this.#currentCardDetail.readTimeSecs * 1000);
+      }
+    }
+
+    /**
+     * Remove the card
+     * @param {?Gesture.Direction} direction
+     */
+    #removeCard(direction) {
+      this.#setCardState(CardState.LEAVING, direction);
+    }
+
+    /**
+     * Ends the show if end reached.
+     * @returns {boolean} true if at end
+     */
+    #endShowIfLastCard() {
+      if (!this.#cards.hasMore) {
+        this.#pauseButton.hide();
+        this.#playButton.hide();
+        this.#skipButton.hide();
+        this.showNextButton(true);
+        return true;
+      }
+      return false;
+    }
+
+    /**
+     * Handle the answers. Any other event is passed on to the base Presenter's
+     * handler.
+     * @param {Event} event
+     * @param {string} eventId
+     * @override
+     */
+    handleClickEvent(event, eventId) {
+      switch (eventId) {
+        case MediaID.PAUSE:
+          clearTimeout(this.#readTimerId);
+          this.#showMediaButtons(false);
+          this.#paused = true;
+          return;
+        case MediaID.PLAY:
+          clearTimeout(this.#readTimerId);
+          this.#showMediaButtons(true);
+          if (this.#cardState === CardState.READING) {
+            this.#removeCard();
+          }
+          this.#paused = false;
+          return;
+        case MediaID.SKIP:
+          this.#skip();
+          return;
+      }
+      super.handleClickEvent(event, eventId);
+    }
+
+    /**
+     * Perform the skip action.
+     * @param {?Gesture.Direction} direction
+     */
+    #skip(direction) {
+      clearTimeout(this.#readTimerId);
+      this.#showMediaButtons(true);
+      if (
+        this.#cardState === CardState.ARRIVING ||
+        this.#cardState === CardState.READING
+      ) {
+        this.#removeCard(direction);
+      }
+      this.#paused = false;
+    }
+
+    /**
+     * Handle animation end event
+     * @param {Event} event
+     * @param {eventId} eventId - this will not be set.
+     */
+    handleAnimationendEvent(eventIgnored, eventIdIgnored) {
+      switch (this.#cardState) {
+        case CardState.ARRIVING:
+          this.#readCard();
+          break;
+        case CardState.LEAVING:
+          this.#showNextCard();
+          break;
+        default:
+          console.error(
+            `Animation unexpectedly ended with card in state ${this.#cardState}`
+          );
+      }
+    }
+
+    /**
+     * Show media buttons.
+     * @param {boolean} playing - true if playing.
+     */
+    #showMediaButtons(playing) {
+      if (playing) {
+        this.#pauseButton.show();
+        this.#playButton.hide();
+        this.#skipButton.show();
+        this.#pauseButton.focus();
+      } else {
+        this.#pauseButton.hide();
+        this.#playButton.show();
+        this.#skipButton.hide();
+        this.#playButton.focus();
+      }
+    }
+
+    /**
+     * Handle the gesture.
+     * @param {CustomEvent} event
+     * @param {*} eventIdIgnored
+     */
+    handleGestureEvent(event, eventIdIgnored) {
+      console.debug(`Gesture direction ${event.detail}`);
+      this.#skip(event.detail);
+    }
+  }
+
+  /**
+   * @file Present the marks
+   *
+   * @module lessons/presenters/marksPresenter
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * Classes used for styling medals.
+   * percent gives the score required to achieve the result.
+   * @enum {{percent:number, cssClass:string}}
+   */
+  const MedalDetails = {
+    POOR: {
+      upperLimit: 25,
+      cssClass: 'poor',
+    },
+    BAD: {
+      upperLimit: 50,
+      cssClass: 'bad',
+    },
+    GOOD: {
+      upperLimit: 75,
+      cssClass: 'good',
+    },
+    EXCELLENT: {
+      upperLimit: 100,
+      cssClass: 'excellent',
+    },
+  };
+
+  /**
+   * Presenter for showing the results of a test.
+   */
+  class MarksPresenter extends Presenter {
+    /**
+     * @const
+     */
+    static RETRY_LESSON_ID = 'RETRY_LESSON';
+
+    /**
+     * @type {module:lessons/itemMarker~Marks}
+     */
+    #marks;
+
+    /**
+     *
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config
+     */
+    constructor(config) {
+      super(config);
+      this.#buildContent();
+    }
+
+    /**
+     * Build the results content.
+     */
+    #buildContent() {
+      this.#addHeadings();
+      this.#addAnswers();
+      this.#addResult();
+      this.#addRetryButton();
+      this.#adjustButtonsForOrigin();
+    }
+
+    /**
+     * Adjust the buttons for the lesson origin.
+     */
+    #adjustButtonsForOrigin() {
+      switch (this.config.lessonInfo.origin) {
+        case LessonOrigin.EMBEDDED:
+          this.hideHomeButton();
+          this.applyIconToNextButton(icons.exit);
+          this.showNextButton();
+          break;
+        case LessonOrigin.REMOTE:
+          this.applyIconToNextButton(icons.selectLesson);
+          this.showNextButton();
+          break;
+      }
+    }
+    /**
+     * Add the titles.
+     */
+    #addHeadings() {
+      const lessonTitle =
+        this.config.lessonInfo.titles.lesson ||
+        this.config.lesson.metadata.getValue('TITLE', i18n`Unknown title`);
+
+      this.presentation.createAndAppendChild(
+        'h1',
+        null,
+        i18n`Certificate of achievement`
+      );
+      this.presentation.createAndAppendChild('h2', null, lessonTitle);
+      this.#addBookDetailsIfManaged();
+    }
+
+    /**
+     * Add book details if managed lesson.
+     */
+    #addBookDetailsIfManaged() {
+      if (this.config.lessonInfo.managed) {
+        let bookDetails = '<p>from:</p>';
+        if (lessonManager.usingLocalLibrary) {
+          bookDetails += `<span class='library-title'>${this.config.lessonInfo.titles.library}</span>`;
+        } else {
+          bookDetails += `<span class='library-title'>${this.config.lessonInfo.titles.library}</span> 
+        <span class='book-title'>${this.config.lessonInfo.titles.book}</span>
+        <span class='chapter-title'>${this.config.lessonInfo.titles.chapter}</span>`;
+        }
+        this.presentation.createAndAppendChild('div', null, bookDetails);
+      }
+    }
+
+    #addRetryButton() {
+      const repeatButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.repeatLesson, repeatButton);
+      this.addButtonToBar(repeatButton);
+      this.listenToEventOn('click', repeatButton, MarksPresenter.RETRY_LESSON_ID);
+    }
+
+    /**
+     * Add a list of answers.
+     */
+    #addAnswers() {
+      const answers = new ManagedElement('ul');
+      this.config.lesson.marks.markedItems.forEach((markedItem) => {
+        const li = new ManagedElement('li');
+        li.innerHTML = `${markedItem.item.question.plainText}`;
+        li.classList.add(this.#getClassForMarkState(markedItem.state));
+        answers.appendChild(li);
+      });
+      this.presentation.appendChild(answers);
+    }
+
+    /**
+     * Add the score
+     */
+    #addResult() {
+      const marks = this.config.lesson.marks;
+      const totalQuestions = marks.correct + marks.incorrect + marks.skipped;
+      const percent =
+        totalQuestions == 0
+          ? 0
+          : Math.round((100 * marks.correct) / totalQuestions);
+      const summary = i18n`Score: ${percent}% (${marks.correct}/${totalQuestions})`;
+      const summaryItem = this.presentation.createAndAppendChild(
+        'p',
+        'result-summary',
+        summary
+      );
+      summaryItem.classList.add(this.#calcMedalClass(percent));
+    }
+
+    /**
+     * Add a medal based on the score.
+     * The medal is added by adding a class to result which can then be styled in
+     * CSS. Four classes are available:
+     * bad, poor, good, excellent.
+     */
+    #calcMedalClass(percent) {
+      for (const key in MedalDetails) {
+        const details = MedalDetails[key];
+        if (percent < details.upperLimit) {
+          return details.cssClass;
+        }
+      }
+      return MedalDetails.EXCELLENT.cssClass;
+    }
+
+    /**
+     * Get a suitable class name for the state.
+     * @param {module:lessons/markState.MarkState.MarkState} state
+     */
+    #getClassForMarkState(state) {
+      switch (state) {
+        case MarkState.CORRECT:
+          return 'correct';
+        case MarkState.INCORRECT:
+          return 'incorrect';
+        case MarkState.SKIPPED:
+          return 'skipped';
+      }
+      return 'unknown-state';
+    }
+
+    /**
+     * @override
+     * @param {number | string} eventIndexOrId
+     */
+    next(eventId) {
+      switch (eventId) {
+        case MarksPresenter.RETRY_LESSON_ID:
+          return this.config.factory.getProblemAgain(this, this.config);
+        case Presenter.NEXT_ID:
+          if (this.config.lessonInfo.origin === LessonOrigin.EMBEDDED) {
+            window.top.location.replace(embeddedLesson.rootUrl);
+            return;
+          }
+      }
+      return super.next(eventId);
+    }
+  }
+
+  /**
+   * @file Presenter factory to remove circular dependendies with Presenter modules
+   *
+   * @module lessons/presenters/presenterFactory
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Navigation definition for Presenters.
+   * @type {Object<string,{previous:constructor, next:constructor}>}
+   */
+  const NAVIGATION = {
+    HomePresenter: { previous: null, next: LibraryPresenter },
+    LibraryPresenter: { previous: HomePresenter, next: BookPresenter },
+    BookPresenter: { previous: LibraryPresenter, next: ChapterPresenter },
+    ChapterPresenter: { previous: BookPresenter, next: LessonPresenter },
+    LessonPresenter: { previous: ChapterPresenter, next: ProblemPresenter },
+    LessonEditorPresenter: { previous: LessonPresenter, next: LessonPresenter },
+    ProblemPresenter: { previous: null, next: ProblemPresenter },
+    ChoiceProblemPresenter: { previous: null, next: ProblemPresenter },
+    FillProblemPresenter: { previous: null, next: ProblemPresenter },
+    OrderProblemPresenter: { previous: null, next: ProblemPresenter },
+    SlideProblemPresenter: { previous: null, next: ProblemPresenter },
+    MarksPresenter: { previous: null, next: ChapterPresenter },
+  };
+
+  /**
+   * Factory for generating the navigation for Presenters.
+   *
+   * #Use of minifiers#
+   * For this function to operate correctly, ensure that `Terser` is run
+   * with the `keep_classnames` set to true. Otherwise the {@link Navigation} object
+   * may be minified with anonymous classes and the use of `constructor.name` will
+   * fail.
+   * @type {module:lessons/presenters/presenter~PresenterFactory}
+   */
+
+  class PresenterFactory {
+    /**
+     * Get a suitable problem presenter based on the configuratoin.
+     * @param {LessonConfig} config
+     * @returns {Presenter}
+     */
+    getSuitableProblemPresenter(config) {
+      const problem = config.lesson.peekAtNextProblem();
+      switch (problem.questionType) {
+        case QuestionType.ORDER:
+          return new OrderProblemPresenter(config);
+        case QuestionType.FILL:
+          return new FillProblemPresenter(config);
+        case QuestionType.MULTI:
+          return new ChoiceProblemPresenter(config);
+        case QuestionType.SIMPLE:
+          return new ChoiceProblemPresenter(config);
+        case QuestionType.SLIDE:
+        default:
+          return new SlideProblemPresenter(config);
+      }
+    }
+    /**
+     * Test if next exists for caller.
+     * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+     * @returns {boolean} True if supported.
+     */
+    hasNext(caller) {
+      return !!NAVIGATION[caller.constructor.name].next;
+    }
+    /**
+     * Test if previous exists for caller.
+     * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+     * @returns {boolean} True if supported.
+     */
+    hasPrevious(caller) {
+      return !!NAVIGATION[caller.constructor.name].previous;
+    }
+    /**
+     * Get the home presenter.
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
+     * @returns {Presenter}  Presenter or null.
+     */
+    getHome(config) {
+      return new HomePresenter(config);
+    }
+
+    /**
+     * Get the appropriate editor for the calling {@link module:lessons/presenters/presenter.Presenter}
+     * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
+     * @returns {Presenter}  Presenter or null.
+     */
+    getEditor(caller, config) {
+      if (caller instanceof LessonPresenter) {
+        return new LessonEditorPresenter(config);
+      } else {
+        console.error(
+          `Attempt to edit a presenter for which there is no editor. Going home.`
+        );
+        return new HomePresenter(config);
+      }
+    }
+    /**
+     * Get the appropriate navigator for the calling {@link module:lessons/presenters/presenter.Presenter}
+     * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
+     * @returns {Presenter} Presenter or null.
+     */
+    getNext(caller, config) {
+      if (
+        caller instanceof ProblemPresenter ||
+        caller instanceof LessonPresenter
+      ) {
+        if (config.lesson.hasMoreProblems) {
+          return this.getSuitableProblemPresenter(config);
+        } else {
+          return new MarksPresenter(config);
+        }
+      } else {
+        const klass = this.#skipUnnecessaryListPresenters(
+          NAVIGATION[caller.constructor.name].next
+        );
+        return klass ? new klass(config) : null;
+      }
+    }
+
+    /**
+     * Get the appropriate problem presenter to repeat the current problem.
+     * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+     * @returns {Presenter} Presenter or undefined.
+     */
+    getPrevious(caller, config) {
+      const klass = NAVIGATION[caller.constructor.name].previous;
+      return klass ? new klass(config) : null;
+    }
+    /**
+     * Get the appropriate problem presenter to repeat the current problem.
+     * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+     * @returns {Presenter} Presenter or undefined.
+     */
+    getProblemAgain(caller, config) {
+      if (!(caller instanceof MarksPresenter)) {
+        console.error(
+          'Attempt to retry problem from other than a MarksPresenter.'
+        );
+        return this.getHome(config);
+      } else {
+        config.lesson.restart();
+        if (config.lesson.hasMoreProblems) {
+          return this.getSuitableProblemPresenter(config);
+        } else {
+          return new MarksPresenter(config);
+        }
+      }
+    }
+
+    /**
+     * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+     * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
+     * @returns {Presenter} Presenter or null.
+     */
+    getLibraryPresenter(callerIgnored, config) {
+      const klass = this.#skipUnnecessaryListPresenters(LibraryPresenter);
+      return new klass(config);
+    }
+
+    /**
+     * For list presenters, skip to next if it only has one entry.
+     * @param {Class} presenterClass
+     * @returns {Class}
+     */
+    #skipUnnecessaryListPresenters(presenterClass) {
+      for (;;) {
+        const nextClass = this.#moveToNextPresenterIfUnnecessary(presenterClass);
+        if (nextClass === presenterClass) {
+          return presenterClass;
+        }
+        presenterClass = nextClass;
+      }
+    }
+
+    /**
+     * Move to the next presenter if the current one only has one option to choose
+     * from.
+     * @param {Class} presenterClass
+     * @returns {Class} new Class. This will be unchanged if no switch occured.
+     */
+    #moveToNextPresenterIfUnnecessary(presenterClass) {
+      switch (presenterClass.name) {
+        case 'LibraryPresenter':
+          if (lessonManager.bookTitles.length <= 1) {
+            lessonManager.bookIndex = 0;
+            return BookPresenter;
+          }
+          break;
+        case 'BookPresenter':
+          if (lessonManager.chapterTitles.length <= 1) {
+            lessonManager.chapterIndex = 0;
+            return ChapterPresenter;
+          }
+          break;
+        case 'ChapterPresenter':
+          if (lessonManager.lessonTitles.length <= 1) {
+            lessonManager.lessonIndex = 0;
+            return LessonPresenter;
+          }
+          break;
+      }
+      return presenterClass;
+    }
+
+    /**
+     * Get the initial presenter.
+     * @returns {Presenter}
+     */
+    static getInitial() {
+      const config = { factory: new PresenterFactory() };
+      if (embeddedLesson.hasLesson) {
+        config.lesson = embeddedLesson.lesson;
+        config.lessonInfo = embeddedLesson.lessonInfo;
+        if (config.lesson.hasMoreProblems) {
+          return config.factory.getSuitableProblemPresenter(config);
+        } else {
+          return new MarksPresenter(config);
+        }
+      }
+      return new HomePresenter(config);
+    }
+  }
+
+  /**
+   * @file Handle messaged for first time use.
+   *
+   * @module data/firstTimeMessage
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+
+  /**
+   * If this is the first time the application has been used, as defined by the
+   * flag, a welcome message including privacy information is displayed.
+   * The flag is set false once the dialog has been closed.
+   * @returns {Promise} fulfils to undefined
+   */
+  function showFirstUseMessageIfAppropriate() {
+    const FIRST_TIME_USE_KEY = 'showFirstUseMessage';
+    const firstUse = persistentData.getFromStorage(FIRST_TIME_USE_KEY, true);
+    if (firstUse) {
+      const appName = BuildInfo.getProductName();
+      const privacyLinkLabel = i18n`Privacy`;
+      const privacyLink = `[${privacyLinkLabel}](${Urls.PRIVACY})`;
+      const message = [
+        i18n`${appName} has been designed to allow you to create lessons and quizzes quickly and easily by just writing simple, plain text.`,
+        i18n`As this is your first time using the application, here is a quick summary of how your data are used and stored.`,
+        '',
+        i18n`- ${appName} holds no account details or personal information.`,
+        i18n`- The only data stored are your preferences for using the application and any lessons you create.`,
+        i18n`- No information that you enter when answering questions in a quiz is ever stored or transmitted to the server.`,
+        i18n`- Data are stored on your device using your browser's localStorage.`,
+        i18n``,
+        i18n`- The application is hosted by GitHub, which does log your IP address for security purposes.`,
+        i18n``,
+        i18n`For more details please check out the ${privacyLink} information.`,
+      ].join('\n');
+      return ModalDialog.showInfo(parseMarkdown(message), i18n`Welcome`).then(
+        () => persistentData.saveToStorage(FIRST_TIME_USE_KEY, false)
+      );
+    } else {
+      return Promise.resolve();
+    }
+  }
+
+  /**
+   * @file Handle screen resizing.
+   *
+   * @module utils/userIo/screenSizer
+   *
+   * @license GPL-3.0-or-later
+   * Create quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+  let throttleTimer = null;
+
+  /**
+   * Set the vh variable. This allows for browsers that include the address bar
+   * in the vh calculation.
+   */
+  function setVhCssVariable() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
+  /**
+   * Add event listener to handle resizing of the window.
+   */
+  window.addEventListener('resize', () => {
+    if (throttleTimer !== null) {
+      return; // it will get handled.
+    }
+    throttleTimer = window.setTimeout(() => {
+      throttleTimer = null;
+      setVhCssVariable();
+    }, 200);
+  });
+
+  setVhCssVariable();
+
+  /**
+   * @file Main entry point for the application.
+   *
+   * @module main
+   *
+   * @license GPL-3.0-or-later
+   * Lesson RunnerCreate quizzes and lessons from plain text files.
+   * Copyright 2023 Steve Butler (henspace.com)
+   *
+   * This program is free software: you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation, either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   *
+   */
+
+  /**
+   * Display a fatal error.
+   * This is shown in the console, written to the page's content. Nothing else is
+   * used as it may not be safe to call complex functions such as ModalDialog
+   * routines.
+   * @param {Error} error
+   */
+  function showFatalError(error) {
+    const html = `<h1>Whoops!</h1>
+  <p>An error has occured from which I can't recover on my own.</p>
+  <ul>
+  <li>Name: ${error.name}</li>
+  <li>Cause: ${error.cause}</li>
+  <li>Message: ${error.message}</li>
+  </ul>
+  <p>Try reloading the application.</p>
+  `;
+    console.error(error);
+    document.getElementById('content').innerHTML = html; // in case dialog cannot be shown.
+  }
+
+  /**
+   * Load the application
+   * @returns {Promise} fulfils to undefined.
+   */
+  function loadApplication() {
+    console.info('Launching application.');
+    persistentData.setStorageKeyPrefix(
+      `LR_${BuildInfo.getBundleName().replace('.', '_')}`
+    );
+
+    return getLanguages(embeddedLesson.translations)
+      .then(() => lessonManager.loadAllLibraries('assets/lessons/libraries.json'))
+      .then(() => loadSettingDefinitions(getSettingDefinitions()))
+      .then(() => {
+        const language = i18n`language::`;
+        if (language !== '') {
+          console.info(`Language ${language}`);
+          document.documentElement.setAttribute('lang', language);
+        }
+        return true;
+      })
+      .then(() => setHeaderAndFooter(getMainMenuItems()))
+      .then(() => lessonManager.loadAllLibraryContent())
+      .then(() =>
+        toast(
+          '<span style="font-size:3rem;">&#x1F631;</span>' +
+            'This application is work in progress and not released yet. ' +
+            'Things may change and things may break. Documentation may not be correct.')
+      )
+      .then(() => showFirstUseMessageIfAppropriate())
+      .then(() => {
+        const stage = document.getElementById('stage');
+        return new StageManager(stage).startShow(PresenterFactory.getInitial());
+      })
+      .then(() => {
+        console.warn('Did not expect to get here.');
+        ModalDialog.showInfo(
+          i18n`The application has finished. It will now start again.`
+        ).then(() => window.location.reload());
+      })
+      .catch((error) => {
+        showFatalError(error);
+        ModalDialog.showFatal(error).then(() => window.location.reload());
+      });
+  }
+
+  /**
+   * Register the service worker if the application has been built. If running
+   * directly from source, no service worker is registered.
+   */
+  function registerServiceWorkerIfBuilt() {
+    if (BuildInfo.isBuilt()) {
+      registerServiceWorker(BuildInfo.getMode());
+    }
+  }
+
+  /**
+   * Once the page has loaded, launch the application.
+   */
+  window.addEventListener('load', () => {
+    try {
+      registerServiceWorkerIfBuilt();
+      return loadApplication();
+    } catch (error) {
+      showFatalError(error);
+    }
+  });
+
+})();
