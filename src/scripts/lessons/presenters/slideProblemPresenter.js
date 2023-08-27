@@ -311,9 +311,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
   handleClickEvent(event, eventId) {
     switch (eventId) {
       case MediaID.PAUSE:
-        clearTimeout(this.#readTimerId);
-        this.#showMediaButtons(false);
-        this.#paused = true;
+        this.#pauseTheShow();
         return;
       case MediaID.PLAY:
         clearTimeout(this.#readTimerId);
@@ -326,8 +324,20 @@ export class SlideProblemPresenter extends ProblemPresenter {
       case MediaID.SKIP:
         this.#skip();
         return;
+      case Presenter.HOME_ID:
+        this.#pauseTheShow();
+        break;
     }
     super.handleClickEvent(event, eventId);
+  }
+
+  /**
+   * Pause the slide show.
+   */
+  #pauseTheShow() {
+    clearTimeout(this.#readTimerId);
+    this.#showMediaButtons(false);
+    this.#paused = true;
   }
 
   /**
@@ -336,7 +346,6 @@ export class SlideProblemPresenter extends ProblemPresenter {
    */
   #skip(direction) {
     clearTimeout(this.#readTimerId);
-    this.#showMediaButtons(true);
     if (
       this.#cardState === CardState.ARRIVING ||
       this.#cardState === CardState.READING

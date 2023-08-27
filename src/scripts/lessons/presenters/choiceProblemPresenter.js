@@ -89,8 +89,6 @@ export class ChoiceProblemPresenter extends ProblemPresenter {
       this.listenToEventOn('click', element, ElementId.CLICKED_ANSWER);
       this.listenToEventOn('keydown', element, ElementId.CLICKED_ANSWER);
     });
-
-    setTimeout(() => this.#answerListElement.children[0].focus());
   }
 
   /**

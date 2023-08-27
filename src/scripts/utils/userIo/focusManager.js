@@ -31,6 +31,7 @@ class FocusManager {
         event.relatedTarget
       );
       if (document.activeElement !== document.body) {
+        console.debug('Set focus to active element');
         document.activeElement.focus();
       } else {
         this.findBestFocus();
@@ -62,7 +63,7 @@ class FocusManager {
     return false;
   }
 
-  /** Best effort to restore focus */
+  /** Best effort to restore focus. This is either a popup or the button bar. */
   findBestFocus() {
     let element = document.querySelector('.selectable.always-on-top');
     if (element) {
@@ -73,7 +74,7 @@ class FocusManager {
     if (element) {
       this.focusWithin(element);
     } else {
-      element = document.querySelector('#content');
+      element = document.getElementById('footer');
       this.focusWithin(element);
     }
   }

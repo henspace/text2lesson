@@ -39,6 +39,6 @@ const DOCS_ROOT_URL = 'https://henspace.com/text2lesson-docs/';
 export const Urls = {
   ROOT: `${rootUrl}`,
   LOGO: `${rootUrl}assets/images/logo.png`,
-  HELP: `${DOCS_ROOT_URL}about.html`,
+  HELP: `${DOCS_ROOT_URL}app-help.html`,
   PRIVACY: `${DOCS_ROOT_URL}privacy.html`,
 };

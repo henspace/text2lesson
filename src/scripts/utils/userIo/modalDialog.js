@@ -37,6 +37,7 @@ import * as modalMask from './modalMask.js';
  * @property {string[]} iconClasses - array of classes that are applied to the icon
  * @property {string[] | string | module:utils/userIo/icons~IconDetails[]} buttons - array of labels for buttons. These normally
  * only apply to questions.
+ * @property {number} focusedButtonIndex - index of the button that should have focus. If not set, the best focus will be found.
  */
 
 /**
@@ -206,7 +207,10 @@ export class ModalDialog {
     });
     modalMask.showMask();
     return this.#buttonBar
-      .showButtons(dialogDefinition.buttons)
+      .showButtons(
+        dialogDefinition.buttons,
+        dialogDefinition.focusedButtonIndex
+      )
       .then((index) => {
         this.#hideDialog();
         focusManager.findBestFocus();
@@ -275,6 +279,7 @@ export class ModalDialog {
       content: content,
       dialogType: options?.dialogType,
       iconDetails: iconDetails,
+      focusedButtonIndex: options.focusedButtonIndex,
     };
     return dialog.#showDialogDefinition(dialogDefinition);
   }
@@ -332,13 +337,15 @@ export class ModalDialog {
    * Shorthand call for ModalDialog.showDialog('Question', content, ModalDialog.DialogType.QUESTION)
    * @param {string} content
    * @param {string} [title] - optional title.
+   * @param {boolean} [defaultToYes = true]
    * @returns {Promise} Fulfils to index of button pressed. This will be
    * ModalDialog.DialogIndex.CONFIRM_YES or ModalDialog.DialogIndex.CONFIRM_YES.
    */
-  static showConfirm(content, title) {
+  static showConfirm(content, title, defaultToYes = true) {
     return ModalDialog.showDialog(title ?? i18n`Question`, content, {
       dialogType: ModalDialog.DialogType.QUESTION,
       buttons: [icons.yes, icons.no],
+      focusedButtonIndex: defaultToYes ? 0 : 1,
     });
   }
 

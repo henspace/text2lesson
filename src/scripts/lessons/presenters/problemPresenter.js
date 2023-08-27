@@ -30,6 +30,8 @@ import { icons } from '../../utils/userIo/icons.js';
 import { MarkState } from '../itemMarker.js';
 import { celebrator, CelebrationType } from '../candy/celebrators.js';
 import { i18n } from '../../utils/i18n/i18n.js';
+import { LessonOrigin } from '../lessonOrigins.js';
+import { focusManager } from '../../utils/userIo/focusManager.js';
 
 /**
  * Class names
@@ -128,9 +130,10 @@ export class ProblemPresenter extends Presenter {
 
     this.#submitButton.show();
     this.#freezeAnswers = false;
-    if (!this.config.lessonInfo.managed) {
+    if (this.config.lessonInfo.origin === LessonOrigin.EMBEDDED) {
       this.hideHomeButton();
     }
+    focusManager.findBestFocus();
   }
 
   /**
