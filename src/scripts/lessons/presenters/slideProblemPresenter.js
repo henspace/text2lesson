@@ -29,6 +29,7 @@ import { icons } from '../../utils/userIo/icons.js';
 import { persistentData } from '../../utils/userIo/storage.js';
 import { Presenter } from './presenter.js';
 import { Gesture } from '../../utils/userIo/gestures.js';
+import { Random } from '../../utils/random.js';
 
 const MediaClass = {
   PAUSE: 'pause',
@@ -52,6 +53,11 @@ const CardState = {
   READING: 2,
   LEAVING: 3,
 };
+
+/**
+ * Classnames for entering
+ */
+const ENTRY_CLASS_NAMES = ['card-onscreen-slide', 'card-onscreen-spin'];
 
 /**
  * Class to present a slide show.
@@ -104,6 +110,11 @@ export class SlideProblemPresenter extends ProblemPresenter {
    * @type {boolean}
    */
   #paused;
+
+  /**
+   * @type{string}
+   */
+  #lastAnimationClass;
 
   /**
    * Construct.
@@ -179,35 +190,33 @@ export class SlideProblemPresenter extends ProblemPresenter {
   #setCardState(cardState, direction) {
     switch (cardState) {
       case CardState.ARRIVING:
-        this.#removeAllExitClasses();
-        this.#visualCard.classList.add('card-onscreen');
+        this.#applyAnimationClass(Random.itemFrom(ENTRY_CLASS_NAMES));
         break;
       case CardState.LEAVING:
-        this.#visualCard.classList.remove('card-onscreen');
-        this.#visualCard.classList.add(
-          this.#getExitClassForDirection(direction)
-        );
+        this.#applyAnimationClass(this.#getExitClassForDirection(direction));
         break;
     }
     this.#cardState = cardState;
   }
 
   /**
-   * Remove all exit classes from card
+   * Apply animation class to the display card.
+   * @param {string} className
    */
-  #removeAllExitClasses() {
-    this.#visualCard.classList.remove(
-      this.#getExitClassForDirection(Gesture.Direction.UP)
-    );
-    this.#visualCard.classList.remove(
-      this.#getExitClassForDirection(Gesture.Direction.LEFT)
-    );
-    this.#visualCard.classList.remove(
-      this.#getExitClassForDirection(Gesture.Direction.DOWN)
-    );
-    this.#visualCard.classList.remove(
-      this.#getExitClassForDirection(Gesture.Direction.RIGHT)
-    );
+  #applyAnimationClass(className) {
+    this.#removeLastAnimationClass();
+    this.#lastAnimationClass = className;
+    this.#visualCard.classList.add(className);
+  }
+
+  /**
+   * Remove the last animation class from the display card.
+   */
+  #removeLastAnimationClass() {
+    if (this.#lastAnimationClass) {
+      this.#visualCard.classList.remove(this.#lastAnimationClass);
+    }
+    this.#lastAnimationClass = '';
   }
 
   /**

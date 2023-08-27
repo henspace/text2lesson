@@ -104,6 +104,11 @@ export class ProblemPresenter extends Presenter {
   #freezeAnswers;
 
   /**
+   * @type {Timer}
+   */
+  #autoAdvanceTimer;
+
+  /**
    * Construct.
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
@@ -207,7 +212,11 @@ export class ProblemPresenter extends Presenter {
         break;
       case ElementId.CLICKED_SUBMIT:
         this.#freezeAnswers = true;
-        this.#processClickedSubmit();
+        this.#processClickedSubmit(event);
+        break;
+      case Presenter.NEXT_ID:
+        clearTimeout(this.#autoAdvanceTimer);
+        super.handleClickEvent(event, eventId);
         break;
       default:
         super.handleClickEvent(event, eventId);
@@ -237,7 +246,9 @@ export class ProblemPresenter extends Presenter {
 
   /**
    * Process a clicked answer.
-   * @param {Element} target
+   * This will pass a next event id onto the super's handler. If it was a correct
+   * answer it automatically advances.
+   * @param {Event} event - orignal event.
    */
   #processClickedSubmit() {
     const correct = this.areAnswersCorrect();
@@ -249,7 +260,12 @@ export class ProblemPresenter extends Presenter {
     this.showNextButton(true);
     celebrator.celebrate(correct ? CelebrationType.HAPPY : CelebrationType.SAD);
     const explanation = this.#problem.explanation;
-    if (!correct && explanation.html) {
+    if (correct) {
+      this.#autoAdvanceTimer = setTimeout(
+        () => super.handleClickEvent(event, Presenter.NEXT_ID),
+        3000
+      );
+    } else if (explanation.html) {
       return ModalDialog.showInfo(
         explanation.html,
         i18n`Sorry. That's not right`

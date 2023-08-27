@@ -4,15 +4,29 @@
 
 @keyframes slidein {
   from {
-    transform: translateY(100vh) rotate(0);
+    transform: translateY(100vh);
   }
 
   50% {
-    transform: rotate(10deg);
+    transform: translateY(0) rotate(10deg);
   }
 
   to {
-    transform: translateY(0) rotate(0);
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes spinin {
+  from {
+    transform: translateY(100vh) scale(0.1) rotate(-180deg);
+  }
+
+  50% {
+    transform: translateY(0) scale(0.5) rotate(0);
+  }
+
+  to {
+    transform: scale(1);
   }
 }
 
@@ -100,8 +114,15 @@
   visibility: visible;
 }
 
-.display-card.card-onscreen {
+.display-card.card-onscreen-slide {
   animation-name: slidein;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  visibility: visible;
+}
+
+.display-card.card-onscreen-spin {
+  animation-name: spinin;
   animation-duration: 1s;
   animation-fill-mode: forwards;
   visibility: visible;

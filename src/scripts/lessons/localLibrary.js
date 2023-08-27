@@ -23,7 +23,6 @@
  */
 import { persistentData } from '../utils/userIo/storage.js';
 import { i18n } from '../utils/i18n/i18n.js';
-import { Urls } from '../data/urls.js';
 
 /**
  * @type {Map.<string, lessons/lessonManager~LibraryInfo>}
@@ -182,10 +181,9 @@ export class LocalLibrary {
    * @returns {LocalLesson}
    */
   #loadLocalLesson(key) {
-    const lessonHelpLink = `[How to write lessons](${Urls.HELP})`;
     const defaultLesson = {
-      title: i18n`Untitled lesson`,
-      content: i18n`(i)This is a lesson which you need to create. See ${lessonHelpLink}`,
+      title: i18n`Empty: edit to add your lesson`,
+      content: ``,
     };
     return persistentData.getFromStorage(
       this.#getStorageKeyForLessonKey(key),

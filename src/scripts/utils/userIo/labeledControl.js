@@ -172,7 +172,7 @@ export class LabeledControl extends ManagedElement {
       if (this.#manager) {
         this.#manager.reloadSelectOptions(this.definition.dependents);
       } else {
-        console.warn(
+        console.debug(
           'LabeledControl has no manager, so unable to handle dependencies.'
         );
       }
