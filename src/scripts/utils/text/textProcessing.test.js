@@ -72,16 +72,16 @@ test('Block quote returns block', () => {
 
 test('Code block returns preformatted code', () => {
   expect(parseMarkdown('start\n    line 1\n    line 2\nend')).toBe(
-    '\n<p>start</p>\n\n<pre><code>\nline 1\nline 2\n</code></pre>\n\n<p>end</p>\n'
+    '\n<p>start</p>\n\n<pre><code>line 1\nline 2</code></pre>\n\n<p>end</p>\n'
   );
   expect(parseMarkdown('start\n\tline 1\n\tline 2\nend')).toBe(
-    '\n<p>start</p>\n\n<pre><code>\nline 1\nline 2\n</code></pre>\n\n<p>end</p>\n'
+    '\n<p>start</p>\n\n<pre><code>line 1\nline 2</code></pre>\n\n<p>end</p>\n'
   );
   expect(parseMarkdown('start\n        line 1\n        line 2\nend')).toBe(
-    '\n<p>start</p>\n\n<pre><code>\n    line 1\n    line 2\n</code></pre>\n\n<p>end</p>\n'
+    '\n<p>start</p>\n\n<pre><code>    line 1\n    line 2</code></pre>\n\n<p>end</p>\n'
   );
   expect(parseMarkdown('start\n\t\tline 1\n\t\t\tline 2\nend')).toBe(
-    '\n<p>start</p>\n\n<pre><code>\n\tline 1\n\t\tline 2\n</code></pre>\n\n<p>end</p>\n'
+    '\n<p>start</p>\n\n<pre><code>\tline 1\n\t\tline 2</code></pre>\n\n<p>end</p>\n'
   );
 });
 

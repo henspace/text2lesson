@@ -57,11 +57,11 @@ export class DisplayCards {
 
   /**
    * Breaks down the html into blocks. This is done by splitting at paragraphs
-   * and divs.
+   * divs and code blocks.
    * @param {string} html
    */
   #splitHtml(html) {
-    const blocks = html.split(/(<\/(?:p|div)>)/i);
+    const blocks = html.split(/(<\/(?:p|div|pre)>)/i);
     const result = [];
     const iterations = Math.ceil(blocks.length / 2);
     for (let index = 0; index < iterations; index++) {

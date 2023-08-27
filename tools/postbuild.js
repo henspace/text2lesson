@@ -99,12 +99,6 @@ postBuildUtils
   })
   .then(() => postBuildUtils.generateServiceWorker())
   .then(() =>
-    FileManager.copyFiles(
-      './src/_includes',
-      path.join(PROJECT_INFO.buildDistDir, '_includes')
-    )
-  )
-  .then(() =>
     i18n.validateAllJsonFiles(
       path.join(
         PROJECT_INFO.buildDistDir,

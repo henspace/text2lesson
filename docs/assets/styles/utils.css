@@ -51,6 +51,10 @@ textarea,
   transition: outline 0.5s;
 }
 
+textarea {
+  hyphens: none;
+}
+
 textarea,
 input[type='input'] {
   border: var(--line-thickness) solid var(--background-contrast);

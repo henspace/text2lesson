@@ -21,6 +21,7 @@
   text-align: center;
   top: 0;
   width: var(--celebrator-size);
+  z-index: 100;
 }
 
 .celebrator.smiley-face {
