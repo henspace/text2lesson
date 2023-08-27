@@ -7,7 +7,7 @@
   --celebrator-off-top-y: calc(-1.5 * var(--celebrator-size));
 }
 .celebrator {
-  animation-duration: 5s;
+  animation-duration: 3s;
   animation-fill-mode: forwards;
   font-size: var(--celebrator-size);
   height: var(--celebrator-size);

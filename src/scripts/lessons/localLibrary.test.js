@@ -39,7 +39,6 @@ jest.unstable_mockModule('../utils/userIo/storage.js', () => {
 });
 
 const { LocalLibrary } = await import('./localLibrary.js');
-const { persistentData } = await import('../utils/userIo/storage.js');
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -58,8 +57,8 @@ test('Get info returns default library content', () => {
   expect(books).toHaveLength(1);
   expect(books[0].chapters).toHaveLength(1);
   expect(books[0].chapters[0].lessons).toHaveLength(4);
-  books[0].chapters[0].lessons.forEach((value, index) => {
-    expect(value.title).toBe('Untitled lesson');
+  books[0].chapters[0].lessons.forEach((value) => {
+    expect(value.title).toMatch('Empty');
   });
 });
 
@@ -120,7 +119,7 @@ test('addNewLessonSlot add a new storage key', () => {
     if (index < 4) {
       expect(value.title).toBe(`test title ${index}`);
     } else {
-      expect(value.title).toBe(`Untitled lesson`);
+      expect(value.title).toMatch(`Empty`);
     }
   });
 });

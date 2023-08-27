@@ -11,6 +11,16 @@ a.problem {
   text-decoration: none;
 }
 
+.LessonPresenter.Presenter .presentation {
+  display: flex;
+  flex-direction: column;
+}
+
+.LessonPresenter .lesson-summary {
+  flex: 1;
+  text-align: left;
+}
+
 .Presenter .button-bar {
   text-align: center;
 }
@@ -30,19 +40,6 @@ a.problem {
 .HomePresenter .presentation button {
   flex: 1;
   text-align: left;
-}
-
-.lesson-summary {
-  background-color: var(--tertiary-base);
-  border: none;
-  border-radius: var(--line-thickness);
-  color: var(--tertiary-contrast);
-  font-size: 1rem;
-  margin: var(--margin-thickness);
-  padding: var(--padding-thickness);
-}
-.lesson-summary span {
-  display: block;
 }
 
 .problem-answer {

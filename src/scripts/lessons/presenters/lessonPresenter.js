@@ -62,36 +62,38 @@ export class LessonPresenter extends Presenter {
   #buildCustomContent() {
     this.presentation.createAndAppendChild('h2', null, i18n`Selected lesson:`);
     const summaryBlock = this.presentation.createAndAppendChild(
-      'div',
+      'button',
       'lesson-summary'
     );
-    summaryBlock.createAndAppendChild(
-      'span',
-      'lesson-title',
-      this.config.lessonInfo.titles.lesson
-    );
-    summaryBlock.createAndAppendChild('p', null, i18n`taken from`);
-    summaryBlock.createAndAppendChild(
-      'span',
+    const summaryContent = summaryBlock.createAndAppendChild('ul');
+    summaryContent.createAndAppendChild(
+      'li',
       'library-title',
       this.config.lessonInfo.titles.library
     );
     if (!lessonManager.usingLocalLibrary) {
-      summaryBlock.createAndAppendChild(
-        'span',
+      summaryContent.createAndAppendChild(
+        'li',
         'book-title',
         this.config.lessonInfo.titles.book
       );
-      summaryBlock.createAndAppendChild(
-        'span',
+      summaryContent.createAndAppendChild(
+        'li',
         'chapter-title',
         this.config.lessonInfo.titles.chapter
       );
     }
+    summaryContent.createAndAppendChild(
+      'li',
+      'lesson-title',
+      this.config.lessonInfo.titles.lesson
+    );
 
     this.presentation.appendChild(summaryBlock);
     this.applyIconToNextButton(icons.playLesson);
-    this.showNextButton();
+    this.listenToEventOn('click', summaryBlock, Presenter.NEXT_ID);
+    this.#showNextButtonIfContent();
+
     this.#addEditButtonIfLocal();
   }
 
@@ -104,6 +106,23 @@ export class LessonPresenter extends Presenter {
       icons.applyIconToElement(icons.edit, editButton);
       this.addButtonToBar(editButton);
       this.listenToEventOn('click', editButton, LessonPresenter.EDIT_EVENT_ID);
+    }
+  }
+
+  /**
+   * Show the next button if appropriate. It is always shown for remote
+   * lessons but hidden for local lessons that have no content.
+   */
+  #showNextButtonIfContent() {
+    if (this.config.lessonInfo.usingLocalLibrary) {
+      lessonManager.loadCurrentLesson().then((cachedLesson) => {
+        if (cachedLesson.content) {
+          this.showNextButton();
+          return;
+        }
+      });
+    } else {
+      this.showNextButton();
     }
   }
 
