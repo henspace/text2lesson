@@ -66,6 +66,7 @@ const blockReps = [
   reAllLinesStartWith('(?: {4}|\t)', {
     blockPrefix: '<pre><code>',
     blockSuffix: '</code></pre>',
+    trimContents: true,
   }),
   /** horizontal rule. This must come before unordered lists to prevent interpretation of - as bullet */
   {
@@ -242,6 +243,8 @@ function processReplacements(data, replacements) {
  * @param {string} options.blockSuffix - characters placed at the end of the resulting block.
  * @param {string} options.linePrefix - characters placed at the beginning of each resulting line.
  * @param {string} options.lineSuffix - characters placed at the end of each resulting line.
+ * @param {boolean} options.trimContents - if true, leading and trailing newlines and carriage returns are stripped
+ * from the block's contents
  * @returns {Replacement}
  */
 function reAllLinesStartWith(reStart, options) {
@@ -256,10 +259,13 @@ function reAllLinesStartWith(reStart, options) {
   return {
     re: reBlockSearchRe,
     rep: (match) => {
-      return `\n\n${options?.blockPrefix ?? ''}${match.replaceAll(
-        lineReplacementRe,
-        lineReplacement
-      )}${options?.blockSuffix ?? ''}\n\n`;
+      let blockContents = match.replaceAll(lineReplacementRe, lineReplacement);
+      if (options.trimContents) {
+        blockContents = blockContents.replace(/^[\n\r]*/, '').trimEnd();
+      }
+      return `\n\n${options?.blockPrefix ?? ''}${blockContents}${
+        options?.blockSuffix ?? ''
+      }\n\n`;
     },
   };
 }

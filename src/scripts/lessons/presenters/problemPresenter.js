@@ -38,7 +38,6 @@ import { i18n } from '../../utils/i18n/i18n.js';
 export const ClassName = {
   ANSWER: 'problem-answer',
   ANSWERS: 'problem-answers',
-  EXPLANATION: 'problem-explanation',
   INCORRECT_ANSWER: 'incorrect-answer',
   CORRECT_ANSWER: 'correct-answer',
   MISSED_ANSWER: 'missed-answer',
@@ -98,9 +97,6 @@ export class ProblemPresenter extends Presenter {
   /** @type {module:utils/userIo/managedElement.ManagedElement} */
   #answerElement;
 
-  /** @type {module:utils/userIo/managedElement.ManagedElement} */
-  #explanationElement;
-
   /** @type {module:utils/userIo/controls.ManagedElement} */
   #submitButton;
 
@@ -121,13 +117,8 @@ export class ProblemPresenter extends Presenter {
 
     this.#answerElement = new ManagedElement('div', ClassName.ANSWERS);
 
-    this.#explanationElement = new ManagedElement('div', ClassName.EXPLANATION);
-    this.#explanationElement.innerHTML = this.#problem.explanation.html;
-    this.#explanationElement.hide();
-
     this.presentation.appendChild(this.#questionElement);
     this.presentation.appendChild(this.#answerElement);
-    this.presentation.appendChild(this.#explanationElement);
     this.addButtons();
 
     this.#submitButton.show();
@@ -156,13 +147,6 @@ export class ProblemPresenter extends Presenter {
    */
   get answerElement() {
     return this.#answerElement;
-  }
-
-  /**
-   * @returns {module:utils/userIo/managedElement.ManagedElement}
-   */
-  get explanationElement() {
-    return this.#explanationElement;
   }
 
   /**
@@ -264,6 +248,13 @@ export class ProblemPresenter extends Presenter {
     this.#submitButton.hide();
     this.showNextButton(true);
     celebrator.celebrate(correct ? CelebrationType.HAPPY : CelebrationType.SAD);
+    const explanation = this.#problem.explanation;
+    if (!correct && explanation.html) {
+      return ModalDialog.showInfo(
+        explanation.html,
+        i18n`Sorry. That's not right`
+      );
+    }
   }
 
   /**
