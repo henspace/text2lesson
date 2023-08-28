@@ -32,6 +32,7 @@ import { lessonManager } from '../lessons/lessonManager.js';
 import { persistentData } from '../utils/userIo/storage.js';
 import * as cssVariables from '../utils/color/cssVariables.js';
 import { icons } from '../utils/userIo/icons.js';
+import { focusManager } from '../utils/userIo/focusManager.js';
 
 const DEFAULT_HUE = 120;
 const DEFAULT_SATURATION = 50;
@@ -129,6 +130,14 @@ export function getSettingDefinitions() {
       defaultValue: false,
       onupdate: (value) => {
         icons.hideText = value;
+      },
+    },
+    focusOnStage: {
+      type: 'checkbox',
+      label: i18n`Keyboard focus on stage`,
+      defaultValue: false,
+      onupdate: (value) => {
+        focusManager.focusOnStage = value;
       },
     },
     readingSpeed: {

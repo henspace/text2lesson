@@ -23,6 +23,15 @@
  */
 
 class FocusManager {
+  /**
+   * If true, findBestFocus will aim for the stage and then the buttons.
+   * @type {boolean}
+   */
+  #focusOnStage = false;
+
+  /**
+   * Construct
+   */
   constructor() {
     window.addEventListener('focus', (event) => {
       console.debug(
@@ -38,6 +47,15 @@ class FocusManager {
       }
     });
   }
+
+  /**
+   * Set focusOnStage. If true, the first attempt with findBestFocus is to
+   * try the stage
+   */
+  set focusOnStage(value) {
+    this.#focusOnStage = value;
+  }
+
   /**
    * Move the focus to the first possible element within the containingElement
    * @param {Element | module:utils/userIo/managedElement.ManagedElement} [containingElement=document.body] - where to look
@@ -63,6 +81,20 @@ class FocusManager {
     return false;
   }
 
+  /**
+   * Focus within an array of elements.
+   * @param {Element[]} elements
+   * @returns {boolean} true if focus found.
+   */
+  focusWithinElements(elements) {
+    for (const element of elements) {
+      if (this.focusWithin(element)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /** Best effort to restore focus. This is either a popup or the button bar. */
   findBestFocus() {
     let element = document.querySelector('.selectable.always-on-top');
@@ -74,8 +106,12 @@ class FocusManager {
     if (element) {
       this.focusWithin(element);
     } else {
-      element = document.getElementById('footer');
-      this.focusWithin(element);
+      const candidates = [];
+      if (this.#focusOnStage) {
+        candidates.push(document.getElementById('stage'));
+      }
+      candidates.push(document.getElementById('footer'));
+      this.focusWithinElements(candidates);
     }
   }
 
