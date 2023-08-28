@@ -73,7 +73,8 @@
   --padding-thickness: 0.25rem;
   --font-base-size: 15px;
   --line-thickness: max(2px, 0.2rem);
-  --outline-offset: calc(0.5 * var(--line-thickness));
+  --outline-thickness: 2px;
+  --outline-offset: calc(0.5 * var(--outline-thickness));
   --panel-border: solid var(--line-thickness);
   --margin-thickness: calc(var(--outline-offset) + var(--line-thickness));
   --vh: 1vh;
