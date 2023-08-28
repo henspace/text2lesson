@@ -46,7 +46,9 @@ export class FileInputButton extends ManagedElement {
     this.#input.style.visibility = 'hidden';
     this.#input.style.height = '1em';
     this.appendChild(this.#input);
+    this.setAttribute('tabindex', 0);
     this.listenToEventOn('change', this.#input);
+    this.listenToOwnEvent('keydown', 'KEY');
   }
 
   /**
@@ -75,5 +77,19 @@ export class FileInputButton extends ManagedElement {
       );
     });
     reader.readAsText(file);
+  }
+
+  /**
+   * Trigger a click of the underlying input on space or enter
+   * @param {Event} event
+   * @param {string} eventIdIgnored
+   */
+  handleKeydownEvent(event, eventIdIgnored) {
+    switch (event.key) {
+      case ' ':
+      case 'Enter':
+        setTimeout(() => this.element.click());
+        break;
+    }
   }
 }

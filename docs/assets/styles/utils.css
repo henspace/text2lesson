@@ -46,7 +46,7 @@ textarea,
   min-height: 1rem;
   outline-offset: var(--outline-offset);
   outline-color: var(--primary-highlight);
-  outline-width: var(--line-thickness);
+  outline-width: var(--outline-thickness);
   padding: var(--padding-thickness);
   transition: outline 0.5s;
 }

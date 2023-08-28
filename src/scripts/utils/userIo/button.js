@@ -60,9 +60,10 @@ export class ButtonBar extends ManagedElement {
    * Add buttons to the button bar. If there are no buttons, an OK button is
    * automatically added.
    * @param {string[] | {content: string, accessibleName: string}} definition of buttons.
+   * @param {number} focusedButtonIndex - the index of the button that should have focus. If undefined or null, no button get focus.
    * @returns {Promise} Fulfils to the index of the button that fulfils.
    */
-  showButtons(buttons) {
+  showButtons(buttons, focusedButtonIndex) {
     if (!buttons?.length) {
       buttons = [icons.ok];
     }
@@ -71,13 +72,22 @@ export class ButtonBar extends ManagedElement {
       this.resolutionFunction = resolve;
     });
 
+    let focusSet = false;
     buttons.forEach((value, index) => {
       const button = new BarButton(value);
       button.setAttribute('data-index', index);
       this.appendChild(button, index);
       this.listenToEventOn('click', button, index);
+      if (index === focusedButtonIndex) {
+        button.focus();
+        focusSet = true;
+      }
     });
-    focusManager.findBestFocus();
+
+    if (!focusSet) {
+      focusManager.findBestFocus();
+    }
+
     return promise;
   }
 

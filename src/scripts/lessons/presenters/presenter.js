@@ -312,7 +312,7 @@ export class Presenter extends ManagedElement {
     return new Promise((resolve) => {
       this.#resolutionExecutor = resolve;
       stageElement.appendChild(this);
-      focusManager.focusWithin(stageElement);
+      focusManager.findBestFocus();
     });
   }
 
@@ -322,7 +322,7 @@ export class Presenter extends ManagedElement {
    * @returns {boolean} true if okay
    */
   async askIfOkayToLeave(message) {
-    const confirmation = await ModalDialog.showConfirm(message);
+    const confirmation = await ModalDialog.showConfirm(message, null, false);
     return confirmation === ModalDialog.DialogIndex.CONFIRM_YES;
   }
 
