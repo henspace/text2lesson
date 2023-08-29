@@ -76,7 +76,6 @@
   background-color: var(--secondary-base);
   color: var(--secondary-contrast);
   min-height: 10vh;
-  max-height: 50vh;
   margin-left: auto;
   margin-right: auto;
   overflow: auto;
