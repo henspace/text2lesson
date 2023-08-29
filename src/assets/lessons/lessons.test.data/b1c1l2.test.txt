@@ -1,0 +1,12 @@
+i 
+* Book 1
+* Chapter 1
+* Lesson 2
+* Multiple choice with more than one correct answer.
+* No explanation
+
+? Which animals lives in Africa?
+= 🦁 Lion
+= 🦓 Zebra
+x 🐼 Panda
+x 🐯 Tiger

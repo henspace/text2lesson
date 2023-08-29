@@ -206,10 +206,19 @@ test('Ampersand escaped unless entity', () => {
   expect(parseMarkdown('test &#x3f; entity')).toMatch('test &#x3f; entity');
 });
 
-test('Less than escaped unless linebreak', () => {
-  expect(parseMarkdown('test <tag> here')).toMatch('test &lt;tag> here');
-  expect(parseMarkdown('test <br> here')).toMatch('test <br> here');
-  expect(parseMarkdown('test <BR> here')).toMatch('test <BR> here');
+test('Less than escaped unless exempt tags.', () => {
+  const exemptTags = ['br', 'sub', 'sup'];
+  for (const tag of exemptTags) {
+    const testStr = `test <${tag.toLowerCase()}>data</${tag.toLowerCase()}> here`;
+    expect(parseMarkdown(testStr)).toMatch(testStr);
+    expect(parseMarkdown(testStr.toUpperCase())).toMatch(testStr.toUpperCase());
+  }
+});
+
+test('Less than escaped unless sup', () => {
+  const testStr = 'test <sup>data</sub> here';
+  expect(parseMarkdown(testStr)).toMatch(testStr);
+  expect(parseMarkdown(testStr.toUpperCase())).toMatch(testStr.toUpperCase());
 });
 
 test('Double asterisk creates strong element', () => {

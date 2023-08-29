@@ -1,0 +1,24 @@
+i 
+* Book 1
+* Chapter 1
+* Lesson 1
+* Multiple choice with one correct answer.
+* No explanation
+
+? What is the capital of the USA?
+= Washington
+x New York
+x California
+x Chicago
+
+? What is the capital of Poland?
+= Warsaw
+x Kraków
+x Gdańsk
+x Lublin
+
+? What is the capital of Australia?
+= Canberra
+x Sydney
+x Adelaide
+x Melbourne

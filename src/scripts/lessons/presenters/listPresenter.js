@@ -36,7 +36,7 @@ export class ListPresenter extends Presenter {
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
-    super(config, 'ul');
+    super(config, 'div');
     this.#buildContent();
   }
 
@@ -48,9 +48,11 @@ export class ListPresenter extends Presenter {
    */
   #buildContent() {
     this.config?.titles?.forEach((title, index) => {
-      const itemElement = new ManagedElement('li', this.config.itemClassName);
+      const itemElement = new ManagedElement(
+        'button',
+        this.config.itemClassName
+      );
       itemElement.setAttribute('tabindex', '0');
-      itemElement.classList.add('selectable');
       this.presentation.appendChild(itemElement);
       itemElement.innerHTML = title;
       this.listenToEventOn('click', itemElement, index);

@@ -1,0 +1,17 @@
+i 
+* Book 1
+* Chapter 2
+* Lesson 2
+* Put them in the right order question
+* With explanation
+
+? Put the mammals in order of size starting with the smallest ...
+= 🐇 Rabbit
+= 🐎 Horse
+= 🐳 Whale
+x 🐜 Ant
+x 🐊 Crocodile
+
+& Did you make sure you thought about whether they were mammals and not insects or reptiles.
+
+And don't forget, whales are mammals.
