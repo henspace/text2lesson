@@ -162,6 +162,10 @@ a.problem {
   width: 1.5rem;
 }
 
+.ProblemPresenter .postamble {
+  text-align: center;
+}
+
 .MarksPresenter .answer-summary::before {
   display: inline-block;
   font-family: var(--icon-font-family);

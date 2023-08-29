@@ -121,6 +121,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
+    config.nextInPostamble = false;
     super(config);
     this.#buildSlideShow();
     this.submitButton.hide();

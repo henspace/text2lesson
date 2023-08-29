@@ -36,7 +36,7 @@ export class ListPresenter extends Presenter {
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
-    super(config, 'div');
+    super(config);
     this.#buildContent();
   }
 

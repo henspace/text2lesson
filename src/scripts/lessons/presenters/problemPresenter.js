@@ -113,11 +113,12 @@ export class ProblemPresenter extends Presenter {
   /**
    * Construct.
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+   * @param {boolean} nextInPostamble - should the next button go in the postamble.
    */
-  constructor(config) {
+  constructor(config, nextInPostamble) {
     config.titles = [];
     config.itemClassName = '';
-    super(config, 'div');
+    super(config, nextInPostamble);
     this.#problem = config.lesson.getNextProblem();
     this.#questionElement = new ManagedElement('div', ClassName.QUESTION);
     this.#questionElement.innerHTML = this.#problem.question.html;
@@ -180,7 +181,7 @@ export class ProblemPresenter extends Presenter {
     this.#submitButton = new ManagedElement('button', ClassName.ANSWER_SUBMIT);
     icons.applyIconToElement(icons.submitAnswer, this.#submitButton.element);
     this.listenToEventOn('click', this.#submitButton, ElementId.CLICKED_SUBMIT); // numeric handler means this will resolve the presenter.
-    this.addButtonToBar(this.#submitButton);
+    this.addPostamble(this.#submitButton);
   }
 
   /**

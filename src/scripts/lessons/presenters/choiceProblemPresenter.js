@@ -51,7 +51,7 @@ export class ChoiceProblemPresenter extends ProblemPresenter {
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
-    super(config);
+    super(config, true);
     this.#buildSimpleOrMultiple();
   }
 
