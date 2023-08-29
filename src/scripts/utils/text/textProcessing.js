@@ -182,7 +182,7 @@ const htmlEscIgnoringBrReps = [
     rep: '&amp;',
   },
   {
-    re: /<(?!br>)/gim,
+    re: /<(?!\/?(?:br|sub|sup)>)/gim,
     rep: '&lt;',
   },
 ];

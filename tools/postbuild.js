@@ -63,7 +63,7 @@ postBuildUtils
     FileManager.copyFiles(
       path.join(PROJECT_INFO.sourceDir, PROJECT_INFO.assetsDirRelToSource),
       path.join(PROJECT_INFO.buildDistDir, PROJECT_INFO.assetsDirRelToSource),
-      { filterRe: /^((?!\.test\.).)*$/, transformer: CSS_TRANSFORMER }
+      { filter: /^((?!\.test\.).)*$/, transformer: CSS_TRANSFORMER }
     )
   )
   .then(() => {

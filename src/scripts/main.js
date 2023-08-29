@@ -73,8 +73,11 @@ function loadApplication() {
     `LR_${BuildInfo.getBundleName().replace('.', '_')}`
   );
 
+  const librariesLocation = BuildInfo.isBuilt()
+    ? 'assets/lessons/libraries.json'
+    : 'assets/lessons/lessons.test.data/libraries.test.json';
   return getLanguages(embeddedLesson.translations)
-    .then(() => lessonManager.loadAllLibraries('assets/lessons/libraries.json'))
+    .then(() => lessonManager.loadAllLibraries(librariesLocation))
     .then(() => loadSettingDefinitions(getSettingDefinitions()))
     .then(() => {
       const language = i18n`language::`;

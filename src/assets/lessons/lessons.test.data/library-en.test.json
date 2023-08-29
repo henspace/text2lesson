@@ -1,0 +1,66 @@
+[
+  {
+    "title": "Test book number 1",
+    "location": "assets/lessons/lessons.test.data/",
+    "chapters": [
+      {
+        "title": "Chapter 1 of book 1",
+        "lessons": [
+          {
+            "title": "Lesson 1 of chapter 1 of book 1",
+            "file": "b1c1l1.test.txt"
+          },
+          {
+            "title": "Lesson 2 of chapter 1 of book 1",
+            "file": "b1c1l2.test.txt"
+          }
+        ]
+      },
+      {
+        "title": "Chapter 2 of book 1",
+        "lessons": [
+          {
+            "title": "Lesson 1 of chapter 2 of book 1",
+            "file": "b1c2l1.test.txt"
+          },
+          {
+            "title": "Lesson 2 of chapter 2 of book 1",
+            "file": "b1c2l2.test.txt"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Test book number 2",
+    "location": "assets/lessons/lessons.test.data/",
+    "chapters": [
+      {
+        "title": "Chapter 1 of book 2",
+        "lessons": [
+          {
+            "title": "Lesson 1 of chapter 1 of book 2",
+            "file": "b2c1l1.test.txt"
+          },
+          {
+            "title": "Lesson 2 of chapter 1 of book 2",
+            "file": "b2c1l2.test.txt"
+          }
+        ]
+      },
+      {
+        "title": "Chapter 2 of book 2",
+        "lessons": [
+          {
+            "title": "Lesson 1 of chapter 2 of book 2",
+            "file": "b2c2l1.test.txt"
+          },
+          {
+            "title": "Lesson 2 of chapter 2 of book 2",
+            "file": "b2c2l2.test.txt"
+          }
+        ]
+      }
+    ]
+  }
+]

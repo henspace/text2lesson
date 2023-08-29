@@ -155,12 +155,12 @@ export class MarksPresenter extends Presenter {
    * Add a list of answers.
    */
   #addAnswers() {
-    const answers = new ManagedElement('ul');
+    const answers = new ManagedElement('div');
     this.config.lesson.marks.markedItems.forEach((markedItem) => {
-      const li = new ManagedElement('li');
-      li.innerHTML = `${markedItem.item.question.plainText}`;
-      li.classList.add(this.#getClassForMarkState(markedItem.state));
-      answers.appendChild(li);
+      const item = new ManagedElement('div', 'answer-summary');
+      item.innerHTML = `${markedItem.item.question.plainText}`;
+      item.classList.add(this.#getClassForMarkState(markedItem.state));
+      answers.appendChild(item);
     });
     this.presentation.appendChild(answers);
   }

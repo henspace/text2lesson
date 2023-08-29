@@ -51,7 +51,7 @@ export class ChoiceProblemPresenter extends ProblemPresenter {
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
-    super(config);
+    super(config, true);
     this.#buildSimpleOrMultiple();
   }
 
@@ -71,7 +71,7 @@ export class ChoiceProblemPresenter extends ProblemPresenter {
    * @private
    */
   #buildAnswers() {
-    this.#answerListElement = new ManagedElement('ul');
+    this.#answerListElement = new ManagedElement('div');
     this.answerElement.appendChild(this.#answerListElement);
     this.#answerListElement.setAttributes({
       'aria-label': i18n`Possible answers`,
@@ -103,8 +103,7 @@ export class ChoiceProblemPresenter extends ProblemPresenter {
     const role =
       this.problem.questionType === QuestionType.MULTI ? 'checkbox' : 'radio';
     answers.forEach((value) => {
-      const element = new ManagedElement('li', ClassName.ANSWER);
-      element.classList.add('selectable');
+      const element = new ManagedElement('button', ClassName.ANSWER);
       element.innerHTML = value.html;
       element.setSafeAttribute(Attribute.RIGHT_OR_WRONG, areRight);
       element.setAttributes({

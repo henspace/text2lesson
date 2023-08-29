@@ -1,0 +1,15 @@
+i 
+* Book 1
+* Chapter 2
+* Lesson 1
+* Fill in the blank question
+* With explanation
+
+? A Googolplex is 10 to the power of ...10 to the power of ...100.
+x 1
+x 2
+x 4
+x 8
+
+& The term **googol** came from Edward Kasner's daughter in 1920. The term 
+**googolplex** came later to be 10<sup>100</sup>.

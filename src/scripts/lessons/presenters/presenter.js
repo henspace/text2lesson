@@ -93,6 +93,11 @@ export class Presenter extends ManagedElement {
   #presentation;
 
   /**
+   * Posamble
+   * @type {module:utils/userIo/managedElement.ManagedElement}
+   */
+  #postamble;
+  /**
    * Get the presentation
    * @returns {module:utils/userIo/managedElement.ManagedElement}
    */
@@ -124,18 +129,29 @@ export class Presenter extends ManagedElement {
   #forwardsButton;
 
   /**
+   * Location of next button. It defaults to the button bar
+   * @type {boolean}
+   */
+  #nextInPostamble;
+
+  /**
    * Construct the presenter
    * @param {PresenterConfig} - configuration for the presenter.
-   * @param {string} presentationTagName - type of presentation containing element. This defaults to a div
+   * @param {boolean} nextInPostamble - the next button is normally in the button bar, but it can be moved to the postamble if preferred.
    */
-  constructor(config, presentationTagName = 'div') {
+  constructor(config, nextInPostamble) {
     super('div');
+    this.#nextInPostamble = nextInPostamble;
     this.#addClassNames();
     this.config = config;
     footer.buttonBar.removeChildren();
-    this.#buildContent(presentationTagName);
+    this.#buildContent();
   }
 
+  /**
+   * Add class names for the presenter. This is built up from the presenter's
+   * inheritance.
+   */
   #addClassNames() {
     let item = this;
     do {
@@ -145,20 +161,17 @@ export class Presenter extends ManagedElement {
   }
 
   /**
-   * Add preamble
-   * @param {string} presentationTagName - type of the presentation container
+   * Build content for presenter.
    */
-  #buildContent(presentationTagName) {
+  #buildContent() {
     this.#preamble = new ManagedElement('div', 'preamble');
-    this.#presentation = new ManagedElement(
-      presentationTagName,
-      'presentation'
-    );
+    this.#presentation = new ManagedElement('div', 'presentation');
+    this.#postamble = new ManagedElement('div', 'postamble');
     this.#buttonBar = footer.buttonBar; // new ManagedElement('div', 'button-bar');
     this.#addNavigationButtons();
     this.appendChild(this.#preamble);
     this.appendChild(this.#presentation);
-    //this.appendChild(this.#buttonBar);
+    this.appendChild(this.#postamble);
   }
 
   /**
@@ -186,11 +199,22 @@ export class Presenter extends ManagedElement {
    * @param {string | Element | module:utils/userIo/managedElement.ManagedElement}
    */
   addPreamble(data) {
-    this.#preamble.removeChildren();
     if (typeof data === 'string') {
-      this.#preamble.innerHTML = data;
+      this.#preamble.createAndAppendChild('div', null, data);
     } else {
       this.#preamble.appendChild(data);
+    }
+  }
+
+  /**
+   * Postamble html or ManagedElement
+   * @param {string | Element | module:utils/userIo/managedElement.ManagedElement}
+   */
+  addPostamble(data) {
+    if (typeof data === 'string') {
+      this.#preamble.createAndAppendChild('div', null, data);
+    } else {
+      this.#postamble.appendChild(data);
     }
   }
 
@@ -213,7 +237,12 @@ export class Presenter extends ManagedElement {
     this.#forwardsButton = new ManagedElement('button', 'forward-navigation');
     icons.applyIconToElement(icons.forward, this.#forwardsButton);
     this.listenToEventOn('click', this.#forwardsButton, Presenter.NEXT_ID);
-    this.#buttonBar.appendChild(this.#forwardsButton);
+    if (this.#nextInPostamble) {
+      this.addPostamble(this.#forwardsButton);
+    } else {
+      this.#buttonBar.appendChild(this.#forwardsButton);
+    }
+
     this.#forwardsButton.hide();
   }
 

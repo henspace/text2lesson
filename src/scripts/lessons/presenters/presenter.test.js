@@ -93,7 +93,7 @@ test('constructor creates ManagedElement with class name base on interitance', (
   expect(presenter.classList.contains('Presenter')).toBe(true);
 });
 
-test('presentOnStage creates preamble and presentation elements.', () => {
+test('presentOnStage creates preamble, presentation and postamble elements.', () => {
   const config = {
     className: 'presenter',
     titles: ['title1', 'title2'],
@@ -108,11 +108,14 @@ test('presentOnStage creates preamble and presentation elements.', () => {
   expect(stage.managedChildren[0]).toBe(presenter);
 
   const rootElement = presenter.element;
-  expect(rootElement.children).toHaveLength(2);
+  expect(rootElement.children).toHaveLength(3);
   expect(rootElement.children.item(0).classList.contains('preamble')).toBe(
     true
   );
   expect(rootElement.children.item(1).classList.contains('presentation')).toBe(
+    true
+  );
+  expect(rootElement.children.item(2).classList.contains('postamble')).toBe(
     true
   );
 

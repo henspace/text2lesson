@@ -121,6 +121,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
+    config.nextInPostamble = false;
     super(config);
     this.#buildSlideShow();
     this.submitButton.hide();
@@ -253,14 +254,20 @@ export class SlideProblemPresenter extends ProblemPresenter {
     this.#currentCardDetail = this.#cards.getNext();
     this.#visualCard.innerHTML = this.#currentCardDetail.html;
     const cardRect = this.#visualCard.getBoundingClientRect();
-    const presentationRect = this.presentation.getBoundingClientRect();
+    const presentationRect = document
+      .getElementById('content')
+      .getBoundingClientRect();
     const verticalSpace = presentationRect.height - cardRect.height;
+    this.#visualCard.style.maxHeight = `${Math.floor(
+      0.9 * presentationRect.height
+    )}px`;
     if (verticalSpace > 0) {
       this.#visualCard.style.marginTop = `${Math.floor(verticalSpace / 2)}px`;
     } else {
       this.#visualCard.style.marginTop = `0px`;
     }
 
+    this.#visualCard.element.scrollTo(0, 0);
     this.#setCardState(CardState.ARRIVING);
     this.#endShowIfLastCard();
   }
@@ -352,7 +359,6 @@ export class SlideProblemPresenter extends ProblemPresenter {
     ) {
       this.#removeCard(direction);
     }
-    this.#paused = false;
   }
 
   /**
@@ -388,7 +394,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
     } else {
       this.#pauseButton.hide();
       this.#playButton.show();
-      this.#skipButton.hide();
+      this.#skipButton.show();
       this.#playButton.focus();
     }
   }

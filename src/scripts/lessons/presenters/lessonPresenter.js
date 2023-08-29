@@ -60,31 +60,30 @@ export class LessonPresenter extends Presenter {
    * Build custom content for the lesson.
    */
   #buildCustomContent() {
-    this.presentation.createAndAppendChild('h2', null, i18n`Selected lesson:`);
+    this.presentation.createAndAppendChild('p', null, i18n`Selected lesson:`);
     const summaryBlock = this.presentation.createAndAppendChild(
       'button',
       'lesson-summary'
     );
-    const summaryContent = summaryBlock.createAndAppendChild('ul');
-    summaryContent.createAndAppendChild(
-      'li',
+    summaryBlock.createAndAppendChild(
+      'div',
       'library-title',
       this.config.lessonInfo.titles.library
     );
     if (!lessonManager.usingLocalLibrary) {
-      summaryContent.createAndAppendChild(
-        'li',
+      summaryBlock.createAndAppendChild(
+        'div',
         'book-title',
         this.config.lessonInfo.titles.book
       );
-      summaryContent.createAndAppendChild(
-        'li',
+      summaryBlock.createAndAppendChild(
+        'div',
         'chapter-title',
         this.config.lessonInfo.titles.chapter
       );
     }
-    summaryContent.createAndAppendChild(
-      'li',
+    summaryBlock.createAndAppendChild(
+      'div',
       'lesson-title',
       this.config.lessonInfo.titles.lesson
     );
