@@ -42,8 +42,14 @@ a.problem {
   text-align: left;
 }
 
-.problem-answer {
-  border-radius: 1em;
+.problem-answers > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.ChoiceProblemPresenter button.problem-answer {
+  flex: 1;
+  text-align: left;
 }
 
 .problem-question {
@@ -57,14 +63,20 @@ a.problem {
   outline-color: var(--secondary-highlight);
 }
 
-.problem-answer::after,
-.problem-answer::marker {
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
+.problem-answer::before {
+  width: 3rem;
 }
 
-.problem-answer::marker {
-  content: var(--icon-unchecked-bullet) ' ';
+.problem-answer::before,
+.problem-answer::after {
+  display: inline-block;
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+  width: 1.5rem;
+}
+
+.problem-answer::before {
+  content: var(--icon-unchecked-bullet);
 }
 
 .problem-answer.selected-answer {
@@ -77,8 +89,8 @@ a.problem {
   text-decoration: line-through;
 }
 
-.problem-answer.selected-answer::marker {
-  content: var(--icon-checked-bullet) ' ';
+.problem-answer.selected-answer::before {
+  content: var(--icon-checked-bullet);
 }
 
 .problem-answer.correct-answer::after {
@@ -116,52 +128,67 @@ a.problem {
 }
 
 
-li.library::marker {
-  content: var(--icon-library) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
+.ListPresenter .presentation {
+  display: flex;
+  flex-direction: column;
 }
 
-li.book::marker {
-  content: var(--icon-book) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
+.ListPresenter .presentation button {
+  flex: 1;
+  text-align: left;
 }
 
-li.chapter::marker {
-  content: var(--icon-chapter) ' ';
+.ListPresenter .book::before {
+  content: var(--icon-book);
+  display: inline-block;
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
+  width: 1.5rem;
 }
 
-li.lesson::marker {
-  content: var(--icon-lesson) ' ';
+.ListPresenter .chapter::before {
+  content: var(--icon-chapter);
+  display: inline-block;
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
+  width: 1.5rem;
 }
 
-li.problem::marker {
-  content: var(--icon-problem) ' ';
+.ListPresenter .lesson::before {
+  content: var(--icon-lesson);
+  display: inline-block;
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
+  width: 1.5rem;
 }
 
-.MarksPresenter li.correct::marker {
-  content: var(--icon-correct) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
+.ProblemPresenter .postamble {
+  text-align: center;
 }
 
-.MarksPresenter li.incorrect::marker {
-  content: var(--icon-incorrect) ' ';
+.MarksPresenter .answer-summary::before {
+  display: inline-block;
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
+  width: 1.5rem;
 }
 
-.MarksPresenter li.skipped::marker {
-  content: var(--icon-skipped) ' ';
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
+.MarksPresenter .answer-summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.MarksPresenter .answer-summary.correct::before {
+  content: var(--icon-correct);
+}
+
+.MarksPresenter .answer-summary.incorrect::before {
+  content: var(--icon-incorrect);
+}
+
+.MarksPresenter .answer-summary.skipped::before {
+  content: var(--icon-skipped);
 }
 
 
