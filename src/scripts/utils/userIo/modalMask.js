@@ -28,6 +28,11 @@
 const mask = document.getElementById('modal-mask');
 
 /**
+ * @type {Element}
+ */
+let hourglass;
+
+/**
  * @type {string[]}
  */
 const standardSelectionIds = ['title-bar', 'content', 'footer'];
@@ -104,9 +109,32 @@ function deactivateItems() {
 }
 
 /**
- * Show the modal mask
+ * Adds an hourglass to the modal mask.
+ * This remains and is only removed by a call to hideMask.
+ * Note that if a modal dialog is shown while the hourglass is shown, which it
+ * shouldn't be, the closure of the modal dialog will also remove the hourglass.
  */
-export function showMask() {
+function addHourglass() {
+  if (!hourglass) {
+    hourglass = document.createElement('div');
+    hourglass.className = 'hourglass';
+    mask.appendChild(hourglass);
+  }
+}
+
+/**
+ * Removes the hourglass from the modal mask.
+ */
+function removeHourglass() {
+  hourglass?.remove();
+  hourglass = null;
+}
+
+/**
+ * Show the modal mask
+ * @param {boolean} withHourglass - if true a spining hourglass is included.
+ */
+export function showMask(withHourglass) {
   mask.style.visibility = 'visible';
   if (referenceCount === 0) {
     deactivateItems();
@@ -115,6 +143,9 @@ export function showMask() {
       `Reference count ${referenceCount} is > 0 so mask already in place.`
     );
   }
+  if (withHourglass) {
+    addHourglass();
+  }
   referenceCount++;
 }
 
@@ -122,6 +153,7 @@ export function showMask() {
  * Hide the modal mask
  */
 export function hideMask() {
+  removeHourglass();
   if (--referenceCount > 0) {
     console.debug(
       `Reference count ${referenceCount} is > 0 so leave mask in place.`

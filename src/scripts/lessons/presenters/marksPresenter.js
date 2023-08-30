@@ -30,6 +30,7 @@ import { lessonManager } from '../lessonManager.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { LessonOrigin } from '../lessonOrigins.js';
 import { embeddedLesson } from '../embeddedLesson.js';
+import { generateConfetti } from '../../effects/confetti.js';
 
 /**
  * Classes used for styling medals.
@@ -182,6 +183,9 @@ export class MarksPresenter extends Presenter {
       summary
     );
     summaryItem.classList.add(this.#calcMedalClass(percent));
+    if (percent >= MedalDetails.GOOD.upperLimit) {
+      generateConfetti();
+    }
   }
 
   /**
