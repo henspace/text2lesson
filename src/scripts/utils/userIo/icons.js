@@ -180,6 +180,13 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get hourglass() {
+    return {
+      content: this.#getIconHtml('--icon-hourglass-html'),
+      accessibleName: i18n`Hourglass`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get openFolder() {
     return {
       content: this.#getIconHtml('--icon-open-folder-html'),

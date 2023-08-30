@@ -23,15 +23,17 @@
  */
 
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
-
+import { Random } from '../../utils/random.js';
 /**
  * Possible celebration names
  * @enum {string}
  */
-export const CelebrationType = {
-  HAPPY: 'smiley-face',
-  SAD: 'sad-face',
+const CelebrationTypes = {
+  HAPPY: ['smiley-face', 'star', 'party-popper'],
+  SAD: ['sad-face', 'grimacing-face', 'crying-face'],
 };
+
+const ANIMATIONS = ['celebrate-left', 'celebrate-top', 'celebrate-center'];
 
 /**
  * DOM element that can appear on screen to celebrate something
@@ -61,6 +63,7 @@ export class Celebrator extends ManagedElement {
     super('div', 'celebrator');
     this.appendTo(document.body);
     this.listenToOwnEvent('animationend');
+    this.listenToOwnEvent('canceled');
     this.#busy = false;
     this.hide();
   }
@@ -72,16 +75,15 @@ export class Celebrator extends ManagedElement {
    */
   handleAnimationendEvent(eventIgnored, eventIdIgnored) {
     console.debug('Celebration ended.');
-    this.hide();
-    this.#busy = false;
+    this.remove();
   }
 
   /**
    * Bring in the celebrator.
    * No more celebrations are handled until this one ends.
-   * @param {CelebrationType} [celebration = CelebrationType.SMILEY] - the class to apply
+   * @param {CelebrationTypes} [celebration = CelebrationType.SMILEY] - the class to apply
    */
-  celebrate(celebration = CelebrationType.HAPPY) {
+  celebrate(celebration = CelebrationTypes.HAPPY) {
     if (this.#busy) {
       console.warn('Celebration busy so new celebration ignored.');
       return;
@@ -95,4 +97,30 @@ export class Celebrator extends ManagedElement {
   }
 }
 
-export const celebrator = new Celebrator();
+/**
+ * Bring in a celebrator using the className to determine which character is
+ * shown. The animation is randomly chosen from ANIMATIONS.
+ * @param {string} className
+ */
+function performCelebration(className) {
+  const celebrator = document.createElement('div');
+  celebrator.style.animationName = Random.itemFrom(ANIMATIONS);
+  celebrator.classList.add('celebrator', className);
+  document.body.appendChild(celebrator);
+  celebrator.addEventListener('animationend', () => celebrator.remove());
+  celebrator.addEventListener('animationcancel', () => celebrator.remove());
+}
+
+/**
+ * Play the celebration.
+ */
+export function celebrate() {
+  performCelebration(Random.itemFrom(CelebrationTypes.HAPPY));
+}
+
+/**
+ * Play the commiseration.
+ */
+export function commiserate() {
+  performCelebration(Random.itemFrom(CelebrationTypes.SAD));
+}

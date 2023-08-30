@@ -33,6 +33,7 @@ import { persistentData } from '../utils/userIo/storage.js';
 import * as cssVariables from '../utils/color/cssVariables.js';
 import { icons } from '../utils/userIo/icons.js';
 import { focusManager } from '../utils/userIo/focusManager.js';
+import { soundManager, Enthusiasm } from '../utils/audio/soundManager.js';
 
 const DEFAULT_HUE = 120;
 const DEFAULT_SATURATION = 50;
@@ -146,6 +147,14 @@ export function getSettingDefinitions() {
       defaultValue: DEFAULT_READING_SPEED,
       min: 80,
       max: 1000,
+    },
+    enthusiasm: {
+      type: 'range',
+      label: i18n`Audio level`,
+      defaultValue: Enthusiasm.LOW,
+      min: Enthusiasm.OFF,
+      max: Enthusiasm.HIGH,
+      onupdate: (value) => (soundManager.enthusiasm = value),
     },
     lessonInfo: {
       type: 'separator',

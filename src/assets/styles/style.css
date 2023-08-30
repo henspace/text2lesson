@@ -108,6 +108,7 @@ noscript {
 }
 
 #modal-mask {
+  text-align: center;
   z-index: 4;
 }
 
@@ -246,4 +247,29 @@ a:visited,
 a:active {
   background-color: inherit;
   color: inherit;
+}
+
+@keyframes hourglass {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(1turn);
+  }
+}
+.hourglass {
+  animation-name: hourglass;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  color: var(--background-contrast);
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+  font-size: 4em;
+  margin: auto;
+  text-align: center;
+  line-height: 100vh;
+  transition: none;
+}
+.hourglass::before {
+  content: var(--icon-hourglass);
 }

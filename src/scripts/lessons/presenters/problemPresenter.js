@@ -28,10 +28,11 @@ import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { ModalDialog } from '../../utils/userIo/modalDialog.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { MarkState } from '../itemMarker.js';
-import { celebrator, CelebrationType } from '../candy/celebrators.js';
+import { celebrate, commiserate } from '../candy/celebrators.js';
 import { i18n } from '../../utils/i18n/i18n.js';
 import { LessonOrigin } from '../lessonOrigins.js';
 import { focusManager } from '../../utils/userIo/focusManager.js';
+import { soundManager } from '../../utils/audio/soundManager.js';
 
 /**
  * Class names
@@ -262,14 +263,33 @@ export class ProblemPresenter extends Presenter {
     );
     this.#submitButton.hide();
     this.showNextButton(true);
-    celebrator.celebrate(correct ? CelebrationType.HAPPY : CelebrationType.SAD);
-    const explanation = this.#problem.explanation;
     if (correct) {
-      this.#autoAdvanceTimer = setTimeout(
-        () => super.handleClickEvent(event, Presenter.NEXT_ID),
-        3000
-      );
-    } else if (explanation.html) {
+      this.#handleCorrectAnswer();
+    } else {
+      this.#handleIncorrectAnswer();
+    }
+  }
+
+  /**
+   * Handle correct answer
+   */
+  #handleCorrectAnswer() {
+    celebrate();
+    soundManager.playGood();
+    this.#autoAdvanceTimer = setTimeout(
+      () => super.handleClickEvent(event, Presenter.NEXT_ID),
+      3000
+    );
+  }
+
+  /**
+   * Handle incorrect answer
+   */
+  #handleIncorrectAnswer() {
+    commiserate();
+    soundManager.playBad();
+    const explanation = this.#problem.explanation;
+    if (explanation.html) {
       return ModalDialog.showInfo(
         explanation.html,
         i18n`Sorry. That's not right`
