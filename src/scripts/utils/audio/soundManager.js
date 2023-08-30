@@ -95,8 +95,21 @@ class SoundManager {
    * Load the audio sounds.
    */
   #loadAudio() {
-    this.#goodAudio = new Audio(GOOD_SOUND_URLS[this.#enthusiasm]);
-    this.#badAudio = new Audio(BAD_SOUND_URLS[this.#enthusiasm]);
+    this.#goodAudio = this.#createAudioIfNotNull(
+      GOOD_SOUND_URLS[this.#enthusiasm]
+    );
+    this.#badAudio = this.#createAudioIfNotNull(
+      BAD_SOUND_URLS[this.#enthusiasm]
+    );
+  }
+
+  /**
+   * Load the audio if not null
+   * @param {string} url
+   * @returns {Audio} new audio object or null if url is null.
+   */
+  #createAudioIfNotNull(url) {
+    return url ? new Audio(url) : null;
   }
 
   /**
