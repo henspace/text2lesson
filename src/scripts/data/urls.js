@@ -31,7 +31,7 @@ if (!rootUrl.endsWith('/')) {
   rootUrl += '/'; // defensive
 }
 
-const DOCS_ROOT_URL = 'https://henspace.com/text2lesson-docs/';
+const DOCS_ROOT_URL = 'https://henspace.github.io/text2lesson-docs/';
 
 /**
  * @enum {string}
