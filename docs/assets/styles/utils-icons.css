@@ -13,6 +13,9 @@
   --icon-add-lesson: '\f022 \002b';
   --icon-add-lesson-html: '<i class="fa-solid fa-rectangle-list"></i><i class="fa-solid fa-plus"></i>';
 
+  --icon-hourglass: '\f254';
+  --icon-hourglass-html: '<i class="fa-solid fa-hourglass"></i>';
+
   
   --icon-back-nav: '\f30a';
   --icon-back-nav-html: '<i class="fa-solid fa-left-long"></i>';
