@@ -28,14 +28,10 @@
  */
 const GOOD_SOUND_URLS = [
   null,
-  '/assets/audio/good1.mp3',
-  '/assets/audio/good2.mp3',
+  'assets/audio/good1.mp3',
+  'assets/audio/good2.mp3',
 ];
-const BAD_SOUND_URLS = [
-  null,
-  '/assets/audio/bad1.mp3',
-  '/assets/audio/bad2.mp3',
-];
+const BAD_SOUND_URLS = [null, 'assets/audio/bad1.mp3', 'assets/audio/bad2.mp3'];
 
 /**
  * Measure of how enthusiastic audio is. When OFF there is no audio at all.

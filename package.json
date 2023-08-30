@@ -32,7 +32,7 @@
     "prebuildChild": "node ./tools/prebuild.js",
     "publish": "npm run check && git add * && git commit && npm version patch && npm run _buildProd && git add * && git commit --reuse-message=HEAD",
     "serveSource": "node ./tools/server/server.js ./src 8080",
-    "serveDev": "node ./tools/server/server.js ./build/development 8081",
+    "serveDev": "node ./tools/server/server.js ./build 8081",
     "serveSite": "node ./tools/server/server.js ./docs 8082",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ./src",
     "testAll": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
