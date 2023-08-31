@@ -136,7 +136,9 @@ export class LessonSource {
 
   /**
    * Test to see if the key represents a new question block.
-   * Keys for INTRO or QUESTION result in new question blocks if they've already
+   * INTRO key results in a new question block if it or a question has already
+   * been fulfilled.
+   * QUESTION key results in a new question block if it has already
    * been fulfilled.
    * If the last key was a QUESTION_BREAK, any key creates a new question.
    * @param {QuestionItemKey} lastKey - last key that was in use/
@@ -150,7 +152,7 @@ export class LessonSource {
     }
     switch (newKey) {
       case ProblemItemKey.INTRO:
-        return !!currentProblem.introSource;
+        return !!(currentProblem.introSource || currentProblem.questionSource);
       case ProblemItemKey.QUESTION:
         return !!currentProblem.questionSource;
     }
