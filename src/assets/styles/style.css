@@ -270,6 +270,7 @@ a:active {
   line-height: 100vh;
   transition: none;
 }
+
 .hourglass::before {
   content: var(--icon-hourglass);
 }
