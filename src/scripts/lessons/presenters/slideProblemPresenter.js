@@ -30,6 +30,8 @@ import { persistentData } from '../../utils/userIo/storage.js';
 import { Presenter } from './presenter.js';
 import { Gesture } from '../../utils/userIo/gestures.js';
 import { Random } from '../../utils/random.js';
+import { toast } from '../../utils/userIo/toast.js';
+import { i18n } from '../../utils/i18n/i18n.js';
 
 const MediaClass = {
   PAUSE: 'pause',
@@ -253,25 +255,26 @@ export class SlideProblemPresenter extends ProblemPresenter {
     this.#cards.setWordsPerMinute(readingSpeed);
     this.#currentCardDetail = this.#cards.getNext();
     this.#visualCard.innerHTML = this.#currentCardDetail.html;
-    const cardRect = this.#visualCard.getBoundingClientRect();
-    const presentationRect = document
-      .getElementById('content')
-      .getBoundingClientRect();
-    const verticalSpace = presentationRect.height - cardRect.height;
-    this.#visualCard.style.maxHeight = `${Math.floor(
-      0.9 * presentationRect.height
-    )}px`;
-    if (verticalSpace > 0) {
-      this.#visualCard.style.marginTop = `${Math.floor(verticalSpace / 2)}px`;
-    } else {
-      this.#visualCard.style.marginTop = `0px`;
-    }
-
+    this.#autoPauseIfAppropriate(this.#currentCardDetail.html);
     this.#visualCard.element.scrollTo(0, 0);
     this.#setCardState(CardState.ARRIVING);
     this.#endShowIfLastCard();
   }
 
+  /**
+   * Look at the card html and pause if appropriate. The code pauses when the
+   * following conditions are met:
+   * - the html contains a link.
+   * @param {string} cardHtml
+   */
+  #autoPauseIfAppropriate(cardHtml) {
+    if (cardHtml.match(/<a\s*[^>]*href=[^>]+\s*>.*?<\/a>/i)) {
+      this.#pauseTheShow();
+      toast(
+        i18n`This slide contains a link, so the presentation has been paused.`
+      );
+    }
+  }
   /**
    * Leave card on screen while it's read.
    * After the read time the remove card is called.

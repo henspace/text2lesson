@@ -91,6 +91,12 @@ export const AnswerSelectionState = {
  * @extends module:lessons/presenters/presenter.Presenter
  */
 export class ProblemPresenter extends Presenter {
+  /**
+   * Delay before advancing to next question.
+   * @type {number}
+   */
+  static ADVANCE_DELAY_MS = 3000;
+
   /** @type {Problem} */
   #problem;
 
@@ -262,7 +268,6 @@ export class ProblemPresenter extends Presenter {
       correct ? MarkState.CORRECT : MarkState.INCORRECT
     );
     this.#submitButton.hide();
-    this.showNextButton(true);
     if (correct) {
       this.#handleCorrectAnswer();
     } else {
@@ -278,7 +283,7 @@ export class ProblemPresenter extends Presenter {
     soundManager.playGood();
     this.#autoAdvanceTimer = setTimeout(
       () => super.handleClickEvent(event, Presenter.NEXT_ID),
-      3000
+      ProblemPresenter.ADVANCE_DELAY_MS
     );
   }
 
@@ -286,6 +291,10 @@ export class ProblemPresenter extends Presenter {
    * Handle incorrect answer
    */
   #handleIncorrectAnswer() {
+    setTimeout(
+      () => this.showNextButton(true),
+      ProblemPresenter.ADVANCE_DELAY_MS
+    );
     commiserate();
     soundManager.playBad();
     const explanation = this.#problem.explanation;

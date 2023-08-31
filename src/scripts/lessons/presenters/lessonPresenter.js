@@ -28,6 +28,7 @@ import { LessonSource } from '../lessonSource.js';
 import { i18n } from '../../utils/i18n/i18n.js';
 import { icons } from '../../utils/userIo/icons.js';
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
+import { toast } from '../../utils/userIo/toast.js';
 
 /**
  * Class to present a Lesson.
@@ -39,6 +40,12 @@ export class LessonPresenter extends Presenter {
    * @type {string}
    */
   static EDIT_EVENT_ID = 'EDIT_LESSON';
+
+  /**
+   * Flag whether it okay to progress to next.
+   * @type {boolean}
+   */
+  #allowNext = false;
 
   /**
    * Construct.
@@ -111,18 +118,28 @@ export class LessonPresenter extends Presenter {
   /**
    * Show the next button if appropriate. It is always shown for remote
    * lessons but hidden for local lessons that have no content.
+   * This also sets the flag #nextNotAppropriate if the button is not shown.
    */
   #showNextButtonIfContent() {
     if (this.config.lessonInfo.usingLocalLibrary) {
       lessonManager.loadCurrentLesson().then((cachedLesson) => {
         if (cachedLesson.content) {
-          this.showNextButton();
+          this.#setNextOkay();
           return;
         }
       });
     } else {
-      this.showNextButton();
+      this.#setNextOkay();
     }
+  }
+
+  /**
+   * Show the next button and flag that it is okay to progress to the next
+   * presenter.
+   */
+  #setNextOkay() {
+    this.#allowNext = true;
+    this.showNextButton();
   }
 
   /**
@@ -131,6 +148,10 @@ export class LessonPresenter extends Presenter {
   next(eventId) {
     if (eventId === LessonPresenter.EDIT_EVENT_ID) {
       return this.config.factory.getEditor(this, this.config);
+    } else if (!this.#allowNext) {
+      toast(
+        i18n`This lesson is empty. You need to edit it first and add some content.`
+      );
     } else {
       return lessonManager.loadCurrentLesson().then((cachedLesson) => {
         const lessonSource = LessonSource.createFromSource(

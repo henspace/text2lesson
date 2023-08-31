@@ -182,6 +182,18 @@ test('New introSource part creates second ProblemSource', () => {
   expect(lesson.problemSources[1].introSource).toBe('intro2\n');
 });
 
+test('New introSource part creates second ProblemSource if question already defined', () => {
+  const source = `(?)question
+(=)correct answer
+(x)incorrect answer
+(+)explanation
+(i)intro2`;
+  const lesson = LessonSource.createFromSource(source);
+  expect(lesson.problemSources).toHaveLength(2);
+  expect(lesson.problemSources[0].questionSource).toBe('question\n');
+  expect(lesson.problemSources[1].introSource).toBe('intro2\n');
+});
+
 test('New questionSource part creates second question block', () => {
   const source = `(i)intro
 (?)question

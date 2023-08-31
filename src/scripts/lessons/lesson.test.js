@@ -106,6 +106,43 @@ test('hasMoreProblems checks to see if there are more questions', () => {
   expect(lesson.hasMoreProblems).toBe(false);
 });
 
+test('isEmpty returns false if there is a problem in the lesson with an intro', () => {
+  const lesson = new Lesson();
+  const problem = new Problem();
+  problem.intro = { html: 'intro' };
+  lesson.addProblem(problem);
+  expect(lesson.isEmpty).toBe(false);
+});
+
+test('isEmpty returns false if there is a problem in the lesson with a question', () => {
+  const lesson = new Lesson();
+  const problem = new Problem();
+  problem.question = { html: 'intro', missingWords: [] };
+  lesson.addProblem(problem);
+  expect(lesson.isEmpty).toBe(false);
+});
+
+test('isEmpty returns false if there is a problem in the lesson with an intro and a question', () => {
+  const lesson = new Lesson();
+  const problem = new Problem();
+  problem.intro = { html: 'intro' };
+  problem.question = { html: 'intro', missingWords: [] };
+  lesson.addProblem(problem);
+  expect(lesson.isEmpty).toBe(false);
+});
+
+test('isEmpty returns true if there is no problem in the lesson', () => {
+  const lesson = new Lesson();
+  expect(lesson.isEmpty).toBe(true);
+});
+
+test('isEmpty returns true if there is a problem in the lesson with no intro and no question', () => {
+  const lesson = new Lesson();
+  const problem = new Problem();
+  lesson.addProblem(problem);
+  expect(lesson.isEmpty).toBe(true);
+});
+
 test('markProblem adjusts marks', () => {
   const lesson = new Lesson();
   expect(lesson.marks).toStrictEqual({

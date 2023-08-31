@@ -33,6 +33,12 @@ a.problem {
   overflow: hidden;
 }
 
+.SlideProblemPresenter.Presenter .presentation .problem-question {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 .HomePresenter .presentation {
   display: flex;
   flex-direction: column;

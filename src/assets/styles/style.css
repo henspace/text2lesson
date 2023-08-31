@@ -270,6 +270,12 @@ a:active {
   line-height: 100vh;
   transition: none;
 }
+
 .hourglass::before {
   content: var(--icon-hourglass);
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
 }

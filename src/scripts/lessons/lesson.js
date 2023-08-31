@@ -110,6 +110,21 @@ export class Lesson {
   }
 
   /**
+   * Check to see if the lesson is empty. This is not just a case of counting
+   * the problems, as there can be one problem with no content, depending on how
+   * the Markdown was parsed.
+   */
+  get isEmpty() {
+    if (this.#problems.length === 0) {
+      return true;
+    } else {
+      return !(
+        this.#problems[0].intro?.html || this.#problems[0].question?.html
+      );
+    }
+  }
+
+  /**
    * Get next problem.
    * This advances the internal index.
    * If there aren't any more, it returns null;

@@ -145,11 +145,18 @@ export class MarksPresenter extends Presenter {
     }
   }
 
+  /** Add a retry button, but only if there is at least one problem to answer. */
   #addRetryButton() {
-    const repeatButton = new ManagedElement('button');
-    icons.applyIconToElement(icons.repeatLesson, repeatButton);
-    this.addButtonToBar(repeatButton);
-    this.listenToEventOn('click', repeatButton, MarksPresenter.RETRY_LESSON_ID);
+    if (!this.config.lesson.isEmpty) {
+      const repeatButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.repeatLesson, repeatButton);
+      this.addButtonToBar(repeatButton);
+      this.listenToEventOn(
+        'click',
+        repeatButton,
+        MarksPresenter.RETRY_LESSON_ID
+      );
+    }
   }
 
   /**
