@@ -16,6 +16,23 @@
   html:has(.MarksPresenter) #footer {
     display: none !important;
   }
+  #stage {
+    overflow-y: hidden !important;
+  }
+  body {
+    max-height: none !important;
+    height: 300% !important;
+  }
+  #content {
+    display: block !important;
+  }
+
+  #footer {
+    display: none;
+  }
+  .print-problems > li {
+    page-break-inside: avoid;
+  }
 }
 
 @media (max-width: 480px) {
@@ -286,11 +303,15 @@ img {
   margin-left: 1em;
 }
 
+.maths:has(table) {
+  padding-bottom: 0.5em;
+  margin-top: -1.2rem;
+}
+
 .maths table {
   border-collapse: collapse;
   display: inline-block;
-  margin-bottom: 1.5rem;
-  transform: translateY(1rem);
+  transform: translateY(1.2rem);
   text-align: center;
 }
 .maths table tr {

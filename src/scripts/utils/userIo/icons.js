@@ -194,6 +194,13 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get fontSize() {
+    return {
+      content: this.#getIconHtml('--icon-font-size-html'),
+      accessibleName: i18n`Font size`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get forward() {
     return {
       content: this.#getIconHtml('--icon-forward-nav-html'),
@@ -292,6 +299,22 @@ class IconGenerator {
       accessibleName: i18n`Play lesson`,
     };
   }
+  /** @returns {IconDetails} information for icon */
+  get print() {
+    return {
+      content: this.#getIconHtml('--icon-print-html'),
+      accessibleName: i18n`Print`,
+    };
+  }
+
+  /** @returns {IconDetails} information for icon */
+  get printPreview() {
+    return {
+      content: this.#getIconHtml('--icon-print-preview-html'),
+      accessibleName: i18n`Print preview`,
+    };
+  }
+
   /** @returns {IconDetails} information for icon */
   get privacy() {
     return {
