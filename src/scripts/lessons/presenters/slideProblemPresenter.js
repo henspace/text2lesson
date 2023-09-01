@@ -302,10 +302,6 @@ export class SlideProblemPresenter extends ProblemPresenter {
    */
   #endShowIfLastCard() {
     if (!this.#cards.hasMore) {
-      this.#pauseButton.hide();
-      this.#playButton.hide();
-      this.#skipButton.hide();
-      this.showNextButton(true);
       return true;
     }
     return false;

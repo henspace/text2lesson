@@ -27,20 +27,14 @@ import { getEmojiHtml } from './emojiParser.js';
 import { getErrorAttributeHtml } from '../utils/errorHandling/errors.js';
 import { i18n } from '../utils/i18n/i18n.js';
 import { ManagedElement } from '../utils/userIo/managedElement.js';
+import { getHtmlForIconName } from './fontAwesomeTools.js';
 
 /**
  * Safe classes for items. This prevents users providing a class that might corrupt
  * the presentation of data. Class names in the array must be in lowercase.
  * @type {string[]}
  */
-const SAFE_CLASSES = [
-  'big',
-  'bigger',
-  'biggest',
-  'small',
-  'smaller',
-  'smallest',
-];
+const SAFE_CLASSES = ['big', 'bigger', 'biggest', 'massive', 'giant'];
 
 /**
  * Get a safe class from the array of SAFE_CLASSES. The requested class is
@@ -122,6 +116,10 @@ class TrackedReplacements {
           return `${startChr}<span ${errorAttribute}>${word}</span>`;
         }
         return `${startChr}${metavalue}`;
+      }),
+      getItemReplacement('icon:', (match, startChr, iconName, iconClass) => {
+        iconClass = makeClassSafe(iconClass);
+        return `${startChr}${getHtmlForIconName(iconName, iconClass)}</span>`;
       }),
     ];
   }

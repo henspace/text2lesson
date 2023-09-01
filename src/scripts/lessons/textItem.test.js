@@ -321,3 +321,17 @@ test('Extract first word correctly finds first word in html ignoring formatting 
   const textitem = textItemParser.TextItem.createFromSource(source);
   expect(textitem.firstWord).toEqual(firstWord);
 });
+
+test('icon passed without class', () => {
+  let source = `123 icon:circle-right`;
+  let textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(`<i class="fa-solid fa-circle-right"></i>`);
+});
+
+test('icon passed without class', () => {
+  let source = `123 icon:circle-right>bigger `;
+  let textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(
+    `<i class="fa-solid fa-circle-right bigger"></i>`
+  );
+});
