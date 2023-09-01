@@ -269,3 +269,38 @@ img {
   max-width: 100%;
   max-height: 100%;
 }
+
+.maths {
+  font-family: 'Noto Sans Math';
+  letter-spacing: 0.2rem;
+  margin-left: 1em;
+}
+
+.maths table {
+  border-collapse: collapse;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  transform: translateY(1rem);
+  text-align: center;
+}
+.maths table tr {
+  border-bottom: 1px solid;
+}
+
+.maths table tr:last-child {
+  border-bottom: none;
+}
+
+.maths .high-symbol {
+  font-size: 1.5rem;
+}
+
+.maths .sqrt {
+  border-top: 2px solid;
+}
+
+.maths .radic {
+  display: inline-block;
+  font-size: 1.3rem;
+  transform: translateX(0.2rem);
+}
