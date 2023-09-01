@@ -21,6 +21,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { parseMaths } from './maths.js';
+
 /**
  * @typedef {Object} Replacement
  * @property {RegExp} re - the expression to match.
@@ -87,6 +89,13 @@ const blockReps = [
     linePrefix: '<li>',
     lineSuffix: '</li>',
   }),
+  /**
+   * Maths equation
+   */
+  {
+    re: /^\s*maths?:\s*(.+?)\s*$/gm,
+    rep: (match, equation) => parseMaths(equation),
+  },
   /** paragraphs of elements not in blocks */
   {
     re: /(?:(?:^|\n{2,})(?!<\w+>))((?:.(?:\n(?!\n))?)+)/g,
