@@ -212,7 +212,7 @@ export class Presenter extends ManagedElement {
    */
   addPostamble(data) {
     if (typeof data === 'string') {
-      this.#preamble.createAndAppendChild('div', null, data);
+      this.#postamble.createAndAppendChild('div', null, data);
     } else {
       this.#postamble.appendChild(data);
     }

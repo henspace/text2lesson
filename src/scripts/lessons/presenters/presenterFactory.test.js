@@ -71,6 +71,7 @@ jest.unstable_mockModule('../lesson.js', () => {
         getNextProblem: jest.fn(() => new Problem()),
         nextProblem: jest.fn(() => new Problem()),
         marks: this.marker.marks,
+        lastUpdated: new Date(),
       };
     }),
   };

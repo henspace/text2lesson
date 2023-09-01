@@ -56,6 +56,11 @@ export class ItemMarker {
   #markedItems;
 
   /**
+   * Date when last updated.
+   */
+  #lastUpdated;
+
+  /**
    * Create the marker.
    */
   constructor() {
@@ -66,7 +71,16 @@ export class ItemMarker {
    * Reset all scores to zero
    */
   reset() {
+    this.#lastUpdated = new Date();
     this.#markedItems = [];
+  }
+
+  /**
+   * Get when last updated.
+   * @returns {Date}
+   */
+  get lastUpdated() {
+    return this.#lastUpdated;
   }
 
   /**
@@ -106,5 +120,6 @@ export class ItemMarker {
       item: item,
       state: state,
     });
+    this.#lastUpdated = new Date();
   }
 }

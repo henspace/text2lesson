@@ -35,6 +35,7 @@ import { OrderProblemPresenter } from './orderProblemPresenter.js';
 import { SlideProblemPresenter } from './slideProblemPresenter.js';
 import { QuestionType } from '../problem.js';
 import { MarksPresenter } from './marksPresenter.js';
+import { PrintableLessonPresenter } from './printableLessonPresenter.js';
 import { lessonManager } from '../lessonManager.js';
 
 /**
@@ -48,6 +49,10 @@ const NAVIGATION = {
   ChapterPresenter: { previous: BookPresenter, next: LessonPresenter },
   LessonPresenter: { previous: ChapterPresenter, next: ProblemPresenter },
   LessonEditorPresenter: { previous: LessonPresenter, next: LessonPresenter },
+  PrintableLessonPresenter: {
+    previous: LessonPresenter,
+    next: LessonPresenter,
+  },
   ProblemPresenter: { previous: null, next: ProblemPresenter },
   ChoiceProblemPresenter: { previous: null, next: ProblemPresenter },
   FillProblemPresenter: { previous: null, next: ProblemPresenter },
@@ -192,6 +197,24 @@ export class PresenterFactory {
   getLibraryPresenter(callerIgnored, config) {
     const klass = this.#skipUnnecessaryListPresenters(LibraryPresenter);
     return new klass(config);
+  }
+
+  /**
+   * Get a printable presenter. If one is not available, it juts goes home.
+   * @param {module:lessons/presenters/presenter.Presenter} caller - the calling presenter
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - the required configuration
+   * @returns {Presenter} Presenter.
+   */
+  getPrintable(caller, config) {
+    if (caller instanceof LessonPresenter) {
+      return new PrintableLessonPresenter(config);
+    } else {
+      console.error(
+        'Attempt to get a printable presenter from other than a LessonPresenter.'
+      );
+      this.config.lesson = null;
+      return new HomePresenter(config);
+    }
   }
 
   /**

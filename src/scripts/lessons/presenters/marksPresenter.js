@@ -189,6 +189,13 @@ export class MarksPresenter extends Presenter {
       'result-summary',
       summary
     );
+    const completionDate = this.config.lesson.lastUpdated;
+    const formattedDate = completionDate.toUTCString();
+    this.presentation.createAndAppendChild(
+      'p',
+      'certificate-date',
+      i18n`Lesson completed on ${formattedDate}`
+    );
     summaryItem.classList.add(this.#calcMedalClass(percent));
     if (percent >= MedalDetails.GOOD.upperLimit) {
       generateConfetti();

@@ -86,6 +86,14 @@ export class Lesson {
   }
 
   /**
+   * Get the time the marks were last updated.
+   * @returns {Date}
+   */
+  get lastUpdated() {
+    return this.#marker.lastUpdated;
+  }
+
+  /**
    * Add problem to the lesson.
    * @param {Problem} problem
    */

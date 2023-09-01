@@ -40,6 +40,10 @@ export class LessonPresenter extends Presenter {
    * @type {string}
    */
   static EDIT_EVENT_ID = 'EDIT_LESSON';
+  /**
+   * @type {string}
+   */
+  static PRINT_EVENT_ID = 'PRINT_LESSON';
 
   /**
    * Flag whether it okay to progress to next.
@@ -99,10 +103,19 @@ export class LessonPresenter extends Presenter {
     this.applyIconToNextButton(icons.playLesson);
     this.listenToEventOn('click', summaryBlock, Presenter.NEXT_ID);
     this.#showNextButtonIfContent();
-
+    this.#addPrintButton();
     this.#addEditButtonIfLocal();
   }
 
+  /**
+   * Add the print button
+   */
+  #addPrintButton() {
+    const printButton = new ManagedElement('button');
+    icons.applyIconToElement(icons.printPreview, printButton);
+    this.addButtonToBar(printButton);
+    this.listenToEventOn('click', printButton, LessonPresenter.PRINT_EVENT_ID);
+  }
   /**
    * Add the edit button
    */
@@ -143,25 +156,42 @@ export class LessonPresenter extends Presenter {
   }
 
   /**
+   * Load the lesson into the config
+   * @returns {Promise} fulfils to undefined
+   */
+  #loadLessonIntoConfig() {
+    return lessonManager.loadCurrentLesson().then((cachedLesson) => {
+      const lessonSource = LessonSource.createFromSource(cachedLesson.content);
+      this.config.lesson = lessonSource.convertToLesson();
+      return;
+    });
+  }
+
+  /**
    * @override
    */
   next(eventId) {
-    if (eventId === LessonPresenter.EDIT_EVENT_ID) {
-      return this.config.factory.getEditor(this, this.config);
-    } else if (!this.#allowNext) {
-      toast(
-        i18n`This lesson is empty. You need to edit it first and add some content.`
-      );
-    } else {
-      return lessonManager.loadCurrentLesson().then((cachedLesson) => {
-        const lessonSource = LessonSource.createFromSource(
-          cachedLesson.content
+    switch (eventId) {
+      case LessonPresenter.EDIT_EVENT_ID:
+        return this.config.factory.getEditor(this, this.config);
+      case LessonPresenter.PRINT_EVENT_ID:
+        return this.#loadLessonIntoConfig().then(() =>
+          this.config.factory.getPrintable(this, this.config)
         );
-        this.config.lesson = lessonSource.convertToLesson();
-        return this.config.factory.getNext(this, this.config);
-      });
+
+      default:
+        if (!this.#allowNext) {
+          toast(
+            i18n`This lesson is empty. You need to edit it first and add some content.`
+          );
+        } else {
+          return this.#loadLessonIntoConfig().then(() =>
+            this.config.factory.getNext(this, this.config)
+          );
+        }
     }
   }
+
   /**
    * @override
    */
