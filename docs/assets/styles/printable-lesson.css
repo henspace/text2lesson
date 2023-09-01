@@ -1,0 +1,39 @@
+.PrintableLessonPresenter .fill-in-blanks-problem .missing-word {
+  display: inline-block;
+  width: 5em;
+  border-bottom: 2px black dashed;
+}
+
+.PrintableLessonPresenter .order-problem .missing-word {
+  display: none;
+}
+
+.PrintableLessonPresenter .order-problem .print-word-options {
+  display: flex;
+  justify-content: space-between;
+}
+
+.PrintableLessonPresenter .number-box {
+  border: 2px solid black;
+  display: inline-block;
+  height: 2em;
+  width: 2em;
+}
+
+.PrintableLessonPresenter {
+  font-size: 12pt;
+}
+
+.PrintableLessonPresenter.use-large-font {
+  font-size: 22pt;
+}
+
+.PrintableLessonPresenter.use-large-font .print-problems {
+  padding-left: 1.5em;
+}
+
+.PrintableLessonPresenter .postamble {
+  border-top: 1px solid black;
+  font-style: italic;
+  text-align: center;
+}

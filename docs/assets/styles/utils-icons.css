@@ -13,8 +13,17 @@
   --icon-add-lesson: '\f022 \002b';
   --icon-add-lesson-html: '<i class="fa-solid fa-rectangle-list"></i><i class="fa-solid fa-plus"></i>';
 
+  --icon-font-size: '\f034';
+  --icon-font-size-html: '<i class="fa-solid fa-text-height"></i>';
+
   --icon-hourglass: '\f254';
   --icon-hourglass-html: '<i class="fa-solid fa-hourglass"></i>';
+
+  --icon-print: '\f02f';
+  --icon-print-html: '<i class="fa-solid fa-print"></i>';
+
+  --icon-print-preview: '\f02f  \f06e';
+  --icon-print-preview-html: '<i class="fa-solid fa-print"></i> <i class="fa-solid fa-eye"></i>';
 
   
   --icon-back-nav: '\f30a';
@@ -120,8 +129,8 @@
   --icon-unchecked-bullet: '\f111';
   --icon-unchecked-bullet-html: '<i class="fa-regular fa-circle"></i>';
 
-  --icon-checked-bullet: '\f005';
-  --icon-checked-bullet-html: '<i class="fa-solid fa-star"></i>';
+  --icon-checked-bullet: '\f35a';
+  --icon-checked-bullet-html: '<i class="fa-solid fa-circle-right"></i>';
 
   --icon-correct: '\f14a';
   --icon-correct-html: '<i class="fa-solid fa-square-check"></i>';

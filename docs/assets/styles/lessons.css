@@ -1,5 +1,6 @@
 @import './cards.css';
 @import './candy.css';
+@import './printable-lesson.css';
 
 a.book,
 a.chapter,
@@ -46,6 +47,11 @@ a.problem {
 .HomePresenter .presentation button {
   flex: 1;
   text-align: left;
+}
+
+.problem-answers .problem-ordered-answers {
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .problem-answers > div {
@@ -212,7 +218,7 @@ span.lesson-title {
   display: inline-block;
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
-  width: 1.5rem;
+  margin-right: 0.2em;
 }
 
 .library-title::before {
@@ -301,4 +307,8 @@ ul.presentation,
 }
 .MarksPresenter .result-summary.excellent::after {
   content: '\1f947';
+}
+
+.MarksPresenter .certificate-date {
+  text-align: center;
 }
