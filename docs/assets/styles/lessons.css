@@ -312,3 +312,22 @@ ul.presentation,
 .MarksPresenter .certificate-date {
   text-align: center;
 }
+
+
+.giant {
+  font-size: 1000%;
+}
+.massive {
+  font-size: 800%;
+}
+.biggest {
+  font-size: 600%;
+}
+
+.bigger {
+  font-size: 400%;
+}
+
+.big {
+  font-size: 200%;
+}
