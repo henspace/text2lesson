@@ -21,14 +21,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { test, expect } from '@jest/globals';
-import {
+import { jest, beforeEach, test, expect } from '@jest/globals';
+
+const mockMathsParser = jest.fn((data) => data);
+jest.unstable_mockModule('./maths.js', () => {
+  return {
+    parseMaths: mockMathsParser,
+  };
+});
+
+const {
   decodeFromEntities,
   encodeToEntities,
   parseMarkdown,
   escapeHtml,
   getPlainTextFromHtml,
-} from './textProcessing.js';
+} = await import('./textProcessing.js');
+
+beforeEach(() => {
+  mockMathsParser.mockClear();
+});
 
 test('Paragraphs split on blank lines', () => {
   const data = 'line 1\nline 2\n\nline 3\nline 4\n\nline 5\nline 6';
@@ -346,4 +358,16 @@ test('getPlainTextFromHtml handles removes html tags', () => {
       ' one <i>two</i> <div class="a class">three</div> four'
     )
   ).toBe(' one two three four');
+});
+
+test('maths block passed to maths parser when block starts with math:', () => {
+  const result = parseMarkdown('math: data     ');
+  expect(result).toMatch('data');
+  expect(mockMathsParser).toBeCalledWith('data');
+});
+
+test('maths block passed to maths parser when block starts with maths:', () => {
+  const result = parseMarkdown('maths: data     ');
+  expect(result).toMatch('data');
+  expect(mockMathsParser).toBeCalledWith('data');
 });
