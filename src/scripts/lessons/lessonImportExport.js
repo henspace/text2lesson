@@ -33,6 +33,18 @@ import { i18n, getBase64Translations } from '../utils/i18n/i18n.js';
  * @property {string} title - the lesson's title
  * @property {string} content - the source text for the lesson
  */
+
+/**
+ * Create a safe filename
+ * @param {string} filename - without the extension.
+ * @param {string} extension - without the dot.
+ * @returns {string}
+ */
+export function makeSafeFilename(filename, extension) {
+  const safename = filename.replace(/[^A-Za-z0-9_-]/g, '_').substring(0, 32);
+  return `${safename}.${extension}`;
+}
+
 /**
  * Class to handle exporting of a lesson.
  */
@@ -82,10 +94,7 @@ export class LessonExporter {
    * @return {string}
    */
   #getFilename(extension) {
-    const safename = this.#title
-      .replace(/[^A-Za-z0-9_-]/g, '_')
-      .substring(0, 32);
-    return `${safename}.${extension}`;
+    return makeSafeFilename(this.#title, extension);
   }
 
   /**
@@ -117,9 +126,10 @@ export class LessonExporter {
   }
 
   /**
-   * Export an autorun lesson.
+   * Create the autorun html for the lesson.
+   * @returns {string} html
    */
-  exportAutorunLesson() {
+  createAutorunLessonHtml() {
     const b64Title = stringToBase64(this.#title);
     const b64Data = stringToBase64(this.#content);
     const html = getAutorunHtml({
@@ -127,6 +137,13 @@ export class LessonExporter {
       b64LessonData: b64Data,
       b64Translations: getBase64Translations(),
     });
+    return html;
+  }
+  /**
+   * Export an autorun lesson.
+   */
+  exportAutorunLesson() {
+    const html = this.createAutorunLessonHtml();
     this.saveDataToFile(html, 'html');
   }
 

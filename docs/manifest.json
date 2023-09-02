@@ -1,0 +1,40 @@
+{
+  "name": "Text2Lesson",
+  "short_name": "Text2Lesson",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Plain text to lessons and quizzes",
+  "icons": [
+    {
+      "src": "assets/images/logo/borderless_logo_48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/logo/borderless_logo_128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/logo/borderless_logo_167.png",
+      "sizes": "167x167",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/logo/borderless_logo_180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/logo/borderless_logo_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/logo/borderless_logo_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

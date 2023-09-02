@@ -68,6 +68,19 @@ postBuildUtils
   )
   .then(() => {
     FileManager.copyFile(
+      './src/manifest.json',
+      path.join(PROJECT_INFO.buildDistDir, 'manifest.json'),
+      PROJECT_TRANSFORMER
+    );
+  })
+  .then(() => {
+    FileManager.copyFile(
+      './src/favicon.ico',
+      path.join(PROJECT_INFO.buildDistDir, 'favicon.ico')
+    );
+  })
+  .then(() => {
+    FileManager.copyFile(
       './src/_config.yml',
       path.join(PROJECT_INFO.buildDistDir, '_config.yml')
     );

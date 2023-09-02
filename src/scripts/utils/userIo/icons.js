@@ -138,6 +138,13 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get email() {
+    return {
+      content: this.#getIconHtml('--icon-email-html'),
+      accessibleName: i18n`Email`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get error() {
     return {
       content: this.#getIconHtml('--icon-error-html'),
@@ -387,6 +394,30 @@ class IconGenerator {
       accessibleName: i18n`Open menu`,
     };
   }
+  /** @returns {IconDetails} information for icon */
+  get webshare() {
+    return {
+      content: this.#getIconHtml('--icon-webshare-html'),
+      accessibleName: i18n`Share`,
+    };
+  }
+
+  /** @returns {IconDetails} information for icon */
+  get webshareCertificate() {
+    return {
+      content: this.#getIconHtml('--icon-webshare-certificate-html'),
+      accessibleName: i18n`Share certificate`,
+    };
+  }
+
+  /** @returns {IconDetails} information for icon */
+  get webshareAutorun() {
+    return {
+      content: this.#getIconHtml('--icon-webshare-autorun-html'),
+      accessibleName: i18n`Share autorun lesson`,
+    };
+  }
+
   /** @returns {IconDetails} information for icon */
   get yes() {
     return {
