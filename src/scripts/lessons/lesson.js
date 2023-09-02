@@ -27,6 +27,12 @@ import { ItemMarker } from './itemMarker.js';
  */
 export class Lesson {
   /**
+   * The raw data that formed the lesson.
+   * @type {string}
+   */
+  #rawSource;
+
+  /**
    * @type {Metadata}
    */
   #metadata;
@@ -49,10 +55,20 @@ export class Lesson {
 
   /**
    * Create the lesson with scores initialised to zero.
+   * @param {string} rawSource
    */
-  constructor() {
+  constructor(rawSource) {
+    this.#rawSource = rawSource;
     this.#marker.reset();
   }
+
+  /**
+   * Get the original text from which the lesson was created.
+   */
+  get rawSource() {
+    return this.#rawSource;
+  }
+
   /**
    * get the metadata
    * @returns {Metadata}

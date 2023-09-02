@@ -62,13 +62,19 @@ export class LessonSource {
   #problemSources;
 
   /**
-   * Construct a lesson.
+   * The raw data
    */
-  constructor() {
+  #rawSource;
+  /**
+   * Construct a lesson.
+   * @param {string} source - the raw data
+   */
+  constructor(source) {
     if (!LessonSource.#isConstructing) {
       throw new Error('Private constructor. Use createFromSource');
     }
     this.#problemSources = [];
+    this.#rawSource = source;
   }
 
   /**
@@ -101,7 +107,7 @@ export class LessonSource {
    */
   static createFromSource(source) {
     LessonSource.#isConstructing = true;
-    const lessonSource = new LessonSource();
+    const lessonSource = new LessonSource(source);
     LessonSource.#isConstructing = false;
     const lines = source.split(/\r\n|\n/);
     let currentItemKey = null;
@@ -228,7 +234,7 @@ export class LessonSource {
    * @returns {module:lessons/lesson.Lesson}
    */
   convertToLesson() {
-    const lesson = new Lesson();
+    const lesson = new Lesson(this.#rawSource);
     lesson.metadata = Metadata.createFromSource(this.metaSource);
     this.problemSources.forEach((problemSource) => {
       const problem = new Problem();

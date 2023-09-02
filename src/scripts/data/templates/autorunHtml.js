@@ -31,7 +31,7 @@ import { Urls } from '../urls.js';
  * @param {string} data.b64Translations - translations from i18 in base64
  */
 export function getAutorunHtml(data) {
-  let rootUrl = Urls.ROOT;
+  let rootUrl = Urls.NON_LOCAL_ROOT; // scripts cannot run from localhost
   return `<!DOCTYPE html>
   <html lang="en">
     <head>
@@ -90,7 +90,9 @@ export function getAutorunHtml(data) {
       <div id="title-bar"></div>
       <div id="content" class="container">
         <div id="stage">
-          <p>The application is loading. Please wait a few moments.</p>
+          <p style="line-height: 100vh; text-align: center; opacity: 0.5">
+            The application is loading. Please wait a few moments.
+          </p>
         </div>
       </div>
       <div id="footer" class="container"></div>

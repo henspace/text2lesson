@@ -31,6 +31,9 @@ import { icons } from '../../utils/userIo/icons.js';
 import { LessonOrigin } from '../lessonOrigins.js';
 import { embeddedLesson } from '../embeddedLesson.js';
 import { generateConfetti } from '../../effects/confetti.js';
+import { BuildInfo } from '../../data/constants.js';
+import * as share from '../../utils/share/share.js';
+import { Urls } from '../../data/urls.js';
 
 /**
  * Classes used for styling medals.
@@ -41,18 +44,22 @@ const MedalDetails = {
   POOR: {
     upperLimit: 25,
     cssClass: 'poor',
+    emojiCode: '\u{1f62c}',
   },
   BAD: {
     upperLimit: 50,
     cssClass: 'bad',
+    emojiCode: '\u{1f614}',
   },
   GOOD: {
     upperLimit: 75,
     cssClass: 'good',
+    emojiCode: '\u{1f948}',
   },
   EXCELLENT: {
     upperLimit: 100,
     cssClass: 'excellent',
+    emojiCode: '\u{1f947}',
   },
 };
 
@@ -64,12 +71,37 @@ export class MarksPresenter extends Presenter {
    * @const
    */
   static RETRY_LESSON_ID = 'RETRY_LESSON';
+  /**
+   * @const
+   */
+  static EMAIL_ID = 'EMAIL';
+  /**
+   * @const
+   */
+  static WEBSHARE_CERTIFICATE_ID = 'WEBSHARE_CERTIFICATE';
+  /**
+   * @const
+   */
+  static WEBSHARE_AUTORUN_ID = 'WEBSHARE_AUTORUN';
 
   /**
    * @type {module:lessons/itemMarker~Marks}
    */
   #marks;
 
+  /**
+   * Assigned medal
+   */
+  #assignedMedal;
+  /**
+   * Text detailing the completion date
+   */
+  #completionDateText;
+
+  /**
+   * Text summarising the score.
+   */
+  #scoreSummaryText;
   /**
    *
    * @param {module:lessons/presenters/presenter~PresenterConfig} config
@@ -87,6 +119,7 @@ export class MarksPresenter extends Presenter {
     this.#addAnswers();
     this.#addResult();
     this.#addRetryButton();
+    this.#addShareButtons();
     this.#adjustButtonsForOrigin();
   }
 
@@ -174,7 +207,9 @@ export class MarksPresenter extends Presenter {
   }
 
   /**
-   * Add the score
+   * Add the score.
+   *  This also stores formatted text in this.#completionDateText and
+   * this.#scoreSummaryText.
    */
   #addResult() {
     const marks = this.config.lesson.marks;
@@ -183,18 +218,19 @@ export class MarksPresenter extends Presenter {
       totalQuestions == 0
         ? 0
         : Math.round((100 * marks.correct) / totalQuestions);
-    const summary = i18n`Score: ${percent}% (${marks.correct}/${totalQuestions})`;
+    this.#scoreSummaryText = i18n`Score: ${percent}% (${marks.correct}/${totalQuestions})`;
     const summaryItem = this.presentation.createAndAppendChild(
       'p',
       'result-summary',
-      summary
+      this.#scoreSummaryText
     );
     const completionDate = this.config.lesson.lastUpdated;
     const formattedDate = completionDate.toUTCString();
+    this.#completionDateText = i18n`Lesson completed on ${formattedDate}`;
     this.presentation.createAndAppendChild(
       'p',
       'certificate-date',
-      i18n`Lesson completed on ${formattedDate}`
+      this.#completionDateText
     );
     summaryItem.classList.add(this.#calcMedalClass(percent));
     if (percent >= MedalDetails.GOOD.upperLimit) {
@@ -207,14 +243,17 @@ export class MarksPresenter extends Presenter {
    * The medal is added by adding a class to result which can then be styled in
    * CSS. Four classes are available:
    * bad, poor, good, excellent.
+   * The result is stored in #assignedMedal.
    */
   #calcMedalClass(percent) {
     for (const key in MedalDetails) {
       const details = MedalDetails[key];
       if (percent < details.upperLimit) {
+        this.#assignedMedal = details;
         return details.cssClass;
       }
     }
+    this.#assignedMedal = MedalDetails.EXCELLENT;
     return MedalDetails.EXCELLENT.cssClass;
   }
 
@@ -240,6 +279,12 @@ export class MarksPresenter extends Presenter {
    */
   next(eventId) {
     switch (eventId) {
+      case MarksPresenter.EMAIL_ID:
+        return this.#emailResults();
+      case MarksPresenter.WEBSHARE_CERTIFICATE_ID:
+        return this.#webShareResults();
+      case MarksPresenter.WEBSHARE_AUTORUN_ID:
+        return this.#webShareAutorun();
       case MarksPresenter.RETRY_LESSON_ID:
         return this.config.factory.getProblemAgain(this, this.config);
       case Presenter.NEXT_ID:
@@ -249,5 +294,114 @@ export class MarksPresenter extends Presenter {
         }
     }
     return super.next(eventId);
+  }
+
+  /**
+   * Add share buttons. This either uses the Web Share Api or a mailto link.
+   */
+  #addShareButtons() {
+    if (window.navigator.canShare) {
+      this.#addWebShareCertificateButton();
+      this.#addWebShareAutorunButton();
+    } else {
+      this.#addEmailButton();
+    }
+  }
+
+  /**
+   * Add a share button using the webshare option.
+   */
+  #addEmailButton() {
+    const button = new ManagedElement('button');
+    icons.applyIconToElement(icons.email, button);
+    this.addButtonToBar(button);
+    this.listenToEventOn('click', button, MarksPresenter.EMAIL_ID);
+  }
+
+  /**
+   * Add a share button using the Mailto option.
+   */
+  #addWebShareCertificateButton() {
+    const button = new ManagedElement('button');
+    icons.applyIconToElement(icons.webshareCertificate, button);
+    this.addButtonToBar(button);
+    this.listenToEventOn(
+      'click',
+      button,
+      MarksPresenter.WEBSHARE_CERTIFICATE_ID
+    );
+  }
+
+  /**
+   * Add a share button using the Mailto option.
+   */
+  #addWebShareAutorunButton() {
+    const button = new ManagedElement('button');
+    icons.applyIconToElement(icons.webshareAutorun, button);
+    this.addButtonToBar(button);
+    this.listenToEventOn('click', button, MarksPresenter.WEBSHARE_AUTORUN_ID);
+  }
+
+  /**
+   * Plain text results.
+   */
+  #getPlainTextResults() {
+    const lines = [];
+    lines.push(i18n`Hi!`);
+    lines.push(i18n`I've just completed this lesson:`);
+    lines.push(`  ` + this.config.lessonInfo.titles.lesson);
+    if (this.config.lessonInfo.managed) {
+      lines.push(
+        i18n`taken from the ${this.config.lessonInfo.titles.library} library`
+      );
+      if (!lessonManager.usingLocalLibrary) {
+        lines.push(`  ` + i18n`Book: ${this.config.lessonInfo.titles.book}`);
+        lines.push(
+          `  ` + i18n`Chapter: ${this.config.lessonInfo.titles.chapter}`
+        );
+      }
+    }
+    lines.push('\n');
+    lines.push('____________________');
+    lines.push(this.#scoreSummaryText + ` ${this.#assignedMedal.emojiCode}`);
+    lines.push(this.#completionDateText);
+    lines.push('____________________');
+    lines.push('\n');
+    lines.push(
+      i18n`Find out more about ${BuildInfo.getProductName()} at ${
+        Urls.DOCS_HOME
+      }`
+    );
+    return lines.join('\n');
+  }
+
+  /**
+   * Send the results using an email link.
+   */
+  #emailResults() {
+    const data = {
+      to: '',
+      subject: i18n`I've just completed a lesson in ${BuildInfo.getProductName()}`,
+      body: this.#getPlainTextResults(),
+    };
+    share.shareByEmail(data);
+  }
+
+  /**
+   * Send the results using a webshare api
+   */
+  #webShareResults() {
+    const data = document.getElementById('content').innerHTML;
+    share.shareCertificateContent(data);
+  }
+
+  /**
+   * Send the an autoshare file using a webshare api
+   */
+  #webShareAutorun() {
+    share.shareAutorunLesson(
+      this.config.lessonInfo.titles.lesson,
+      this.config.lesson
+    );
   }
 }

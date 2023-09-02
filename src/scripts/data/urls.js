@@ -37,8 +37,10 @@ const DOCS_ROOT_URL = 'https://henspace.github.io/text2lesson-docs/';
  * @enum {string}
  */
 export const Urls = {
+  NON_LOCAL_ROOT: 'https://henspace.github.io/text2lesson/',
   ROOT: `${rootUrl}`,
   LOGO: `${rootUrl}assets/images/logo/bordered_logo_128.png`,
   HELP: `${DOCS_ROOT_URL}app-help.html`,
   PRIVACY: `${DOCS_ROOT_URL}privacy.html`,
+  DOCS_HOME: `${DOCS_ROOT_URL}index.html`,
 };

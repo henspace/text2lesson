@@ -28,6 +28,19 @@
   --icon-print-preview: '\f02f  \f06e';
   --icon-print-preview-html: '<i class="fa-solid fa-print"></i> <i class="fa-solid fa-eye"></i>';
 
+  /* sharing */
+  --icon-email: '\f0e0';
+  --icon-email-html: '<i class="fa-solid fa-envelope"></i>';
+
+  --icon-webshare: '\f1e0';
+  --icon-webshare-html: '<i class="fa-solid fa-share-nodes"></i>';
+
+  --icon-webshare-certificate: '\f1e0  \f0a3';
+  --icon-webshare-certificate-html: '<i class="fa-solid fa-share-nodes"></i> <i class="fa-solid fa-certificate"></i>';
+
+  --icon-webshare-autorun: '\f1e0  \f085';
+  --icon-webshare-autorun-html: '<i class="fa-solid fa-share-nodes"> </i><i class="fa-solid fa-gears"></i>';
+
   /* navigation */
   --icon-back-nav: '\f30a';
   --icon-back-nav-html: '<i class="fa-solid fa-left-long"></i>';
