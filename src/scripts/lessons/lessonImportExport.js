@@ -235,7 +235,7 @@ export class LessonImporter {
    * @returns {boolean} true if plain text file.
    */
   #getSummaryFromPlainTextFile(data) {
-    if (data.match(/^[-#_* ]{0,3}(?:\(*([i?=xX&_])\1*[_) ]+)(.*)$/m)) {
+    if (data.match(/^[-#_* ]{0,3}(?:\(*([i?=xX&_\xD7])\1*[_) ]+)(.*)$/m)) {
       return {
         title: '',
         content: data,

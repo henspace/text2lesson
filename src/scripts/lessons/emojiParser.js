@@ -21,9 +21,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { i18n } from '../utils/i18n/i18n.js';
-import { getErrorAttributeHtml } from '../utils/errorHandling/errors.js';
-
 /**
  * Array of predefined emojis. All keys must be in lowercase. Do not use underscores
  * as these could be misconstrued as emphasis characters.
@@ -86,10 +83,7 @@ export function getEmojiHtml(originalDefinition) {
       code = PREDEFINED_EMOJIS[code.substring(1)];
     }
     if (!code) {
-      const errorAttribute = getErrorAttributeHtml(
-        i18n`Cannot find emoji ${originalDefinition}`
-      );
-      return `<span ${errorAttribute}>${PREDEFINED_EMOJIS['WHITE-QUESTION-MARK']}</span>`;
+      return originalDefinition;
     }
     return code;
   }

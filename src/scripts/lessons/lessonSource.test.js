@@ -119,11 +119,11 @@ containing multiple lines
 of text.
 (=)And another correct answer.
 (=)And one more correct answer.
-(x)This is an incorrect answer
+(×)This is an incorrect answer
 containing multiple lines
 of text.
-(x)And another incorrect answer.
-(x)And one more incorrect answer.
+(×)And another incorrect answer.
+(×)And one more incorrect answer.
 (&)This is the explanation
 containing multiple lines
 of text.`;
@@ -242,6 +242,116 @@ test('converts to Lesson successfully', () => {
 (=)correct answer4.2
 (x)incorrect answer4.1
 (x)incorrect answer4.2
+(&)explanation4`;
+  const lessonSource = LessonSource.createFromSource(source);
+  const lesson = lessonSource.convertToLesson();
+  expect(lesson.metadata).toStrictEqual(
+    Metadata.createFromSource('lesson metadata')
+  );
+  expect(lesson.problems).toHaveLength(4);
+  lesson.problems.forEach((value, problemIndex) => {
+    expect(value.intro.html).toMatch(`intro${problemIndex + 1}`);
+    expect(value.question.html).toMatch(`question${problemIndex + 1}`);
+    expect(value.explanation.html).toMatch(`explanation${problemIndex + 1}`);
+    expect(value.rightAnswers).toHaveLength(2);
+    value.rightAnswers.forEach((value, answerIndex) => {
+      expect(value.html).toMatch(
+        `correct answer${problemIndex + 1}.${answerIndex + 1}`
+      );
+    });
+    expect(value.wrongAnswers).toHaveLength(2);
+    value.wrongAnswers.forEach((value, answerIndex) => {
+      expect(value.html).toMatch(
+        `incorrect answer${problemIndex + 1}.${answerIndex + 1}`
+      );
+    });
+  });
+});
+
+test('converts to Lesson successfully with capital X', () => {
+  const source = `lesson metadata
+(i)intro1
+(?)question1
+(=)correct answer1.1
+(=)correct answer1.2
+(X)incorrect answer1.1
+(X)incorrect answer1.2
+(&)explanation1
+(i)intro2
+(?)question2
+(=)correct answer2.1
+(=)correct answer2.2
+(X)incorrect answer2.1
+(X)incorrect answer2.2
+(&)explanation2
+(i)intro3
+(?)question3
+(=)correct answer3.1
+(=)correct answer3.2
+(X)incorrect answer3.1
+(X)incorrect answer3.2
+(&)explanation3
+(i)intro4
+(?)question4
+(=)correct answer4.1
+(=)correct answer4.2
+(X)incorrect answer4.1
+(X)incorrect answer4.2
+(&)explanation4`;
+  const lessonSource = LessonSource.createFromSource(source);
+  const lesson = lessonSource.convertToLesson();
+  expect(lesson.metadata).toStrictEqual(
+    Metadata.createFromSource('lesson metadata')
+  );
+  expect(lesson.problems).toHaveLength(4);
+  lesson.problems.forEach((value, problemIndex) => {
+    expect(value.intro.html).toMatch(`intro${problemIndex + 1}`);
+    expect(value.question.html).toMatch(`question${problemIndex + 1}`);
+    expect(value.explanation.html).toMatch(`explanation${problemIndex + 1}`);
+    expect(value.rightAnswers).toHaveLength(2);
+    value.rightAnswers.forEach((value, answerIndex) => {
+      expect(value.html).toMatch(
+        `correct answer${problemIndex + 1}.${answerIndex + 1}`
+      );
+    });
+    expect(value.wrongAnswers).toHaveLength(2);
+    value.wrongAnswers.forEach((value, answerIndex) => {
+      expect(value.html).toMatch(
+        `incorrect answer${problemIndex + 1}.${answerIndex + 1}`
+      );
+    });
+  });
+});
+
+test('converts to Lesson successfully with times symbol', () => {
+  const source = `lesson metadata
+(i)intro1
+(?)question1
+(=)correct answer1.1
+(=)correct answer1.2
+(×)incorrect answer1.1
+(×)incorrect answer1.2
+(&)explanation1
+(i)intro2
+(?)question2
+(=)correct answer2.1
+(=)correct answer2.2
+(×)incorrect answer2.1
+(×)incorrect answer2.2
+(&)explanation2
+(i)intro3
+(?)question3
+(=)correct answer3.1
+(=)correct answer3.2
+(×)incorrect answer3.1
+(×)incorrect answer3.2
+(&)explanation3
+(i)intro4
+(?)question4
+(=)correct answer4.1
+(=)correct answer4.2
+(×)incorrect answer4.1
+(×)incorrect answer4.2
 (&)explanation4`;
   const lessonSource = LessonSource.createFromSource(source);
   const lesson = lessonSource.convertToLesson();

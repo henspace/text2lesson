@@ -39,7 +39,7 @@
   --icon-webshare-certificate-html: '<i class="fa-solid fa-share-nodes"></i> <i class="fa-solid fa-certificate"></i>';
 
   --icon-webshare-autorun: '\f1e0  \f085';
-  --icon-webshare-autorun-html: '<i class="fa-solid fa-share-nodes"> </i><i class="fa-solid fa-gears"></i>';
+  --icon-webshare-autorun-html: '<i class="fa-solid fa-share-nodes"></i> <i class="fa-solid fa-gears"></i>';
 
   /* navigation */
   --icon-back-nav: '\f30a';
