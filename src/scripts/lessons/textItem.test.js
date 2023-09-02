@@ -247,17 +247,13 @@ test('emoji passed with unsafe class', () => {
   }
 });
 
-test('emoji changed to white question mark if not found', () => {
+test('emoji uses original text if not found', () => {
   const emojiName = 'garbage';
-  const source = ` emoji:${emojiName} `;
+  const source = `123 emoji:${emojiName}>garbage 456`;
   let textItem = textItemParser.TextItem.createFromSource(source);
-  const match = textItem.html.match(
-    /<span data-error="([a-zA-Z0-9+/=]+)">(.*?)<\/span>/
+  expect(textItem.html).toMatch(
+    `123 <span class="emoji">${emojiName}</span> 456`
   );
-  expect(match).not.toBeNull();
-  const attr = unescapeAttribute(match[1]);
-  expect(attr).toMatch(emojiName);
-  expect(match[2]).toBe(emoji.PREDEFINED_EMOJIS['WHITE-QUESTION-MARK']);
 });
 
 test('Metadata replaced ', () => {

@@ -221,12 +221,18 @@ export class LessonSource {
    */
   getLineDetails(line) {
     // @ToDo remove comment.  const match = line.match(/^ {0,3}(?:\(+([i?=x+#])\1*\)+)(.*)$/i);
-    const match = line.match(/^[-#_* ]{0,3}(?:\(*([i?=xX&_])\1*[_) ]+)(.*)$/);
+    const match = line.match(
+      /^[-#_* ]{0,3}(?:\(*([i?=xX&_\xD7])\1*[_) ]+)(.*)$/
+    );
 
     if (!match) {
       return { key: undefined, content: line };
     }
-    return { key: match[1].toLowerCase(), content: match[2] ?? '' };
+    let key = match[1].toLowerCase();
+    if (key === '\xd7') {
+      key = 'x';
+    }
+    return { key: key, content: match[2] ?? '' };
   }
 
   /**

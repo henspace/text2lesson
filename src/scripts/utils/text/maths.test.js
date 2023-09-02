@@ -63,6 +63,10 @@ function strToMath(str) {
       result += String.fromCodePoint(
         0x1d44e + chr.charCodeAt(0) - 'a'.charCodeAt(0)
       );
+    } else if (chr >= '0' && chr <= '9') {
+      result += String.fromCodePoint(
+        0x1d7f6 + chr.charCodeAt(0) - '0'.charCodeAt(0)
+      );
     } else {
       result += chr;
     }
@@ -138,8 +142,9 @@ test('sqrt  becomes radic entity', () => {
 
 test('[] following sqrt become span for styling', () => {
   const sqrtText = ' sqrt[1 + 7]';
-  const sqrtResult =
-    '<span class="radic">&radic;</span><span class="sqrt">1&nbsp;+&nbsp;7</span>';
+  const sqrtResult = `<span class="radic">&radic;</span><span class="sqrt">${strToMath(
+    '1'
+  )}&nbsp;+&nbsp;${strToMath('7')}</span>`;
   const testStr = ` ${sqrtText}  ${sqrtText}`;
   const expected = `${sqrtResult}&nbsp;${sqrtResult}`;
   expect(parseMaths(testStr)).toMatch(expected);
@@ -179,7 +184,7 @@ test('dot between characters becomes centre dot', () => {
   expect(parseMaths(`${chrA}. ${chrB}`)).toMatch(
     `${mathsChrA}.&nbsp;${mathsChrB}`
   );
-  expect(parseMaths(`3.5`)).toMatch(`3.5`);
+  expect(parseMaths(`3.5`)).toMatch(strToMath(`3.5`));
 });
 
 test('dot between digit and character becomes centre dot', () => {
@@ -213,22 +218,26 @@ test('Greek letters substituted', () => {
 });
 
 test('Fractions supported', () => {
-  let numerator = 3;
-  let denominator = 6;
+  let numerator = '3';
+  let denominator = '6';
   let str = ` ${numerator}/${denominator}`;
   let result = parseMaths(str);
   expect(result).toMatch(
-    `<table><tr><td>${numerator}</td></tr><tr><td>${denominator}</td></tr></table>`
+    `<table><tr><td>${strToMath(numerator)}</td></tr><tr><td>${strToMath(
+      denominator
+    )}</td></tr></table>`
   );
 });
 
 test('Fractions supported with space around operator', () => {
-  let numerator = 3;
-  let denominator = 6;
+  let numerator = '3';
+  let denominator = '6';
   let str = ` ${numerator} / ${denominator}`;
   let result = parseMaths(str);
   expect(result).toMatch(
-    `<table><tr><td>${numerator}</td></tr><tr><td>${denominator}</td></tr></table>`
+    `<table><tr><td>${strToMath(numerator)}</td></tr><tr><td>${strToMath(
+      denominator
+    )}</td></tr></table>`
   );
 });
 
@@ -237,8 +246,8 @@ test('Fractions supported with brackets', () => {
   let denominator = '(6 + 8)';
   let str = ` ${numerator} / ${denominator}`;
   let result = parseMaths(str);
-  numerator = numerator.replace(/ /g, '&nbsp;');
-  denominator = denominator.replace(/ /g, '&nbsp;');
+  numerator = strToMath(numerator).replace(/ /g, '&nbsp;');
+  denominator = strToMath(denominator).replace(/ /g, '&nbsp;');
   expect(result).toMatch(
     `<table><tr><td>${numerator}</td></tr><tr><td>${denominator}</td></tr></table>`
   );
@@ -247,41 +256,51 @@ test('Fractions supported with brackets', () => {
 test('Superscript supported', () => {
   let str = '3^2 + 8';
   let result = parseMaths(str);
-  expect(result).toMatch('3<sup>2</sup>');
+  expect(result).toMatch(`${strToMath('3')}<sup>${strToMath('2')}</sup>`);
 });
 
 test('Superscript with spaces supported', () => {
   let str = '3 ^ 2 + 8';
   let result = parseMaths(str);
-  expect(result).toMatch('3<sup>2</sup>');
+  expect(result).toMatch(`${strToMath('3')}<sup>${strToMath('2')}</sup>`);
 });
 
 test('Superscript with brackets supported', () => {
   let str = '3 ^ (2 + 7) + 8';
   let result = parseMaths(str);
-  expect(result).toMatch('3<sup>(2&nbsp;+&nbsp;7)</sup>');
+  expect(result).toMatch(
+    `${strToMath('3')}<sup>(${strToMath('2')}&nbsp;+&nbsp;${strToMath(
+      '7'
+    )})</sup>`
+  );
 });
 
 test('Subscript supported', () => {
   let str = '3_2 + 8';
   let result = parseMaths(str);
-  expect(result).toMatch('3<sub>2</sub>');
+  expect(result).toMatch(`${strToMath('3')}<sub>${strToMath('2')}</sub>`);
 });
 
 test('Subscript with spaces supported', () => {
   let str = '3 _ 2 + 8';
   let result = parseMaths(str);
-  expect(result).toMatch('3<sub>2</sub>');
+  expect(result).toMatch(`${strToMath('3')}<sub>${strToMath('2')}</sub>`);
 });
 
 test('Subscript with brackets supported', () => {
   let str = '3 _ (2 + 7) + 8';
   let result = parseMaths(str);
-  expect(result).toMatch('3<sub>(2&nbsp;+&nbsp;7)</sub>');
+  expect(result).toMatch(
+    `${strToMath('3')}<sub>(${strToMath('2')}&nbsp;+&nbsp;${strToMath(
+      '7'
+    )})</sub>`
+  );
 });
 
 test('Multiple spaces collapse into one nonbreaking space', () => {
-  expect(parseMaths('3     *     6')).toMatch('3&nbsp;&times;&nbsp;6');
+  expect(parseMaths('3     *     6')).toMatch(
+    `${strToMath('3')}&nbsp;&times;&nbsp;${strToMath('6')}`
+  );
 });
 
 test('d: become part entity', () => {
