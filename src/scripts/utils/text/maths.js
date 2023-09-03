@@ -86,8 +86,8 @@ function getMathsCharacter(chr) {
 }
 
 /**
- * Replace the word with the entity. The word must be surround
- * be non alphabetic characters or be at the end of the string.
+ * Replace the word with the entity. The word must be surrounded
+ * by non alphabetic characters or be at the end of the string.
  * @param {string} target - the string to search
  * @param {string} word - the word to look for
  * @param {string} entity - the replacement.
@@ -266,13 +266,15 @@ function implementReplacements(target, replacements) {
 /**
  * Simple parsing of maths data.
  * @param {string} data
+ * @param {boolean} inline - true for a span, otherwise a div.
  * @returns {string}
  */
-export function parseMaths(data) {
+export function parseMaths(data, inline) {
+  const tag = inline ? 'span' : 'div';
   data = replaceGreekLetters(data);
   data = implementReplacements(data, replacementEntities);
   data = implementReplacements(data, replacementDigits);
   data = implementReplacements(data, replacementCharacters);
   data = implementReplacements(data, replacementsWithTags);
-  return ` <div class="maths">${data}</div> `;
+  return ` <${tag} class="maths">${data}</${tag}> `;
 }

@@ -290,7 +290,10 @@ img {
 .maths {
   font-family: 'Noto Sans Math';
   letter-spacing: 0.2rem;
-  margin-left: 1em;
+}
+
+div.maths {
+  text-align: center;
 }
 
 .maths:has(table) {

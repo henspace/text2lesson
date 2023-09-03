@@ -115,6 +115,10 @@ export function getSettingDefinitions() {
         setPalette({ dark: value });
       },
     },
+    ui: {
+      type: 'separator',
+      label: i18n`User interface settings`,
+    },
     fontSize: {
       type: 'range',
       label: i18n`Font size`,
@@ -135,7 +139,7 @@ export function getSettingDefinitions() {
     },
     focusOnStage: {
       type: 'checkbox',
-      label: i18n`Keyboard focus on stage`,
+      label: i18n`Keyboard focus on content`,
       defaultValue: false,
       onupdate: (value) => {
         focusManager.focusOnStage = value;
@@ -156,6 +160,11 @@ export function getSettingDefinitions() {
       max: Enthusiasm.HIGH,
       onupdate: (value) => (soundManager.enthusiasm = value),
     },
+    showFirstUseMessage: {
+      type: 'checkbox',
+      label: i18n`Show first use message`,
+      defaultValue: true,
+    },
     lessonInfo: {
       type: 'separator',
       label: i18n`Lesson settings`,
@@ -169,11 +178,6 @@ export function getSettingDefinitions() {
       },
       options: () => lessonManager.remoteLibraryTitles,
       reloadIfChanged: true,
-    },
-    showFirstUseMessage: {
-      type: 'checkbox',
-      label: i18n`Show first use message`,
-      defaultValue: true,
     },
   };
 }

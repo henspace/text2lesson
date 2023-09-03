@@ -94,7 +94,7 @@ const blockReps = [
    */
   {
     re: /^\s*maths?:\s*(.+?)\s*$/gm,
-    rep: (match, equation) => parseMaths(equation),
+    rep: (match, equation) => parseMaths(equation, false),
   },
   /** paragraphs of elements not in blocks */
   {
@@ -113,6 +113,12 @@ const blockReps = [
  * @type {Replacement[]}
  */
 const spanReps = [
+  /** inline maths
+   */
+  {
+    re: /{maths?}(.+){maths?}/gm,
+    rep: (match, equation) => parseMaths(equation, true),
+  },
   /** image */
   {
     re: /!\[(.*)\]\((https?:\/\/[-\w@:%.+~#=/]+)(?: +"(.*)")?\)/gm,
