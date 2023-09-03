@@ -126,3 +126,25 @@
   transform: translate(-50%, -50%);
   transition: 2s;
 }
+
+.utils-palette {
+  display: flex;
+}
+
+.utils-palette .utils-primary,
+.utils-palette .utils-secondary,
+.utils-palette .utils-tertiary {
+  flex: 1;
+  height: 1rem;
+  min-width: 3rem;
+}
+.utils-palette .utils-primary {
+  background-color: var(--primary-base);
+}
+
+.utils-palette .utils-secondary {
+  background-color: var(--secondary-base);
+}
+.utils-palette .utils-tertiary {
+  background-color: var(--tertiary-base);
+}

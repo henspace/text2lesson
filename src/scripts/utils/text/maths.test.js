@@ -308,7 +308,7 @@ test('d: become part entity', () => {
   expect(parseMaths(' d: d:')).toMatch('&part;&nbsp;&part;');
 });
 
-test('Colon following semicolon is dropped', () => {
+test('Colon can be used to separate greek letter from another letter, with the colon being dropped', () => {
   expect(parseMaths('  delta:t  ')).toMatch(`&delta;${strToMath('t')}`);
 });
 

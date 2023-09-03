@@ -363,11 +363,23 @@ test('getPlainTextFromHtml handles removes html tags', () => {
 test('maths block passed to maths parser when block starts with math:', () => {
   const result = parseMarkdown('math: data     ');
   expect(result).toMatch('data');
-  expect(mockMathsParser).toBeCalledWith('data');
+  expect(mockMathsParser).toBeCalledWith('data', false);
 });
 
 test('maths block passed to maths parser when block starts with maths:', () => {
   const result = parseMarkdown('maths: data     ');
   expect(result).toMatch('data');
-  expect(mockMathsParser).toBeCalledWith('data');
+  expect(mockMathsParser).toBeCalledWith('data', false);
+});
+
+test('maths block passed to maths parser as inline when data wrapped in {maths}...{maths}', () => {
+  const data = 'abc 123 xyz';
+  parseMarkdown(`111 {maths}${data}{maths} 111`);
+  expect(mockMathsParser).toBeCalledWith(data, true);
+});
+
+test('Maths block passed to maths parser as not inline', () => {
+  const data = 'abc 123 xyz';
+  parseMarkdown(`maths:${data}`);
+  expect(mockMathsParser).toBeCalledWith(data, false);
 });
