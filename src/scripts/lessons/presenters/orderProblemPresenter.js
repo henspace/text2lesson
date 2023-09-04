@@ -24,6 +24,8 @@
 
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { SelectControl } from '../../utils/userIo/controls.js';
+import { TextItem } from '../textItem.js';
+import { shuffle } from '../../utils/arrayManip.js';
 import {
   ClassName,
   AnswerSelectionState,
@@ -47,18 +49,22 @@ export class OrderProblemPresenter extends ProblemPresenter {
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
-    super(config);
+    super(config, true);
     this.#buildOrder();
   }
   /**
    * Build and order type question
    */
   #buildOrder() {
-    this.#missingWordCorrectAnswers = this.problem.firstWordsOfRightAnswers;
-    const redHerrings = this.problem.firstWordsOfWrongAnswers;
+    this.#missingWordCorrectAnswers = this.problem.rightAnswers?.map((value) =>
+      value instanceof TextItem ? value.plainText.trim() : value.trim()
+    );
+    const redHerrings = this.problem.wrongAnswers?.map((value) =>
+      value instanceof TextItem ? value.plainText.trim() : value.trim()
+    );
 
-    const options = ['...', ...this.#missingWordCorrectAnswers, ...redHerrings];
-    options.sort();
+    let options = [...this.#missingWordCorrectAnswers, ...redHerrings];
+    options = ['...', ...shuffle(options)];
     const settingDefinition = {
       defaultValue: '...',
       options: options,

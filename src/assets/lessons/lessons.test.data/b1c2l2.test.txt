@@ -15,3 +15,8 @@ x 🐊 Crocodile
 & Did you make sure you thought about whether they were mammals and not insects or reptiles.
 
 And don't forget, whales are mammals.
+
+? Can you make this Javascript code make sense? ...>left
+= for (const n =0; n < 10; n++) {
+= > console.log(\`n = ${n}\`);
+= }

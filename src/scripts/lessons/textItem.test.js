@@ -190,6 +190,102 @@ test('Missing words on line boundaries replaced by span with class of missing wo
   );
 });
 
+test('Missing words with row class replaced by span with class of align-row', () => {
+  const source = `...one>row 456 ...two`;
+  const textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(
+    /<span class="missing-word align-row" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span> 456/
+  );
+  expect(textItem.html).toMatch(
+    /456 <span class="missing-word" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/
+  );
+});
+
+test('Missing words with line class replaced by span with class of align-row', () => {
+  const source = `...one>line 456 ...two`;
+  const textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(
+    /<span class="missing-word align-row" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span> 456/
+  );
+  expect(textItem.html).toMatch(
+    /456 <span class="missing-word" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/
+  );
+});
+
+test('Missing words with col class replaced by span with class of align-column', () => {
+  const source = `...one>col 456 ...two`;
+  const textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(
+    /<span class="missing-word align-column" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span> 456/
+  );
+  expect(textItem.html).toMatch(
+    /456 <span class="missing-word" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/
+  );
+});
+
+test('Missing words with column class replaced by span with class of align-column', () => {
+  const source = `...one>column 456 ...two`;
+  const textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(
+    /<span class="missing-word align-column" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span> 456/
+  );
+  expect(textItem.html).toMatch(
+    /456 <span class="missing-word" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/
+  );
+});
+
+test('Missing words with COL class replaced by span with class of align-column', () => {
+  const source = `...one>COL 456 ...two`;
+  const textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(
+    /<span class="missing-word align-column" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span> 456/
+  );
+  expect(textItem.html).toMatch(
+    /456 <span class="missing-word" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/
+  );
+});
+
+test('Missing words with left class replaced by span with class of align-left', () => {
+  const source = `...one>left 456 ...two`;
+  const textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(
+    /<span class="missing-word align-left" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span> 456/
+  );
+  expect(textItem.html).toMatch(
+    /456 <span class="missing-word" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/
+  );
+});
+
+test('Missing words with alignment class but no word replaced by span with class alignment', () => {
+  const source = `...>col 456 ...two`;
+  const textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(
+    /<span class="missing-word align-column" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span> 456/
+  );
+  expect(textItem.html).toMatch(
+    /456 <span class="missing-word" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/
+  );
+});
+
+test('Missing words at end with alignment class but no word replaced by span with class alignment', () => {
+  const source = `...>col`;
+  const textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(
+    /<span class="missing-word align-column" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/
+  );
+});
+
+test('Missing words with unrecognised class replaced by span with no alignment class', () => {
+  const source = `...one>garbage 456 ...two`;
+  const textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(
+    /<span class="missing-word" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span> 456/
+  );
+  expect(textItem.html).toMatch(
+    /456 <span class="missing-word" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/
+  );
+});
+
 test('data-missing-word attribute contains objuscated missing words', () => {
   const source = `123 ...one 456`;
   const textItem = textItemParser.TextItem.createFromSource(source);

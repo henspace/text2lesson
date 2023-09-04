@@ -72,7 +72,7 @@ test('saveLocalLessonAtIndex updates storage with lesson data.', () => {
   }
 });
 
-test('deleteLessonAtIndex remove storage and updates indexes', () => {
+test('deleteLessonAtIndex does nothing if only 4 lessons.storage and updates indexes', () => {
   const localLibrary = new LocalLibrary();
   for (let index = 0; index < 4; index++) {
     const testData = {
@@ -86,10 +86,37 @@ test('deleteLessonAtIndex remove storage and updates indexes', () => {
   const indexToRemove = 2;
   localLibrary.deleteLessonAtIndex(indexToRemove);
   const key = `${LocalLibrary.LOCAL_LESSON_KEY_PREFIX}${indexToRemove}`;
+  expect(mockStorage.get(key).title).toBe(`test title ${indexToRemove}`);
+  const info = localLibrary.info;
+  const books = info.contentLoader();
+  expect(books[0].chapters[0].lessons).toHaveLength(4);
+
+  books[0].chapters[0].lessons.forEach((value, index) => {
+    expect(value.title).toBe(`test title ${index}`);
+  });
+});
+
+test('deleteLessonAtIndex deletes lessons and updates indexes', () => {
+  const localLibrary = new LocalLibrary();
+  for (let index = 0; index < 5; index++) {
+    const testData = {
+      title: `test title ${index}`,
+      contentLoader: () => 'test content',
+    };
+    if (index >= 4) {
+      localLibrary.addNewLessonSlot();
+    }
+    localLibrary.saveLocalLessonAtIndex(index, testData);
+    const key = `${LocalLibrary.LOCAL_LESSON_KEY_PREFIX}${index}`;
+    expect(mockStorage.get(key)).toBe(testData);
+  }
+  const indexToRemove = 2;
+  localLibrary.deleteLessonAtIndex(indexToRemove);
+  const key = `${LocalLibrary.LOCAL_LESSON_KEY_PREFIX}${indexToRemove}`;
   expect(mockStorage.get(key)).toBeUndefined();
   const info = localLibrary.info;
   const books = info.contentLoader();
-  expect(books[0].chapters[0].lessons).toHaveLength(3);
+  expect(books[0].chapters[0].lessons).toHaveLength(4);
 
   books[0].chapters[0].lessons.forEach((value, index) => {
     if (index < indexToRemove) {
@@ -98,6 +125,15 @@ test('deleteLessonAtIndex remove storage and updates indexes', () => {
       expect(value.title).toBe(`test title ${index + 1}`);
     }
   });
+});
+
+test('okayToDeleteSlot is only true if number of lessons is greater than 4.', () => {
+  const localLibrary = new LocalLibrary();
+  expect(localLibrary.okayToDeleteSlot).toBe(false);
+  localLibrary.addNewLessonSlot();
+  expect(localLibrary.okayToDeleteSlot).toBe(true);
+  localLibrary.deleteLessonAtIndex(0);
+  expect(localLibrary.okayToDeleteSlot).toBe(false);
 });
 
 test('addNewLessonSlot add a new storage key', () => {
@@ -126,11 +162,17 @@ test('addNewLessonSlot add a new storage key', () => {
 
 test('addNewLessonSlot reuses missing key', () => {
   const localLibrary = new LocalLibrary();
-  for (let index = 0; index < 4; index++) {
+  const nSlots = 14;
+  let expectedKeys = [];
+  for (let index = 0; index < nSlots; index++) {
+    expectedKeys.push(index);
     const testData = {
       title: `test title ${index}`,
       contentLoader: () => 'test content',
     };
+    if (index >= 4) {
+      localLibrary.addNewLessonSlot();
+    }
     localLibrary.saveLocalLessonAtIndex(index, testData);
     const key = `${LocalLibrary.LOCAL_LESSON_KEY_PREFIX}${index}`;
     expect(mockStorage.get(key)).toBe(testData);
@@ -140,9 +182,10 @@ test('addNewLessonSlot reuses missing key', () => {
   localLibrary.addNewLessonSlot();
   const info = localLibrary.info;
   const books = info.contentLoader();
-  expect(books[0].chapters[0].lessons).toHaveLength(4);
+  expect(books[0].chapters[0].lessons).toHaveLength(nSlots);
 
-  const expectedKeys = [0, 1, 3, 2]; // note 2 was reused.
+  expectedKeys.splice(indexToRemove, 1);
+  expectedKeys.push(indexToRemove);
   books[0].chapters[0].lessons.forEach((value, index) => {
     const testData = `Test data ${index}`;
     localLibrary.saveLocalLessonAtIndex(index, testData);

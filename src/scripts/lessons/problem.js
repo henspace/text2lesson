@@ -281,9 +281,11 @@ export class Problem {
    * @returns {boolean}
    */
   #isOrderQuestion() {
-    const missingAtEnd = this.#question.html.match(
-      /<span +class *= *"missing-word".*?><\/span>(?:\s*<\/p>\s*)*$/
-    );
+    const missingAtEnd =
+      /<span +class *= *"missing-word(?: [a-zA-Z-]*?)*?".*?><\/span>(?:\s*<\/p>\s*)*$/.test(
+        this.#question.html
+      );
+
     return (
       missingAtEnd &&
       this.#question.missingWords.length === 1 &&

@@ -29,6 +29,7 @@ import {
   AnswerSelectionState,
   ProblemPresenter,
 } from './problemPresenter.js';
+import { shuffle } from '../../utils/arrayManip.js';
 
 /**
  * Class to present a problem.
@@ -47,7 +48,7 @@ export class FillProblemPresenter extends ProblemPresenter {
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
    */
   constructor(config) {
-    super(config);
+    super(config, true);
     this.#createMissingWordSelectors();
     this.answerElement.hide();
   }
@@ -70,8 +71,8 @@ export class FillProblemPresenter extends ProblemPresenter {
     });
 
     const redHerrings = this.problem.firstWordsOfWrongAnswers;
-    const options = ['...', ...this.#missingWordCorrectAnswers, ...redHerrings];
-    options.sort();
+    let options = [...this.#missingWordCorrectAnswers, ...redHerrings];
+    options = ['...', ...shuffle(options)];
     const settingDefinition = {
       defaultValue: '...',
       options: options,
