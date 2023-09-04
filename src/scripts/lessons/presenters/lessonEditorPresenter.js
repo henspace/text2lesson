@@ -60,7 +60,9 @@ export class LessonEditorPresenter extends Presenter {
     this.#addSaveButton();
     this.#addImportButton();
     this.#addExportButton();
-    this.#addDeleteButton();
+    if (new LocalLibrary().okayToDeleteSlot) {
+      this.#addDeleteButton();
+    }
     this.expandPresentation();
     this.#setEditorAsClean();
     this.applyIconToNextButton(icons.closeEditor);

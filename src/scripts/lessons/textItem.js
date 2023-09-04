@@ -34,8 +34,24 @@ import { getHtmlForIconName } from './fontAwesomeTools.js';
  * the presentation of data. Class names in the array must be in lowercase.
  * @type {string[]}
  */
-const SAFE_CLASSES = ['big', 'bigger', 'biggest', 'massive', 'giant'];
+const SAFE_CLASSES = ['big', 'bigger', 'biggest', 'massive', 'giant', 'column'];
 
+/**
+ * Conver requestedClass into an orientation class.
+ * @param {string} requestedClass - can be col, column, row, line, or left in any case.
+ * @returns {string} empty string if unrecognised, else align-column or align-row.
+ */
+function getOrientationClass(requestedClass) {
+  if (/^col(?:$|umn$)/i.test(requestedClass)) {
+    return 'align-column';
+  } else if (/^(?:row|line)$/i.test(requestedClass)) {
+    return 'align-row';
+  } else if (/^(?:left)$/i.test(requestedClass)) {
+    return 'align-left';
+  } else {
+    return '';
+  }
+}
 /**
  * Get a safe class from the array of SAFE_CLASSES. The requested class is
  * case insensitive. If the `requestedClass` is not safe, an empty string is
@@ -91,9 +107,12 @@ class TrackedReplacements {
         re: /\\>/g,
         rep: '&gt;',
       },
-      getItemReplacement('[.]{3}', (match, startChr, word) => {
+      getItemReplacement('[.]{3}', (match, startChr, word, orientation) => {
+        const classes = `missing-word ${getOrientationClass(
+          orientation
+        )}`.trim();
         tracker.#missingWords.push(word);
-        return `${startChr}<span class="missing-word" data-missing-word="${ManagedElement.encodeString(
+        return `${startChr}<span class="${classes}" data-missing-word="${ManagedElement.encodeString(
           word
         )}"></span>`;
       }),

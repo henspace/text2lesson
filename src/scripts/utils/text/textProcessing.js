@@ -313,9 +313,14 @@ export function encodeToEntities(data) {
  * @returns {string}
  */
 export function decodeFromEntities(data) {
-  return data.replaceAll(/&#([0-9]{1,4});/g, (match, value) =>
+  let decoded = data.replaceAll(/&#([0-9]{1,4});/g, (match, value) =>
     String.fromCharCode(parseInt(value))
   );
+  decoded = decoded.replace(/&amp;/gi, '&');
+  decoded = decoded.replace(/&lt;/gi, '<');
+  decoded = decoded.replace(/&gt;/gi, '>');
+  decoded = decoded.replace(/&nbsp;/gi, ' ');
+  return decoded;
 }
 
 /**
@@ -382,5 +387,6 @@ export function escapeHtml(data) {
  * @returns {string} the plain text
  */
 export function getPlainTextFromHtml(html) {
-  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ');
+  let plain = html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ');
+  return decodeFromEntities(plain);
 }

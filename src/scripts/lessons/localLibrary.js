@@ -90,6 +90,13 @@ export class LocalLibrary {
   }
 
   /**
+   * Get if it is okay to delete a slot
+   */
+  get okayToDeleteSlot() {
+    const keys = this.#getLessonKeys();
+    return keys.length > LocalLibrary.NUMBER_OF_INITIAL_LESSONS;
+  }
+  /**
    * Get the local library key.
    * @returns {string}
    */
@@ -215,7 +222,7 @@ export class LocalLibrary {
    */
   #getFreeKey() {
     const indexes = this.#getLessonKeys();
-    indexes.sort();
+    indexes.sort((a, b) => a - b);
     for (let n = 0; n < indexes.length - 1; n++) {
       if (indexes[n + 1] - indexes[n] > 1) {
         return indexes[n] + 1;
@@ -235,10 +242,17 @@ export class LocalLibrary {
   }
 
   /**
-   * Delete a lesson slot.
+   * Delete a lesson slot. If implementation would reduce the number of lessons
+   * below the intial level, it is ignored.
    */
   deleteLessonAtIndex(index) {
     const keys = this.#getLessonKeys();
+    if (!this.okayToDeleteSlot) {
+      console.error(
+        `Attempt made to reduce number of local lessons to below ${LocalLibrary.NUMBER_OF_INITIAL_LESSONS}. Ignored.`
+      );
+      return;
+    }
     const key = keys[index];
     if (key != undefined) {
       console.debug(`Removing lesson storage index: ${index}; key:${key}`);

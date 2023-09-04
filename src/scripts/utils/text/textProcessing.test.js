@@ -191,7 +191,11 @@ test('Encode html entities is valid', () => {
 });
 
 test('Decode html entities is valid', () => {
-  expect(decodeFromEntities('&#65;&#66;&#67;&#48;&#49;&#50;')).toBe('ABC012');
+  expect(
+    decodeFromEntities(
+      '&amp;&lt;&gt;&nbsp;&#65;&#66;&#67;&#48;&#49;&#50;&amp;&lt;&gt;&nbsp;'
+    )
+  ).toBe('&<> ABC012&<> ');
 });
 
 test('Markdown characters can be escaped', () => {
@@ -358,6 +362,10 @@ test('getPlainTextFromHtml handles removes html tags', () => {
       ' one <i>two</i> <div class="a class">three</div> four'
     )
   ).toBe(' one two three four');
+});
+
+test('getPlainTextFromHtml decodes named entities', () => {
+  expect(getPlainTextFromHtml('one &amp; two')).toBe('one & two');
 });
 
 test('maths block passed to maths parser when block starts with math:', () => {
