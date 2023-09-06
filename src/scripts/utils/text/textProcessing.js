@@ -308,17 +308,19 @@ export function encodeToEntities(data) {
 }
 
 /**
- * Decode html hex entities to string
+ * Decode html hex entities to string. Note the entity is followed by a soft hyphen
+ * character to prevent a character such as a < disrupting any html.
  * @param {string} data
  * @returns {string}
  */
 export function decodeFromEntities(data) {
-  let decoded = data.replaceAll(/&#([0-9]{1,4});/g, (match, value) =>
-    String.fromCharCode(parseInt(value))
+  let decoded = data.replaceAll(
+    /&#([0-9]{1,4});/g,
+    (match, value) => String.fromCharCode(parseInt(value)) + '\xAD'
   );
-  decoded = decoded.replace(/&amp;/gi, '&');
-  decoded = decoded.replace(/&lt;/gi, '<');
-  decoded = decoded.replace(/&gt;/gi, '>');
+  decoded = decoded.replace(/&amp;/gi, '&\xAD');
+  decoded = decoded.replace(/&lt;/gi, '<\xAD');
+  decoded = decoded.replace(/&gt;/gi, '>\xAD');
   decoded = decoded.replace(/&nbsp;/gi, ' ');
   return decoded;
 }

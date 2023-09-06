@@ -13,6 +13,10 @@
           {
             "title": "Lesson 2 of chapter 1 of book 1",
             "file": "b1c1l2.test.txt"
+          },
+          {
+            "title": "A lesson that does not exist",
+            "file": "nonexistent"
           }
         ]
       },

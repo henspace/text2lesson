@@ -1,0 +1,10 @@
+[
+  "This file is deliberately corrupt"
+  {
+    "title": "Test book number 1",
+    "location": "assets/lessons/lessons.test.data/",
+    "chapters": [
+      {
+        "title": "Chapter 1 of book 1",
+        "lessons": [
+]

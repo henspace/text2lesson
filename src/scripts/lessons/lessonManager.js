@@ -42,6 +42,7 @@ import { LocalLibrary } from './localLibrary.js';
 import { escapeHtml } from '../utils/text/textProcessing.js';
 import { embeddedLesson } from './embeddedLesson.js';
 import { LessonOrigin } from './lessonOrigins.js';
+import { i18n } from '../utils/i18n/i18n.js';
 
 /**
  * @typedef {Map<string, LibraryInfo>} Libraries - object containing
@@ -142,6 +143,19 @@ class LessonManager {
 
   constructor() {}
 
+  /**
+   * Get the first available remote library key.
+   * @returns {string} Empty string if no remote key.
+   */
+  getFirstRemoteKey() {
+    const keys = this.#libraries.keys();
+    for (const key of keys) {
+      if (key !== LocalLibrary.LOCAL_LIBRARY_KEY) {
+        return key;
+      }
+    }
+    return '';
+  }
   /** Set the current remote library key.
    * The library's catalog should have already been loaded.
    * If the key is invalid, the first entry in the this.#libraries is used and storage
@@ -151,10 +165,9 @@ class LessonManager {
   set remoteLibraryKey(key) {
     if (!this.#libraries.has(key)) {
       console.error(
-        `Ignored attempt to set remote invalid remote library key ${key}.`
+        `Ignored attempt to set invalid remote library key ${key}.`
       );
-      this.#usingLocalLibrary = true;
-      return;
+      key = this.getFirstRemoteKey();
     }
     this.#remoteLibraryKey = key;
     if (!this.#usingLocalLibrary) {
@@ -179,6 +192,14 @@ class LessonManager {
    */
   get usingLocalLibrary() {
     return this.#usingLocalLibrary;
+  }
+
+  /**
+   * Check if remote library available.
+   * @returns {boolean}
+   */
+  get isRemoteLibraryAvailable() {
+    return this.#libraries.get(this.#remoteLibraryKey)?.books.length > 0;
   }
 
   /**
@@ -208,6 +229,15 @@ class LessonManager {
    */
   set lessonIndex(index) {
     this.#currentLessonIndex = this.#ensurePositiveInt(index);
+  }
+
+  /**
+   * Get the remote library title. If key is not valid, returns an empty string.
+   * @returns {string}
+   */
+  get remoteLibraryTitle() {
+    const title = this.#libraries.get(this.#remoteLibraryKey)?.title;
+    return title ?? '';
   }
 
   /**
@@ -440,30 +470,34 @@ class LessonManager {
    * to a JSON representation of a `libraries` object.
    * Note that all titles are escaped.
    * @param {string} librariesFileLocation - if null or empty, just local libraries are loaded.
-   * @returns {Promise} fufils to number of libraries.
+   * @returns {Promise<Error>} fulfils to Error which is null on success.
    */
   loadAllLibraries(librariesFileLocation) {
     this.#libraries = new Map();
     const localLibrary = new LocalLibrary();
     this.#libraries.set(localLibrary.key, localLibrary.info);
     if (!librariesFileLocation) {
-      return Promise.resolve(this.#libraries.size);
+      return Promise.resolve(null);
     }
-    return fetchJson(librariesFileLocation).then((entries) => {
-      for (const key in entries) {
-        const entry = entries[key];
-        entry.title = escapeHtml(entry.title);
-        this.#libraries.set(key, entries[key]);
-        this.#libraries.get(key).books = [];
-      }
-      return this.#libraries.size;
-    });
+    return fetchJson(librariesFileLocation)
+      .then((entries) => {
+        for (const key in entries) {
+          const entry = entries[key];
+          entry.title = escapeHtml(entry.title);
+          this.#libraries.set(key, entries[key]);
+          this.#libraries.get(key).books = [];
+        }
+        return null;
+      })
+      .catch((errorIgnored) => {
+        return new Error(i18n`Unable to load ${librariesFileLocation}`);
+      });
   }
 
   /**
    * Load the current libraries. This is the local storage library and the
    * current remote library.
-   * @returns {Promise} fulfils to undefined.
+   * @returns {Promise<Error>} fulfils to Error which is null on success.
    */
   loadAllLibraryContent() {
     return this.#loadLibraryContent(LocalLibrary.LOCAL_LIBRARY_KEY).then(() =>
@@ -477,7 +511,7 @@ class LessonManager {
    * Indexes are set to zero if found to be invalid.
    * @param {string} key - the library key
    * @param {boolean} [force] - if true, the content will be reloaded even if it exists.
-   * @returns {Promise} fulfils to undefined.
+   * @returns {Promise} fulfils to null or {Error} if the library could not be loaded. .
    */
   #loadLibraryContent(key, force) {
     const library = this.#libraries.get(key);
@@ -489,14 +523,18 @@ class LessonManager {
       library.books = library.contentLoader();
       this.#escapeAllTitles(library.books);
       this.#ensureIndexesValid();
-      return Promise.resolve();
+      return Promise.resolve(null);
     }
-    return fetchJson(library.url).then((value) => {
-      library.books = value;
-      this.#escapeAllTitles(library.books);
-      this.#ensureIndexesValid();
-      return;
-    });
+    return fetchJson(library.url)
+      .then((value) => {
+        library.books = value;
+        this.#escapeAllTitles(library.books);
+        this.#ensureIndexesValid();
+        return null;
+      })
+      .catch((errorIgnored) => {
+        return new Error(i18n`Unable to load ${library.url}`);
+      });
   }
 
   /**
@@ -518,6 +556,7 @@ class LessonManager {
   /**
    * Load the current lesson.
    * @returns {Promise} Fulfils to {@link module:lessons/cachedLesson~CachedLesson}
+   * Null if the lesson cannot be loaded.
    */
   loadCurrentLesson() {
     this.#ensureIndexesValid();
@@ -529,7 +568,10 @@ class LessonManager {
     if (contentLoader) {
       return this.#loadLessonUsingContentLoader(contentLoader);
     } else {
-      return this.#loadRemoteLesson();
+      return this.#loadRemoteLesson().catch((error) => {
+        console.error(error);
+        return null;
+      });
     }
   }
 
@@ -550,7 +592,7 @@ class LessonManager {
    */
   #loadRemoteLesson() {
     const url = this.formUrlForLesson();
-    if (this.#cachedLesson?.info.url === url) {
+    if (this.#cachedLesson?.info.url === url && this.#cachedLesson?.content) {
       console.info(`Using cached version of lesson: ${url}`);
       return Promise.resolve(CachedLesson.clone(this.#cachedLesson));
     }

@@ -23,10 +23,11 @@
  */
 import { jest, beforeAll, beforeEach, test, expect } from '@jest/globals';
 import { footer } from '../../headerAndFooter.js';
+import { ManagedElement } from '../../utils/userIo/managedElement.js';
 
 const currentLessonInfo = {
   libraryKey: 'key',
-  file: 'libfile',
+  file: 'library-file',
   indexes: {
     book: 0,
     chapter: 0,
@@ -52,6 +53,29 @@ class MockPresenter {
   }
 }
 
+jest.unstable_mockModule('./presenter.js', () => {
+  return {
+    Presenter: class Presenter {
+      static NEXT_ID = 'FORWARDS';
+      config;
+      presentation = new ManagedElement();
+
+      constructor(config) {
+        this.config = config;
+      }
+      applyIconToNextButton() {}
+      createAndAppendChild() {
+        return new ManagedElement();
+      }
+      listenToEventOn() {}
+      showNextButton() {}
+      addButtonToBar() {}
+      showBackButton() {}
+      handleClickEvent() {}
+    },
+  };
+});
+
 jest.unstable_mockModule('../lessonManager.js', () => {
   return {
     lessonManager: {
@@ -68,14 +92,16 @@ jest.unstable_mockModule('../lessonManager.js', () => {
   };
 });
 
-const mockLessonConverter = jest.fn(() => new MockLesson());
-
 const MockLessonSource = function (source) {
   this.source = source;
-  this.convertToLesson = mockLessonConverter;
+  this.convertToLesson = () => new MockLesson(`conversion-of-${source}`);
 };
 
-const MockLesson = jest.fn(() => {});
+const MockLesson = function (data) {
+  return {
+    data: data,
+  };
+};
 
 jest.unstable_mockModule('../lessonSource.js', () => {
   return {
@@ -131,21 +157,14 @@ test('next function provides presenter from presenterFactory constructed with co
   expect(presenterFactory.getNext.mock.calls[0][1]).toEqual(expectedConfig);
 });
 
-test('next function provides presenterFactory constructed with config containing a lesson', async () => {
+test('handleClick event populate lesson', async () => {
   const config = {
     factory: presenterFactory,
   };
   const lessonPresenter = new LessonPresenter(config);
-  const index = 6;
-  const next = await lessonPresenter.next(index);
-  expect(next).toBeInstanceOf(MockPresenter);
-  expect(presenterFactory.getNext).toBeCalledTimes(1);
-  expect(presenterFactory.getPrevious).toBeCalledTimes(0);
-  let expectedConfig = { ...lessonPresenter.config };
-  expect(presenterFactory.getNext.mock.calls[0][0]).toBe(lessonPresenter);
-  expect(presenterFactory.getNext.mock.calls[0][1]).toEqual(expectedConfig);
+  await lessonPresenter.handleClickEvent(new Event('click'), 'FORWARDS');
   expect(LessonSource.createFromSource).toHaveBeenCalledWith('cachedLesson');
-  expect(mockLessonConverter).toBeCalledTimes(1);
+  expect(config.lesson.data).toBe('conversion-of-cachedLesson');
 });
 
 test('previous function provides presenter from presenterFactory constructed with config', () => {

@@ -51,7 +51,7 @@ import { embeddedLesson } from './lessons/embeddedLesson.js';
  */
 function showFatalError(error) {
   const html = `<h1>Whoops!</h1>
-  <p>An error has occured from which I can't recover on my own.</p>
+  <p>An error has occurred from which I can't recover on my own.</p>
   <ul>
   <li>Name: ${error.name}</li>
   <li>Cause: ${error.cause}</li>
@@ -61,6 +61,46 @@ function showFatalError(error) {
   `;
   console.error(error);
   document.getElementById('content').innerHTML = html; // in case dialog cannot be shown.
+}
+
+/**
+ * Handle a failure to load the libraries. A message is shown explaining the
+ * issue and recommending changing the library setting.
+ * @param {Error} error - the details of the error.
+ * @returns {Promise<undefined>}
+ */
+function handleLibraryLoadFailure(error) {
+  const paragraphs = [
+    i18n`A problem has occurred while trying to load the libraries.`,
+    i18n`Hopefully, this is just a temporary issue and reloading the application will solve the problem.`,
+    i18n`In the meantime, local libraries should still be available.`,
+    '<br><br>',
+    i18n`Full details of the error are given below:`,
+    '<br><br>',
+    error.message ?? error,
+  ];
+  return ModalDialog.showError(paragraphs.join(' '));
+}
+
+/**
+ * Handle a failure to load the libraries. A message is shown explaining the
+ * issue and recommending changing the library setting.
+ * @param {Error} error - the details of the error.
+ * @returns {Promise<undefined>}
+ */
+function handleLibraryLoadContentFailure(error) {
+  const paragraphs = [
+    i18n`A problem has occurred while trying to load the library content.`,
+    i18n`If the problem persists, go to the settings and change the selected library.`,
+    i18n`<br><br>`,
+    i18n`Hopefully, this is just a temporary issue and reloading the application will solve the problem.`,
+    i18n`In the meantime, local libraries should still be available.`,
+    '<br><br>',
+    i18n`Full details of the error are given below:`,
+    '<br><br>',
+    error.message ?? error,
+  ];
+  return ModalDialog.showError(paragraphs.join(' '));
 }
 
 /**
@@ -78,6 +118,9 @@ function loadApplication() {
     : 'assets/lessons/lessons.test.data/libraries.test.json';
   return getLanguages(embeddedLesson.translations)
     .then(() => lessonManager.loadAllLibraries(librariesLocation))
+    .then((error) => {
+      return error ? handleLibraryLoadFailure(error) : null;
+    })
     .then(() => loadSettingDefinitions(getSettingDefinitions()))
     .then(() => {
       const language = i18n`language::`;
@@ -89,6 +132,9 @@ function loadApplication() {
     })
     .then(() => setHeaderAndFooter(getMainMenuItems()))
     .then(() => lessonManager.loadAllLibraryContent())
+    .then((error) => {
+      return error ? handleLibraryLoadContentFailure(error) : null;
+    })
     .then(() =>
       toast(
         '<span style="font-size:3rem;">&#x1F631;</span>' +
