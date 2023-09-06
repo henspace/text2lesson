@@ -24,6 +24,7 @@
 
 import { test, expect } from '@jest/globals';
 import { parseMaths } from './maths.js';
+import { Entities } from './entities.js';
 
 const GREEK_LETTERS = [
   'Alpha',
@@ -84,88 +85,128 @@ test('characters converted to maths characters', () => {
 });
 
 test('minus character becomes minus entity', () => {
-  expect(parseMaths('32 - 42')).toMatch('&minus;');
-  expect(parseMaths('32-42')).toMatch('&minus;');
-  expect(parseMaths('-32')).toMatch('&minus;');
-  expect(parseMaths('- -')).toMatch(/&minus;.*&minus;/);
+  expect(parseMaths('32 - 42')).toMatch(`${Entities.Maths.MINUS.unicode}`);
+  expect(parseMaths('32-42')).toMatch(`${Entities.Maths.MINUS.unicode}`);
+  expect(parseMaths('-32')).toMatch(`${Entities.Maths.MINUS.unicode}`);
+  expect(parseMaths('- -')).toMatch(
+    `${Entities.Maths.MINUS.unicode}&nbsp;${Entities.Maths.MINUS.unicode}`
+  );
 });
 
 test('* character becomes times entity', () => {
-  expect(parseMaths('32 * 42')).toMatch('&times;');
-  expect(parseMaths('32*42')).toMatch('&times;');
-  expect(parseMaths('*32')).toMatch('&times;');
-  expect(parseMaths('* *')).toMatch(/&times;.*&times;/);
+  expect(parseMaths('32 * 42')).toMatch(`${Entities.Maths.TIMES.unicode}`);
+  expect(parseMaths('32*42')).toMatch(`${Entities.Maths.TIMES.unicode}`);
+  expect(parseMaths('*32')).toMatch(`${Entities.Maths.TIMES.unicode}`);
+  expect(parseMaths('* *')).toMatch(
+    `${Entities.Maths.TIMES.unicode}&nbsp;${Entities.Maths.TIMES.unicode}`
+  );
 });
 
 test('ne surrounded by spaces  becomes ne entity', () => {
-  expect(parseMaths('32 ne 42')).toMatch('&ne;');
+  expect(parseMaths('32 ne 42')).toMatch(`${Entities.Maths.NOT_EQUAL.unicode}`);
   expect(parseMaths('done')).toMatch(strToMath('done'));
-  expect(parseMaths(' ne ne ')).toMatch(/&ne;.*&ne;/);
+  expect(parseMaths(' ne ne ')).toMatch(
+    `${Entities.Maths.NOT_EQUAL.unicode}&nbsp;${Entities.Maths.NOT_EQUAL.unicode}`
+  );
 });
 
 test('/=  becomes ne entity', () => {
-  expect(parseMaths('32 /= 42')).toMatch('&ne;');
-  expect(parseMaths('32/=42')).toMatch('&ne;');
-  expect(parseMaths(' /= /= ')).toMatch(/&ne;.*&ne;/);
+  expect(parseMaths('32 /= 42')).toMatch(`${Entities.Maths.NOT_EQUAL.unicode}`);
+  expect(parseMaths('done')).toMatch(strToMath('done'));
+  expect(parseMaths(' /= /= ')).toMatch(
+    `${Entities.Maths.NOT_EQUAL.unicode}&nbsp;${Entities.Maths.NOT_EQUAL.unicode}`
+  );
 });
 
 test('!=  becomes ne entity', () => {
-  expect(parseMaths('32 != 42')).toMatch('&ne;');
-  expect(parseMaths('32!=42')).toMatch('&ne;');
-  expect(parseMaths(' != != ')).toMatch(/&ne;.*&ne;/);
+  expect(parseMaths('32 != 42')).toMatch(`${Entities.Maths.NOT_EQUAL.unicode}`);
+  expect(parseMaths('done')).toMatch(strToMath('done'));
+  expect(parseMaths(' != != ')).toMatch(
+    `${Entities.Maths.NOT_EQUAL.unicode}&nbsp;${Entities.Maths.NOT_EQUAL.unicode}`
+  );
 });
 
 test('<=  becomes le entity', () => {
-  expect(parseMaths('32 <= 42')).toMatch('&le;');
-  expect(parseMaths('32<=42')).toMatch('&le;');
-  expect(parseMaths('32 &lt;= 42')).toMatch('&le;');
-  expect(parseMaths('32&lt;=42')).toMatch('&le;');
-  expect(parseMaths(' <= <= ')).toMatch(/&le;.*&le;/);
+  expect(parseMaths('32 <= 42')).toMatch(
+    `${Entities.Maths.LESS_THAN_OR_EQUAL.unicode}`
+  );
+  expect(parseMaths('32<=42')).toMatch(
+    `${Entities.Maths.LESS_THAN_OR_EQUAL.unicode}`
+  );
+  expect(parseMaths('32 &lt;= 42')).toMatch(
+    `${Entities.Maths.LESS_THAN_OR_EQUAL.unicode}`
+  );
+  expect(parseMaths('32&lt;=42')).toMatch(
+    `${Entities.Maths.LESS_THAN_OR_EQUAL.unicode}`
+  );
+  expect(parseMaths(' <= <= ')).toMatch(
+    `${Entities.Maths.LESS_THAN_OR_EQUAL.unicode}&nbsp;${Entities.Maths.LESS_THAN_OR_EQUAL.unicode}`
+  );
 });
 
 test('>=  becomes ge entity', () => {
-  expect(parseMaths('32 >= 42')).toMatch('&ge;');
-  expect(parseMaths('32>=42')).toMatch('&ge;');
-  expect(parseMaths('32 &gt;= 42')).toMatch('&ge;');
-  expect(parseMaths('32&gt;=42')).toMatch('&ge;');
-  expect(parseMaths(' >= >= ')).toMatch(/&ge;.*&ge;/);
+  expect(parseMaths('32 >= 42')).toMatch(
+    `${Entities.Maths.GREATER_THAN_OR_EQUAL.unicode}`
+  );
+  expect(parseMaths('32>=42')).toMatch(
+    `${Entities.Maths.GREATER_THAN_OR_EQUAL.unicode}`
+  );
+  expect(parseMaths('32 &gt;= 42')).toMatch(
+    `${Entities.Maths.GREATER_THAN_OR_EQUAL.unicode}`
+  );
+  expect(parseMaths('32&gt;=42')).toMatch(
+    `${Entities.Maths.GREATER_THAN_OR_EQUAL.unicode}`
+  );
+  expect(parseMaths(' >= >= ')).toMatch(
+    `${Entities.Maths.GREATER_THAN_OR_EQUAL.unicode}&nbsp;${Entities.Maths.GREATER_THAN_OR_EQUAL.unicode}`
+  );
 });
 
 test('sqrt  becomes radic entity', () => {
-  expect(parseMaths('32 sqrt 42')).toMatch('&radic;');
-  expect(parseMaths('sqrt 32')).toMatch('&radic;');
-  expect(parseMaths('32sqrt42')).toMatch('&radic;');
+  expect(parseMaths('32 sqrt 42')).toMatch(`${Entities.Maths.SQRT.unicode}`);
+  expect(parseMaths('sqrt 32')).toMatch(`${Entities.Maths.SQRT.unicode}`);
+  expect(parseMaths('32sqrt42')).toMatch(`${Entities.Maths.SQRT.unicode}`);
   expect(parseMaths('asqrt')).toMatch(strToMath('asqrt'));
   expect(parseMaths('sqrta')).toMatch(strToMath('sqrta'));
-  expect(parseMaths(' sqrt sqrt ')).toMatch(/&radic;.*radic;/);
+  expect(parseMaths(' sqrt sqrt ')).toMatch(
+    `${Entities.Maths.SQRT.unicode}&nbsp;${Entities.Maths.SQRT.unicode}`
+  );
 });
 
 test('[] following sqrt become span for styling', () => {
   const sqrtText = ' sqrt[1 + 7]';
-  const sqrtResult = `<span class="radic">&radic;</span><span class="sqrt">${strToMath(
-    '1'
-  )}&nbsp;+&nbsp;${strToMath('7')}</span>`;
+  const sqrtResult = `<span class="radic">${
+    Entities.Maths.SQRT.unicode
+  }</span><span class="sqrt">${strToMath('1')}&nbsp;+&nbsp;${strToMath(
+    '7'
+  )}</span>`;
   const testStr = ` ${sqrtText}  ${sqrtText}`;
   const expected = `${sqrtResult}&nbsp;${sqrtResult}`;
   expect(parseMaths(testStr)).toMatch(expected);
 });
 
 test('sum  becomes sum entity', () => {
-  expect(parseMaths('32 sum 42')).toMatch('&sum;');
-  expect(parseMaths('sum 32')).toMatch('&sum;');
-  expect(parseMaths('32sum42')).toMatch('&sum;');
+  expect(parseMaths('32 sum 42')).toMatch(`${Entities.Maths.SUM.unicode}`);
+  expect(parseMaths('sum 32')).toMatch(`${Entities.Maths.SUM.unicode}`);
+  expect(parseMaths('32sum42')).toMatch(`${Entities.Maths.SUM.unicode}`);
   expect(parseMaths('asum')).toMatch(strToMath('asum'));
   expect(parseMaths('suma')).toMatch(strToMath('suma'));
-  expect(parseMaths(' sum sum ')).toMatch(/&sum;.*&sum;/);
+  expect(parseMaths(' sum sum ')).toMatch(
+    `${Entities.Maths.SUM.unicode}&nbsp;${Entities.Maths.SUM.unicode}`
+  );
 });
 
 test('int  becomes int entity', () => {
-  expect(parseMaths('32 int 42')).toMatch('&int;');
-  expect(parseMaths('int 32')).toMatch('&int;');
-  expect(parseMaths('32int42')).toMatch('&int;');
+  expect(parseMaths('32 int 42')).toMatch(`${Entities.Maths.INTEGRAL.unicode}`);
+  expect(parseMaths('int 32')).toMatch(`${Entities.Maths.INTEGRAL.unicode}`);
+  expect(parseMaths('32int42')).toMatch(`${Entities.Maths.INTEGRAL.unicode}`);
   expect(parseMaths('aint')).toMatch(strToMath('aint'));
   expect(parseMaths('inta')).toMatch(strToMath('inta'));
-  expect(parseMaths(' int int ')).toMatch(/&int;.*&int;/);
+  expect(parseMaths(' int int ')).toMatch(
+    new RegExp(
+      `${Entities.Maths.INTEGRAL.unicode}.*${Entities.Maths.INTEGRAL.unicode}`
+    )
+  );
 });
 
 test('dot between characters becomes centre dot', () => {
@@ -176,7 +217,7 @@ test('dot between characters becomes centre dot', () => {
   const mathsChrB = strToMath(chrB);
   const mathsChrC = strToMath(chrC);
   expect(parseMaths(`${chrA}.${chrB}.${chrC}`)).toMatch(
-    `${mathsChrA}&sdot;${mathsChrB}&sdot;${mathsChrC}`
+    `${mathsChrA}${Entities.Maths.CENTRE_DOT.unicode}${mathsChrB}${Entities.Maths.CENTRE_DOT.unicode}${mathsChrC}`
   );
   expect(parseMaths(`${chrA} .${chrB}`)).toMatch(
     `${mathsChrA}&nbsp;.${mathsChrB}`
@@ -195,7 +236,7 @@ test('dot between digit and character becomes centre dot', () => {
   const mathsChrB = strToMath(chrB);
   const mathsChrC = strToMath(chrC);
   expect(parseMaths(`${chrA}.${chrB}.${chrC}`)).toMatch(
-    `${mathsChrA}&sdot;${mathsChrB}&sdot;${mathsChrC}`
+    `${mathsChrA}${Entities.Maths.CENTRE_DOT.unicode}${mathsChrB}${Entities.Maths.CENTRE_DOT.unicode}${mathsChrC}`
   );
   expect(parseMaths(`${chrA} .${chrB}`)).toMatch(
     `${mathsChrA}&nbsp;.${mathsChrB}`
@@ -208,11 +249,15 @@ test('dot between digit and character becomes centre dot', () => {
 test('Greek letters substituted', () => {
   for (let letter of GREEK_LETTERS) {
     expect(parseMaths(`${letter} + ${letter}`)).toMatch(
-      new RegExp(`&${letter};.*&${letter};`)
+      new RegExp(
+        `${Entities.Greek[letter].unicode}.*${Entities.Greek[letter].unicode}`
+      )
     );
     letter = letter.toLowerCase();
     expect(parseMaths(`${letter} + ${letter}`)).toMatch(
-      new RegExp(`&${letter};.*&${letter};`)
+      new RegExp(
+        `${Entities.Greek[letter].unicode}.*${Entities.Greek[letter].unicode}`
+      )
     );
   }
 });
@@ -299,24 +344,32 @@ test('Subscript with brackets supported', () => {
 
 test('Multiple spaces collapse into one nonbreaking space', () => {
   expect(parseMaths('3     *     6')).toMatch(
-    `${strToMath('3')}&nbsp;&times;&nbsp;${strToMath('6')}`
+    `${strToMath('3')}&nbsp;${Entities.Maths.TIMES.unicode}&nbsp;${strToMath(
+      '6'
+    )}`
   );
 });
 
 test('d: become part entity', () => {
-  expect(parseMaths('d: d:')).toMatch('&part;&nbsp;&part;');
-  expect(parseMaths(' d: d:')).toMatch('&part;&nbsp;&part;');
+  expect(parseMaths('d: d:')).toMatch(
+    `${Entities.Maths.PARTIAL.unicode}&nbsp;${Entities.Maths.PARTIAL.unicode}`
+  );
+  expect(parseMaths(' d: d:')).toMatch(
+    `${Entities.Maths.PARTIAL.unicode}&nbsp;${Entities.Maths.PARTIAL.unicode}`
+  );
 });
 
 test('Colon can be used to separate greek letter from another letter, with the colon being dropped', () => {
-  expect(parseMaths('  delta:t  ')).toMatch(`&delta;${strToMath('t')}`);
+  expect(parseMaths('  delta:t  ')).toMatch(
+    `${Entities.Greek.delta.unicode}${strToMath('t')}`
+  );
 });
 
 test('Integral given span with class of high-symbol', () => {
   const str = '  int  int ';
   const expectedResult =
-    '<span class="high-symbol">&int;</span>' +
+    `<span class="high-symbol">${Entities.Maths.INTEGRAL.unicode}</span>` +
     '&nbsp;' +
-    '<span class="high-symbol">&int;</span>';
+    `<span class="high-symbol">${Entities.Maths.INTEGRAL.unicode}</span>`;
   expect(parseMaths(str)).toMatch(expectedResult);
 });

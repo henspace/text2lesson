@@ -22,6 +22,8 @@
  *
  */
 
+import { Entities } from './entities.js';
+
 const CHAR_CODE_UC_A = 'A'.charCodeAt(0);
 const CHAR_CODE_LC_A = 'a'.charCodeAt(0);
 const CHAR_CODE_ZERO = '0'.charCodeAt(0);
@@ -29,36 +31,6 @@ const CHAR_CODE_ZERO = '0'.charCodeAt(0);
 const CHAR_CODE_MATHS_UC_A = 0x1d434;
 const CHAR_CODE_MATHS_LC_A = 0x1d44e;
 const CHAR_CODE_MATHS_ZERO = 0x1d7f6;
-/**
- * Names of Greek letters. First letter must be capitalised with others
- * in lower case.
- */
-const GREEK_LETTERS = [
-  'Alpha',
-  'Beta',
-  'Gamma',
-  'Delta',
-  'Epsilon',
-  'Zeta',
-  'Eta',
-  'Theta',
-  'Iota',
-  'Kappa',
-  'Lambda',
-  'Mu',
-  'Nu',
-  'Xi',
-  'Omicron',
-  'Pi',
-  'Rho',
-  'Sigma',
-  'Tau',
-  'Upsilon',
-  'Phi',
-  'Chi',
-  'Psi',
-  'Omega',
-];
 
 /**
  * Convert single character to an maths equivalent.
@@ -98,16 +70,14 @@ function replaceWordWithEntity(data, word, entity) {
 }
 
 /**
- * Replaces all occurences of the letter with its associated entity.
+ * Replaces all occurrences of the letter with its associated entity.
  * Upper and lower case variants are replaced.
  * @param {string} data
  * @returns {string}
  */
 function replaceGreekLetters(data) {
-  for (let letter of GREEK_LETTERS) {
-    data = replaceWordWithEntity(data, letter, `&${letter};`);
-    letter = letter.toLowerCase();
-    data = replaceWordWithEntity(data, letter, `&${letter};`);
+  for (const letter in Entities.Greek) {
+    data = replaceWordWithEntity(data, letter, Entities.Greek[letter].unicode);
   }
   return data;
 }
@@ -128,50 +98,50 @@ function replaceGreekLetters(data) {
 const replacementEntities = [
   {
     re: /\s*[-]\s*/g,
-    rep: ' &minus; ',
+    rep: ` ${Entities.Maths.MINUS.unicode} `,
   },
   {
     re: /\s*[*]\s*/g,
-    rep: ' &times; ',
+    rep: ` ${Entities.Maths.TIMES.unicode} `,
   },
   {
     re: /\s+ne(?= )/g,
-    rep: ' &ne; ',
+    rep: ` ${Entities.Maths.NOT_EQUAL.unicode} `,
   },
   {
     re: /\s*(!=|\/=)\s*/g,
-    rep: ' &ne; ',
+    rep: ` ${Entities.Maths.NOT_EQUAL.unicode} `,
   },
 
   {
     re: /\s*(<|&lt;)=/g,
-    rep: ' &le; ',
+    rep: ` ${Entities.Maths.LESS_THAN_OR_EQUAL.unicode} `,
   },
 
   {
     re: /\s*(>|&gt;)=/g,
-    rep: ' &ge; ',
+    rep: ` ${Entities.Maths.GREATER_THAN_OR_EQUAL.unicode} `,
   },
 
   {
     re: /(^|[^a-zA-Z])sqrt(?=[^a-zA-Z])/gi,
-    rep: '$1&radic;',
+    rep: `$1${Entities.Maths.SQRT.unicode}`,
   },
   {
     re: /(^|[^a-zA-Z])sum(?=[^a-zA-Z])/gi,
-    rep: '$1&sum;',
+    rep: `$1${Entities.Maths.SUM.unicode}`,
   },
   {
     re: /(^|[^a-zA-Z])int(?=[^a-zA-Z])/gi,
-    rep: '$1&int;',
+    rep: `$1${Entities.Maths.INTEGRAL.unicode}`,
   },
   {
     re: /(^|\s*)d:/g,
-    rep: ' &part;',
+    rep: ` ${Entities.Maths.PARTIAL.unicode}`,
   },
   {
     re: /([a-zA-Z0-9])\.(?=[a-zA-Z])/g,
-    rep: '$1&sdot;',
+    rep: `$1${Entities.Maths.CENTRE_DOT.unicode}`,
   },
 ];
 
@@ -234,7 +204,7 @@ const replacementsWithTagsBlockOnly = [
 const replacementsWithTagsInlineOnly = [
   {
     re: /\//g,
-    rep: '&div;',
+    rep: `${Entities.Maths.DIVIDE.unicode}`,
   },
 ];
 
@@ -253,20 +223,20 @@ const replacementsWithTags = [
   },
 
   {
-    re: /;:/g,
-    rep: ';',
+    re: /:/g,
+    rep: '',
   },
   {
     re: / +/g,
     rep: '&nbsp;',
   },
   {
-    re: /(&int;)/g,
-    rep: '<span class="high-symbol">$1</span>',
+    re: new RegExp(`${Entities.Maths.INTEGRAL.unicode}`, 'gu'),
+    rep: `<span class="high-symbol">${Entities.Maths.INTEGRAL.unicode}</span>`,
   },
   {
-    re: /&radic;\[([^\]]*?)\]/g,
-    rep: '<span class="radic">&radic;</span><span class="sqrt">$1</span>',
+    re: new RegExp(`${Entities.Maths.SQRT.unicode}\\[([^\\]]*?)\\]`, 'gu'),
+    rep: `<span class="radic">${Entities.Maths.SQRT.unicode}</span><span class="sqrt">$1</span>`,
   },
 ];
 
@@ -303,4 +273,21 @@ export function parseMaths(data, inline) {
   }
   data = implementReplacements(data, replacementsWithTags);
   return ` <${tag} class="maths">${data}</${tag}> `;
+}
+
+/**
+ * This is a reversal of the parseMaths.
+ * Most maths is done by using unicode characters but superscript, subscript
+ * and block divisions use html tags.
+ */
+export function mathsToPlainText(data) {
+  data = data.replace(
+    /<table><tr><td>([^<]*)<\/td><\/tr><tr><td>([^<]*)<\/td><\/tr><\/table>/g,
+    `$1 ${Entities.Maths.DIVIDE.unicode} $2`
+  );
+  data = data.replace('<sup>', '^');
+  data = data.replace('</sup>', '');
+  data = data.replace('<sub>', '_');
+  data = data.replace('</sub>', '');
+  return data;
 }

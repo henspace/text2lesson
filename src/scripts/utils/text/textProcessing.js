@@ -21,7 +21,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { parseMaths } from './maths.js';
+import { parseMaths, mathsToPlainText } from './maths.js';
 
 /**
  * @typedef {Object} Replacement
@@ -32,7 +32,7 @@ import { parseMaths } from './maths.js';
  */
 
 /**
- * Block replacements (flow). {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories}
+ * Block replacements (flow) {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories}
  * When processing the Markdown, blocks are created. These are defined as blocks
  * of text separated by at least one blank line. The following replacements
  * are used for code which should be treated as independent blocks. To ensure
@@ -136,7 +136,7 @@ const spanReps = [
   },
   /** automatic email */
   {
-    re: /(?:&lt;|<)(\w+(?:[.-]?\w+)*@\w+(?:[.-]?\w+)*(?:\.\w{2,4})+)>/gm,
+    re: /(?:&lt;|<)([\w.-]+@(?:[\w-]+\.)+[\w-]+)/gm,
     rep: (match, address) => {
       const encoded = encodeToEntities(address);
       return `<a href="${encoded}">${encoded}</a>`;
@@ -318,10 +318,10 @@ export function decodeFromEntities(data) {
     /&#([0-9]{1,4});/g,
     (match, value) => String.fromCharCode(parseInt(value)) + '\xAD'
   );
-  decoded = decoded.replace(/&amp;/gi, '&\xAD');
   decoded = decoded.replace(/&lt;/gi, '<\xAD');
-  decoded = decoded.replace(/&gt;/gi, '>\xAD');
+  decoded = decoded.replace(/&gt;/gi, '>');
   decoded = decoded.replace(/&nbsp;/gi, ' ');
+  decoded = decoded.replace(/&amp;/gi, '&\xAD');
   return decoded;
 }
 
@@ -384,11 +384,13 @@ export function escapeHtml(data) {
 }
 
 /**
- * Convert html into plain text
+ * Convert html into plain text.
+ * This is not used for sanitizing purposes. It is just used
  * @param {string} html
  * @returns {string} the plain text
  */
 export function getPlainTextFromHtml(html) {
-  let plain = html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ');
+  let plain = mathsToPlainText(html);
+  plain = plain.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ');
   return decodeFromEntities(plain);
 }
