@@ -189,17 +189,49 @@ a.problem {
   text-align: center;
 }
 
-.MarksPresenter .answer-summary::before {
-  display: inline-block;
-  font-family: var(--icon-font-family);
-  font-weight: var(--icon-font-weight);
-  width: 1.5rem;
-}
-
 .MarksPresenter .answer-summary {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.MarksPresenter .answer-summary div,
+.MarksPresenter .answer-summary p,
+.MarksPresenter .answer-summary table,
+.MarksPresenter .answer-summary tr,
+.MarksPresenter .answer-summary td,
+.MarksPresenter .answer-summary h1,
+.MarksPresenter .answer-summary h2,
+.MarksPresenter .answer-summary h3,
+.MarksPresenter .answer-summary h4,
+.MarksPresenter .answer-summary h5,
+.MarksPresenter .answer-summary h6 {
+  display: inline;
+  padding: 0px;
+}
+
+.MarksPresenter .answer-summary tr {
+  border: none;
+  margin-right: 0px;
+  vertical-align: baseline;
+}
+
+.MarksPresenter .maths::before {
+  content: '{';
+}
+
+.MarksPresenter .maths::after {
+  content: '}';
+}
+
+.MarksPresenter .answer-summary .maths tr:first-child::after {
+  content: '\00f7';
+}
+
+.MarksPresenter .answer-summary::before {
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+  width: 1.5rem;
 }
 
 .MarksPresenter .answer-summary.correct::before {

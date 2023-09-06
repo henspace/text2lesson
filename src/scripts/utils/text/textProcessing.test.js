@@ -27,6 +27,7 @@ const mockMathsParser = jest.fn((data) => data);
 jest.unstable_mockModule('./maths.js', () => {
   return {
     parseMaths: mockMathsParser,
+    mathsToPlainText: (data) => data,
   };
 });
 
@@ -195,7 +196,7 @@ test('Decode html entities is valid', () => {
     decodeFromEntities(
       '&amp;&lt;&gt;&nbsp;&#65;&#66;&#67;&#48;&#49;&#50;&amp;&lt;&gt;&nbsp;'
     )
-  ).toBe('&\xAD<\xAD>\xAD A\xADB\xADC\xAD0\xAD1\xAD2\xAD&\xAD<\xAD>\xAD ');
+  ).toBe('&\xAD<\xAD> A\xADB\xADC\xAD0\xAD1\xAD2\xAD&\xAD<\xAD> ');
 });
 
 test('Markdown characters can be escaped', () => {

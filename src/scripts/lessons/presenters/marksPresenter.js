@@ -199,7 +199,7 @@ export class MarksPresenter extends Presenter {
     const answers = new ManagedElement('div');
     this.config.lesson.marks.markedItems.forEach((markedItem) => {
       const item = new ManagedElement('div', 'answer-summary');
-      item.innerHTML = `${markedItem.item.question.plainText}`;
+      item.innerHTML = `${markedItem.item.question.html}`;
       item.classList.add(this.#getClassForMarkState(markedItem.state));
       answers.appendChild(item);
     });
