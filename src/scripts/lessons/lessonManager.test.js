@@ -136,8 +136,11 @@ const libraryContents = {
 beforeAll(() => {
   console.log('before all');
   json.fetchJson.mockReturnValueOnce(Promise.resolve(libraries));
-  return lessonManager.loadAllLibraries('somefile.json').then(async (count) => {
-    expect(count).toBe(Object.keys(libraries).length + 1);
+  return lessonManager.loadAllLibraries('somefile.json').then(async (error) => {
+    expect(error).toBeNull();
+    expect(lessonManager.libraryTitles.size).toBe(
+      Object.keys(libraries).length + 1
+    );
     for (const libraryKey in libraries) {
       if (libraryKey === LocalLibrary.LOCAL_LIBRARY_KEY) {
         console.log('Ignoring local storage for these tests.');
@@ -332,7 +335,7 @@ test('libraryTitles returns map of available titles', () => {
 });
 
 test('loadLibraries populates libraries from JSON', () => {
-  // loadLibraries is called beforeAll. No test required as it is implicitely
+  // loadLibraries is called beforeAll. No test required as it is implicitly
   // tested by `getLibraryTitles`.
 });
 
@@ -342,6 +345,13 @@ test('set currentLibrary switches library', () => {
     const currentLesson = lessonManager.currentLessonInfo;
     expect(currentLesson.titles.library).toBe(libraries[libraryKey].title);
   }
+});
+
+test('set remoteLibrary to invalid switches to first library', () => {
+  lessonManager.remoteLibraryKey = 'L2';
+  expect(lessonManager.remoteLibraryTitle).toBe(libraries['L2'].title);
+  lessonManager.remoteLibraryKey = 'L3';
+  expect(lessonManager.remoteLibraryTitle).toBe(libraries['L1'].title);
 });
 
 test('set bookIndex switches book', async () => {
@@ -357,7 +367,7 @@ test('set chapterIndex switches chapter', async () => {
   return iterateLibraries(async (testDetails) => {
     lessonManager.remoteLibraryKey = testDetails.libraryKey;
     lessonManager.bookIndex = testDetails.bookIndex;
-    lessonManager.shapterIndex = testDetails.chapterIndex;
+    lessonManager.chapterIndex = testDetails.chapterIndex;
     const currentLesson = lessonManager.currentLessonInfo;
     expect(currentLesson.titles.chapter).toBe(testDetails.chapter.title);
   });

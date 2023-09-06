@@ -46,14 +46,8 @@ export class LessonPresenter extends Presenter {
   static PRINT_EVENT_ID = 'PRINT_LESSON';
 
   /**
-   * Flag whether it okay to progress to next.
-   * @type {boolean}
-   */
-  #allowNext = false;
-
-  /**
    * Construct.
-   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presenter
    */
   constructor(config) {
     config.titles = ['placeholder']; // this will be replaced later.
@@ -61,7 +55,6 @@ export class LessonPresenter extends Presenter {
     super(config);
     this.config.lessonInfo = lessonManager.currentLessonInfo;
     this.#buildCustomContent();
-    this.autoAddKeydownEvents();
     if (this.config?.factory?.hasPrevious(this)) {
       this.showBackButton();
     }
@@ -102,6 +95,7 @@ export class LessonPresenter extends Presenter {
     this.presentation.appendChild(summaryBlock);
     this.applyIconToNextButton(icons.playLesson);
     this.listenToEventOn('click', summaryBlock, Presenter.NEXT_ID);
+    this.listenToEventOn('keydown', summaryBlock, Presenter.NEXT_ID);
     this.#showNextButtonIfContent();
     this.#addPrintButton();
     this.#addEditButtonIfLocal();
@@ -130,43 +124,63 @@ export class LessonPresenter extends Presenter {
 
   /**
    * Show the next button if appropriate. It is always shown for remote
-   * lessons but hidden for local lessons that have no content.
+   * lessons, but hidden for local lessons that have no content.
    * This also sets the flag #nextNotAppropriate if the button is not shown.
    */
   #showNextButtonIfContent() {
     if (this.config.lessonInfo.usingLocalLibrary) {
       lessonManager.loadCurrentLesson().then((cachedLesson) => {
-        if (cachedLesson.content) {
-          this.#setNextOkay();
+        if (cachedLesson?.content) {
+          this.showNextButton();
           return;
         }
       });
     } else {
-      this.#setNextOkay();
+      this.showNextButton();
     }
   }
 
   /**
-   * Show the next button and flag that it is okay to progress to the next
-   * presenter.
-   */
-  #setNextOkay() {
-    this.#allowNext = true;
-    this.showNextButton();
-  }
-
-  /**
    * Load the lesson into the config
-   * @returns {Promise} fulfils to undefined
+   * @returns {Promise<boolean>} fulfils to true if loaded
    */
   #loadLessonIntoConfig() {
     return lessonManager.loadCurrentLesson().then((cachedLesson) => {
-      const lessonSource = LessonSource.createFromSource(cachedLesson.content);
-      this.config.lesson = lessonSource.convertToLesson();
-      return;
+      if (!cachedLesson) {
+        return false;
+      } else {
+        const lessonSource = LessonSource.createFromSource(
+          cachedLesson.content
+        );
+        this.config.lesson = lessonSource.convertToLesson();
+        return true;
+      }
     });
   }
 
+  /**
+   * Handle the click event.
+   * @param {Event} event
+   * @param {string} eventId
+   */
+  async handleClickEvent(event, eventId) {
+    switch (eventId) {
+      case LessonPresenter.PRINT_EVENT_ID:
+      case Presenter.NEXT_ID:
+        await this.#loadLessonIntoConfig().then((loaded) => {
+          if (!loaded) {
+            toast(
+              i18n`Unable to load lesson. This might be temporary, so please wait and then try again.`
+            );
+          } else {
+            return super.handleClickEvent(event, eventId);
+          }
+        });
+        break;
+      default:
+        await super.handleClickEvent(event, eventId);
+    }
+  }
   /**
    * @override
    */
@@ -175,20 +189,9 @@ export class LessonPresenter extends Presenter {
       case LessonPresenter.EDIT_EVENT_ID:
         return this.config.factory.getEditor(this, this.config);
       case LessonPresenter.PRINT_EVENT_ID:
-        return this.#loadLessonIntoConfig().then(() =>
-          this.config.factory.getPrintable(this, this.config)
-        );
-
+        return this.config.factory.getPrintable(this, this.config);
       default:
-        if (!this.#allowNext) {
-          toast(
-            i18n`This lesson is empty. You need to edit it first and add some content.`
-          );
-        } else {
-          return this.#loadLessonIntoConfig().then(() =>
-            this.config.factory.getNext(this, this.config)
-          );
-        }
+        return this.config.factory.getNext(this, this.config);
     }
   }
 

@@ -214,15 +214,35 @@ const replacementDigits = [
 ];
 
 /**
- * Regex replacements that include HTML tags in the output.
+ * Regex replacements that include HTML tags in the output and which are only
+ * valid in blocks.
  * @type {Replacement[]}
  */
-const replacementsWithTags = [
+const replacementsWithTagsBlockOnly = [
   {
     re: /((?:\(.*?\))|[^\s]+)\s*\/\s*((?:\(.*?\))|[^\s]+)/g,
     rep: '<table><tr><td>$1</td></tr><tr><td>$2</td></tr></table>',
   },
+];
 
+/**
+ * Regex replacements that include HTML tags in the output and which are only
+ * valid inline. The replacements don't necessarily have to contain tags, but
+ * they can do.
+ * @type {Replacement[]}
+ */
+const replacementsWithTagsInlineOnly = [
+  {
+    re: /\//g,
+    rep: '&div;',
+  },
+];
+
+/**
+ * Regex replacements that include HTML tags in the output.
+ * @type {Replacement[]}
+ */
+const replacementsWithTags = [
   {
     re: /\s*\^\s*((?:\(.*?\))|[^\s)]+)/g,
     rep: '<sup>$1</sup>',
@@ -275,6 +295,12 @@ export function parseMaths(data, inline) {
   data = implementReplacements(data, replacementEntities);
   data = implementReplacements(data, replacementDigits);
   data = implementReplacements(data, replacementCharacters);
+
+  if (inline) {
+    data = implementReplacements(data, replacementsWithTagsInlineOnly);
+  } else {
+    data = implementReplacements(data, replacementsWithTagsBlockOnly);
+  }
   data = implementReplacements(data, replacementsWithTags);
   return ` <${tag} class="maths">${data}</${tag}> `;
 }

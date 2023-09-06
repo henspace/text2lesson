@@ -2,5 +2,13 @@
   "EN": {
     "title": "Test Data: English Library",
     "url": "assets/lessons/lessons.test.data/library-en.test.json"
+  },
+  "ERROR": {
+    "title": "Library that does not exist.",
+    "url": "assets/lessons/lessons.test.data/library-nonexistent.test.json"
+  },
+  "JSON_ERROR": {
+    "title": "Library that exists but is corrupt.",
+    "url": "assets/lessons/lessons.test.data/library-bad-json.test.json"
   }
 }

@@ -53,7 +53,7 @@ export class HomePresenter extends Presenter {
 
   /**
    * Construct.
-   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presenter
    */
   constructor(config) {
     config.titles = [];
@@ -66,9 +66,13 @@ export class HomePresenter extends Presenter {
   #buildContent() {
     let button = new ManagedElement('button');
     icons.applyIconToElement(icons.library, button, {
-      overrideText: i18n`Open remote library`,
+      overrideText: i18n`Open remote library: ${lessonManager.remoteLibraryTitle}`,
       hideText: false,
     });
+    if (!lessonManager.isRemoteLibraryAvailable) {
+      button.setAttribute('disabled');
+    }
+
     this.presentation.appendChild(button);
     this.listenToEventOn('click', button, HomePresenter.REMOTE_LIBRARY_ID);
 

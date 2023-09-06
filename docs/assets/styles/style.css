@@ -63,29 +63,29 @@
 
 
 :root {
-  --primary-base: hsl(120, 50, 50);
-  --primary-contrast: hsl(0, 0, 0);
-  --primary-highlight: hsl(120, 50, 60);
+  --primary-base: rgb(32, 96, 32);
+  --primary-contrast: rgb(255, 255, 255);
+  --primary-highlight: rgb(51, 153, 51);
 
-  --secondary-base: hsl(180, 50, 50);
-  --secondary-contrast: hsl(0, 0, 0);
-  --secondary-highlight: hsl(180, 50, 60);
+  --secondary-base: rgb(38, 38, 115);
+  --secondary-contrast: rgb(255, 255, 255);
+  --secondary-highlight: rgb(51, 51, 153);
 
-  --tertiary-base: hsl(240, 50, 50);
-  --tertiary-contrast: hsl(0, 0, 0);
-  --tertiary-highlight: hsl(240, 50, 60);
+  --tertiary-base: rgb(115, 38, 38);
+  --tertiary-contrast: rgb(255, 255, 255);
+  --tertiary-highlight: rgb(153, 51, 51);
 
-  --background-base: hsl(60, 50, 50);
-  --background-contrast: hsl(0, 0, 0);
-  --background-highlight: hsl(60, 50, 60);
+  --background-base: rgb(242, 242, 242);
+  --background-contrast: rgb(0, 0, 0);
+  --background-highlight: rgb(217, 217, 217);
 
-  --error-base: hsl(0, 50, 50);
-  --error-contrast: hsl(0, 50, 100);
-  --error-highlight: hsl(0, 50, 60);
+  --error-base: rgb(134, 45, 45);
+  --error-contrast: rgb(255, 255, 255);
+  --error-highlight: rgb(204, 102, 102);
 
-  --window-base: hsl(0, 50, 50);
-  --window-contrast: hsl(0, 50, 100);
-  --window-highlight: hsl(0, 50, 60);
+  --window-base: rgb(255, 255, 255);
+  --window-contrast: rgb(0, 0, 0);
+  --window-highlight: rgb(230, 230, 230);
 
   --padding-thickness: 0.25rem;
   --font-base-size: 15px;
