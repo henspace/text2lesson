@@ -32,7 +32,7 @@ import { parseMaths, mathsToPlainText } from './maths.js';
  */
 
 /**
- * Block replacements (flow). {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories}
+ * Block replacements (flow) {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories}
  * When processing the Markdown, blocks are created. These are defined as blocks
  * of text separated by at least one blank line. The following replacements
  * are used for code which should be treated as independent blocks. To ensure
