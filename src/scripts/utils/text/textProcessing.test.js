@@ -453,7 +453,7 @@ test('Generated code block is not parsed further', () => {
   );
 });
 
-test(`Generated code from backticks not processed furthere`, () => {
+test(`Generated code from backticks not processed further`, () => {
   expect(parseMarkdown('My code `the _code_ block` here')).toMatch(
     'My code <code>the _code_ block</code> here'
   );

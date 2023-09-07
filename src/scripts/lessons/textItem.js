@@ -107,7 +107,22 @@ class TrackedReplacements {
         re: /\\>/g,
         rep: '&gt;',
       },
+      {
+        re: / 123(?:>([a-zA_Z]*))?\s*$/gm,
+        rep: (match, orientation) => {
+          const classes = `missing-word ${getOrientationClass(
+            orientation
+          )}`.trim();
+          tracker.#missingWords.push(null);
+          return ` <span class="${classes}" data-missing-word="${ManagedElement.encodeString(
+            '...'
+          )}"></span>`;
+        },
+      },
       getItemReplacement('[.]{3}', (match, startChr, word, orientation) => {
+        if (!word) {
+          return match; // ignored
+        }
         const classes = `missing-word ${getOrientationClass(
           orientation
         )}`.trim();
