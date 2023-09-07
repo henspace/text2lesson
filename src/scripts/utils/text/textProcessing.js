@@ -22,6 +22,7 @@
  */
 
 import { parseMaths, mathsToPlainText } from './maths.js';
+import { ParsingWarden } from './parsingWarden.js';
 
 /**
  * @typedef {Object} Replacement
@@ -30,6 +31,11 @@ import { parseMaths, mathsToPlainText } from './maths.js';
  * passed, it is provided with the string that matched followed by the captured
  * groups.
  */
+
+/**
+ * @type {ParsingWarden}
+ */
+const parsingWarden = new ParsingWarden();
 
 /**
  * Block replacements (flow) {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories}
@@ -69,6 +75,7 @@ const blockReps = [
     blockPrefix: '<pre><code>',
     blockSuffix: '</code></pre>',
     trimContents: true,
+    useWarden: true,
   }),
   /** horizontal rule. This must come before unordered lists to prevent interpretation of - as bullet */
   {
@@ -96,6 +103,13 @@ const blockReps = [
     re: /^\s*maths?:\s*(.+?)\s*$/gm,
     rep: (match, equation) => parseMaths(equation, false),
   },
+];
+
+/**
+ * Block replacements used for creating paragraphs.
+ * @type {Replacement[]}
+ */
+const paragraphReps = [
   /** paragraphs of elements not in blocks */
   {
     re: /(?:(?:^|\n{2,})(?!<\w+>))((?:.(?:\n(?!\n))?)+)/g,
@@ -122,30 +136,47 @@ const spanReps = [
   /** image */
   {
     re: /!\[(.*)\]\((https?:\/\/[-\w@:%.+~#=/]+)(?: +"(.*)")?\)/gm,
-    rep: `<img alt="$1" src="$2" title="$3"/>`,
+    rep: (match, altText, src, title) => {
+      const html = `<img alt="${altText ?? ''}" src="${src}" title="${
+        title ?? ''
+      }"/>`;
+      return parsingWarden.protect(html);
+    },
   },
   /** link */
   {
     re: /\[(.*)\]\((https?:\/\/[-\w@:%.+~#=/]+)(?: +"(.*)")?\)/gm,
-    rep: `<a target="_blank" href="$2" title="$3">$1</a>`,
+    rep: (match, label, href, title) => {
+      const html = `<a target="_blank" href="${href}" title="${title ?? ''}">${
+        label ?? ''
+      }</a>`;
+      return parsingWarden.protect(html);
+    },
   },
   /** automatic link */
   {
     re: /(?:&lt;|<)(https?:\/\/[-\w@:%.+~#=/]+)>/gm,
-    rep: '<a target="_blank" href="$1">$1</a>',
+    rep: (match, href) => {
+      const html = `<a target="_blank" href="${href}">${href}</a>`;
+      return parsingWarden.protect(html);
+    },
   },
   /** automatic email */
   {
     re: /(?:&lt;|<)([\w.-]+@(?:[\w-]+\.)+[\w-]+)/gm,
     rep: (match, address) => {
       const encoded = encodeToEntities(address);
-      return `<a href="${encoded}">${encoded}</a>`;
+      const html = `<a href="${encoded}">${encoded}</a>`;
+      return parsingWarden.protect(html);
     },
   },
   /** code */
   {
     re: /(?:`{2,}(.*?)`{2,}|`(.*?)`)/gm,
-    rep: (match, codeA, codeB) => `<code>${codeA ?? codeB}</code>`,
+    rep: (match, codeA, codeB) => {
+      const html = `<code>${codeA ?? codeB}</code>`;
+      return parsingWarden.protect(html);
+    },
   },
   /** emphasis */
   {
@@ -259,6 +290,7 @@ function processReplacements(data, replacements) {
  * @param {string} options.linePrefix - characters placed at the beginning of each resulting line.
  * @param {string} options.lineSuffix - characters placed at the end of each resulting line.
  * @param {boolean} options.trimContents - if true, leading and trailing newlines and carriage returns are stripped
+ * @param {boolean} options.useWarden - if true, the result is protected from further parsing.
  * from the block's contents
  * @returns {Replacement}
  */
@@ -278,9 +310,13 @@ function reAllLinesStartWith(reStart, options) {
       if (options.trimContents) {
         blockContents = blockContents.replace(/^[\n\r]*/, '').trimEnd();
       }
-      return `\n\n${options?.blockPrefix ?? ''}${blockContents}${
+      if (options.useWarden) {
+        blockContents = parsingWarden.protect(blockContents);
+      }
+      let html = `\n\n${options?.blockPrefix ?? ''}${blockContents}${
         options?.blockSuffix ?? ''
       }\n\n`;
+      return html;
     },
   };
 }
@@ -360,6 +396,7 @@ export function decodeFromEntities(data) {
  * @returns Resulting html.
  */
 export function parseMarkdown(data, options) {
+  parsingWarden.clear(); // this shouldn't be necessary as the warden automatically clears on retrieval.
   var result = data.replaceAll(/\r/g, ''); // normalise line endings
   result = processReplacements(result, securityReps);
   if (options?.pre) {
@@ -368,13 +405,14 @@ export function parseMarkdown(data, options) {
   result = processReplacements(result, htmlEscIgnoringBrReps);
   result = processReplacements(result, markdownEscReps);
   result = processReplacements(result, blockReps);
+  result = processReplacements(result, paragraphReps);
   result = processReplacements(result, spanReps);
   result = processReplacements(result, htmlCleanUpReps);
 
   if (options?.post) {
     result = processReplacements(result, options.post);
   }
-  return result;
+  return parsingWarden.reinstate(result);
 }
 
 /**
