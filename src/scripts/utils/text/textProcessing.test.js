@@ -98,6 +98,15 @@ test('Code block returns preformatted code', () => {
   );
 });
 
+test(`Backticks used for code`, () => {
+  expect(parseMarkdown('My code `the code block` here')).toMatch(
+    'My code <code>the code block</code> here'
+  );
+  expect(parseMarkdown('My code ``the `code` block`` here')).toMatch(
+    'My code <code>the `code` block</code> here'
+  );
+});
+
 test('Unordered list returns ul block', () => {
   expect(parseMarkdown('start\n* line 1\n* line 2\nend')).toBe(
     '\n<p>start</p>\n\n<ul>\n<li>line 1</li>\n<li>line 2</li>\n</ul>\n\n<p>end</p>\n'
@@ -371,6 +380,12 @@ test('getPlainTextFromHtml decodes named entities', () => {
   );
 });
 
+test('getPlainTextFromHtml decodes less than ', () => {
+  expect(getPlainTextFromHtml('<div><script &amp <script &amp')).toBe(
+    '<\xADscript &\xADamp <\xADscript &\xADamp'
+  );
+});
+
 test('maths block passed to maths parser when block starts with math:', () => {
   const result = parseMarkdown('math: data     ');
   expect(result).toMatch('data');
@@ -393,4 +408,56 @@ test('Maths block passed to maths parser as not inline', () => {
   const data = 'abc 123 xyz';
   parseMarkdown(`maths:${data}`);
   expect(mockMathsParser).toBeCalledWith(data, false);
+});
+
+test('Generated link html is not parsed further', () => {
+  const input =
+    '[The_link_text](https://henspace.com/a_link_.html "a_title_here")';
+  const expected =
+    '<a target="_blank" href="https://henspace.com/a_link_.html" title="a_title_here">The_link_text</a>';
+  expect(parseMarkdown(input)).toMatch(expected);
+});
+
+test('Generated image html is not parsed further', () => {
+  expect(
+    parseMarkdown(
+      '![test_title_text](https://example.com/my_picture_text.png "with_title_text")'
+    )
+  ).toMatch(
+    '<img alt="test_title_text" src="https://example.com/my_picture_text.png" title="with_title_text"/>'
+  );
+});
+
+test('Generated auto links is not parsed further', () => {
+  expect(parseMarkdown('<http://example.com/_a_file_text.txt>')).toMatch(
+    '<a target="_blank" href="http://example.com/_a_file_text.txt">http://example.com/_a_file_text.txt</a>'
+  );
+});
+
+test('Generated email addresses are not parsed further', () => {
+  const email = 'john.doe@some_domain_text.com';
+  const encoded = encodeToEntities(email);
+
+  expect(parseMarkdown(`<${email}>`)).toMatch(
+    `<a href="${encoded}">${encoded}</a>`
+  );
+});
+
+test('Generated code block is not parsed further', () => {
+  expect(
+    parseMarkdown(
+      'start **bold**\n    line **bold** 1\n    line **bold** 2\nend'
+    )
+  ).toBe(
+    '\n<p>start <strong>bold</strong></p>\n\n<pre><code>line **bold** 1\nline **bold** 2</code></pre>\n\n<p>end</p>\n'
+  );
+});
+
+test(`Generated code from backticks not processed further`, () => {
+  expect(parseMarkdown('My code `the _code_ block` here')).toMatch(
+    'My code <code>the _code_ block</code> here'
+  );
+  expect(parseMarkdown('My code ``the `_code_` block`` here')).toMatch(
+    'My code <code>the `_code_` block</code> here'
+  );
 });
