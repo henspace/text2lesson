@@ -34,6 +34,11 @@ a.problem {
   background-color: var(--secondary-base);
 }
 
+.SlideProblemPresenter img {
+  display: block;
+  margin: auto;
+}
+
 .SlideProblemPresenter.Presenter .presentation {
   overflow: hidden;
 }

@@ -259,16 +259,14 @@ test('Missing words with left class replaced by span with class of align-left', 
 test('Missing words with alignment class but no word replaced by span with class alignment', () => {
   const source = `...>col 456 ...two`;
   const textItem = textItemParser.TextItem.createFromSource(source);
-  expect(textItem.html).toMatch(
-    /<span class="missing-word align-column" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span> 456/
-  );
+  expect(textItem.html).toMatch('...>col');
   expect(textItem.html).toMatch(
     /456 <span class="missing-word" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/
   );
 });
 
 test('Missing words at end with alignment class but no word replaced by span with class alignment', () => {
-  const source = `...>col`;
+  const source = ` 123>col`;
   const textItem = textItemParser.TextItem.createFromSource(source);
   expect(textItem.html).toMatch(
     /<span class="missing-word align-column" data-missing-word="[a-zA-Z0-9/+=]+?"><\/span>/

@@ -84,6 +84,13 @@
   visibility: hidden;
 }
 
+.display-card:has(img) {
+  margin: auto;
+  padding: 0.5rem;
+  width: unset;
+  min-width: 20%;
+}
+
 .display-card.card-offscreen-right {
   animation-name: slideout-right;
   animation-duration: 1s;

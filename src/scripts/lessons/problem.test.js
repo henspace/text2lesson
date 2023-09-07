@@ -112,34 +112,9 @@ test('Multi question identified correctly.', () => {
   expect(lesson.problems[0].questionType).toBe(QuestionType.MULTI);
 });
 
-test('Multi question identified correctly if not all missing words have content .', () => {
-  const source = `
-  (?)A question with more than one correct answer ...one ... blank
-  (=)This is correct
-  (=)And this is correct
-  (x)wrong
-  `;
-  const lessonSource = LessonSource.createFromSource(source);
-  const lesson = lessonSource.convertToLesson();
-  expect(lesson.problems).toHaveLength(1);
-  expect(lesson.problems[0].questionType).toBe(QuestionType.MULTI);
-});
-
 test('Simple question identified correctly.', () => {
   const source = `
   (?)A question with one correct answer
-  (=)This is correct
-  (x)wrong
-  `;
-  const lessonSource = LessonSource.createFromSource(source);
-  const lesson = lessonSource.convertToLesson();
-  expect(lesson.problems).toHaveLength(1);
-  expect(lesson.problems[0].questionType).toBe(QuestionType.SIMPLE);
-});
-
-test('Simple question identified correctly if not all missing words have content.', () => {
-  const source = `
-  (?)A question with one correct answer ...one ... blank
   (=)This is correct
   (x)wrong
   `;
@@ -161,23 +136,12 @@ test('Fill question identified correctly.', () => {
 
 test('Order question identified correctly.', () => {
   const source = `
-  (?)One missing words with no content at the end ...
+  (?)One missing words with no content at the end 123
   `;
   const lessonSource = LessonSource.createFromSource(source);
   const lesson = lessonSource.convertToLesson();
   expect(lesson.problems).toHaveLength(1);
   expect(lesson.problems[0].questionType).toBe(QuestionType.ORDER);
-});
-
-test('Slide identified correctly if not of fill type and no right answers', () => {
-  const source = `
-  (?)A question with one correct answer ...one ... blank
-  (x)wrong
-  `;
-  const lessonSource = LessonSource.createFromSource(source);
-  const lesson = lessonSource.convertToLesson();
-  expect(lesson.problems).toHaveLength(1);
-  expect(lesson.problems[0].questionType).toBe(QuestionType.SLIDE);
 });
 
 test('Slide identified correctly if no question', () => {

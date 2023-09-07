@@ -108,7 +108,7 @@ class TrackedReplacements {
         rep: '&gt;',
       },
       {
-        re: / 123(?:>([a-zA_Z]*))?\s*$/gm,
+        re: / 123(?:>([a-zA_Z]*))?(\s|<\/p>)*$/gm,
         rep: (match, orientation) => {
           const classes = `missing-word ${getOrientationClass(
             orientation
