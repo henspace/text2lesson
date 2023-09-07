@@ -37,7 +37,7 @@ import { getHtmlForIconName } from './fontAwesomeTools.js';
 const SAFE_CLASSES = ['big', 'bigger', 'biggest', 'massive', 'giant', 'column'];
 
 /**
- * Conver requestedClass into an orientation class.
+ * Convert requestedClass into an orientation class.
  * @param {string} requestedClass - can be col, column, row, line, or left in any case.
  * @returns {string} empty string if unrecognised, else align-column or align-row.
  */
@@ -244,7 +244,7 @@ export class TextItem {
 }
 
 /**
- * Create a `Replacement` object for finding lession items in the source.
+ * Create a `Replacement` object for finding lesson items in the source.
  * Important: any groups contained within `prefix`
  * *must be non-capturing*. The regex provides a number of capture groups.
  * The format of and item expression is expected to be as follows:

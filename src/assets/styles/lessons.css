@@ -30,6 +30,10 @@ a.problem {
   overflow: hidden auto;
 }
 
+.SlideProblemPresenter.Presenter {
+  background-color: var(--secondary-base);
+}
+
 .SlideProblemPresenter.Presenter .presentation {
   overflow: hidden;
 }
