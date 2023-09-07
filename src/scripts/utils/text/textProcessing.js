@@ -318,10 +318,14 @@ export function decodeFromEntities(data) {
     /&#([0-9]{1,4});/g,
     (match, value) => String.fromCharCode(parseInt(value)) + '\xAD'
   );
-  decoded = decoded.replace(/&lt;/gi, '<\xAD');
+
+  decoded = decoded.replace(/&lt;/gi, '<');
   decoded = decoded.replace(/&gt;/gi, '>');
   decoded = decoded.replace(/&nbsp;/gi, ' ');
-  decoded = decoded.replace(/&amp;/gi, '&\xAD');
+  decoded = decoded.replace(/&amp;/gi, '&');
+  decoded = decoded.replace(/</gi, '<\xAD');
+  decoded = decoded.replace(/&/gi, '&\xAD');
+
   return decoded;
 }
 

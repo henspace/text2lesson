@@ -371,6 +371,12 @@ test('getPlainTextFromHtml decodes named entities', () => {
   );
 });
 
+test('getPlainTextFromHtml decodes less than ', () => {
+  expect(getPlainTextFromHtml('<div><script &amp <script &amp')).toBe(
+    '<\xADscript &\xADamp <\xADscript &\xADamp'
+  );
+});
+
 test('maths block passed to maths parser when block starts with math:', () => {
   const result = parseMarkdown('math: data     ');
   expect(result).toMatch('data');
