@@ -120,7 +120,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
 
   /**
    * Construct.
-   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presenter
    */
   constructor(config) {
     config.nextInPostamble = false;
@@ -144,6 +144,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
     this.questionElement.appendChild(this.#visualCard);
     this.expandPresentation();
     this.#addMediaButtons();
+    this.showSlideshowProgress();
   }
 
   /**
@@ -254,6 +255,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
     const readingSpeed = persistentData.getFromStorage('readingSpeed', 130);
     this.#cards.setWordsPerMinute(readingSpeed);
     this.#currentCardDetail = this.#cards.getNext();
+    this.slideshowProgress = this.#cards.progress;
     this.#visualCard.innerHTML = this.#currentCardDetail.html;
     this.#autoPauseIfAppropriate(this.#currentCardDetail.html);
     this.#visualCard.element.scrollTo(0, 0);

@@ -26,6 +26,9 @@ import { test, expect } from '@jest/globals';
 import { parseMaths } from './maths.js';
 import { Entities } from './entities.js';
 
+const useUnicodeAlphanumeric = true;
+const useMonospaceDigits = true;
+
 const GREEK_LETTERS = [
   'Alpha',
   'Beta',
@@ -54,6 +57,9 @@ const GREEK_LETTERS = [
 ];
 
 function strToMath(str) {
+  if (!useUnicodeAlphanumeric) {
+    return str;
+  }
   let result = '';
   for (const chr of str) {
     if (chr >= 'A' && chr <= 'Z') {
@@ -64,7 +70,7 @@ function strToMath(str) {
       result += String.fromCodePoint(
         0x1d44e + chr.charCodeAt(0) - 'a'.charCodeAt(0)
       );
-    } else if (chr >= '0' && chr <= '9') {
+    } else if (useMonospaceDigits && chr >= '0' && chr <= '9') {
       result += String.fromCodePoint(
         0x1d7f6 + chr.charCodeAt(0) - '0'.charCodeAt(0)
       );

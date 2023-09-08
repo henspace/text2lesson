@@ -110,6 +110,17 @@ export class Lesson {
   }
 
   /**
+   * Get the progress from 0 to 1.
+   * @returns {number}
+   */
+  get progress() {
+    if (this.#problems.length === 0) {
+      return 1;
+    } else {
+      return this.#problemIndex / this.#problems.length;
+    }
+  }
+  /**
    * Add problem to the lesson.
    * @param {Problem} problem
    */

@@ -86,7 +86,7 @@
   margin: auto;
   padding: 0.5rem;
   width: unset;
-  min-width: 20%;
+  min-width: 20em;
 }
 
 .display-card.card-offscreen-right {

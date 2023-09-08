@@ -32,12 +32,17 @@ const CHAR_CODE_MATHS_UC_A = 0x1d434;
 const CHAR_CODE_MATHS_LC_A = 0x1d44e;
 const CHAR_CODE_MATHS_ZERO = 0x1d7f6;
 
+const useUnicodeAlphanumeric = true;
+const useMonospaceDigits = true;
 /**
  * Convert single character to an maths equivalent.
  * @param {string} chr
  * @returns {string} maths character or just chr if not A-Z or a-z
  */
 function getMathsCharacter(chr) {
+  if (!useUnicodeAlphanumeric) {
+    return chr;
+  }
   let mathsChr;
   if (chr >= 'A' && chr <= 'Z') {
     mathsChr = String.fromCodePoint(
@@ -47,7 +52,7 @@ function getMathsCharacter(chr) {
     mathsChr = String.fromCodePoint(
       CHAR_CODE_MATHS_LC_A + chr.charCodeAt(0) - CHAR_CODE_LC_A
     );
-  } else if (chr >= '0' && chr <= '9') {
+  } else if (useMonospaceDigits && chr >= '0' && chr <= '9') {
     mathsChr = String.fromCodePoint(
       CHAR_CODE_MATHS_ZERO + chr.charCodeAt(0) - CHAR_CODE_ZERO
     );

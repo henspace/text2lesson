@@ -172,3 +172,20 @@ test('markProblem adjusts marks', () => {
     expect(marks.markedItems[index].item).toEqual(data.item);
   });
 });
+
+test('percent property shows current progress.', () => {
+  const lesson = new Lesson();
+  expect(lesson.progress).toBe(1);
+  const nProblems = 10;
+  for (let n = 0; n < nProblems; n++) {
+    const problem = new Problem();
+    problem.intro = `intro${n}`;
+    lesson.addProblem(problem);
+  }
+
+  expect(lesson.progress).toBe(0);
+  for (let n = 0; n < nProblems; n++) {
+    lesson.getNextProblem();
+    expect(lesson.progress).toBeCloseTo((n + 1) / nProblems);
+  }
+});
