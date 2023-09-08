@@ -38,6 +38,25 @@ import { ParsingWarden } from './parsingWarden.js';
 const parsingWarden = new ParsingWarden();
 
 /**
+ * Applies an appropriate icon to the label text of a link. Applies none if no icon.
+ * @param {string} href
+ * @param {string} label
+ * @returns {string}
+ */
+function addIconToLink(href, label) {
+  let iconHtml = '';
+  if (/^https:\/\/vimeo.com\//.test(href)) {
+    iconHtml = '<i class="fa-brands fa-vimeo"></i>';
+  } else if (/^https:\/\/(www\.)?youtube.com\//.test(href)) {
+    iconHtml = '<i class="fa-brands fa-youtube"></i>';
+  }
+  if (iconHtml) {
+    iconHtml = `<span class='link-icon'>${iconHtml}</span>`;
+  }
+  return `${label}${iconHtml}`;
+}
+
+/**
  * Block replacements (flow) {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories}
  * When processing the Markdown, blocks are created. These are defined as blocks
  * of text separated by at least one blank line. The following replacements
@@ -103,6 +122,17 @@ const blockReps = [
     re: /^\s*maths?:\s*(.+?)\s*$/gm,
     rep: (match, equation) => parseMaths(equation, false),
   },
+
+  /**
+   * Youtube embedded video
+   */
+  {
+    re: /&lt;iframe ([^>]+src="https:\/\/www\.youtube\.com\/embed[^>]+)>&lt;\/iframe>/g,
+    rep: (match, content) => {
+      const html = `\n\n<iframe ${content}></iframe>\n\n`;
+      return parsingWarden.protect(html);
+    },
+  },
 ];
 
 /**
@@ -135,7 +165,7 @@ const spanReps = [
   },
   /** image */
   {
-    re: /!\[(.*)\]\((https?:\/\/[-\w@:%.+~#=/]+)(?: +"(.*)")?\)/gm,
+    re: /!\[(.*?)\]\((https?:\/\/[-\w@:%.+~#=/]+?)(?: +"(.*?)")?\)/gm,
     rep: (match, altText, src, title) => {
       const html = `<img alt="${altText ?? ''}" src="${src}" title="${
         title ?? ''
@@ -145,8 +175,9 @@ const spanReps = [
   },
   /** link */
   {
-    re: /\[(.*)\]\((https?:\/\/[-\w@:%.+~#=/]+)(?: +"(.*)")?\)/gm,
+    re: /\[(.*?)\]\((https?:\/\/[-\w@:%.+~#=/]+?)(?: +"(.*?)")?\)/gm,
     rep: (match, label, href, title) => {
+      label = addIconToLink(href, label);
       const html = `<a target="_blank" href="${href}" title="${title ?? ''}">${
         label ?? ''
       }</a>`;
@@ -155,7 +186,7 @@ const spanReps = [
   },
   /** automatic link */
   {
-    re: /(?:&lt;|<)(https?:\/\/[-\w@:%.+~#=/]+)>/gm,
+    re: /(?:&lt;|<)(https?:\/\/[-\w@:%.+~#=/]+?)>/gm,
     rep: (match, href) => {
       const html = `<a target="_blank" href="${href}">${href}</a>`;
       return parsingWarden.protect(html);

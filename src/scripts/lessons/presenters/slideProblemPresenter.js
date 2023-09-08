@@ -270,13 +270,20 @@ export class SlideProblemPresenter extends ProblemPresenter {
    * @param {string} cardHtml
    */
   #autoPauseIfAppropriate(cardHtml) {
-    if (cardHtml.match(/<a\s*[^>]*href=[^>]+\s*>.*?<\/a>/i)) {
+    if (this.#paused) {
+      return; // already paused.
+    }
+    if (
+      /<a\s*[^>]*href=[^>]+\s*>.*?<\/a>/i.test(cardHtml) ||
+      /<iframe[^>]+><\/iframe>/.test(cardHtml)
+    ) {
       this.#pauseTheShow();
       toast(
-        i18n`This slide contains a link, so the presentation has been paused.`
+        i18n`This slide contains a link or video, so the presentation has been paused.`
       );
     }
   }
+
   /**
    * Leave card on screen while it's read.
    * After the read time the remove card is called.
