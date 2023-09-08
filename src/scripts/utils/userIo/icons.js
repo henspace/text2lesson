@@ -388,6 +388,14 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get vimeo() {
+    return {
+      content: this.#getIconHtml('--icon-vimeo-html'),
+      accessibleName: i18n`Play Vimeo video`,
+    };
+  }
+
+  /** @returns {IconDetails} information for icon */
   get warning() {
     return {
       content: this.#getIconHtml('--icon-warning-html'),
@@ -423,6 +431,14 @@ class IconGenerator {
     return {
       content: this.#getIconHtml('--icon-yes-html'),
       accessibleName: i18n`Yes`,
+    };
+  }
+
+  /** @returns {IconDetails} information for icon */
+  get youtube() {
+    return {
+      content: this.#getIconHtml('--icon-youtube-html'),
+      accessibleName: i18n`Play Youtube video`,
     };
   }
 

@@ -216,7 +216,7 @@ export class MarksPresenter extends Presenter {
     const totalQuestions = marks.correct + marks.incorrect + marks.skipped;
     const percent =
       totalQuestions == 0
-        ? 0
+        ? 100
         : Math.round((100 * marks.correct) / totalQuestions);
     this.#scoreSummaryText = i18n`Score: ${percent}% (${marks.correct}/${totalQuestions})`;
     const summaryItem = this.presentation.createAndAppendChild(
