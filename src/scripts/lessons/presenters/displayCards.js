@@ -56,6 +56,18 @@ export class DisplayCards {
   }
 
   /**
+   * Get the current progress from 0 to 1
+   * @returns {number}
+   */
+  get progress() {
+    if (this.#blocks.length === 0) {
+      return 1;
+    } else {
+      return this.#index / this.#blocks.length;
+    }
+  }
+
+  /**
    * Breaks down the html into blocks. This is done by splitting at paragraphs
    * divs and code blocks.
    * @param {string} html
@@ -68,7 +80,9 @@ export class DisplayCards {
       const tail = blocks[index * 2 + 1] ?? '';
       result.push(`${blocks[index * 2]}${tail}`.trim());
     }
-    return result.filter((e) => e);
+    return result.filter(
+      (e) => e.trim() && !/^<[a-zA-Z]*>\s*<\/[a-zA-Z]*>$/g.test(e)
+    );
   }
 
   /**

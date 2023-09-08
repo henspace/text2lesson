@@ -90,3 +90,24 @@ test('setWordsPerMinute adjusts reading speed', () => {
   cards.setWordsPerMinute(expectedWordsPerMinute);
   expect(cards.getNext().readTimeSecs).toBeCloseTo(expectedDuration, 0);
 });
+
+test('progress reflects movement through cards', () => {
+  const numberOfCards = 10;
+  let data = '<p>string</p>'.repeat(numberOfCards);
+  let cards = new DisplayCards('');
+  expect(cards.progress).toBe(1);
+  cards = new DisplayCards(data);
+  expect(cards.progress).toBe(0);
+  for (let n = 0; n < numberOfCards; n++) {
+    cards.getNext();
+    expect(cards.progress).toBeCloseTo((n + 1) / numberOfCards);
+  }
+});
+
+test('Check blank cards removed', () => {
+  const html = '<p>one</p><p>    </p><p>two</p><p>    </p>';
+  const cards = new DisplayCards(html);
+  expect(cards.getNext().html).toBe('<p>one</p>');
+  expect(cards.getNext().html).toBe('<p>two</p>');
+  expect(cards.getNext()).toBeNull();
+});

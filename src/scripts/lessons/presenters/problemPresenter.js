@@ -33,6 +33,7 @@ import { i18n } from '../../utils/i18n/i18n.js';
 import { LessonOrigin } from '../lessonOrigins.js';
 import { focusManager } from '../../utils/userIo/focusManager.js';
 import { soundManager } from '../../utils/audio/soundManager.js';
+import { StackedProgressBar } from '../../utils/userIo/progress.js';
 
 /**
  * Class names
@@ -118,15 +119,27 @@ export class ProblemPresenter extends Presenter {
   #autoAdvanceTimer;
 
   /**
+   * @type {StackedProgressBar}
+   */
+  #progressBars;
+
+  /** @type {number} */
+  static SLIDE_BAR_INDEX = 0;
+  /** @type {number} */
+  static LESSON_BAR_INDEX = 1;
+
+  /**
    * Construct.
-   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presenter
    * @param {boolean} nextInPostamble - should the next button go in the postamble.
    */
   constructor(config, nextInPostamble) {
     config.titles = [];
     config.itemClassName = '';
     super(config, nextInPostamble);
+    this.#addProgressBars();
     this.#problem = config.lesson.getNextProblem();
+    this.#updateLessonProgress();
     this.#questionElement = new ManagedElement('div', ClassName.QUESTION);
     this.#questionElement.innerHTML = this.#problem.question.html;
 
@@ -134,6 +147,7 @@ export class ProblemPresenter extends Presenter {
 
     this.presentation.appendChild(this.#questionElement);
     this.presentation.appendChild(this.#answerElement);
+
     this.addButtons();
 
     this.#submitButton.show();
@@ -170,6 +184,44 @@ export class ProblemPresenter extends Presenter {
    */
   get submitButton() {
     return this.#submitButton;
+  }
+
+  /**
+   * Set the progress for the slide show
+   * @param {number} value 0 to 1.
+   */
+  set slideshowProgress(value) {
+    this.#progressBars.setValueForBar(ProblemPresenter.SLIDE_BAR_INDEX, value);
+  }
+
+  showSlideshowProgress() {
+    this.#progressBars.showBar(ProblemPresenter.SLIDE_BAR_INDEX);
+  }
+  /**
+   * Add progress indicators.
+   */
+  #addProgressBars() {
+    this.#progressBars = new StackedProgressBar(2, [
+      i18n`Progress bar for slide show.`,
+      i18n`Progress bar for the entire lesson.`,
+    ]);
+    this.#progressBars.hideBar(ProblemPresenter.SLIDE_BAR_INDEX);
+    this.#progressBars.setValueForBar(
+      ProblemPresenter.LESSON_BAR_INDEX,
+      this.config.lesson.progress
+    );
+    this.addPreamble(this.#progressBars);
+  }
+  /**
+   * Add progress indicators.
+   */
+  #updateLessonProgress() {
+    setTimeout(() => {
+      this.#progressBars.setValueForBar(
+        ProblemPresenter.LESSON_BAR_INDEX,
+        this.config.lesson.progress
+      );
+    }, 100);
   }
 
   /**
@@ -259,7 +311,7 @@ export class ProblemPresenter extends Presenter {
    * Process a clicked answer.
    * This will pass a next event id onto the super's handler. If it was a correct
    * answer it automatically advances.
-   * @param {Event} event - orignal event.
+   * @param {Event} event - original event.
    */
   #processClickedSubmit() {
     const correct = this.areAnswersCorrect();
