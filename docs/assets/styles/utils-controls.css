@@ -33,3 +33,15 @@
   flex-flow: column wrap;
   margin: var(--margin-thickness);
 }
+
+.utils-progress-bar {
+  display: block;
+  height: 0.3rem;
+  width: 100%;
+}
+.utils-progress-indicator {
+  background-color: var(--primary-highlight);
+  height: 100%;
+  width: 0%;
+  transition: width 1s;
+}
