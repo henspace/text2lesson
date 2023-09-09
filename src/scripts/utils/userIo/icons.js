@@ -187,6 +187,13 @@ class IconGenerator {
     };
   }
   /** @returns {IconDetails} information for icon */
+  get image() {
+    return {
+      content: this.#getIconHtml('--icon-image-html'),
+      accessibleName: i18n`Image`,
+    };
+  }
+  /** @returns {IconDetails} information for icon */
   get hourglass() {
     return {
       content: this.#getIconHtml('--icon-hourglass-html'),

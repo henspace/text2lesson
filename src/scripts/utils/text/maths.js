@@ -31,6 +31,7 @@ const CHAR_CODE_ZERO = '0'.charCodeAt(0);
 const CHAR_CODE_MATHS_UC_A = 0x1d434;
 const CHAR_CODE_MATHS_LC_A = 0x1d44e;
 const CHAR_CODE_MATHS_ZERO = 0x1d7f6;
+const CHAR_PLANKS_CONSTANT = String.fromCodePoint(0x210e);
 
 const useUnicodeAlphanumeric = true;
 const useMonospaceDigits = true;
@@ -48,6 +49,8 @@ function getMathsCharacter(chr) {
     mathsChr = String.fromCodePoint(
       CHAR_CODE_MATHS_UC_A + chr.charCodeAt(0) - CHAR_CODE_UC_A
     );
+  } else if (chr === 'h') {
+    mathsChr = CHAR_PLANKS_CONSTANT;
   } else if (chr >= 'a' && chr <= 'z') {
     mathsChr = String.fromCodePoint(
       CHAR_CODE_MATHS_LC_A + chr.charCodeAt(0) - CHAR_CODE_LC_A

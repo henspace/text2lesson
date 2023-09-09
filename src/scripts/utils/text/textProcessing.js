@@ -160,7 +160,7 @@ const spanReps = [
   /** inline maths
    */
   {
-    re: /{maths?}(.+){maths?}/gm,
+    re: /{maths?}(.+?){maths?}/gm,
     rep: (match, equation) => parseMaths(equation, true),
   },
   /** image */

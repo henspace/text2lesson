@@ -216,7 +216,7 @@ export class MarksPresenter extends Presenter {
     const answers = new ManagedElement('div');
     this.config.lesson.marks.markedItems.forEach((markedItem) => {
       const item = new ManagedElement('div', 'answer-summary');
-      item.innerHTML = `${markedItem.item.question.html}`;
+      item.innerHTML = `${this.#stripImages(markedItem.item.question.html)}`;
       item.classList.add(this.#getClassForMarkState(markedItem.state));
       answers.appendChild(item);
     });
@@ -422,5 +422,22 @@ export class MarksPresenter extends Presenter {
       this.config.lessonInfo.titles.lesson,
       this.config.lesson
     );
+  }
+
+  /**
+   * Strip images and iframes
+   * @param {string} html
+   * @returns {string}
+   */
+  #stripImages(html) {
+    html = html.replace(
+      /<img[^>]*?>(?:<\/img>)?/g,
+      '<span class="removed-image"</span>'
+    );
+    html = html.replace(
+      /<iframe[^>]*?><\/iframe>/g,
+      '<span class="removed-iframe"</span>'
+    );
+    return html;
   }
 }

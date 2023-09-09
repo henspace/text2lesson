@@ -66,6 +66,8 @@ function strToMath(str) {
       result += String.fromCodePoint(
         0x1d434 + chr.charCodeAt(0) - 'A'.charCodeAt(0)
       );
+    } else if (chr === 'h') {
+      result += '\u{210e}';
     } else if (chr >= 'a' && chr <= 'z') {
       result += String.fromCodePoint(
         0x1d44e + chr.charCodeAt(0) - 'a'.charCodeAt(0)
@@ -83,6 +85,10 @@ function strToMath(str) {
 
 test('maths wrapped in maths div', () => {
   expect(parseMaths('1 + 2')).toMatch(/<div class="maths">.*<\/div>/);
+});
+
+test("Plank's constant converted to maths characters", () => {
+  expect(parseMaths('xhy')).toMatch(strToMath('xhy'));
 });
 
 test('characters converted to maths characters', () => {
