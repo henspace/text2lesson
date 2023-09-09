@@ -83,6 +83,10 @@ export class MarksPresenter extends Presenter {
    * @const
    */
   static WEBSHARE_AUTORUN_ID = 'WEBSHARE_AUTORUN';
+  /**
+   * @const
+   */
+  static EDIT_LESSON_ID = 'EDIT_LESSON';
 
   /**
    * @type {module:lessons/itemMarker~Marks}
@@ -118,6 +122,7 @@ export class MarksPresenter extends Presenter {
     this.#addHeadings();
     this.#addAnswers();
     this.#addResult();
+    this.#addEditButtonIfLocal();
     this.#addRetryButton();
     this.#addShareButtons();
     this.#adjustButtonsForOrigin();
@@ -189,6 +194,18 @@ export class MarksPresenter extends Presenter {
         repeatButton,
         MarksPresenter.RETRY_LESSON_ID
       );
+    }
+  }
+
+  /**
+   * Add the edit button
+   */
+  #addEditButtonIfLocal() {
+    if (this.config.lessonInfo.usingLocalLibrary) {
+      const editButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.edit, editButton);
+      this.addButtonToBar(editButton);
+      this.listenToEventOn('click', editButton, MarksPresenter.EDIT_LESSON_ID);
     }
   }
 
@@ -287,6 +304,8 @@ export class MarksPresenter extends Presenter {
         return this.#webShareAutorun();
       case MarksPresenter.RETRY_LESSON_ID:
         return this.config.factory.getProblemAgain(this, this.config);
+      case MarksPresenter.EDIT_LESSON_ID:
+        return this.config.factory.getEditor(this, this.config);
       case Presenter.NEXT_ID:
         if (this.config.lessonInfo.origin === LessonOrigin.EMBEDDED) {
           window.top.location.replace(embeddedLesson.rootUrl);

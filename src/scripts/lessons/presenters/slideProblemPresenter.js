@@ -347,6 +347,14 @@ export class SlideProblemPresenter extends ProblemPresenter {
   }
 
   /**
+   * @override
+   * @param {number | string} eventIndexOrId
+   */
+  next(eventId) {
+    clearTimeout(this.#readTimerId);
+    return super.next(eventId);
+  }
+  /**
    * Pause the slide show.
    */
   #pauseTheShow() {

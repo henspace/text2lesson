@@ -51,7 +51,7 @@ export const ClassName = {
 };
 
 /**
- * Ids
+ * Element Ids
  * @enum {string}
  */
 export const ElementId = {
@@ -92,6 +92,11 @@ export const AnswerSelectionState = {
  * @extends module:lessons/presenters/presenter.Presenter
  */
 export class ProblemPresenter extends Presenter {
+  /**
+   * @type {string}
+   */
+  static EDIT_EVENT_ID = 'EDIT';
+
   /**
    * Delay before advancing to next question.
    * @type {number}
@@ -197,6 +202,19 @@ export class ProblemPresenter extends Presenter {
   showSlideshowProgress() {
     this.#progressBars.showBar(ProblemPresenter.SLIDE_BAR_INDEX);
   }
+
+  /**
+   * Add the edit button
+   */
+  #addEditButtonIfLocal() {
+    if (this.config.lessonInfo.usingLocalLibrary) {
+      const editButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.edit, editButton);
+      this.addButtonToBar(editButton);
+      this.listenToEventOn('click', editButton, ProblemPresenter.EDIT_EVENT_ID);
+    }
+  }
+
   /**
    * Add progress indicators.
    */
@@ -228,6 +246,7 @@ export class ProblemPresenter extends Presenter {
    * Add button bar to the presenter.
    */
   addButtons() {
+    this.#addEditButtonIfLocal();
     this.#addSubmitButton();
   }
 
@@ -277,12 +296,25 @@ export class ProblemPresenter extends Presenter {
         this.#freezeAnswers = true;
         this.#processClickedSubmit(event);
         break;
+      case ProblemPresenter.EDIT_EVENT_ID:
       case Presenter.NEXT_ID:
         clearTimeout(this.#autoAdvanceTimer);
         super.handleClickEvent(event, eventId);
         break;
       default:
         super.handleClickEvent(event, eventId);
+    }
+  }
+
+  /**
+   * @override
+   * @param {number | string} eventIndexOrId
+   */
+  next(eventId) {
+    if (eventId === ProblemPresenter.EDIT_EVENT_ID) {
+      return this.config.factory.getEditor(this, this.config);
+    } else {
+      return super.next(eventId);
     }
   }
 
