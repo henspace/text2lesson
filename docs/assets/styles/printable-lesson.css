@@ -17,6 +17,7 @@
   border: 2px solid black;
   display: inline-block;
   height: 2em;
+  margin-right: 0.5em;
   width: 2em;
 }
 
@@ -36,4 +37,16 @@
   border-top: 1px solid black;
   font-style: italic;
   text-align: center;
+}
+
+.PrintableLessonPresenter .multiple-choice-problem .print-option p {
+  display: inline-block;
+}
+
+.PrintableLessonPresenter .multiple-choice-problem .print-option::before {
+  content: ' ';
+  border: 2px solid black;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
 }
