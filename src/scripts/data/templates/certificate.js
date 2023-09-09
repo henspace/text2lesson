@@ -42,6 +42,62 @@ export function getCertificateHtml(content) {
           overflow-x: hidden;
           padding: 0;
         }
+        
+        .MarksPresenter .answer-summary {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        
+        .MarksPresenter .answer-summary div,
+        .MarksPresenter .answer-summary p,
+        .MarksPresenter .answer-summary table,
+        .MarksPresenter .answer-summary tr,
+        .MarksPresenter .answer-summary td,
+        .MarksPresenter .answer-summary h1,
+        .MarksPresenter .answer-summary h2,
+        .MarksPresenter .answer-summary h3,
+        .MarksPresenter .answer-summary h4,
+        .MarksPresenter .answer-summary h5,
+        .MarksPresenter .answer-summary h6 {
+          display: inline;
+          padding: 0px;
+        }
+        
+        .MarksPresenter .removed-image::before,
+        .MarksPresenter .removed-iframe::before {
+          content: '🖼️';
+        }
+        
+        .MarksPresenter .answer-summary tr {
+          border: none;
+          margin-right: 0px;
+          vertical-align: baseline;
+        }
+        
+        .MarksPresenter .maths::before {
+          content: '{';
+        }
+        
+        .MarksPresenter .maths::after {
+          content: '}';
+        }
+        
+        .MarksPresenter .answer-summary .maths tr:first-child::after {
+          content: '\\00f7';
+        }
+         
+        .MarksPresenter .answer-summary.correct::before {
+          content: '\\2714 \\FE0F';
+        }
+        
+        .MarksPresenter .answer-summary.incorrect::before {
+          content: '\\274c';
+        }
+        
+        .MarksPresenter .answer-summary.skipped::before {
+          content: '\\274c';
+        }
         .MarksPresenter {
           margin: 0.3rem;
           padding: 0.3rem;
@@ -53,29 +109,6 @@ export function getCertificateHtml(content) {
         .MarksPresenter h3 {
           margin-top: 0.3rem;
           text-align: center;
-        }
-
-        .MarksPresenter .answer-summary::before {
-          display: inline-block;
-          width: 1.5rem;
-        }
-        
-        .MarksPresenter .answer-summary {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-        
-        .MarksPresenter .answer-summary.correct::before {
-          content: '\\2714 \\FE0F';
-        }
-        
-        .MarksPresenter .answer-summary.incorrect::before {
-          content: '\\274c';
-        }
-        
-        .MarksPresenter .answer-summary.skipped::before {
-          content: '\\274c';
         }
         
         .MarksPresenter h1,
@@ -97,9 +130,11 @@ export function getCertificateHtml(content) {
         .MarksPresenter .result-summary.excellent::after {
           content: '\\1f947';
         }
+        
         .MarksPresenter .certificate-date {
           text-align: center;
         }
+
       </style>
     </head>
     <body>

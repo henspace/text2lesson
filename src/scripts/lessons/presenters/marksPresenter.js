@@ -83,6 +83,10 @@ export class MarksPresenter extends Presenter {
    * @const
    */
   static WEBSHARE_AUTORUN_ID = 'WEBSHARE_AUTORUN';
+  /**
+   * @const
+   */
+  static EDIT_LESSON_ID = 'EDIT_LESSON';
 
   /**
    * @type {module:lessons/itemMarker~Marks}
@@ -118,6 +122,7 @@ export class MarksPresenter extends Presenter {
     this.#addHeadings();
     this.#addAnswers();
     this.#addResult();
+    this.#addEditButtonIfLocal();
     this.#addRetryButton();
     this.#addShareButtons();
     this.#adjustButtonsForOrigin();
@@ -193,13 +198,25 @@ export class MarksPresenter extends Presenter {
   }
 
   /**
+   * Add the edit button
+   */
+  #addEditButtonIfLocal() {
+    if (this.config.lessonInfo.usingLocalLibrary) {
+      const editButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.edit, editButton);
+      this.addButtonToBar(editButton);
+      this.listenToEventOn('click', editButton, MarksPresenter.EDIT_LESSON_ID);
+    }
+  }
+
+  /**
    * Add a list of answers.
    */
   #addAnswers() {
     const answers = new ManagedElement('div');
     this.config.lesson.marks.markedItems.forEach((markedItem) => {
       const item = new ManagedElement('div', 'answer-summary');
-      item.innerHTML = `${markedItem.item.question.html}`;
+      item.innerHTML = `${this.#stripImages(markedItem.item.question.html)}`;
       item.classList.add(this.#getClassForMarkState(markedItem.state));
       answers.appendChild(item);
     });
@@ -287,6 +304,8 @@ export class MarksPresenter extends Presenter {
         return this.#webShareAutorun();
       case MarksPresenter.RETRY_LESSON_ID:
         return this.config.factory.getProblemAgain(this, this.config);
+      case MarksPresenter.EDIT_LESSON_ID:
+        return this.config.factory.getEditor(this, this.config);
       case Presenter.NEXT_ID:
         if (this.config.lessonInfo.origin === LessonOrigin.EMBEDDED) {
           window.top.location.replace(embeddedLesson.rootUrl);
@@ -403,5 +422,22 @@ export class MarksPresenter extends Presenter {
       this.config.lessonInfo.titles.lesson,
       this.config.lesson
     );
+  }
+
+  /**
+   * Strip images and iframes
+   * @param {string} html
+   * @returns {string}
+   */
+  #stripImages(html) {
+    html = html.replace(
+      /<img[^>]*?>(?:<\/img>)?/g,
+      '<span class="removed-image"</span>'
+    );
+    html = html.replace(
+      /<iframe[^>]*?><\/iframe>/g,
+      '<span class="removed-iframe"</span>'
+    );
+    return html;
   }
 }

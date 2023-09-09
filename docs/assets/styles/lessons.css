@@ -219,6 +219,13 @@ a.problem {
   padding: 0px;
 }
 
+.MarksPresenter .removed-image::before,
+.MarksPresenter .removed-iframe::before {
+  content: var(--icon-image);
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+}
+
 .MarksPresenter .answer-summary tr {
   border: none;
   margin-right: 0px;

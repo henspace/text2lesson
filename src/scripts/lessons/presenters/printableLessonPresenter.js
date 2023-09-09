@@ -173,12 +173,12 @@ export class PrintableLessonPresenter extends Presenter {
     listItem.createAndAppendChild('p', 'print-intro', problem.intro.html);
     listItem.createAndAppendChild('p', 'print-question', problem.question.html);
     const answersContainer = listItem.createAndAppendChild(
-      'ul',
+      'div',
       'print-answers'
     );
     const answers = shuffle([...problem.rightAnswers, ...problem.wrongAnswers]);
     for (const answer of answers) {
-      answersContainer.createAndAppendChild('li', 'print-option', answer.html);
+      answersContainer.createAndAppendChild('div', 'print-option', answer.html);
     }
   }
   /**

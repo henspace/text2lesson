@@ -1,5 +1,5 @@
 /**
- * @file Presenter factory to remove circular dependendies with Presenter modules
+ * @file Presenter factory to remove circular dependencies with Presenter modules
  *
  * @module lessons/presenters/presenterFactory
  *
@@ -74,7 +74,7 @@ const NAVIGATION = {
 
 export class PresenterFactory {
   /**
-   * Get a suitable problem presenter based on the configuratoin.
+   * Get a suitable problem presenter based on the configuration.
    * @param {LessonConfig} config
    * @returns {Presenter}
    */
@@ -126,7 +126,11 @@ export class PresenterFactory {
    * @returns {Presenter}  Presenter or null.
    */
   getEditor(caller, config) {
-    if (caller instanceof LessonPresenter) {
+    if (
+      caller instanceof LessonPresenter ||
+      caller instanceof ProblemPresenter ||
+      caller instanceof MarksPresenter
+    ) {
       return new LessonEditorPresenter(config);
     } else {
       console.error(
@@ -236,7 +240,7 @@ export class PresenterFactory {
    * Move to the next presenter if the current one only has one option to choose
    * from.
    * @param {Class} presenterClass
-   * @returns {Class} new Class. This will be unchanged if no switch occured.
+   * @returns {Class} new Class. This will be unchanged if no switch occurred.
    */
   #moveToNextPresenterIfUnnecessary(presenterClass) {
     switch (presenterClass.name) {
