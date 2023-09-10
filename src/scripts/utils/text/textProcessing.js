@@ -165,11 +165,12 @@ const spanReps = [
   },
   /** image */
   {
-    re: /!\[(.*?)\]\((https?:\/\/[-\w@:%.+~#=/]+?)(?: +"(.*?)")?\)/gm,
-    rep: (match, altText, src, title) => {
-      const html = `<img alt="${altText ?? ''}" src="${src}" title="${
-        title ?? ''
-      }"/>`;
+    re: /!(&lt;)?\[(.*?)\]\((https?:\/\/[-\w@:%.+~#=/]+?)(?: +"(.*?)")?\)/gm,
+    rep: (match, floatLeft, altText, src, title) => {
+      const additionalClass = floatLeft ? 'floatable' : '';
+      const html = `<img alt="${
+        altText ?? ''
+      }" class="${additionalClass}" src="${src}" title="${title ?? ''}"/>`;
       return parsingWarden.protect(html);
     },
   },
