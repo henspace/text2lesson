@@ -159,10 +159,21 @@ test('Image links create img elements', () => {
   expect(
     parseMarkdown('![test title](https://example.com "with title")')
   ).toMatch(
-    '<img alt="test title" src="https://example.com" title="with title"/>'
+    '<img alt="test title" class="" src="https://example.com" title="with title"/>'
   );
   expect(parseMarkdown('![test title](https://example.com)')).toMatch(
-    '<img alt="test title" src="https://example.com" title=""/>'
+    '<img alt="test title" class="" src="https://example.com" title=""/>'
+  );
+});
+
+test('Image links can be marked as floatable', () => {
+  expect(
+    parseMarkdown('!<[test title](https://example.com "with title")')
+  ).toMatch(
+    '<img alt="test title" class="floatable" src="https://example.com" title="with title"/>'
+  );
+  expect(parseMarkdown('!<[test title](https://example.com)')).toMatch(
+    '<img alt="test title" class="floatable" src="https://example.com" title=""/>'
   );
 });
 
@@ -424,7 +435,7 @@ test('Generated image html is not parsed further', () => {
       '![test_title_text](https://example.com/my_picture_text.png "with_title_text")'
     )
   ).toMatch(
-    '<img alt="test_title_text" src="https://example.com/my_picture_text.png" title="with_title_text"/>'
+    '<img alt="test_title_text" class="" src="https://example.com/my_picture_text.png" title="with_title_text"/>'
   );
 });
 

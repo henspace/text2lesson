@@ -322,7 +322,11 @@ export class ProblemPresenter extends Presenter {
    * @override
    */
   async allowNavigation(event, eventId) {
-    if (eventId === Presenter.HOME_ID || eventId === Presenter.PREVIOUS_ID) {
+    if (
+      eventId === Presenter.HOME_ID ||
+      eventId === Presenter.PREVIOUS_ID ||
+      eventId === ProblemPresenter.EDIT_EVENT_ID
+    ) {
       return this.askIfOkayToLeave(
         i18n`Are you sure you want to quit the lesson?`
       );

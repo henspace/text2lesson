@@ -385,15 +385,11 @@ export class Presenter extends ManagedElement {
   async handleClickEvent(event, eventId) {
     const index = parseInt(eventId);
     const upperCaseId = !eventId ? '' : eventId.toString().toUpperCase();
-    if (
-      upperCaseId === Presenter.HOME_ID ||
-      upperCaseId === Presenter.PREVIOUS_ID ||
-      upperCaseId === Presenter.NEXT_ID
-    ) {
-      if (!(await this.allowNavigation(event, eventId))) {
-        return true;
-      }
+
+    if (!(await this.allowNavigation(event, eventId))) {
+      return true;
     }
+
     let nextPresenter = null;
     if (upperCaseId === Presenter.PREVIOUS_ID) {
       nextPresenter = this.previous();

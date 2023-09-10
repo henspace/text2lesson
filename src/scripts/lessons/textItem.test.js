@@ -418,10 +418,22 @@ test('icon passed without class', () => {
   expect(textItem.html).toMatch(`<i class="fa-solid fa-circle-right"></i>`);
 });
 
-test('icon passed without class', () => {
+test('icon passed with class', () => {
   let source = `123 icon:circle-right>bigger `;
   let textItem = textItemParser.TextItem.createFromSource(source);
   expect(textItem.html).toMatch(
     `<i class="fa-solid fa-circle-right bigger"></i>`
   );
+});
+
+test('text passed without class', () => {
+  let source = `123 text:circle-right`;
+  let textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(`<span class="">circle-right</span>`);
+});
+
+test('text passed with class', () => {
+  let source = `123 text:circle-right>bigger `;
+  let textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(`<span class="bigger">circle-right</span>`);
 });

@@ -12,6 +12,15 @@ a.problem {
   text-decoration: none;
 }
 
+.ProblemPresenter .problem-question img.floatable {
+  float: left;
+  max-width: 50%;
+}
+
+.ProblemPresenter .problem-answers {
+  clear: left;
+}
+
 .LessonPresenter.Presenter .presentation {
   display: flex;
   flex-direction: column;
