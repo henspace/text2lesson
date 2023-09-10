@@ -37,6 +37,15 @@ import { getHtmlForIconName } from './fontAwesomeTools.js';
 const SAFE_CLASSES = ['big', 'bigger', 'biggest', 'massive', 'giant', 'column'];
 
 /**
+ * Get html for text with className applied.
+ * @param {string} text
+ * @param {string} className
+ * @returns {string}
+ */
+function getHtmlForText(text, className) {
+  return `<span class="${className}">${text}</span>`;
+}
+/**
  * Convert requestedClass into an orientation class.
  * @param {string} requestedClass - can be col, column, row, line, or left in any case.
  * @returns {string} empty string if unrecognised, else align-column or align-row.
@@ -154,6 +163,10 @@ class TrackedReplacements {
       getItemReplacement('icon:', (match, startChr, iconName, iconClass) => {
         iconClass = makeClassSafe(iconClass);
         return `${startChr}${getHtmlForIconName(iconName, iconClass)}</span>`;
+      }),
+      getItemReplacement('text:', (match, startChr, text, textClass) => {
+        textClass = makeClassSafe(textClass);
+        return `${startChr}${getHtmlForText(text, textClass)}</span>`;
       }),
     ];
   }
