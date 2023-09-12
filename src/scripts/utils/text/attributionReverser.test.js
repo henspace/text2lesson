@@ -45,6 +45,28 @@ test('Reverse Wikimedia Commons embedded code', () => {
   expect(result).toBe(expected);
 });
 
+test('Reverse Wikimedia Commons embedded BBCODE code', () => {
+  const embed = `{bbcode}[url=https://commons.wikimedia.org/wiki/File:Elizabeth_of_York_from_Kings_and_Queens_of_England.jpg][img]https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Elizabeth_of_York_from_Kings_and_Queens_of_England.jpg/256px-Elizabeth_of_York_from_Kings_and_Queens_of_England.jpg[/img][/url]
+  [url=https://commons.wikimedia.org/wiki/File:Elizabeth_of_York_from_Kings_and_Queens_of_England.jpg]Elizabeth of York from Kings and Queens of England[/url]
+  National Portrait Gallery
+  , Public domain, via Wikimedia Commons{bbcode}`;
+
+  const result = reverseAttributions(embed);
+  const expected =
+    `![Elizabeth of York from Kings and Queens of England]` +
+    '(https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Elizabeth_of_York_from_Kings_and_Queens_of_England.jpg/256px-Elizabeth_of_York_from_Kings_and_Queens_of_England.jpg' +
+    ' "' +
+    'Elizabeth of York from Kings and Queens of England: ' +
+    'National Portrait Gallery|' +
+    'https://commons.wikimedia.org/wiki/File:Elizabeth_of_York_from_Kings_and_Queens_of_England.jpg|' +
+    '|' +
+    'Public domain|' +
+    '|' +
+    'via Wikimedia Commons' +
+    '")';
+  expect(result).toBe(expected);
+});
+
 test('Reverse Wikimedia structure', () => {
   const title = 'my title';
   const licenceName = 'A LICENCE';
@@ -64,8 +86,48 @@ test('Reverse Wikimedia structure', () => {
   );
 });
 
+test('Reverse Wikimedia structure BBCODE', () => {
+  const title = 'my title';
+  const licenceName = 'A LICENCE';
+  const licenceUrl = 'https://licenceurl';
+  const sourceUrl = 'http://sourceUrl';
+  const authors = '';
+  const altText = 'some alt text';
+  const imageUrl = 'https://imageUrl';
+  const notes = 'via Wikimedia Commons';
+
+  const embed = `{bbcode}[url=${sourceUrl}][img]${imageUrl}[/img][/url][url=${sourceUrl}]${altText}[/url]${title}, ${licenceName} <${licenceUrl}>, via Wikimedia Commons{bbcode}`;
+
+  const result = reverseAttributions(embed);
+  expect(result).toBe(
+    `![${altText}](${imageUrl} "${altText}: ${title}` +
+      `|${sourceUrl}|${authors}|${licenceName}|${licenceUrl}|${notes}")`
+  );
+});
+
 test('Reverse Wikimedia Commons embedded code with CC licence', () => {
   const embed = `<a title="AndyScott, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Pearly_Kings_and_Queens_Harvest_Festival_2019,_maypole_dance_(5).jpg"><img width="512" alt="Pearly Kings and Queens Harvest Festival 2019, maypole dance (5)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Pearly_Kings_and_Queens_Harvest_Festival_2019%2C_maypole_dance_%285%29.jpg/512px-Pearly_Kings_and_Queens_Harvest_Festival_2019%2C_maypole_dance_%285%29.jpg"></a>`;
+
+  const result = reverseAttributions(embed);
+  const expected =
+    `![Pearly Kings and Queens Harvest Festival 2019, maypole dance (5)]` +
+    '(https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Pearly_Kings_and_Queens_Harvest_Festival_2019%2C_maypole_dance_%285%29.jpg/512px-Pearly_Kings_and_Queens_Harvest_Festival_2019%2C_maypole_dance_%285%29.jpg' +
+    ' "' +
+    'Pearly Kings and Queens Harvest Festival 2019, maypole dance (5): ' +
+    'AndyScott|' +
+    'https://commons.wikimedia.org/wiki/File:Pearly_Kings_and_Queens_Harvest_Festival_2019,_maypole_dance_(5).jpg|' +
+    '|' +
+    'CC BY-SA 4.0|' +
+    'https://creativecommons.org/licenses/by-sa/4.0|' +
+    'via Wikimedia Commons' +
+    '")';
+  expect(result).toBe(expected);
+});
+
+test('Reverse Wikimedia Commons embedded code with CC licence using BBCODE', () => {
+  const embed = `{bbcode}[url=https://commons.wikimedia.org/wiki/File:Pearly_Kings_and_Queens_Harvest_Festival_2019,_maypole_dance_(5).jpg][img]https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Pearly_Kings_and_Queens_Harvest_Festival_2019%2C_maypole_dance_%285%29.jpg/512px-Pearly_Kings_and_Queens_Harvest_Festival_2019%2C_maypole_dance_%285%29.jpg[/img][/url]
+  [url=https://commons.wikimedia.org/wiki/File:Pearly_Kings_and_Queens_Harvest_Festival_2019,_maypole_dance_(5).jpg]Pearly Kings and Queens Harvest Festival 2019, maypole dance (5)[/url]
+  AndyScott, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons{bbcode}`;
 
   const result = reverseAttributions(embed);
   const expected =

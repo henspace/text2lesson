@@ -30,7 +30,7 @@
  */
 function extractWikiMediaLicence(attribution) {
   const match =
-    /^(.+?),\s*([^&,]+)\s*(?:&lt;(.+)&gt;)?,\s*via Wikimedia Commons$/gs.exec(
+    /^(.+?),\s*([^&,<]+)\s*(?:(?:<|&lt;)(.+)(?:>|&gt;))?,\s*via Wikimedia Commons$/gs.exec(
       attribution
     );
   if (match) {
@@ -85,7 +85,7 @@ function formMarkdownUrl(data) {
 }
 
 const attributionPatterns = {
-  Wikimedia: {
+  WikimediaHtml: {
     re: /([<])?<a\s+title="([^"]+Wikimedia Commons)"\s+href="([^"]+)"><img\s+(?:width="(\d+)")?\s?alt="([^"]+)"\s+src="([^"]+)">\s*<\/a>/g,
     rep: (
       match,
@@ -95,6 +95,31 @@ const attributionPatterns = {
       width,
       altText,
       imageUrl
+    ) => {
+      const licence = extractWikiMediaLicence(attribution);
+      return formMarkdownUrl({
+        alignment: alignment,
+        altText: altText?.trim(),
+        imageUrl: imageUrl,
+        imageSourceUrl: imageSourceUrl,
+        attribution: licence.attribution?.trim(),
+        authors: '',
+        licenceName: licence.shortName?.trim(),
+        licenceUrl: licence.url,
+        notes: 'via Wikimedia Commons',
+      });
+    },
+  },
+  WikimediaBbcode: {
+    re: /{bbcode}\s*([<])?\[url=([^\]]+?)]\s*\[img\]([^[]+?)\[\/img\]\s*\[\/url\]\s*\[url=([^\]]+?)\]([^[]+?)\[\/url\]\s*(.*?){bbcode}/gs,
+    rep: (
+      match,
+      alignment,
+      imageSourceUrl,
+      imageUrl,
+      imageSourceUrlRepeated,
+      altText,
+      attribution
     ) => {
       const licence = extractWikiMediaLicence(attribution);
       return formMarkdownUrl({
