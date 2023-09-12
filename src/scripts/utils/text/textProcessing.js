@@ -135,17 +135,6 @@ const blockReps = [
     re: /^\s*maths?:\s*(.+?)\s*$/gm,
     rep: (match, equation) => parseMaths(equation, false),
   },
-
-  /**
-   * Youtube embedded video
-   */
-  {
-    re: /&lt;iframe ([^>]+src="https:\/\/www\.youtube\.com\/embed[^>]+)>&lt;\/iframe>/g,
-    rep: (match, content) => {
-      const html = `\n\n<iframe ${content}></iframe>\n\n`;
-      return parsingWarden.protect(html);
-    },
-  },
 ];
 
 /**
