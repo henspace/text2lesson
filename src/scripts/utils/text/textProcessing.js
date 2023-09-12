@@ -98,7 +98,7 @@ const blockReps = [
     },
   },
   /** block quote */
-  reAllLinesStartWith('>[ \t]+', {
+  reAllLinesStartWith('>[ \t]*', {
     blockPrefix: '<blockquote>',
     blockSuffix: '</blockquote>',
   }),
@@ -347,7 +347,7 @@ function reAllLinesStartWith(reStart, options) {
     `(?:^|\\n)${reStart}(?:.|\\n)*?(?:(\\n(?!${reStart}))|$)`,
     'g'
   );
-  const lineReplacementRe = new RegExp(`^${reStart}(\\s*.*)$`, 'gm');
+  const lineReplacementRe = new RegExp(`^${reStart}([ \\t]*.*)$`, 'gm');
   const lineReplacement = `${options?.linePrefix ?? ''}$1${
     options?.lineSuffix ?? ''
   }`;
