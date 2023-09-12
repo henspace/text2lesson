@@ -33,6 +33,19 @@
   .print-problems > li {
     page-break-inside: avoid;
   }
+
+  span.for-print-only {
+    display: inline;
+  }
+  div.for-print-only {
+    display: block;
+  }
+}
+
+@media screen {
+  .for-print-only {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
