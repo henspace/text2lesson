@@ -115,14 +115,14 @@ const blockReps = [
     rep: '\n\n<hr>\n\n',
   },
   /** unordered list */
-  reAllLinesStartWith(' {0,3}[*+-][ \t]*', {
+  reAllLinesStartWith(' {0,3}[*+-][ \t]+', {
     blockPrefix: '<ul>',
     blockSuffix: '</ul>',
     linePrefix: '<li>',
     lineSuffix: '</li>',
   }),
   /** ordered list */
-  reAllLinesStartWith(' {0,3}\\d+\\.[ \t]*', {
+  reAllLinesStartWith(' {0,3}\\d+\\.[ \t]+', {
     blockPrefix: '<ol>',
     blockSuffix: '</ol>',
     linePrefix: '<li>',
@@ -134,17 +134,6 @@ const blockReps = [
   {
     re: /^\s*maths?:\s*(.+?)\s*$/gm,
     rep: (match, equation) => parseMaths(equation, false),
-  },
-
-  /**
-   * Youtube embedded video
-   */
-  {
-    re: /&lt;iframe ([^>]+src="https:\/\/www\.youtube\.com\/embed[^>]+)>&lt;\/iframe>/g,
-    rep: (match, content) => {
-      const html = `\n\n<iframe ${content}></iframe>\n\n`;
-      return parsingWarden.protect(html);
-    },
   },
 ];
 
@@ -347,7 +336,7 @@ function reAllLinesStartWith(reStart, options) {
     `(?:^|\\n)${reStart}(?:.|\\n)*?(?:(\\n(?!${reStart}))|$)`,
     'g'
   );
-  const lineReplacementRe = new RegExp(`^${reStart}(\\s*.*)$`, 'gm');
+  const lineReplacementRe = new RegExp(`^${reStart}([ \\t]*.*)$`, 'gm');
   const lineReplacement = `${options?.linePrefix ?? ''}$1${
     options?.lineSuffix ?? ''
   }`;

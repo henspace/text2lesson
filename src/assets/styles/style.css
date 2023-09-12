@@ -355,3 +355,9 @@ div.maths {
   font-size: 1.3rem;
   transform: translateX(0.2rem);
 }
+
+blockquote {
+  margin-left: 0px;
+  padding-left: 1rem;
+  border-left: solid rgba(128, 128, 128, 0.5) 0.5rem;
+}
