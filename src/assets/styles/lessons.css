@@ -12,12 +12,15 @@ a.problem {
   text-decoration: none;
 }
 
+.ProblemPresenter .problem-question img {
+  display: block;
+  max-width: 80%;
+  margin: auto;
+}
+
 .ProblemPresenter .problem-question img.floatable {
   float: left;
   max-width: 50%;
-}
-
-.ProblemPresenter .problem-answers {
   clear: left;
 }
 
@@ -401,4 +404,21 @@ ul.presentation,
 
 .big {
   font-size: 200%;
+}
+
+/** attributions */
+.attributions {
+  text-align: left;
+  overflow-wrap: break-word; /* for long urls */
+}
+
+@media print {
+  .attributions {
+    font-size: 0.6rem;
+  }
+}
+
+.attribution-button-container {
+  display: flex;
+  justify-content: flex-end;
 }

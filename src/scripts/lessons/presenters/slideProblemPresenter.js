@@ -119,6 +119,11 @@ export class SlideProblemPresenter extends ProblemPresenter {
   #lastAnimationClass;
 
   /**
+   * @type {number}
+   */
+  static MIN_READ_TIME_MS = 3000;
+
+  /**
    * Construct.
    * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presenter
    */
@@ -257,6 +262,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
     this.#currentCardDetail = this.#cards.getNext();
     this.slideshowProgress = this.#cards.progress;
     this.#visualCard.innerHTML = this.#currentCardDetail.html;
+    this.addAttributions();
     this.#autoPauseIfAppropriate(this.#currentCardDetail.html);
     this.#visualCard.element.scrollTo(0, 0);
     this.#setCardState(CardState.ARRIVING);
@@ -290,10 +296,14 @@ export class SlideProblemPresenter extends ProblemPresenter {
    */
   #readCard() {
     this.#setCardState(CardState.READING);
+    const readTimeMs = Math.max(
+      SlideProblemPresenter.MIN_READ_TIME_MS,
+      this.#currentCardDetail.readTimeSecs * 1000
+    );
     if (!this.#paused) {
       this.#readTimerId = setTimeout(() => {
         this.#removeCard();
-      }, this.#currentCardDetail.readTimeSecs * 1000);
+      }, readTimeMs);
     }
   }
 

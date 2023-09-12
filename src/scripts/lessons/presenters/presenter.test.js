@@ -58,6 +58,7 @@ let stage;
 
 beforeAll(() => {
   stage = new ManagedElement('div', 'stage');
+  stage.id = 'stage';
   stage.appendTo(document.body);
   const footerElement = document.createElement('div');
   footerElement.id = 'footer';

@@ -52,7 +52,6 @@ export class PrintableLessonPresenter extends Presenter {
     this.#buildContent();
     this.#addPrintButton();
     this.#addFontButton();
-    this.#addFooter();
     this.showBackButton();
   }
 
@@ -135,7 +134,11 @@ export class PrintableLessonPresenter extends Presenter {
     });
   }
 
-  #addFooter() {
+  /**
+   * @pverride
+   */
+  addAttributions() {
+    super.addAttributions();
     this.addPostamble(i18n`Lesson printed ${new Date().toLocaleDateString()}`);
   }
 

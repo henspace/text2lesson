@@ -21,6 +21,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { reverseAttributions } from './attributionsReverser.js';
 import { parseMaths, mathsToPlainText } from './maths.js';
 import { ParsingWarden } from './parsingWarden.js';
 
@@ -36,6 +37,18 @@ import { ParsingWarden } from './parsingWarden.js';
  * @type {ParsingWarden}
  */
 const parsingWarden = new ParsingWarden();
+
+/**
+ * Get a printable link. This is a span with the classes printable-link and
+ * for-print-only. CSS should hide it from screens.
+ * @param {string} href
+ * @param {boolean} parentheses - if true the result is wrapped in parentheses.
+ */
+export function getPrintableLink(href, parentheses) {
+  return `<span class="printable-link for-print-only">${
+    parentheses ? '(' : ''
+  }${href}${parentheses ? ')' : ''}</span>`;
+}
 
 /**
  * Applies an appropriate icon to the label text of a link. Applies none if no icon.
@@ -181,7 +194,7 @@ const spanReps = [
       label = addIconToLink(href, label);
       const html = `<a target="_blank" href="${href}" title="${title ?? ''}">${
         label ?? ''
-      }</a>`;
+      }</a>${getPrintableLink(href, true)}`;
       return parsingWarden.protect(html);
     },
   },
@@ -189,7 +202,10 @@ const spanReps = [
   {
     re: /(?:&lt;|<)(https?:\/\/[-\w@:%.+~#=/]+?)>/gm,
     rep: (match, href) => {
-      const html = `<a target="_blank" href="${href}">${href}</a>`;
+      const html = `<a target="_blank" href="${href}">${href}</a>${getPrintableLink(
+        href,
+        true
+      )}`;
       return parsingWarden.protect(html);
     },
   },
@@ -430,6 +446,7 @@ export function decodeFromEntities(data) {
 export function parseMarkdown(data, options) {
   parsingWarden.clear(); // this shouldn't be necessary as the warden automatically clears on retrieval.
   var result = data.replaceAll(/\r/g, ''); // normalise line endings
+  result = reverseAttributions(result);
   result = processReplacements(result, securityReps);
   if (options?.pre) {
     result = processReplacements(result, options.pre);
@@ -444,6 +461,24 @@ export function parseMarkdown(data, options) {
   if (options?.post) {
     result = processReplacements(result, options.post);
   }
+  return parsingWarden.reinstate(result);
+}
+
+/**
+ * Convert the Markdown data into HTML.
+ * This is a stripped down version of parseMarkdown.
+ *
+ * Escaping takes place, but then only span replacements are processed.
+ * @param {string} data
+ */
+export function parseMarkdownSpanOnly(data) {
+  parsingWarden.clear(); // this shouldn't be necessary as the warden automatically clears on retrieval.
+  var result = data.replaceAll(/\r/g, ''); // normalise line endings
+  result = processReplacements(result, securityReps);
+  result = processReplacements(result, htmlEscIgnoringBrReps);
+  result = processReplacements(result, markdownEscReps);
+  result = processReplacements(result, spanReps);
+  result = processReplacements(result, htmlCleanUpReps);
   return parsingWarden.reinstate(result);
 }
 
