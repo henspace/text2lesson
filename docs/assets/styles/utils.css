@@ -47,7 +47,6 @@ textarea,
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1rem;
   font-weight: normal;
-  list-style-position: inside;
   margin: var(--margin-thickness);
   min-width: 1rem;
   outline-offset: var(--outline-offset);

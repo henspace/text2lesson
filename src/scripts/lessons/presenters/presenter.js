@@ -31,6 +31,8 @@ import { icons } from '../../utils/userIo/icons.js';
 import { focusManager } from '../../utils/userIo/focusManager.js';
 import { ArrayIndexer } from '../../utils/arrayIndexer.js';
 import { footer } from '../../headerAndFooter.js';
+import { getAttributions } from './attributions.js';
+import { i18n } from '../../utils/i18n/i18n.js';
 
 /**
  * @typedef {Object} Navigator
@@ -62,7 +64,7 @@ export class Presenter extends ManagedElement {
   static HOME_ID = 'HOME';
   static PREVIOUS_ID = 'BACKWARDS';
   static NEXT_ID = 'FORWARDS';
-
+  static IMAGE_INFO = 'IMAGE_INFO';
   /**
    * The resolve function for the Promise returned by the `presentOnStage` method.
    * @type {function}
@@ -129,6 +131,16 @@ export class Presenter extends ManagedElement {
   #forwardsButton;
 
   /**
+   * Credits button
+   * @type {module:utils/userIo/managedElement.ManagedElement}
+   */
+  #creditsButton;
+
+  /**
+   * @type {module:utils/userIo/managedElement.ManagedElement}
+   */
+  #attributions;
+  /**
    * Location of next button. It defaults to the button bar
    * @type {boolean}
    */
@@ -172,6 +184,7 @@ export class Presenter extends ManagedElement {
     this.appendChild(this.#preamble);
     this.appendChild(this.#presentation);
     this.appendChild(this.#postamble);
+    this.#addAttributionButton();
   }
 
   /**
@@ -341,8 +354,45 @@ export class Presenter extends ManagedElement {
     return new Promise((resolve) => {
       this.#resolutionExecutor = resolve;
       stageElement.appendChild(this);
+      this.addAttributions();
       focusManager.findBestFocus();
     });
+  }
+
+  /**
+   * Create the credits button.
+   */
+  #addAttributionButton() {
+    const attributionsContainer = new ManagedElement(
+      'div',
+      'attribution-button-container'
+    );
+    this.#creditsButton = new ManagedElement('button');
+    attributionsContainer.appendChild(this.#creditsButton);
+    icons.applyIconToElement(icons.imageInfo, this.#creditsButton, {
+      hideText: true,
+    });
+    this.listenToEventOn('click', this.#creditsButton, Presenter.IMAGE_INFO);
+    this.addPostamble(attributionsContainer);
+    this.#creditsButton.hide();
+  }
+
+  /**
+   * Add credits to the postamble.
+   * This needs to be called after any child classes have built their content.
+   */
+  addAttributions() {
+    if (this.#attributions) {
+      this.#attributions.remove();
+    }
+    this.#attributions = getAttributions(document.getElementById('stage'));
+    if (this.#attributions) {
+      this.#attributions.classList.add('for-print-only');
+      this.addPostamble(this.#attributions);
+      this.#creditsButton.show();
+    } else if (this.#creditsButton) {
+      this.#creditsButton.hide();
+    }
   }
 
   /**
@@ -391,7 +441,12 @@ export class Presenter extends ManagedElement {
     }
 
     let nextPresenter = null;
-    if (upperCaseId === Presenter.PREVIOUS_ID) {
+    if (upperCaseId === Presenter.IMAGE_INFO) {
+      return ModalDialog.showInfo(
+        document.querySelector('.attributions').innerHTML,
+        i18n`Acknowledgements`
+      );
+    } else if (upperCaseId === Presenter.PREVIOUS_ID) {
       nextPresenter = this.previous();
     } else if (upperCaseId === Presenter.NEXT_ID) {
       nextPresenter = this.next(Presenter.NEXT_ID);

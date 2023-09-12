@@ -34,7 +34,6 @@ import { LessonOrigin } from '../lessonOrigins.js';
 import { focusManager } from '../../utils/userIo/focusManager.js';
 import { soundManager } from '../../utils/audio/soundManager.js';
 import { StackedProgressBar } from '../../utils/userIo/progress.js';
-
 /**
  * Class names
  * @enum {string}

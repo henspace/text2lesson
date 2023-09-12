@@ -188,12 +188,32 @@ test('Links create anchors', () => {
   );
 });
 
+test('Links include printable version', () => {
+  expect(
+    parseMarkdown('[test title](https://example.com "with title")')
+  ).toMatch(
+    '<span class="printable-link for-print-only">(https://example.com)</span>'
+  );
+  expect(parseMarkdown('[test title](http://example.com)')).toMatch(
+    '<span class="printable-link for-print-only">(http://example.com)</span>'
+  );
+});
+
 test('Auto links create anchors', () => {
   expect(parseMarkdown('<http://example.com>')).toMatch(
     '<a target="_blank" href="http://example.com">http://example.com</a>'
   );
   expect(parseMarkdown('<https://example.com>')).toMatch(
     '<a target="_blank" href="https://example.com">https://example.com</a>'
+  );
+});
+
+test('Auto links create printable version', () => {
+  expect(parseMarkdown('<http://example.com>')).toMatch(
+    '<span class="printable-link for-print-only">(http://example.com)</span>'
+  );
+  expect(parseMarkdown('<https://example.com>')).toMatch(
+    '<span class="printable-link for-print-only">(https://example.com)</span>'
   );
 });
 
