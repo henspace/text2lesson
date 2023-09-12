@@ -98,7 +98,7 @@ const blockReps = [
     },
   },
   /** block quote */
-  reAllLinesStartWith('>[ \t]*', {
+  reAllLinesStartWith('>[ \t]+', {
     blockPrefix: '<blockquote>',
     blockSuffix: '</blockquote>',
   }),
@@ -115,14 +115,14 @@ const blockReps = [
     rep: '\n\n<hr>\n\n',
   },
   /** unordered list */
-  reAllLinesStartWith(' {0,3}[*+-][ \t]*', {
+  reAllLinesStartWith(' {0,3}[*+-][ \t]+', {
     blockPrefix: '<ul>',
     blockSuffix: '</ul>',
     linePrefix: '<li>',
     lineSuffix: '</li>',
   }),
   /** ordered list */
-  reAllLinesStartWith(' {0,3}\\d+\\.[ \t]*', {
+  reAllLinesStartWith(' {0,3}\\d+\\.[ \t]+', {
     blockPrefix: '<ol>',
     blockSuffix: '</ol>',
     linePrefix: '<li>',
