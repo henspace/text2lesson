@@ -66,6 +66,7 @@ export class Presenter extends ManagedElement {
   static PREVIOUS_ID = 'BACKWARDS';
   static NEXT_ID = 'FORWARDS';
   static IMAGE_INFO = 'IMAGE_INFO';
+  static DO_NOT_CLOSE_CLASS_NAME = 'do-not-close';
   /**
    * The resolve function for the Promise returned by the `presentOnStage` method.
    * @type {function}
