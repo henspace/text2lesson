@@ -152,7 +152,7 @@ body {
   margin: 0;
   max-height: calc(var(--vh, 1vh) * 100);
   overflow-x: hidden;
-  overflow-wrap: normal;
+  overflow-wrap: break-word;
   width: 100%;
 }
 
