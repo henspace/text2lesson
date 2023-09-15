@@ -105,6 +105,7 @@ export class LessonEditorPresenter extends Presenter {
   #setEditorAsDirty() {
     this.#saveButton.disabled = false;
     this.#dirty = true;
+    this.classList.add(Presenter.DO_NOT_CLOSE_CLASS_NAME);
   }
   /**
    * Set the editor as dirty. The saveButton is hidden and the Presenter set not to
@@ -113,6 +114,7 @@ export class LessonEditorPresenter extends Presenter {
   #setEditorAsClean() {
     this.#saveButton.disabled = true;
     this.#dirty = false;
+    this.classList.remove(Presenter.DO_NOT_CLOSE_CLASS_NAME);
   }
 
   /**

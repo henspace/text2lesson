@@ -41,6 +41,7 @@ import { toast } from './utils/userIo/toast.js';
 import './utils/userIo/modalMask.js';
 import './utils/userIo/screenSizer.js';
 import { embeddedLesson } from './lessons/embeddedLesson.js';
+import { Presenter } from './lessons/presenters/presenter.js';
 
 /**
  * Display a fatal error.
@@ -171,11 +172,25 @@ function registerServiceWorkerIfBuilt() {
 }
 
 /**
+ * Warn if about to leave the page. It only warns if there is an element with the
+ * `Presenter.DO_NOT_CLOSE_CLASS_NAME`.
+ */
+function addExitWarning() {
+  window.addEventListener('beforeunload', (event) => {
+    if (document.querySelector(`.${Presenter.DO_NOT_CLOSE_CLASS_NAME}`)) {
+      event.preventDefault();
+      return (event.returnValue = '');
+    }
+  });
+}
+
+/**
  * Once the page has loaded, launch the application.
  */
 window.addEventListener('load', () => {
   try {
     registerServiceWorkerIfBuilt();
+    addExitWarning();
     return loadApplication();
   } catch (error) {
     showFatalError(error);

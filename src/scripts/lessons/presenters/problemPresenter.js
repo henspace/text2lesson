@@ -159,6 +159,7 @@ export class ProblemPresenter extends Presenter {
     if (this.config.lessonInfo.origin === LessonOrigin.EMBEDDED) {
       this.hideHomeButton();
     }
+    this.classList.add(Presenter.DO_NOT_CLOSE_CLASS_NAME);
     focusManager.findBestFocus();
   }
 

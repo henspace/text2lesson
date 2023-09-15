@@ -79,6 +79,7 @@
   overflow: auto;
   padding: 1rem;
   width: 90%;
+  max-width: 90vw;
   visibility: hidden;
 }
 

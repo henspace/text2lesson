@@ -33,6 +33,7 @@ import { ArrayIndexer } from '../../utils/arrayIndexer.js';
 import { footer } from '../../headerAndFooter.js';
 import { getAttributions } from './attributions.js';
 import { i18n } from '../../utils/i18n/i18n.js';
+import { BuildInfo } from '../../data/constants.js';
 
 /**
  * @typedef {Object} Navigator
@@ -65,6 +66,7 @@ export class Presenter extends ManagedElement {
   static PREVIOUS_ID = 'BACKWARDS';
   static NEXT_ID = 'FORWARDS';
   static IMAGE_INFO = 'IMAGE_INFO';
+  static DO_NOT_CLOSE_CLASS_NAME = 'do-not-close';
   /**
    * The resolve function for the Promise returned by the `presentOnStage` method.
    * @type {function}
@@ -77,7 +79,7 @@ export class Presenter extends ManagedElement {
   config;
 
   /*
-   * Navigator for keyboard updown navigation.
+   * Navigator for keyboard up/down navigation.
    * @type {module:utils/arrayIndexer.ArrayIndexer} #navigator
    */
   #navigator;
@@ -95,7 +97,7 @@ export class Presenter extends ManagedElement {
   #presentation;
 
   /**
-   * Posamble
+   * Postamble
    * @type {module:utils/userIo/managedElement.ManagedElement}
    */
   #postamble;
@@ -355,6 +357,7 @@ export class Presenter extends ManagedElement {
       this.#resolutionExecutor = resolve;
       stageElement.appendChild(this);
       this.addAttributions();
+      this.#addLinkGuardians();
       focusManager.findBestFocus();
     });
   }
@@ -408,7 +411,7 @@ export class Presenter extends ManagedElement {
   /**
    * Prevent navigation away from page.
    * This is called when the handleClickEvent method is handling a Home, Back or
-   * Forwards navigation button. It should be overriden if you need to prevent
+   * Forwards navigation button. It should be overridden if you need to prevent
    * navigation. Implementers can use the `askIfOkayToLeave` method to ask.
    * @param {Event} event
    * @param {string} eventId
@@ -477,6 +480,39 @@ export class Presenter extends ManagedElement {
       case 'Enter':
         this.handleClickEvent(event, eventId);
         break;
+    }
+  }
+
+  /** Add a guardian for links that go to external sites. */
+  #addLinkGuardians() {
+    document
+      .getElementById('content')
+      ?.querySelectorAll('a')
+      ?.forEach((anchor) => {
+        const href = anchor.getAttribute('href');
+        if (href && new URL(href).origin !== window.location.origin) {
+          anchor.addEventListener('click', async (event) => {
+            return this.#confirmOpeningLink(event);
+          });
+        }
+      });
+  }
+
+  /**
+   * Check whether the link should be opened.
+   * Popup confirmation. If not confirmed, the default event action is prevented.
+   * @param {Event} event
+   */
+  #confirmOpeningLink(event) {
+    const destination = event.currentTarget.getAttribute('href');
+    const question =
+      i18n`You are about to leave this application and go to ${destination}.` +
+      '\n' +
+      i18n`${BuildInfo.getProductName()} has no control over the site's content or privacy policies.` +
+      '\n' +
+      i18n`Is it okay to continue?`;
+    if (!confirm(question)) {
+      event.preventDefault();
     }
   }
 }
