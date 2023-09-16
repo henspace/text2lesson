@@ -42,6 +42,7 @@ import './utils/userIo/modalMask.js';
 import './utils/userIo/screenSizer.js';
 import { embeddedLesson } from './lessons/embeddedLesson.js';
 import { Presenter } from './lessons/presenters/presenter.js';
+import { addMathMlCssFallback } from './utils/text/mathml.js';
 
 /**
  * Display a fatal error.
@@ -190,6 +191,7 @@ function addExitWarning() {
 window.addEventListener('load', () => {
   try {
     registerServiceWorkerIfBuilt();
+    addMathMlCssFallback();
     addExitWarning();
     return loadApplication();
   } catch (error) {

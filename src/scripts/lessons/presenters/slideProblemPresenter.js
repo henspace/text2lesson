@@ -138,9 +138,16 @@ export class SlideProblemPresenter extends ProblemPresenter {
    * Build the content.
    */
   #buildSlideShow() {
-    this.#cards = new DisplayCards(
-      this.problem.intro.html || this.problem.question.html
-    );
+    let cardHtml = this.problem.intro.html || '';
+
+    if (this.problem.question.html) {
+      toast(
+        i18n`Question has been created with no possible answers, so it will be shown as a slideshow.`
+      );
+      cardHtml += this.problem.question.html;
+    }
+
+    this.#cards = new DisplayCards(cardHtml);
     this.#visualCard = new ManagedElement('div', 'display-card');
     this.managedChildren.push(new Gesture(this.#visualCard.element));
     this.listenToEventOn('gesture', this.#visualCard);

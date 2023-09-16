@@ -34,6 +34,7 @@ import { generateConfetti } from '../../effects/confetti.js';
 import { BuildInfo } from '../../data/constants.js';
 import * as share from '../../utils/share/share.js';
 import { Urls } from '../../data/urls.js';
+import { setMathsMlInline } from '../../utils/text/mathml.js';
 
 /**
  * Classes used for styling medals.
@@ -216,7 +217,9 @@ export class MarksPresenter extends Presenter {
     const answers = new ManagedElement('div');
     this.config.lesson.marks.markedItems.forEach((markedItem) => {
       const item = new ManagedElement('div', 'answer-summary');
-      item.innerHTML = `${this.#stripImages(markedItem.item.question.html)}`;
+      let html = this.#stripImages(markedItem.item.question.html);
+      html = setMathsMlInline(html);
+      item.innerHTML = html;
       item.classList.add(this.#getClassForMarkState(markedItem.state));
       answers.appendChild(item);
     });
