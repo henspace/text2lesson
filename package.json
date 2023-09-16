@@ -1,6 +1,6 @@
 {
   "name": "text2lesson",
-  "version": "1.0.49",
+  "version": "1.0.50",
   "description": "Application for running lessons and quizzes",
   "private": true,
   "main": "main.js",
