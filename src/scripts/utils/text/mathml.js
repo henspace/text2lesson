@@ -49,12 +49,9 @@ function parseMathMlBlock(html, warden) {
  * @returns {string} original data with all MathML blocks protected by warden.
  */
 export function parseMathMl(data, warden) {
-  return data.replace(
-    /<math?(?:\s*[a-zA-Z0-9_-]+(?:\s*=\s*"[^"]*")?)*?\s*>.*<\/math?>/gs,
-    (match) => {
-      return parseMathMlBlock(match, warden);
-    }
-  );
+  return data.replace(/<math[^>]*?>.*<\/math?>/gs, (match) => {
+    return parseMathMlBlock(match, warden);
+  });
 }
 
 /**
@@ -90,10 +87,7 @@ export function addMathMlCssFallback() {
  * @returns {string}
  */
 export function setMathsMlInline(html) {
-  return html.replace(
-    /<math(?:\s*[a-zA-Z0-9_-]+(?:\s*=\s*"[^"]*")?)*?\s*>/g,
-    (match) => {
-      return match.replace(/display\s*=\s*"\w*"/, 'display="inline"');
-    }
-  );
+  return html.replace(/<math[^>]*?>/g, (match) => {
+    return match.replace(/display\s*=\s*"\w*"/, 'display="inline"');
+  });
 }
