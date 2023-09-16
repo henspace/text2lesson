@@ -81,7 +81,7 @@ export class DisplayCards {
       result.push(`${blocks[index * 2]}${tail}`.trim());
     }
     return result.filter(
-      (e) => e.trim() && !/^<[a-zA-Z]*>\s*<\/[a-zA-Z]*>$/g.test(e)
+      (e) => !!e.replace(/(<\/?[a-zA-Z]+>|\s+)/g, '') // strips all tags and whitespace
     );
   }
 
