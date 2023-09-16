@@ -35,7 +35,7 @@ export class ChapterPresenter extends ListPresenter {
   ADD_LESSON_EVENT_ID = 'add-lesson';
   /**
    * Construct.
-   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presentor
+   * @param {module:lessons/presenters/presenter~PresenterConfig} config - configuration for the presenter
    */
   constructor(config) {
     config.titles = lessonManager.lessonTitles;
@@ -71,6 +71,17 @@ export class ChapterPresenter extends ListPresenter {
     icons.applyIconToElement(icons.addLesson, button);
     this.listenToEventOn('click', button, this.ADD_LESSON_EVENT_ID);
     this.addButtonToBar(button);
+  }
+
+  /**
+   * Local library scrolls to bottom as this is more helpful when adding slots.
+   * @override
+   */
+  onPostPresentActions() {
+    if (lessonManager.usingLocalLibrary) {
+      const stage = document.getElementById('stage');
+      stage.scrollTo({ top: stage.scrollHeight, behavior: 'smooth' });
+    }
   }
   /**
    *

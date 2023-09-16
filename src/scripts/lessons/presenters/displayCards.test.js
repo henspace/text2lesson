@@ -105,7 +105,8 @@ test('progress reflects movement through cards', () => {
 });
 
 test('Check blank cards removed', () => {
-  const html = '<p>one</p><p>    </p><p>two</p><p>    </p>';
+  const html =
+    '<p>one</p><p>    </p><p>two</p><p>    </p>  <pre><code></code></pre>';
   const cards = new DisplayCards(html);
   expect(cards.getNext().html).toBe('<p>one</p>');
   expect(cards.getNext().html).toBe('<p>two</p>');

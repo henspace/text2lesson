@@ -358,9 +358,16 @@ export class Presenter extends ManagedElement {
       stageElement.appendChild(this);
       this.addAttributions();
       this.#addLinkGuardians();
+      this.onPostPresentActions();
       focusManager.findBestFocus();
     });
   }
+
+  /**
+   * Actions to perform after the Presenter has been added to the stage.
+   * The default does nothing, but it's a hook for children to use.
+   */
+  onPostPresentActions() {}
 
   /**
    * Create the credits button.
