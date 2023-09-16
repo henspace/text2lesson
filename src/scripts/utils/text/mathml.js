@@ -23,7 +23,7 @@
  */
 import { NON_LOCAL_ROOT_URL } from '../../data/rootUrl.js';
 
-const FALLBACK_TESTING = true;
+const FALLBACK_TESTING = false;
 
 /**
  * Parse a MathML block. All we need to do is sanitise it.
