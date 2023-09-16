@@ -314,6 +314,11 @@ img {
   max-height: 100%;
 }
 
+.math,
+div.mathml-fallback-test {
+  font-family: 'Noto Sans Math';
+}
+
 .maths {
   font-family: 'Noto Sans Math';
   letter-spacing: 0.2rem;

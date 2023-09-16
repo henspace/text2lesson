@@ -22,6 +22,7 @@
  */
 
 import { reverseAttributions } from './attributionsReverser.js';
+import { parseMathMl } from './mathml.js';
 import { parseMaths, mathsToPlainText } from './maths.js';
 import { ParsingWarden } from './parsingWarden.js';
 
@@ -440,6 +441,7 @@ export function parseMarkdown(data, options) {
   if (options?.pre) {
     result = processReplacements(result, options.pre);
   }
+  result = parseMathMl(result, parsingWarden);
   result = processReplacements(result, htmlEscIgnoringBrReps);
   result = processReplacements(result, markdownEscReps);
   result = processReplacements(result, blockReps);
@@ -464,6 +466,7 @@ export function parseMarkdownSpanOnly(data) {
   parsingWarden.clear(); // this shouldn't be necessary as the warden automatically clears on retrieval.
   var result = data.replaceAll(/\r/g, ''); // normalise line endings
   result = processReplacements(result, securityReps);
+  result = parseMathMl(result, parsingWarden);
   result = processReplacements(result, htmlEscIgnoringBrReps);
   result = processReplacements(result, markdownEscReps);
   result = processReplacements(result, spanReps);
