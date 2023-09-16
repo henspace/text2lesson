@@ -49,7 +49,7 @@ function parseMathMlBlock(html, warden) {
  * @returns {string} original data with all MathML blocks protected by warden.
  */
 export function parseMathMl(data, warden) {
-  return data.replace(/<math[^>]*?>.*<\/math?>/gs, (match) => {
+  return data.replace(/<math[^>]*?>.*<\/math>/gs, (match) => {
     return parseMathMlBlock(match, warden);
   });
 }
