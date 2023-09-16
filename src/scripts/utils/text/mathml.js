@@ -21,8 +21,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+import { NON_LOCAL_ROOT_URL } from '../../data/rootUrl.js';
 
-const FALLBACK_TESTING = false;
+const FALLBACK_TESTING = true;
 
 /**
  * Parse a MathML block. All we need to do is sanitise it.
@@ -72,7 +73,7 @@ export function addMathMlCssFallback() {
   ) {
     console.debug('MathMl not supported so loading fallback CSS');
     const cssLink = document.createElement('link');
-    cssLink.href = 'assets/styles/mathml.css';
+    cssLink.href = `${NON_LOCAL_ROOT_URL}assets/styles/mathml.css`; // can't load local css if autorun file.
     cssLink.rel = 'stylesheet';
     document.head.appendChild(cssLink);
   } else {

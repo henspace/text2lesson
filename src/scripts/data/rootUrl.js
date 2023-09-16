@@ -1,7 +1,7 @@
 /**
- * @file Collection of urls.
+ * @file Root url
  *
- * @module data/urls
+ * @module data/rootUrl
  *
  * @license GPL-3.0-or-later
  * Create quizzes and lessons from plain text files.
@@ -22,24 +22,5 @@
  *
  */
 
-import { embeddedLesson } from '../lessons/embeddedLesson.js';
-import { NON_LOCAL_ROOT_URL, DOCS_ROOT_URL } from './rootUrl.js';
-
-let rootUrl = embeddedLesson.hasLesson
-  ? embeddedLesson.rootUrl
-  : window.location.href.replace(/index\.html(\?.*)?$/, '');
-if (!rootUrl.endsWith('/')) {
-  rootUrl += '/'; // defensive
-}
-
-/**
- * @enum {string}
- */
-export const Urls = {
-  NON_LOCAL_ROOT: NON_LOCAL_ROOT_URL,
-  ROOT: `${rootUrl}`,
-  LOGO: `${rootUrl}assets/images/logo/bordered_logo_128.png`,
-  HELP: `${DOCS_ROOT_URL}app-help.html`,
-  PRIVACY: `${DOCS_ROOT_URL}privacy.html`,
-  DOCS_HOME: `${DOCS_ROOT_URL}index.html`,
-};
+export const NON_LOCAL_ROOT_URL = 'https://henspace.github.io/text2lesson/';
+export const DOCS_ROOT_URL = 'https://henspace.github.io/text2lesson-docs/';
