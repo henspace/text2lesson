@@ -294,6 +294,9 @@ test('Double asterisk creates strong element', () => {
   expect(parseMarkdown('test ** some words ** text')).toMatch(
     'test <em>* some words *</em> text'
   );
+  expect(parseMarkdown('test **A** text')).toMatch(
+    'test <strong>A</strong> text'
+  );
 });
 
 test('Double underscore creates strong element', () => {
@@ -311,6 +314,9 @@ test('Double underscore creates strong element', () => {
   );
   expect(parseMarkdown('test __ some words __ text')).toMatch(
     'test <em>_ some words _</em> text'
+  );
+  expect(parseMarkdown('test __A__ text')).toMatch(
+    'test <strong>A</strong> text'
   );
 });
 
@@ -330,6 +336,26 @@ test('Single asterisk creates em element', () => {
   expect(parseMarkdown('test * some words * text')).toMatch(
     'test * some words * text'
   );
+  expect(parseMarkdown('test *A* text')).toMatch('test <em>A</em> text');
+});
+
+test('Single underscore creates em element', () => {
+  expect(parseMarkdown('test _some words_ text')).toMatch(
+    'test <em>some words</em> text'
+  );
+  expect(parseMarkdown('test _some _ words_ text')).toMatch(
+    'test <em>some _ words</em> text'
+  );
+  expect(parseMarkdown('test _ some words_ text')).toMatch(
+    'test _ some words_ text'
+  );
+  expect(parseMarkdown('test _some words _ text')).toMatch(
+    'test _some words _ text'
+  );
+  expect(parseMarkdown('test _ some words _ text')).toMatch(
+    'test _ some words _ text'
+  );
+  expect(parseMarkdown('test _A_ text')).toMatch('test <em>A</em> text');
 });
 
 test('preProcessing applied', () => {
