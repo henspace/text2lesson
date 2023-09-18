@@ -30,6 +30,7 @@ import {
   ProblemPresenter,
 } from './problemPresenter.js';
 import { shuffle } from '../../utils/arrayManip.js';
+import { replaceSelectControl } from './fillAndOrderTools.js';
 
 /**
  * Class to present a problem.
@@ -95,10 +96,10 @@ export class FillProblemPresenter extends ProblemPresenter {
     let correct = true;
     this.#missingWordSelectors.forEach((selectControl, index) => {
       const givenAnswer = selectControl.getText();
+      const expectedAnswer = this.#missingWordCorrectAnswers[index];
       const container = selectControl.parentElement;
-      selectControl.remove();
-      container.textContent = givenAnswer;
-      if (givenAnswer === this.#missingWordCorrectAnswers[index]) {
+      replaceSelectControl(selectControl, givenAnswer, expectedAnswer);
+      if (givenAnswer === expectedAnswer) {
         this.#showAnswerState(container, AnswerSelectionState.CORRECT);
       } else {
         this.#showAnswerState(container, AnswerSelectionState.INCORRECT);

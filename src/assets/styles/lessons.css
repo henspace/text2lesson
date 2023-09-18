@@ -157,18 +157,39 @@ a.problem {
   padding: 0 var(--padding-thickness) 0 var(--padding-thickness);
 }
 
-.missing-word.correct-answer::after {
+.missing-word.correct-answer .given-answer::after {
   content: var(--icon-correct);
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
   margin-left: 0.2em;
 }
 
-.missing-word.incorrect-answer::after {
+.missing-word.correct-answer .expected-answer {
+  display: none;
+}
+
+.missing-word.incorrect-answer {
+  border: solid 1px;
+  margin-right: 0.2em;
+}
+
+.missing-word.incorrect-answer .expected-answer::after {
+  content: var(--icon-flagged);
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+  margin-left: 0.2em;
+}
+
+.missing-word.incorrect-answer .given-answer-text {
+  text-decoration: line-through;
+}
+
+.missing-word.incorrect-answer .given-answer::after {
   content: var(--icon-incorrect);
   font-family: var(--icon-font-family);
   font-weight: var(--icon-font-weight);
   margin-left: 0.2em;
+  margin-right: 0.2em;
 }
 
 /** List markers for presenter */
