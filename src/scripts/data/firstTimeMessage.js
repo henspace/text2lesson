@@ -42,18 +42,23 @@ export function showFirstUseMessageIfAppropriate() {
     const appName = BuildInfo.getProductName();
     const privacyLinkLabel = i18n`Privacy`;
     const privacyLink = `[${privacyLinkLabel}](${Urls.PRIVACY})`;
+    const gplLink =
+      '[GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html#license-text)';
     const message = [
       i18n`${appName} has been designed to allow you to create lessons and quizzes quickly and easily by just writing simple, plain text.`,
-      i18n`As this is your first time using the application, here is a quick summary of how your data are used and stored.`,
+      i18n`As this is your first time using the application, here are some important details.`,
       '',
+      i18n`This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.`,
+      i18n`See the ${gplLink} for more details.`,
+      i18n`### Data use by ${appName}`,
       i18n`- ${appName} holds no account details or personal information.`,
       i18n`- The only data stored are your preferences for using the application and any lessons you create.`,
       i18n`- No information that you enter when answering questions in a quiz is ever stored or transmitted to the server.`,
       i18n`- Data are stored on your device using your browser's localStorage.`,
       i18n``,
-      i18n`- The application is hosted by GitHub, which does log your IP address for security purposes.`,
-      i18n``,
-      i18n`For more details please check out the ${privacyLink} information.`,
+      i18n`The site is hosted by GitHub and some fonts are served by Google.` +
+        ' ' +
+        i18n`Details of their individual privacy policies can be found in the ${privacyLink} information.`,
     ].join('\n');
     return ModalDialog.showInfo(parseMarkdown(message), i18n`Welcome`).then(
       () => persistentData.saveToStorage(FIRST_TIME_USE_KEY, false)
