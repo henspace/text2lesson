@@ -216,7 +216,24 @@ const spanReps = [
       return parsingWarden.protect(html);
     },
   },
-  /** emphasis */
+  /** emphasis single letters*/
+  {
+    re: /\*\*([^\s])\*\*/gm,
+    rep: '<strong>$1</strong>',
+  },
+  {
+    re: /__([^\s])__/gm,
+    rep: '<strong>$1</strong>',
+  },
+  {
+    re: /\*([^\s])\*/gm,
+    rep: '<em>$1</em>',
+  },
+  {
+    re: /_([^\s])_/gm,
+    rep: '<em>$1</em>',
+  },
+  /** emphasis words */
   {
     re: /\*\*([^\s])(.*?)([^\s])\*\*/gm,
     rep: '<strong>$1$2$3</strong>',
