@@ -25,6 +25,7 @@ import { reverseAttributions } from './attributionsReverser.js';
 import { parseMathMl } from './mathml.js';
 import { parseMaths, mathsToPlainText } from './maths.js';
 import { ParsingWarden } from './parsingWarden.js';
+import { asciimath } from './asciimathParser.js';
 
 /**
  * @typedef {Object} Replacement
@@ -38,6 +39,33 @@ import { ParsingWarden } from './parsingWarden.js';
  * @type {ParsingWarden}
  */
 const parsingWarden = new ParsingWarden();
+
+/**
+ * Parse asciimath.
+ * Care has to be taken as the asciimath module unescape < symbol which could
+ * lead to script injection.
+ * @param {string} equation
+ * @param {boolean} inline - true for inline math block.
+ * @returns {string} result protected by a guardian to prevent further parsing.
+ */
+function parseAsciiMathEquation(equation, inline) {
+  let html = asciimath.parseMath(equation, inline).outerHTML;
+  html = html.replace(/<(\/)script/g, '<&1noscript');
+  return parsingWarden.protect(html);
+}
+
+/**
+ * Parse MathML.
+ * Care has to be taken as the asciimath module unescape < symbol which could
+ * lead to script injection.
+ * @param {string} equation
+ * @param {boolean} inline - true for inline math block.
+ * @returns {string} data - this is protected by a guardian to prevent further parsing.
+ */
+function parseMathsEquation(equation, inline) {
+  const html = parseMaths(equation, inline);
+  return parsingWarden.protect(html);
+}
 
 /**
  * Get a printable link. This is a span with the classes printable-link and
@@ -134,7 +162,14 @@ const blockReps = [
    */
   {
     re: /^\s*maths?:\s*(.+?)\s*$/gm,
-    rep: (match, equation) => parseMaths(equation, false),
+    rep: (match, equation) => parseMathsEquation(equation, false),
+  },
+  /**
+   * Asciimaths equation
+   */
+  {
+    re: /^\s*amaths?:\s*(.+?)\s*$/gm,
+    rep: (match, equation) => parseAsciiMathEquation(equation, false),
   },
 ];
 
@@ -164,7 +199,11 @@ const spanReps = [
    */
   {
     re: /{maths?}(.+?){maths?}/gm,
-    rep: (match, equation) => parseMaths(equation, true),
+    rep: (match, equation) => parseMathsEquation(equation, true),
+  },
+  {
+    re: /{amaths?}(.+?){amaths?}/gm,
+    rep: (match, equation) => parseAsciiMathEquation(equation, true),
   },
   /** image */
   {
