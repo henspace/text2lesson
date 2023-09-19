@@ -402,4 +402,15 @@ export class ProblemPresenter extends Presenter {
     console.debug(`Override markAnswers should be overridden.`);
     return false;
   }
+
+  /**
+   * Hide titles on mouseover and hide credits button
+   * @override
+   */
+  onPostPresentActions() {
+    const stage = document.getElementById('stage');
+    stage.querySelectorAll('img').forEach((image) => {
+      image.setAttribute('title', i18n`Image for question. Details hidden.`);
+    });
+  }
 }
