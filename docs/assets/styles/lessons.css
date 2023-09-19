@@ -430,13 +430,18 @@ ul.presentation,
   overflow-wrap: break-word; 
 }
 
-@media print {
-  .attributions {
-    font-size: 0.6rem;
-  }
-}
-
 .attribution-button-container {
   display: flex;
   justify-content: flex-end;
+}
+
+.lesson-metadata {
+  text-align: center;
+}
+
+@media print {
+  .attributions,
+  .lesson-metadata {
+    font-size: 0.6rem;
+  }
 }
