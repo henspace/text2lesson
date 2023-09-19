@@ -2,6 +2,12 @@
 @import './utils.css';
 @import './lessons.css';
 
+@font-face {
+  font-family: 'Stix Two Math';
+  src: url('../fonts/STIXTwoMath-Regular.woff2') format('woff2'),
+    url('../fonts/STIXTwoMath-Regular.ttf') format('truetype');
+}
+
 @media print {
   html:has(.MarksPresenter),
   html:has(.MarksPresenter) div {
@@ -304,51 +310,17 @@ img {
   max-height: 100%;
 }
 
-.math,
+math,
 div.mathml-fallback-test {
-  font-family: 'Noto Sans Math';
+  font-family: 'Stix Two Math', 'Times New Roman', Times, serif;
+  margin: 0.2em 0 0.2em 0;
 }
 
-.maths {
-  font-family: 'Noto Sans Math';
-  letter-spacing: 0.2rem;
-}
-
-div.maths {
-  text-align: center;
-}
-
-.maths:has(table) {
-  padding-bottom: 0.5em;
-  margin-top: -1.2rem;
-}
-
-.maths table {
-  border-collapse: collapse;
-  display: inline-block;
-  transform: translateY(1.2rem);
-  text-align: center;
-}
-.maths table tr {
-  border-bottom: 1px solid;
-}
-
-.maths table tr:last-child {
-  border-bottom: none;
-}
-
-.maths .high-symbol {
-  font-size: 1.5rem;
-}
-
-.maths .sqrt {
-  border-top: 2px solid;
-}
-
-.maths .radic {
-  display: inline-block;
-  font-size: 1.3rem;
-  transform: translateX(0.2rem);
+math[display='block'],
+math[display='inline'],
+div.mathml-fallback-test[display='block'],
+div.mathml-fallback-test[display='inline'] {
+  margin: 0.2em 0 0.2em 0;
 }
 
 blockquote {
