@@ -452,10 +452,18 @@ export class Presenter extends ManagedElement {
 
     let nextPresenter = null;
     if (upperCaseId === Presenter.IMAGE_INFO) {
-      return ModalDialog.showInfo(
-        document.querySelector('.attributions').innerHTML,
-        i18n`Acknowledgements`
-      );
+      ModalDialog.showConfirm(
+        i18n`Image details may reveal the answer. Do you want to continue?`
+      ).then((response) => {
+        if (response === ModalDialog.DialogIndex.CONFIRM_YES) {
+          return ModalDialog.showInfo(
+            document.querySelector('.attributions').innerHTML,
+            i18n`Acknowledgements`
+          );
+        } else {
+          return null;
+        }
+      });
     } else if (upperCaseId === Presenter.PREVIOUS_ID) {
       nextPresenter = this.previous();
     } else if (upperCaseId === Presenter.NEXT_ID) {
