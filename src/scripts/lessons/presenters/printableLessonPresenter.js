@@ -29,6 +29,7 @@ import { QuestionType } from '../problem.js';
 import { shuffle } from '../../utils/arrayManip.js';
 import { i18n } from '../../utils/i18n/i18n.js';
 import { icons } from '../../utils/userIo/icons.js';
+import { getLicenceElement } from './licensingInfo.js';
 
 /**
  * Presenter for showing a lesson in an printable format
@@ -59,8 +60,19 @@ export class PrintableLessonPresenter extends Presenter {
    * Build the results content.
    */
   #buildContent() {
+    this.#addMetadata();
     this.#addTitleBlock();
     this.#addProblems();
+  }
+
+  /**
+   * Add metadata
+   */
+  #addMetadata() {
+    const licenceElement = getLicenceElement(this.config.lesson.metadata);
+    if (licenceElement) {
+      this.addPostamble(licenceElement);
+    }
   }
 
   /**
