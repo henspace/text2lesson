@@ -7,10 +7,10 @@
   display: flex;
   flex-direction: column;
   left: 50%;
-  min-height: 10vh;
-  max-height: 90vh;
+  min-height: calc(var(--vh, 1vh) * 10);
+  max-height: calc(var(--vh, 1vh) * 90);
   position: absolute;
-  top: 50vh;
+  top: calc(var(--vh, 1vh) * 50);
   transform: translate(-50%, -50%);
   width: 90%;
   transition: opacity 0.5s;
@@ -51,7 +51,8 @@
   display: flex;
   flex-flow: row wrap;
   max-height: calc(
-    90vh - 2rlh - 2 * var(--margin-thickness) - 6 * var(--padding-thickness)
+    var(--vh, 1vh) * 80 - 2.4 * 1rem - 2 * var(--margin-thickness) - 6 *
+      var(--padding-thickness)
   );
   overflow: auto;
 }

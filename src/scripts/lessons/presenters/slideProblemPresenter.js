@@ -272,8 +272,17 @@ export class SlideProblemPresenter extends ProblemPresenter {
     this.addAttributions();
     this.#autoPauseIfAppropriate(this.#currentCardDetail.html);
     this.#visualCard.element.scrollTo(0, 0);
+    this.#limitCardSize();
     this.#setCardState(CardState.ARRIVING);
     this.#endShowIfLastCard();
+  }
+
+  /**
+   * Set the maximum size of the card
+   */
+  #limitCardSize() {
+    const container = this.questionElement.element.getBoundingClientRect();
+    this.#visualCard.style.maxHeight = `${container.height - 5}px`;
   }
 
   /**

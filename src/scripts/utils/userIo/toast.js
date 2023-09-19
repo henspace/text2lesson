@@ -101,7 +101,7 @@ export function toast(message) {
   const toast = new Toast(message, true);
   document.body.appendChild(toast.element);
   setTimeout(() => {
-    toast.style.top = '50vh';
+    toast.style.top = 'calc(var(--vh, 1vh) * 50)';
     toast.focus();
   });
 }

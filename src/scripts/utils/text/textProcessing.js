@@ -23,7 +23,6 @@
 
 import { reverseAttributions } from './attributionsReverser.js';
 import { parseMathMl } from './mathml.js';
-import { parseMaths, mathsToPlainText } from './maths.js';
 import { ParsingWarden } from './parsingWarden.js';
 import { asciimath } from './asciimathParser.js';
 
@@ -51,19 +50,6 @@ const parsingWarden = new ParsingWarden();
 function parseAsciiMathEquation(equation, inline) {
   let html = asciimath.parseMath(equation, inline).outerHTML;
   html = html.replace(/<(\/)script/g, '<&1noscript');
-  return parsingWarden.protect(html);
-}
-
-/**
- * Parse MathML.
- * Care has to be taken as the asciimath module unescape < symbol which could
- * lead to script injection.
- * @param {string} equation
- * @param {boolean} inline - true for inline math block.
- * @returns {string} data - this is protected by a guardian to prevent further parsing.
- */
-function parseMathsEquation(equation, inline) {
-  const html = parseMaths(equation, inline);
   return parsingWarden.protect(html);
 }
 
@@ -158,17 +144,10 @@ const blockReps = [
     lineSuffix: '</li>',
   }),
   /**
-   * Maths equation
-   */
-  {
-    re: /^\s*maths?:\s*(.+?)\s*$/gm,
-    rep: (match, equation) => parseMathsEquation(equation, false),
-  },
-  /**
    * Asciimaths equation
    */
   {
-    re: /^\s*amaths?:\s*(.+?)\s*$/gm,
+    re: /^\s*a?maths?:\s*(.+?)\s*$/gm,
     rep: (match, equation) => parseAsciiMathEquation(equation, false),
   },
 ];
@@ -198,11 +177,7 @@ const spanReps = [
   /** inline maths
    */
   {
-    re: /{maths?}(.+?){maths?}/gm,
-    rep: (match, equation) => parseMathsEquation(equation, true),
-  },
-  {
-    re: /{amaths?}(.+?){amaths?}/gm,
+    re: /{a?maths?}(.+?){a?maths?}/gm,
     rep: (match, equation) => parseAsciiMathEquation(equation, true),
   },
   /** image */
@@ -547,7 +522,6 @@ export function escapeHtml(data) {
  * @returns {string} the plain text
  */
 export function getPlainTextFromHtml(html) {
-  let plain = mathsToPlainText(html);
-  plain = plain.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ');
+  let plain = html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ');
   return decodeFromEntities(plain);
 }

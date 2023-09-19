@@ -24,10 +24,22 @@
 import { jest, beforeEach, test, expect } from '@jest/globals';
 
 const mockMathsParser = jest.fn((data) => data);
+const mockAsciiMathParser = jest.fn((data, inlineIgnored) => {
+  return { outerHTML: data };
+});
+
 jest.unstable_mockModule('./maths.js', () => {
   return {
     parseMaths: mockMathsParser,
     mathsToPlainText: (data) => data,
+  };
+});
+
+jest.unstable_mockModule('./asciimathParser.js', () => {
+  return {
+    asciimath: {
+      parseMath: mockAsciiMathParser,
+    },
   };
 });
 
@@ -41,6 +53,7 @@ const {
 
 beforeEach(() => {
   mockMathsParser.mockClear();
+  mockAsciiMathParser.mockClear();
 });
 
 test('Paragraphs split on blank lines', () => {
@@ -446,25 +459,49 @@ test('getPlainTextFromHtml decodes less than ', () => {
 test('maths block passed to maths parser when block starts with math:', () => {
   const result = parseMarkdown('math: data     ');
   expect(result).toMatch('data');
-  expect(mockMathsParser).toBeCalledWith('data', false);
+  expect(mockAsciiMathParser).toBeCalledWith('data', false);
 });
 
 test('maths block passed to maths parser when block starts with maths:', () => {
   const result = parseMarkdown('maths: data     ');
   expect(result).toMatch('data');
-  expect(mockMathsParser).toBeCalledWith('data', false);
+  expect(mockAsciiMathParser).toBeCalledWith('data', false);
 });
 
 test('maths block passed to maths parser as inline when data wrapped in {maths}...{maths}', () => {
   const data = 'abc 123 xyz';
   parseMarkdown(`111 {maths}${data}{maths} 111`);
-  expect(mockMathsParser).toBeCalledWith(data, true);
+  expect(mockAsciiMathParser).toBeCalledWith(data, true);
 });
 
 test('Maths block passed to maths parser as not inline', () => {
   const data = 'abc 123 xyz';
   parseMarkdown(`maths:${data}`);
-  expect(mockMathsParser).toBeCalledWith(data, false);
+  expect(mockAsciiMathParser).toBeCalledWith(data, false);
+});
+
+test('maths block passed to maths parser when block starts with amath:', () => {
+  const result = parseMarkdown('amath: data     ');
+  expect(result).toMatch('data');
+  expect(mockAsciiMathParser).toBeCalledWith('data', false);
+});
+
+test('maths block passed to maths parser when block starts with amaths:', () => {
+  const result = parseMarkdown('amaths: data     ');
+  expect(result).toMatch('data');
+  expect(mockAsciiMathParser).toBeCalledWith('data', false);
+});
+
+test('maths block passed to maths parser as inline when data wrapped in {amaths}...{amaths}', () => {
+  const data = 'abc 123 xyz';
+  parseMarkdown(`111 {amaths}${data}{amaths} 111`);
+  expect(mockAsciiMathParser).toBeCalledWith(data, true);
+});
+
+test('Maths block passed to maths parser as not inline', () => {
+  const data = 'abc 123 xyz';
+  parseMarkdown(`amaths:${data}`);
+  expect(mockAsciiMathParser).toBeCalledWith(data, false);
 });
 
 test('Generated link html is not parsed further', () => {
