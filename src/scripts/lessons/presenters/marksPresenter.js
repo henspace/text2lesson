@@ -35,6 +35,8 @@ import { BuildInfo } from '../../data/constants.js';
 import * as share from '../../utils/share/share.js';
 import { Urls } from '../../data/urls.js';
 import { setMathsMlInline } from '../../utils/text/mathml.js';
+import { getLicenceUrl } from './attributions.js';
+import { getPrintableLink } from '../../utils/text/textProcessing.js';
 
 /**
  * Classes used for styling medals.
@@ -120,6 +122,7 @@ export class MarksPresenter extends Presenter {
    * Build the results content.
    */
   #buildContent() {
+    this.#addMetadata();
     this.#addHeadings();
     this.#addAnswers();
     this.#addResult();
@@ -148,6 +151,54 @@ export class MarksPresenter extends Presenter {
       default:
         // no next button. Just Home and repeat.
         break;
+    }
+  }
+
+  /**
+   * Add metadata
+   */
+  #addMetadata() {
+    const author = this.config.lesson.metadata.getValue('AUTHOR', '');
+    let copyright = this.config.lesson.metadata.getValue('COPYRIGHT', '');
+    let licence = this.config.lesson.metadata.getValue(
+      'LICENCE',
+      this.config.lesson.metadata.getValue('LICENSE', '')
+    );
+    const licenceUrl = getLicenceUrl(licence);
+    if (licence && licenceUrl) {
+      licence = `<a href="${licenceUrl}" target="_blank">${licence}</a>${getPrintableLink(
+        licenceUrl,
+        true
+      )}`;
+    }
+    const attribution = this.config.lesson.metadata.getValue('ATTRIBUTION', '');
+    if (author || copyright) {
+      const metaContainer = new ManagedElement('div', 'lesson-metadata');
+      metaContainer.createAndAppendChild('span', '', i18n`Lesson` + ' ');
+      const showAuthor =
+        copyright.toLowerCase().indexOf(author.toLowerCase()) < 0;
+      if (showAuthor) {
+        metaContainer.createAndAppendChild('span', '', i18n`author: ${author}`);
+      }
+      if (copyright) {
+        metaContainer.createAndAppendChild(
+          'span',
+          '',
+          `${showAuthor ? '; ' : ''}&copy; ${copyright}`
+        );
+      }
+
+      if (licence) {
+        metaContainer.createAndAppendChild(
+          'span',
+          '',
+          '; ' + i18n`license: ${licence}`
+        );
+      }
+      if (attribution) {
+        metaContainer.createAndAppendChild('span', '', `; ${attribution}`);
+      }
+      this.addPostamble(metaContainer);
     }
   }
   /**

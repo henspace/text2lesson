@@ -25,6 +25,7 @@ import { jest, beforeAll, beforeEach, test, expect } from '@jest/globals';
 import { ItemMarker } from '../itemMarker.js';
 import { LessonOrigin } from '../lessonOrigins.js';
 import { footer } from '../../headerAndFooter.js';
+import { Metadata } from '../metadata.js';
 
 const mockedLessonManager = {
   libraryTitle: '',
@@ -231,6 +232,7 @@ test(
       'hasMoreProblems',
       false
     );
+    config.lesson.metadata = Metadata.createFromSource('');
     expect(presenterFactory.getNext(presenter, config)).toBeInstanceOf(
       MarksPresenter
     );

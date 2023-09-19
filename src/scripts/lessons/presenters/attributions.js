@@ -143,7 +143,7 @@ function appendNotes(container, notes) {
  * @param {string} licenceName``
  * @returns {string} '' if unknown.
  */
-function getLicenceUrl(licenceName) {
+export function getLicenceUrl(licenceName) {
   if (/^\s*&CC0\s*$/.test(licenceName)) {
     return 'https://creativecommons.org/publicdomain/zero/1.0/';
   }

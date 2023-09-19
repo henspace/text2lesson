@@ -427,19 +427,24 @@ ul.presentation,
   font-size: 200%;
 }
 
-/** attributions */
+/** attributions and metadata*/
 .attributions {
   text-align: left;
   overflow-wrap: break-word; /* for long urls */
 }
 
-@media print {
-  .attributions {
-    font-size: 0.6rem;
-  }
-}
-
 .attribution-button-container {
   display: flex;
   justify-content: flex-end;
+}
+
+.lesson-metadata {
+  text-align: center;
+}
+
+@media print {
+  .attributions,
+  .lesson-metadata {
+    font-size: 0.6rem;
+  }
 }
