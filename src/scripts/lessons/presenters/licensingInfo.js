@@ -25,7 +25,10 @@
 import { ManagedElement } from '../../utils/userIo/managedElement.js';
 import { getLicenceUrl } from './attributions.js';
 import { i18n } from '../../utils/i18n/i18n.js';
-import { getPrintableLink } from '../../utils/text/textProcessing.js';
+import {
+  getPrintableLink,
+  parseMarkdownSpanOnly,
+} from '../../utils/text/textProcessing.js';
 
 /**
  * Build a ManagedElement that contains licence information extracted from the
@@ -34,7 +37,7 @@ import { getPrintableLink } from '../../utils/text/textProcessing.js';
  * @returns {ManagedElement} null if nothing to build.
  */
 export function getLicenceElement(metadata) {
-  const author = metadata.getValue('AUTHOR', '');
+  const author = parseMarkdownSpanOnly(metadata.getValue('AUTHOR', ''));
   let copyright = metadata.getValue('COPYRIGHT', '');
   let licence = metadata.getValue('LICENCE', metadata.getValue('LICENSE', ''));
   const licenceUrl = getLicenceUrl(licence);
