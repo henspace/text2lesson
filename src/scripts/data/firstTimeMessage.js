@@ -56,9 +56,8 @@ export function showFirstUseMessageIfAppropriate() {
       i18n`- No information that you enter when answering questions in a quiz is ever stored or transmitted to the server.`,
       i18n`- Data are stored on your device using your browser's localStorage.`,
       i18n``,
-      i18n`The site is hosted by GitHub and some fonts are served by Google.` +
-        ' ' +
-        i18n`Details of their individual privacy policies can be found in the ${privacyLink} information.`,
+      i18n`The site is hosted by GitHub.`,
+      i18n`Details of all privacy policies can be found in the ${privacyLink} information.`,
     ].join('\n');
     return ModalDialog.showInfo(parseMarkdown(message), i18n`Welcome`).then(
       () => persistentData.saveToStorage(FIRST_TIME_USE_KEY, false)
