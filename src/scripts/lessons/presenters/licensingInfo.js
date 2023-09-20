@@ -68,7 +68,8 @@ export function getLicenceElement(metadata) {
       metaContainer.createAndAppendChild(
         'span',
         '',
-        '; ' + i18n`license: ${licence}`
+        '; ' +
+          i18n`license: ${licence} (images are used under the terms of their own licenses)`
       );
     }
     if (attribution) {
