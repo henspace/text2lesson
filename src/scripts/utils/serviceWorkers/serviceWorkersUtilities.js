@@ -23,22 +23,20 @@
 
 /**
  * Perform the actual registration.
- * @param {string} buildMode - production or development.
+ * This should be called after the page has loaded.
  */
-function performRegistrationIfPossible(buildMode) {
-  if (buildMode === 'production' && 'serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('./sw.js')
-        .then((registration) => {
-          console.info('SW registered: ', registration);
-          let controller = navigator.serviceWorker.controller;
-          console.info(`Page controlled by ${controller}.`);
-        })
-        .catch((registrationError) => {
-          console.error('SW registration failed: ', registrationError);
-        });
-    });
+function performRegistrationIfPossible() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .register('./sw.js')
+      .then((registration) => {
+        console.info('SW registered: ', registration);
+        let controller = navigator.serviceWorker.controller;
+        console.info(`Page controlled by ${controller}.`);
+      })
+      .catch((registrationError) => {
+        console.error('SW registration failed: ', registrationError);
+      });
   }
 }
 

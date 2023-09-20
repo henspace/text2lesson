@@ -102,8 +102,32 @@ export function generateServiceWorker() {
     cacheId: PROJECT_INFO.cacheId,
     globDirectory: PROJECT_INFO.buildDistDir,
     swDest: path.join(PROJECT_INFO.buildDistDir, 'sw.js'),
-    globPatterns: ['**/*.{html,css,js}'],
+    globPatterns: ['**/*.{html,css,js,json,png,mp3,woff,woff2,ttf}'],
     mode: PROJECT_INFO.buildMode,
+    runtimeCaching: [
+      {
+        handler: 'NetworkFirst',
+        urlPattern:
+          /^https:\/\/henspace\.github\.io\/text2lesson-library\/[-a-zA-Z0-9@:%_+.~#?/]+\.(?:json|txt)$/, //lesson data
+        options: {
+          cacheName: 'Text2LessonLessonData',
+          expiration: {
+            maxEntries: 50,
+          },
+        },
+      },
+      {
+        handler: 'NetworkFirst',
+        urlPattern:
+          /^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/[-a-zA-Z0-9@:%_+.~#?/]+\.(gif|png|jpg|jpeg|svg)$/, // media
+        options: {
+          cacheName: 'Text2LessonLessonMedia',
+          expiration: {
+            maxEntries: 50,
+          },
+        },
+      },
+    ],
   }).then(() => {
     console.log('Service worker generated.');
     return true;

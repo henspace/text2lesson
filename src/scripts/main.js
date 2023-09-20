@@ -168,7 +168,7 @@ function loadApplication() {
  */
 function registerServiceWorkerIfBuilt() {
   if (BuildInfo.isBuilt()) {
-    registerServiceWorker(BuildInfo.getMode());
+    registerServiceWorker();
   }
 }
 
