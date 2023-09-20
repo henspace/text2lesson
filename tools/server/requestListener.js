@@ -75,6 +75,7 @@ const HEADERS = {
   jpg: [{ name: 'Content-Type', value: 'image/jpeg' }],
   json: [{ name: 'Content-Type', value: 'application/json' }],
   js: [{ name: 'Content-Type', value: 'text/javascript' }],
+  map: [{ name: 'Content-Type', value: 'application/json' }],
   md: [{ name: 'Content-Type', value: 'text/markdown' }],
   mp3: [{ name: 'Content-Type', value: 'audio/mpeg' }],
   mp4: [{ name: 'Content-Type', value: 'video/mp4' }],
