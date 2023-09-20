@@ -1,3 +1,16 @@
+.PrintableLessonPresenter .attributions {
+  page-break-before: always;
+  break-before: always;
+}
+
+.PrintableLessonPresenter .for-print-only {
+  display: block;
+}
+
+.PrintableLessonPresenter span.for-print-only {
+  display: inline;
+}
+
 .PrintableLessonPresenter .fill-in-blanks-problem .missing-word {
   display: inline-block;
   width: 5em;
