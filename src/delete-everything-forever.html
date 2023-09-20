@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual"
+    />
+    <title>$_PRODUCT_NAME_TXT_$</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/logo/tiny_logo_16.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href="assets/images/logo/borderless_logo_48.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="167x167"
+      href="assets/images/logo/borderless_logo_167.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="180x180"
+      href="assets/images/logo/borderless_logo_180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/images/logo/borderless_logo_192.png"
+    />
+    <style>
+      html {
+        background-color: white;
+      }
+      body {
+        background: yellow;
+        color: black;
+        font-family: Geneva, Verdana, sans-serif;
+        font-size: large;
+        height: 100vh;
+        margin: 0px auto 0px auto;
+        max-width: 720px;
+        padding: 1em;
+      }
+      .warning {
+        font-size: 3rem;
+        text-align: center;
+      }
+      button {
+        border-radius: 0.2em;
+        font-size: large;
+        margin: 10px auto 10px auto;
+        padding: 0.3em;
+      }
+      .button-bar {
+        text-align: center;
+      }
+      .button-bar button {
+        display: block;
+      }
+      button.danger {
+        background-color: red;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="warning">⚠️</div>
+    <p>
+      This is an emergency repair page for <em>Text2Lesson</em>. It will delete
+      everything that has been stored by the program. Absolutely everything:
+    </p>
+    <ul>
+      <li>Your settings &mdash; GONE!</li>
+      <li>Any lessons you've written &mdash; GONE!</li>
+    </ul>
+    <p>
+      If you're running this because your memory is corrupt and you need to
+      start again, I'm sorry for the inconvenience, but hopefully this will get
+      you back up and running again.
+    </p>
+    <p>
+      If you're running this because you just don't get the program, I'm sorry
+      <em>Text2Lesson</em> wasn't for you, but thanks for having a go.
+    </p>
+    <div class="button-bar">
+      <button class="danger" onclick="deleteEverything()">
+        ☠️ DELETE EVERYTHING ☠️
+      </button>
+      <button onclick="getMeOutOfHere()">💨 Get me out of here 💨</button>
+    </div>
+    <noscript class="always-on-top">
+      <p>
+        Your browser does not support scripts and so this application cannot
+        run. If you've disabled scripts, you will need to enable them to
+        proceed. Sorry.
+      </p>
+    </noscript>
+  </body>
+  <script>
+    function getMeOutOfHere() {
+      window.location.replace(
+        'https://henspace.github.io/text2lesson-docs/index.html'
+      );
+    }
+
+    function deleteEverything() {
+      const keyword = 'DELETE-EVERYTHING';
+      const confirmation = prompt(
+        `If you really want to delete everything, enter ${keyword}`
+      );
+      if (confirmation !== keyword) {
+        return alert(
+          "I didn't recognise what you entered, so I'm not going to delete anything. Phew! 😀"
+        );
+      }
+      if (
+        !confirm(
+          `Okay! Are you absolutely sure you want to delete everything? There's no going back.`
+        )
+      ) {
+        return alert("Great, I'm not going to delete anything. Phew! 😀");
+      }
+      console.log('Deleting all local storage.');
+      localStorage.clear();
+      alert(
+        "Everything has gone. It's like Text2Lesson was never here. 😢\n" +
+          "I'll now go back to documentation. If you were repairing a corrupt installation, just relaunch it from the documentation."
+      );
+      getMeOutOfHere();
+    }
+  </script>
+</html>

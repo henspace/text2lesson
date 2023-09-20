@@ -48,6 +48,11 @@ const I18N_ASSETS_SOURCE_DIR = path.join(
 
 postBuildUtils
   .copyHtmlFileToBuildRoot('./src/index.html')
+  .then(() =>
+    postBuildUtils.copyHtmlFileToBuildRoot(
+      './src/delete-everything-forever.html'
+    )
+  )
   .then(() => FileManager.makeDir(PROJECT_INFO.buildReportDir))
   .then(() =>
     i18n.extractI18nLiterals(
