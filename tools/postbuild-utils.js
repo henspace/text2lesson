@@ -109,11 +109,23 @@ export function generateServiceWorker() {
         handler: 'NetworkFirst',
         urlPattern:
           /^https:\/\/henspace\.github\.io\/text2lesson-library\/[-a-zA-Z0-9@:%_+.~#?/]+\.(?:json|txt)$/, //lesson data
+        options: {
+          cacheName: 'Text2LessonLessonData',
+          expiration: {
+            maxEntries: 50,
+          },
+        },
       },
       {
-        handler: 'CacheFirst',
+        handler: 'NetworkFirst',
         urlPattern:
           /^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/[-a-zA-Z0-9@:%_+.~#?/]+\.(gif|png|jpg|jpeg|svg)$/, // media
+        options: {
+          cacheName: 'Text2LessonLessonMedia',
+          expiration: {
+            maxEntries: 50,
+          },
+        },
       },
     ],
   }).then(() => {
