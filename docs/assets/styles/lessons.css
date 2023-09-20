@@ -94,6 +94,11 @@ a.problem {
   flex-direction: column;
 }
 
+.print-answers img,
+.problem-answers img {
+  max-height: calc(20 * var(--vh, 1vh));
+}
+
 .ChoiceProblemPresenter button.problem-answer {
   flex: 1;
   text-align: left;
