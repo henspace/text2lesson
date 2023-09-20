@@ -139,9 +139,8 @@ function loadApplication() {
     })
     .then(() =>
       toast(
-        '<span style="font-size:3rem;">&#x1F631;</span>' +
-          'This application is work in progress and not released yet. ' +
-          'Things may change and things may break. Documentation may not be correct.',
+        '<span style="font-size:3rem;">&#x1F642;</span>' +
+          i18n`Welcome to Text2Lesson &mdash; the fastest way to create your lessons from plain old text.`,
         true
       )
     )
