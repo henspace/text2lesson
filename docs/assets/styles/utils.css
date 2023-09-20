@@ -125,7 +125,7 @@ button:disabled:hover,
 button:disabled:focus,
 button:disabled:hover:focus {
   outline-style: none;
-  opacity: 50%;
+  opacity: 0.5;
 }
 
 .problem-answer p:first-of-type {

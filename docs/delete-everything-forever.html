@@ -107,13 +107,48 @@
     </noscript>
   </body>
   <script>
+    /**
+     * Unregister the service worker and delete all caches.
+     * @returns {Promise} fulfils to undefined.
+     */
+    function removeCaches() {
+      return navigator.serviceWorker
+        .getRegistration()
+        .then((registration) => {
+          if (registration) {
+            console.log(
+              `Unregister service worker cope: ${registration?.scope}`
+            );
+            return registration?.unregister();
+          } else {
+            console.log(`No service worker found to unregister.`);
+            return null;
+          }
+        })
+        .then(() => caches.keys())
+        .then((keyList) =>
+          Promise.all(
+            keyList.map((key) => {
+              console.log(`Deleting cache ${key}`);
+              return caches.delete(key);
+            })
+          )
+        );
+    }
+
+    /**
+     * Go back to main documentation site
+     */
     function getMeOutOfHere() {
       window.location.replace(
         'https://henspace.github.io/text2lesson-docs/index.html'
       );
     }
 
-    function deleteEverything() {
+    /**
+     * Delete everything after confirmation.
+     */
+    async function deleteEverything() {
       const keyword = 'DELETE-EVERYTHING';
       const confirmation = prompt(
         `If you really want to delete everything, enter ${keyword}`
@@ -132,11 +167,13 @@
       }
       console.log('Deleting all local storage.');
       localStorage.clear();
-      alert(
-        "Everything has gone. It's like Text2Lesson was never here. 😢\n" +
-          "I'll now go back to documentation. If you were repairing a corrupt installation, just relaunch it from the documentation."
-      );
-      getMeOutOfHere();
+      await removeCaches().then(() => {
+        alert(
+          "Everything has gone. It's like Text2Lesson was never here. 😢\n" +
+            "I'll now go back to documentation. If you were repairing a corrupt installation, just relaunch it from the documentation."
+        );
+        getMeOutOfHere();
+      });
     }
   </script>
 </html>
