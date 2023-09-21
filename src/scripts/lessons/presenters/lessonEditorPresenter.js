@@ -33,6 +33,7 @@ import { LessonExporter, LessonImporter } from '../lessonImportExport.js';
 import { FileInputButton } from '../../utils/userIo/fileInput.js';
 import { ModalDialog } from '../../utils/userIo/modalDialog.js';
 import { toast } from '../../utils/userIo/toast.js';
+import { Urls } from '../../data/urls.js';
 
 export class LessonEditorPresenter extends Presenter {
   static SAVE_EVENT_ID = 'SAVE';
@@ -75,6 +76,16 @@ export class LessonEditorPresenter extends Presenter {
    */
   async #buildCustomContent() {
     const cachedLesson = await lessonManager.loadCurrentLesson();
+    if (!cachedLesson.content) {
+      const anchor =
+        `<a href="${Urls.HELP}" target="_blank">` + i18n`Open help.` + '</a>';
+      toast(
+        i18n`If you haven't created a lesson yet, you might want to check the help documentation for details about creating lessons.` +
+          ' ' +
+          anchor,
+        true
+      );
+    }
     this.#lessonTitleValue = this.config.lessonInfo.titles.lesson;
     this.#lessonTitleElement = new LabeledControl(
       LocalLibrary,
