@@ -273,12 +273,16 @@ export class ProblemPresenter extends Presenter {
 
   /** Enable the edit button */
   enableEditButton() {
-    this.#editButton.disabled = false;
+    if (this.#editButton) {
+      this.#editButton.disabled = false;
+    }
   }
 
   /** Disable the edit button */
   disableEditButton() {
-    this.#editButton.disabled = true;
+    if (this.#editButton) {
+      this.#editButton.disabled = true;
+    }
   }
 
   /**
