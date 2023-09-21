@@ -437,3 +437,51 @@ test('text passed with class', () => {
   let textItem = textItemParser.TextItem.createFromSource(source);
   expect(textItem.html).toMatch(`<span class="bigger">circle-right</span>`);
 });
+
+test('big class parsed', () => {
+  const className = 'big';
+  const data = 'this is my test string';
+  let source = `testing {${className}}${data}{${className}}`;
+  let textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(`<span class="${className}">${data}</span>`);
+});
+
+test('bigger class parsed', () => {
+  const className = 'bigger';
+  const data = 'this is my test string';
+  let source = `testing {${className}}${data}{${className}}`;
+  let textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(`<span class="${className}">${data}</span>`);
+});
+
+test('biggest class parsed', () => {
+  const className = 'biggest';
+  const data = 'this is my test string';
+  let source = `testing {${className}}${data}{${className}}`;
+  let textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(`<span class="${className}">${data}</span>`);
+});
+
+test('massive class parsed', () => {
+  const className = 'massive';
+  const data = 'this is my test string';
+  let source = `testing {${className}}${data}{${className}}`;
+  let textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(`<span class="${className}">${data}</span>`);
+});
+
+test('giant class parsed', () => {
+  const className = 'biggest';
+  const data = 'this is my test string';
+  let source = `testing {${className}}${data}{${className}}`;
+  let textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(`<span class="${className}">${data}</span>`);
+});
+
+test('Unrecognised class not parsed', () => {
+  const className = 'garbage';
+  const data = 'this is my test string';
+  let source = `testing {${className}}${data}{${className}}`;
+  let textItem = textItemParser.TextItem.createFromSource(source);
+  expect(textItem.html).toMatch(`{${className}}${data}{${className}}`);
+});

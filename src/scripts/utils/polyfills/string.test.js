@@ -49,6 +49,7 @@ beforeAll(async () => {
     data.expected = data.str.replaceAll(data.pattern, data.replacement);
   });
   String.prototype.replaceAll = undefined;
+  String.prototype.toWellFormed = undefined;
   await import('./string.js');
 });
 
@@ -66,5 +67,58 @@ test('Exception thrown if non-global regex used.', () => {
     'test string'.replaceAll(/test/, 'TEST');
   } catch (error) {
     expect(error.name).toBe('TypeError');
+  }
+});
+
+test('toWellFormed works with valid ascii string', () => {
+  const str = 'ABCDEFGHIJKLMNOPQRTSUVWXYZ01234567890';
+  expect(str.toWellFormed()).toBe(str);
+});
+
+test('toWellFormed works with valid unicode', () => {
+  const str = '🍒🍇🍉'; // includes ascii and grapheme cluster
+  expect(str.toWellFormed()).toBe(str);
+});
+
+test('toWellFormed works with valid grapheme', () => {
+  const str = '🍒🍇🍉👨‍👩‍👧'; // includes ascii and grapheme cluster
+  expect(str.toWellFormed()).toBe(str);
+});
+
+test('toWellFormed works with non surrogates', () => {
+  const prefix = '🍒🍇ABC';
+  const loneSurrogates = ['\uD799', '\uE000'];
+  const nonSurrogate = 'Z';
+  const suffix = '🍉';
+  for (const surrogate of loneSurrogates) {
+    const str = `${prefix}${nonSurrogate}${surrogate}${nonSurrogate}${suffix}`;
+    expect(str.toWellFormed()).toBe(str);
+  }
+});
+
+test('toWellFormed works with lone leading surrogate', () => {
+  const prefix = '🍒🍇ABC';
+  const loneSurrogates = ['\uD800', '\uD900', '\uDBFF'];
+  const nonSurrogate = 'Z';
+  const unicodeReplacement = '\uFFFD';
+  const suffix = '🍉';
+  for (const surrogate of loneSurrogates) {
+    const str = `${prefix}${nonSurrogate}${surrogate}${nonSurrogate}${suffix}`;
+    expect(str.toWellFormed()).toBe(
+      `${prefix}${nonSurrogate}${unicodeReplacement}${nonSurrogate}${suffix}`
+    );
+  }
+});
+test('toWellFormed works with lone trailing surrogate', () => {
+  const prefix = '🍒🍇ABC';
+  const loneSurrogates = ['\uDC00', '\uDD00', '\uDfFF'];
+  const nonSurrogate = 'Z';
+  const unicodeReplacement = '\uFFFD';
+  const suffix = '🍉';
+  for (const surrogate of loneSurrogates) {
+    const str = `${prefix}${nonSurrogate}${surrogate}${nonSurrogate}${suffix}`;
+    expect(str.toWellFormed()).toBe(
+      `${prefix}${nonSurrogate}${unicodeReplacement}${nonSurrogate}${suffix}`
+    );
   }
 });

@@ -365,6 +365,7 @@ export class SlideProblemPresenter extends ProblemPresenter {
       case MediaID.SKIP:
         this.#skip();
         return;
+      case ProblemPresenter.EDIT_EVENT_ID:
       case Presenter.HOME_ID:
         this.#pauseTheShow();
         break;
@@ -433,11 +434,15 @@ export class SlideProblemPresenter extends ProblemPresenter {
       this.#playButton.hide();
       this.#skipButton.show();
       this.#pauseButton.focus();
+      this.disableEditButton();
+      this.disableHomeButton();
     } else {
       this.#pauseButton.hide();
       this.#playButton.show();
       this.#skipButton.show();
       this.#playButton.focus();
+      this.enableEditButton();
+      this.enableHomeButton();
     }
   }
 

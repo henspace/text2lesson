@@ -168,6 +168,11 @@ class TrackedReplacements {
         textClass = makeClassSafe(textClass);
         return `${startChr}${getHtmlForText(text, textClass)}</span>`;
       }),
+      getClassSpanReplacement('big'),
+      getClassSpanReplacement('bigger'),
+      getClassSpanReplacement('biggest'),
+      getClassSpanReplacement('massive'),
+      getClassSpanReplacement('giant'),
     ];
   }
 }
@@ -309,5 +314,18 @@ export function getItemReplacement(prefix, replace) {
   return {
     re: re,
     rep: replace,
+  };
+}
+
+/**
+ * Get replacement suitable for tagging a span with a classname. The text
+ * will be in the form `{className}content of span{className}`
+ * @param {string} className
+ * @returns {module:libs/utils/text/textProcessing~Replacement}
+ */
+function getClassSpanReplacement(className) {
+  return {
+    re: new RegExp(`{${className}}(.*?){${className}}`, 'g'),
+    rep: `<span class="${className}">$1</span>`,
   };
 }

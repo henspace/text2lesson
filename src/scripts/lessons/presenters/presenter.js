@@ -268,6 +268,16 @@ export class Presenter extends ManagedElement {
     this.#homeButton.hide();
   }
 
+  /** Enable the home button */
+  enableHomeButton() {
+    this.#homeButton.disabled = false;
+  }
+
+  /** Disable the edit button */
+  disableHomeButton() {
+    this.#homeButton.disabled = true;
+  }
+
   /**
    * Show the back button.
    * @param {boolean} focus - if true, the button will also get focus.

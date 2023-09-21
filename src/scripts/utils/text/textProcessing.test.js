@@ -22,6 +22,7 @@
  */
 
 import { jest, beforeEach, test, expect } from '@jest/globals';
+import '../polyfills/string.js';
 
 const mockMathsParser = jest.fn((data) => data);
 const mockAsciiMathParser = jest.fn((data, inlineIgnored) => {

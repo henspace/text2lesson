@@ -1,5 +1,5 @@
 /**
- * @file Polyfill for String.replaceAll
+ * @file Polyfills and shims for String
  *
  * @module utils/polyfills/string
  *
@@ -46,5 +46,59 @@ if (!String.prototype.replaceAll) {
     } else {
       return this.replace(new RegExp(pattern, 'g'), replacement);
     }
+  };
+}
+
+function isLeadingSurrogate(codePoint) {
+  return codePoint >= 0xd800 && codePoint <= 0xdbff;
+}
+
+function isTrailingSurrogate(codePoint) {
+  return codePoint >= 0xdc00 && codePoint <= 0xdfff;
+}
+
+const UNICODE_REPLACEMENT = '\uFFFD';
+
+/**
+ * Replace lone surrogates with UNICODE_REPLACEMENT
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toWellFormed}
+ * @param {string} str
+ * @returns {string}
+ */
+export function toWellFormed(str) {
+  if (!str) {
+    return str;
+  }
+  let result = '';
+  for (const chr of str) {
+    const codePoint = chr.codePointAt(0);
+    if (isLeadingSurrogate(codePoint) || isTrailingSurrogate(codePoint)) {
+      result += UNICODE_REPLACEMENT; // next character is not a trailing surrogate
+    } else {
+      result += chr;
+    }
+  }
+  return result;
+}
+
+/**
+ * Shim toWellFormed
+ */
+if (!String.prototype.toWellFormed) {
+  String.prototype.toWellFormed = function toWellFormed() {
+    const str = this;
+    if (!str) {
+      return str;
+    }
+    let result = '';
+    for (const chr of str) {
+      const codePoint = chr.codePointAt(0);
+      if (isLeadingSurrogate(codePoint) || isTrailingSurrogate(codePoint)) {
+        result += UNICODE_REPLACEMENT; // next character is not a trailing surrogate
+      } else {
+        result += chr;
+      }
+    }
+    return result;
   };
 }
