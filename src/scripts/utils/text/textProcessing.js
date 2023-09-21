@@ -50,6 +50,8 @@ const parsingWarden = new ParsingWarden();
 function parseAsciiMathEquation(equation, inline) {
   let html = asciimath.parseMath(equation, inline).outerHTML;
   html = html.replace(/<(\/)script/g, '<&1noscript');
+  // ascii math does not encode surrogate pairs properly so we need to protect
+  html = html.toWellFormed();
   return parsingWarden.protect(html);
 }
 

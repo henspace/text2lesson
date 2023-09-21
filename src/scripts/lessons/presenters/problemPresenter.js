@@ -127,6 +127,11 @@ export class ProblemPresenter extends Presenter {
    */
   #progressBars;
 
+  /**
+   * @type {ManagedElement}
+   */
+  #editButton;
+
   /** @type {number} */
   static SLIDE_BAR_INDEX = 0;
   /** @type {number} */
@@ -208,10 +213,14 @@ export class ProblemPresenter extends Presenter {
    */
   #addEditButtonIfLocal() {
     if (this.config.lessonInfo.usingLocalLibrary) {
-      const editButton = new ManagedElement('button');
-      icons.applyIconToElement(icons.edit, editButton);
-      this.addButtonToBar(editButton);
-      this.listenToEventOn('click', editButton, ProblemPresenter.EDIT_EVENT_ID);
+      this.#editButton = new ManagedElement('button');
+      icons.applyIconToElement(icons.edit, this.#editButton);
+      this.addButtonToBar(this.#editButton);
+      this.listenToEventOn(
+        'click',
+        this.#editButton,
+        ProblemPresenter.EDIT_EVENT_ID
+      );
     }
   }
 
@@ -260,6 +269,16 @@ export class ProblemPresenter extends Presenter {
     icons.applyIconToElement(icons.submitAnswer, this.#submitButton.element);
     this.listenToEventOn('click', this.#submitButton, ElementId.CLICKED_SUBMIT); // numeric handler means this will resolve the presenter.
     this.addPostamble(this.#submitButton);
+  }
+
+  /** Enable the edit button */
+  enableEditButton() {
+    this.#editButton.disabled = false;
+  }
+
+  /** Disable the edit button */
+  disableEditButton() {
+    this.#editButton.disabled = true;
   }
 
   /**
@@ -367,6 +386,8 @@ export class ProblemPresenter extends Presenter {
    * Handle correct answer
    */
   #handleCorrectAnswer() {
+    this.disableHomeButton();
+    this.disableEditButton();
     celebrate();
     soundManager.playGood();
     this.#autoAdvanceTimer = setTimeout(
