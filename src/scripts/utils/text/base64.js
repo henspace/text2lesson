@@ -20,21 +20,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { safeEncodeURIComponent } from '../safeEncoder.js';
 
 /**
- * Converts string to base64 represention. Note that the string is first encoded
+ * Converts string to base64 representation. Note that the string is first encoded
  * so the base64 result represents the encoded version and not the original string.
  * @param {string} str - string to encode.
  * @returns {string}
  */
 export function stringToBase64(str) {
-  return window.btoa(encodeURIComponent(str));
+  return window.btoa(safeEncodeURIComponent(str));
 }
 
 /**
  * converts base64 string to a string.
  * It is assumed that the original string used to create the base64 version
- * was first encoded using encodeURIComponent.
+ * was first encoded using safeEncodeURIComponent.
  * As such the resulting base64 conversion is decoded using
  * decodeURIComponent before returning.
  * @param {string} base64
