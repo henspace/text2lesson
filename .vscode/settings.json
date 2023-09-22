@@ -11,6 +11,7 @@
     "divs",
     "klass",
     "minifiers",
-    "radic"
+    "radic",
+    "safename"
   ]
 }

@@ -27,6 +27,7 @@ import { getAutorunHtml } from '../data/templates/autorunHtml.js';
 import { ModalDialog } from '../utils/userIo/modalDialog.js';
 import { icons } from '../utils/userIo/icons.js';
 import { i18n, getBase64Translations } from '../utils/i18n/i18n.js';
+import { safeEncodeURIComponent } from '../utils/safeEncoder.js';
 
 /**
  * @typedef {Object} LessonImportExportSummary
@@ -60,7 +61,7 @@ export class LessonExporter {
   #content;
 
   /**
-   * Constuctor
+   * Constructor
    * @param {string} title - lesson title
    * @param {string} content - lesson source
    */
@@ -74,7 +75,7 @@ export class LessonExporter {
    * @param {string} data
    */
   #getDataUri(data) {
-    return `data:text/plain;charset=utf-8,${encodeURIComponent(data)}`;
+    return `data:text/plain;charset=utf-8,${safeEncodeURIComponent(data)}`;
   }
 
   /**
