@@ -1,6 +1,6 @@
 {
-  "name": "Text2Lesson",
-  "short_name": "Text2Lesson",
+  "name": "RapidQandA",
+  "short_name": "RapidQandA",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#fff",
