@@ -6,7 +6,7 @@
  * @module
  *
  * @license GPL-3.0-or-later
- * Lesson RunnerCreate quizzes and lessons from plain text files.
+ * Create quizzes and lessons from plain text files.
  * Copyright 2023 Steve Butler (henspace.com)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@ test('createPreamble - check output', () => {
 
   expect(lines[0]).toBe('/**');
   expect(lines[1]).toMatch(/^ \* (.){2,} \d+\.\d+\.\d+$/);
-  expect(lines[2]).toMatch(/^ \* Text2Lesson.*$/);
+  expect(lines[2]).toMatch(/^ \* RapidQandA.*$/);
   expect(lines[3]).toMatch(/^ \* Copyright \d{4} .*$/);
   expect(lines[6]).toMatch(/^ \* .*GNU General Public License.*$/);
   expect(lines[lines.length - 1]).toBe(' */');

@@ -1,8 +1,8 @@
-# Text2Lesson
+# RapidQandA
 
 This application has been designed to take plain text and convert it into
-lessons. In this context, a lesson contains information about a particular
-topic, interspersed with quizzes.
+quizzes and lessons. In this context, a lesson contains information about a
+particular topic, interspersed with quizzes.
 
 The application has been written to maximise user privacy, so everything runs
 client side. No quiz results or user-created lessons are stored on the server.
@@ -10,11 +10,12 @@ client side. No quiz results or user-created lessons are stored on the server.
 So what's the point? There are three ways it's envisaged the application will be
 used:
 
-- to run any of the lessons included in the prebuilt library.
-- to run lessons created for users' personal use; this might be for revision
-  purposes.
-- to create lessons to share with students, quickly and simply, and without the
-  need for students to create accounts or provide any personal information.
+- to run any of the quizzes and lessons included in the prebuilt library.
+- to run quizzes and lessons created for users' personal use; this might be for
+  revision purposes.
+- to create quizzes and lessons to share with students, quickly and simply, and
+  without the need for students to create accounts or provide any personal
+  information.
 
 # Licenses
 
@@ -24,8 +25,8 @@ The main application is licensed under the GPL-3.0 License. See
 Additional components are distributed under separate licenses. See below for
 details:
 
-- **Service worker**: the service worker used by _Text2Lesson_ is generated
-  using the  
+- **Service worker**: the service worker used by _RapidQandA_ is generated using
+  the  
   [GoogleChrome/workbox project](https://github.com/GoogleChrome/workbox). The
   generated service worker, _sw.js_, is released under the terms and conditions
   of the

@@ -37,7 +37,7 @@ export function getAutorunHtml(data) {
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Text2Lesson</title>
+      <title>RapidQandA</title>
       <link
         rel="icon"
         type="image/png"

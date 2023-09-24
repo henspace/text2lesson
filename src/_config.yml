@@ -1,6 +1,7 @@
-title: Text2Lesson
+title: RapidQandA
 description:
-  Text2Lesson — the fastest way to create your lessons from plain old text.
+  RapidQandA — the fastest way to create quizzes and lessons from plain old
+  text.
 show_downloads: false
 google_analytics:
 theme: jekyll-theme-cayman

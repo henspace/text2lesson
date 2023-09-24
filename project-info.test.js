@@ -73,7 +73,7 @@ test('PROJECT_INFO properties should match standard build structure.', () => {
   );
   expect(PROJECT_INFO.i18nMasterLanguage).toBe('en');
   expect(PROJECT_INFO.i18nAssetsDirRelToSource).toBe('assets/i18n');
-  expect(PROJECT_INFO.productName).toBe('Text2Lesson');
+  expect(PROJECT_INFO.productName).toBe('RapidQandA');
   expect(PROJECT_INFO.sourceDir).toBe('./src');
 });
 

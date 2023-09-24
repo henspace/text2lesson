@@ -62,9 +62,9 @@ export function shareByEmail(data) {
 export function shareCertificateContent(content) {
   const html = getCertificateHtml(content);
   const shareData = {
-    filename: 'Text2Lesson_certificate.html',
-    text: i18n`My Text2Lesson certificate`,
-    title: i18n`Text2Lesson Certificate of Achievement`,
+    filename: 'RapidQandA_certificate.html',
+    text: i18n`My RapidQandA certificate`,
+    title: i18n`RapidQandA Certificate of Achievement`,
     html: html,
   };
   return shareHtmlFile(shareData).then((shareResult) => {
@@ -87,7 +87,7 @@ export function shareAutorunLesson(title, lesson) {
   const shareData = {
     filename: makeSafeFilename('autorun_' + title, 'html'),
     text: title,
-    title: i18n`Text2Lesson autorun lesson`,
+    title: i18n`RapidQandA autorun lesson`,
     html: html,
   };
   return shareHtmlFile(shareData).then((shareResult) => {

@@ -76,12 +76,12 @@
   <body>
     <div class="warning">⚠️</div>
     <p>
-      This is an emergency repair page for <em>Text2Lesson</em>. It will delete
+      This is an emergency repair page for <em>RapidQandA</em>. It will delete
       everything that has been stored by the program. Absolutely everything:
     </p>
     <ul>
       <li>Your settings &mdash; GONE!</li>
-      <li>Any lessons you've written &mdash; GONE!</li>
+      <li>Any quizzes and lessons you've written &mdash; GONE!</li>
     </ul>
     <p>
       If you're running this because your memory is corrupt and you need to
@@ -90,7 +90,7 @@
     </p>
     <p>
       If you're running this because you just don't get the program, I'm sorry
-      <em>Text2Lesson</em> wasn't for you, but thanks for having a go.
+      <em>RapidQandA</em> wasn't for you, but thanks for having a go.
     </p>
     <div class="button-bar">
       <button class="danger" onclick="deleteEverything()">
@@ -169,7 +169,7 @@
       localStorage.clear();
       await removeCaches().then(() => {
         alert(
-          "Everything has gone. It's like Text2Lesson was never here. 😢\n" +
+          "Everything has gone. It's like RapidQandA was never here. 😢\n" +
             "I'll now go back to documentation. If you were repairing a corrupt installation, just relaunch it from the documentation."
         );
         getMeOutOfHere();

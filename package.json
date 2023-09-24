@@ -16,7 +16,7 @@
     "entryScriptRelToSource": "scripts/main.js",
     "i18nMasterLanguage": "en",
     "i18nAssetsDirRelToSource": "assets/i18n",
-    "productName": "Text2Lesson",
+    "productName": "RapidQandA",
     "sourceDir": "./src"
   },
   "scripts": {
