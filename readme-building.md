@@ -1,6 +1,6 @@
-# Text2Lesson
+# RapidQandA
 
-Text2Lesson is an application to simplify the creation of lessons and quizzes
+RapidQandA is an application to simplify the creation of lessons and quizzes
 using a simple plain text file.
 
 ## Build process

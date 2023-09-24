@@ -39,6 +39,11 @@
       "idiom" : "universal",
       "filename" : "borderless_logo_192.png",
       "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "borderless_logo_512.png",
+      "scale" : "1x"
     }
   ],
   "info" : {

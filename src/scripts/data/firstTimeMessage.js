@@ -45,14 +45,14 @@ export function showFirstUseMessageIfAppropriate() {
     const gplLink =
       '[GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html#license-text)';
     const message = [
-      i18n`${appName} has been designed to allow you to create lessons and quizzes quickly and easily by just writing simple, plain text.`,
+      i18n`${appName} has been designed to allow you to create quizzes and lessons quickly and easily by just writing simple, plain text.`,
       i18n`As this is your first time using the application, here are some important details.`,
       '',
       i18n`This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.`,
       i18n`See the ${gplLink} for more details.`,
       i18n`### Data use by ${appName}`,
       i18n`- ${appName} holds no account details or personal information.`,
-      i18n`- The only data stored are your preferences for using the application and any lessons you create.`,
+      i18n`- The only data stored are your preferences for using the application and any quizzes and lessons you create.`,
       i18n`- No information that you enter when answering questions in a quiz is ever stored or transmitted to the server.`,
       i18n`- Data are stored on your device using your browser's localStorage.`,
       i18n``,

@@ -1,6 +1,6 @@
 {
   "name": "text2lesson",
-  "version": "1.0.69",
+  "version": "1.0.70",
   "description": "Application for running lessons and quizzes",
   "private": true,
   "main": "main.js",
@@ -16,7 +16,7 @@
     "entryScriptRelToSource": "scripts/main.js",
     "i18nMasterLanguage": "en",
     "i18nAssetsDirRelToSource": "assets/i18n",
-    "productName": "Text2Lesson",
+    "productName": "RapidQandA",
     "sourceDir": "./src"
   },
   "scripts": {

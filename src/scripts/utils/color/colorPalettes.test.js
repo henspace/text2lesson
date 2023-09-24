@@ -4,7 +4,7 @@
  * @module utils/color/colorPalettes.test
  *
  * @license GPL-3.0-or-later
- * Lesson RunnerCreate quizzes and lessons from plain text files.
+ * Create quizzes and lessons from plain text files.
  * Copyright 2023 Steve Butler (henspace.com)
  *
  * This program is free software: you can redistribute it and/or modify

@@ -4,7 +4,7 @@
  * @module lessons/textItem
  *
  * @license GPL-3.0-or-later
- * Text2Lesson: create quizzes and lessons from plain text files.
+ * RapidQandA: create quizzes and lessons from plain text files.
  * Copyright 2023 Steve Butler (henspace.com)
  *
  * This program is free software: you can redistribute it and/or modify

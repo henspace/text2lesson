@@ -4,7 +4,7 @@
  * @module main
  *
  * @license GPL-3.0-or-later
- * Lesson RunnerCreate quizzes and lessons from plain text files.
+ * Create quizzes and lessons from plain text files.
  * Copyright 2023 Steve Butler (henspace.com)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -140,7 +140,7 @@ function loadApplication() {
     .then(() =>
       toast(
         '<span style="font-size:3rem;">&#x1F642;</span>' +
-          i18n`Welcome to Text2Lesson &mdash; the fastest way to create your lessons from plain old text.`,
+          i18n`Welcome to ${BuildInfo.getProductName()} &mdash; the fastest way to create your quizzes and lessons from plain old text.`,
         true
       )
     )

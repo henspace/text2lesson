@@ -3,7 +3,7 @@
  * @module
  *
  * @license GPL-3.0-or-later
- * Lesson RunnerCreate quizzes and lessons from plain text files.
+ * Create quizzes and lessons from plain text files.
  * Copyright 2023 Steve Butler (henspace.com)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -110,7 +110,7 @@ export function generateServiceWorker() {
         urlPattern:
           /^https:\/\/henspace\.github\.io\/text2lesson-library\/[-a-zA-Z0-9@:%_+.~#?/]+\.(?:json|txt)$/, //lesson data
         options: {
-          cacheName: 'Text2LessonLessonData',
+          cacheName: 'RapidQandALessonData',
           expiration: {
             maxEntries: 50,
           },
@@ -121,7 +121,7 @@ export function generateServiceWorker() {
         urlPattern:
           /^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/[-a-zA-Z0-9@:%_+.~#?/]+\.(gif|png|jpg|jpeg|svg)$/, // media
         options: {
-          cacheName: 'Text2LessonLessonMedia',
+          cacheName: 'RapidQandALessonMedia',
           expiration: {
             maxEntries: 50,
           },

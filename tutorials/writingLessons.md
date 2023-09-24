@@ -1,6 +1,6 @@
-# Text2Lesson
+# RapidQandA
 
-Text2Lesson is designed to make the creation of lesson quick and simple using
+RapidQandA is designed to make the creation of lesson quick and simple using
 just plain text.
 
 # Lesson format
