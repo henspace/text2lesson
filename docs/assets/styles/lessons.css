@@ -327,7 +327,26 @@ ul.presentation,
 .MarksPresenter .answer-summary h5,
 .MarksPresenter .answer-summary h6 {
   display: inline;
-  padding: 0px;
+  padding: 0px 0.2em 0px 0px;
+  border-right: 1px solid;
+}
+.MarksPresenter .answer-summary math {
+  padding: 0px 0.2em 0px 0px;
+  border-right: 1px solid;
+}
+.MarksPresenter .answer-summary div:last-child,
+.MarksPresenter .answer-summary math:last-child,
+.MarksPresenter .answer-summary p:last-child,
+.MarksPresenter .answer-summary table:last-child,
+.MarksPresenter .answer-summary tr:last-child,
+.MarksPresenter .answer-summary td:last-child,
+.MarksPresenter .answer-summary h1:last-child,
+.MarksPresenter .answer-summary h2:last-child,
+.MarksPresenter .answer-summary h3:last-child,
+.MarksPresenter .answer-summary h4:last-child,
+.MarksPresenter .answer-summary h5:last-child,
+.MarksPresenter .answer-summary h6:last-child {
+  border-right: none;
 }
 
 .MarksPresenter .removed-image::before,
