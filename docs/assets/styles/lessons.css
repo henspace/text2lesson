@@ -325,7 +325,8 @@ ul.presentation,
 .MarksPresenter .answer-summary h3,
 .MarksPresenter .answer-summary h4,
 .MarksPresenter .answer-summary h5,
-.MarksPresenter .answer-summary h6 {
+.MarksPresenter .answer-summary h6,
+.MarksPresenter .answer-summary blockquote {
   display: inline;
   padding: 0px 0.2em 0px 0px;
   border-right: 1px solid;
@@ -334,6 +335,11 @@ ul.presentation,
   padding: 0px 0.2em 0px 0px;
   border-right: 1px solid;
 }
+
+.MarksPresenter .answer-summary br {
+  display: none;
+}
+
 .MarksPresenter .answer-summary div:last-child,
 .MarksPresenter .answer-summary math:last-child,
 .MarksPresenter .answer-summary p:last-child,
@@ -345,7 +351,12 @@ ul.presentation,
 .MarksPresenter .answer-summary h3:last-child,
 .MarksPresenter .answer-summary h4:last-child,
 .MarksPresenter .answer-summary h5:last-child,
-.MarksPresenter .answer-summary h6:last-child {
+.MarksPresenter
+  .answer-summary
+  h6:last-child
+  .MarksPresenter
+  .answer-summary
+  blockquote:last-child {
   border-right: none;
 }
 
