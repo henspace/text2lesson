@@ -1,5 +1,7 @@
 # RapidQandA
 
+> <span style="font-style: normal; font-size:2em;">⚠️</span> RapidQandA is no longer under development. Feel free to use the files and play with the system, but there will be no more updates or bug fixes.
+
 This application has been designed to take plain text and convert it into
 quizzes and lessons. In this context, a lesson contains information about a
 particular topic, interspersed with quizzes.
